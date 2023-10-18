@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "37042313350",
+    "project_id": "dhliz-bb277",
+    "storage_bucket": "dhliz-bb277.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37042313350:android:c72ef94554ea855cad9907",
+        "android_client_info": {
+          "package_name": "com.example.dhliz_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATOmxAoIEWBOJyP_3R79m4teNRoWNYHHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
