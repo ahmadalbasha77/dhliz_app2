@@ -1,10 +1,21 @@
-
 import 'package:get_storage/get_storage.dart';
+
+import 'enum/user_role_enum.dart';
+
+
+
+
 final sharedPrefsClient = SharedPrefsClient();
 
+const String keyDeviceToken = "key_device_token";
+const String keyAccessToken = "key_access_token";
+const String keyApplicationId = "key_application_id";
+const String keyFullName = "key_full_name";
+const String keyImage = "key_image";
+const String keyIsLogin = "key_is_login";
 const String keyLanguage = "key_language";
+const String keyUserRole = "key_user_role";
 const String keyIsGMS = "key_is_gms";
-
 
 
 class SharedPrefsClient {
@@ -16,12 +27,62 @@ class SharedPrefsClient {
     await GetStorage.init(_storageName);
   }
 
+  void clearProfile() {
+    isLogin = false;
+    userRole = UserRoleEnum.unknown;
+    accessToken = "";
+    applicationId = "";
+    fullName = "";
+    image = "";
+  }
+
+  String get deviceToken => _storage.read(keyDeviceToken) ?? "";
+
+  set deviceToken(String value) {
+    _storage.write(keyDeviceToken, value);
+  }
+
+  String get accessToken => _storage.read(keyAccessToken) ?? "";
+
+  set accessToken(String value) {
+    _storage.write(keyAccessToken, value);
+  }
+
+  String get applicationId => _storage.read(keyApplicationId) ?? "";
+
+  set applicationId(String value) {
+    _storage.write(keyApplicationId, value);
+  }
+
+  String get fullName => _storage.read(keyFullName) ?? "";
+
+  set fullName(String value) {
+    _storage.write(keyFullName, value);
+  }
+
+  String get image => _storage.read(keyImage) ?? "";
+
+  set image(String value) {
+    _storage.write(keyImage, value);
+  }
+
   String get language => _storage.read(keyLanguage) ?? "";
 
   set language(String value) {
     _storage.write(keyLanguage, value);
   }
 
+  bool get isLogin => _storage.read(keyIsLogin) ?? false;
+
+  set isLogin(bool value) {
+    _storage.write(keyIsLogin, value);
+  }
+
+  UserRoleEnum get userRole => UserRoleEnum.values.firstWhere((element) => element.value == (_storage.read(keyUserRole) ?? 0));
+
+  set userRole(UserRoleEnum roleEnum) {
+    _storage.write(keyUserRole, roleEnum.value);
+  }
 
   bool get isGMS => _storage.read(keyIsGMS) ?? true;
 

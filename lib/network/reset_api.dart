@@ -5,9 +5,12 @@ import 'package:dhliz_app/models/api_response.dart';
 import 'package:dhliz_app/network/api_url.dart';
 import 'package:dio/dio.dart';
 
+import '../config/constant.dart';
 import '../config/shared_prefs_client.dart';
 
 import 'dart:developer' as developer;
+
+import '../models/auth/login_model.dart';
 class RestApi {
 
 
@@ -196,6 +199,21 @@ class RestApi {
     }
   }
 
+  static Future<ApiResponse<LoginModel>> signIn(
+      {required String username, required String password}) async {
+    var body = jsonEncode({
+      "username": username,
+      "password": password,
+      "deviceToken": sharedPrefsClient.deviceToken,
+      "platform": platform,
+      "version": version,
+      "language": sharedPrefsClient.language,
+    });
+    final request = _post(ApiUrl.LOGIN, data: body);
+    var response = await _executeRequest<LoginModel>(
+        method: request, fromJsonModel: (json) => LoginModel.fromJson(json));
+    return response;
+  }
 
 
 }

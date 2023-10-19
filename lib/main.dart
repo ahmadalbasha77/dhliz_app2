@@ -42,9 +42,9 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context, Widget? child) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
         initialBinding: BindingQ(),
-        translations: Translation(),
-        locale: Locale(sharedPrefsClient.language),
-        fallbackLocale: const Locale('en'),
+        // translations: Translation(),
+        // locale: Locale(sharedPrefsClient.language),
+        // fallbackLocale: const Locale('en'),
         home: SplashScreen(),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../controllers/auth/sign_in_controller.dart';
 import '../main_screen.dart';
 import 'signup_screen.dart';
 
@@ -12,9 +13,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
-  GlobalKey<FormState> formKey = GlobalKey();
+
+
+  final _controller = SignInController.to;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return SafeArea(
       child: Scaffold(
         body: Form(
-          key: formKey,
+          key: _controller.keyForm,
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -74,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         return 'Please enter Your email';
                       }
                     },
-                    controller: email,
+                    controller: _controller.controllerUsername,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
                             vertical: screenSize.height * .027,
@@ -104,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                     style: TextStyle(color: Colors.black87),
-                    controller: password,
+                    controller: _controller.controllerPassword,
                     obscureText: true,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
@@ -169,9 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     onPressed: () async {
 
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => MainScreen(),
-                        ));
+                      _controller.signIn();
                       },
                     child: Text(
                       "Login",

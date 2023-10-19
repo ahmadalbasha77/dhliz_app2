@@ -1,9 +1,15 @@
 import 'dart:async';
 
+import 'package:dhliz_app/view/auth/login_screen.dart';
+import 'package:dhliz_app/view/main_screen.dart';
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../config/enum/user_role_enum.dart';
+import '../../config/shared_prefs_client.dart';
+import '../../controllers/app_controller.dart';
 import 'firstpage_screen.dart';
 
 
@@ -13,24 +19,24 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final AppController _controllerApp = AppController.to;
+
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    checkUserLogin();
-
-  }
-
-  checkUserLogin() async {
-    Timer(
-      const Duration(seconds: 3),
-          () => Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (BuildContext context) =>FirstPageScreen()),
-
-
-      ),
-    );
-
+    Future.delayed(const Duration(seconds: 2), () {
+      if (sharedPrefsClient.isLogin) {
+        if (sharedPrefsClient.userRole == UserRoleEnum.user) {
+          Get.offAll(() => const MainScreen());
+        } else if (sharedPrefsClient.userRole == UserRoleEnum.admin) {
+          Get.offAll(() => const MainScreen());
+        }
+      } else {
+        print(sharedPrefsClient.isLogin) ;
+        Get.offAll(() => const LoginScreen());
+      }
+    });
   }
 
   @override
@@ -43,8 +49,6 @@ class _SplashScreenState extends State<SplashScreen> {
             showLoader: true,
             loaderColor: Colors.black,
 
-
-            durationInSeconds: 1,
 
 
 
