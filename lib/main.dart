@@ -2,18 +2,20 @@ import 'package:dhliz_app/config/binding.dart';
 import 'package:dhliz_app/config/shared_prefs_client.dart';
 import 'package:dhliz_app/config/translation.dart';
 import 'package:dhliz_app/controllers/app_controller.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-void main() async {
 
+import 'view/auth/splash_screen.dart';
+
+void main() async {
   // بعدين
   // WidgetsFlutterBinding.ensureInitialized(); // Ensure that Flutter is initialized.
   // await Firebase.initializeApp(); // Initialize Firebase.
 
-  runApp( MyApp());
+  runApp(MyApp());
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -22,35 +24,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   final AppController _controller = AppController.to;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller.init() ;
+    _controller.init();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
-    return  ScreenUtilInit(
+    return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (BuildContext context, Widget? child) =>  GetMaterialApp(
+      builder: (BuildContext context, Widget? child) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialBinding: BindingQ() ,
-        translations:  Translation(),
+        initialBinding: BindingQ(),
+        translations: Translation(),
         locale: Locale(sharedPrefsClient.language),
         fallbackLocale: const Locale('en'),
-        home: SafeArea(
-          child: Scaffold(
-            body: Text('hi' , style: TextStyle(fontSize:35 ),),
-          ),
-        ) ,
+        home: SplashScreen(),
       ),
     );
   }
