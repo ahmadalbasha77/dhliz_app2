@@ -4,7 +4,7 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 import '../home/packges_screen/packges_screen.dart';
 import '../home/self mangement of invntory/self_management_of_inventory_screen.dart';
-import '../home/stock_monitoring_screen.dart';
+import '../home/account_monitoring_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

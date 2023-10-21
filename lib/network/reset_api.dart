@@ -1,20 +1,22 @@
-
 import 'dart:convert';
-
 import 'package:dhliz_app/models/api_response.dart';
+import 'package:dhliz_app/models/home/inventory_model.dart';
+import 'package:dhliz_app/models/home/withdrawal_model.dart';
 import 'package:dhliz_app/network/api_url.dart';
 import 'package:dio/dio.dart';
-
+import 'package:platform_file/platform_file.dart';
 import '../config/constant.dart';
 import '../config/shared_prefs_client.dart';
-
 import 'dart:developer' as developer;
-
 import '../models/auth/login_model.dart';
+import '../models/home/my_warehouse_model.dart';
+import '../models/home/transfer_model.dart';
+import '../models/home/transfer_warehouse_model.dart';
+import '../models/home/withdrawal_warehouse_model.dart';
+import '../models/main/notification_model.dart';
+import '../models/main/transaction_model.dart';
+
 class RestApi {
-
-
-
   static final Map<String, dynamic> _headers = {
     'Content-Type': 'application/json',
   };
@@ -58,9 +60,9 @@ class RestApi {
         '╟ Method: ${response.requestOptions.method}\n'
         '╟ Params: ${response.requestOptions.queryParameters}\n'
         '╟ Body: ${response.requestOptions.data is FormData ? [
-      ...response.requestOptions.data.fields,
-      response.requestOptions.data.files
-    ] : response.requestOptions.data}\n'
+            ...response.requestOptions.data.fields,
+            response.requestOptions.data.files
+          ] : response.requestOptions.data}\n'
         '╟ Header: ${response.requestOptions.headers}\n'
         '╟ statusCode: ${response.statusCode}\n'
         '╟ RESPONSE: ${jsonEncode(response.data)} \n'
@@ -70,8 +72,8 @@ class RestApi {
 
   static Future<Response<dynamic>> _post(String path,
       {dynamic data,
-        Map<String, dynamic>? headers,
-        Map<String, dynamic>? queryParameters}) {
+      Map<String, dynamic>? headers,
+      Map<String, dynamic>? queryParameters}) {
     Map<String, dynamic> requestHeaders;
 
     if (headers == null) {
@@ -79,11 +81,11 @@ class RestApi {
     } else {
       requestHeaders = headers;
     }
-    //
-    // if (sharedPrefsClient.isLogin) {
-    //   requestHeaders
-    //       .addAll({'Authorization': "Bearer ${sharedPrefsClient.accessToken}"});
-    // }
+
+    if (sharedPrefsClient.isLogin) {
+      requestHeaders
+          .addAll({'Authorization': "Bearer ${sharedPrefsClient.accessToken}"});
+    }
 
     restDio.options.headers = requestHeaders;
     return restDio.post(path, data: data, queryParameters: queryParameters);
@@ -99,10 +101,10 @@ class RestApi {
       requestHeads = headers;
     }
 
-    // if (sharedPrefsClient.isLogin) {
-    //   requestHeads
-    //       .addAll({'Authorization': "Bearer ${sharedPrefsClient.accessToken}"});
-    // }
+    if (sharedPrefsClient.isLogin) {
+      requestHeads
+          .addAll({'Authorization': "Bearer ${sharedPrefsClient.accessToken}"});
+    }
 
     restDio.options.headers = requestHeads;
     return restDio.get(path, queryParameters: queryParameters);
@@ -114,12 +116,12 @@ class RestApi {
       final response = await method;
       _networkLog(response);
       ApiResponse<T> apiResponse =
-      await _responseHandler(response, fromJsonModel);
+          await _responseHandler(response, fromJsonModel);
       return apiResponse;
     } on DioError catch (e) {
       _traceError(e);
       ApiResponse<T> apiResponse =
-      await _responseHandler(e.response, fromJsonModel);
+          await _responseHandler(e.response, fromJsonModel);
       return apiResponse;
     } catch (e) {
       _traceCatch(e);
@@ -130,9 +132,9 @@ class RestApi {
 
   static Future<String> _errorMessageHandler(Response response) async {
     final message =
-    (response.data is Map && response.data.containsKey('message'))
-        ? response.data["message"]
-        : "ErrorMessage";
+        (response.data is Map && response.data.containsKey('message'))
+            ? response.data["message"]
+            : "ErrorMessage";
     return message;
   }
 
@@ -215,5 +217,533 @@ class RestApi {
     return response;
   }
 
+// -------------------------notification --------------------------
 
+  static Future<ApiResponse<NotificationModel>> getNotifications(
+      {required int skip, required int take, required String search}) async {
+    var queryParameters = {
+      "skip": skip,
+      "take": take,
+      "search": search,
+    };
+    final request =
+        _get(ApiUrl.GET_NOTIFICATIONS, queryParameters: queryParameters);
+    var response = await _executeRequest<NotificationModel>(
+        method: request,
+        fromJsonModel: (json) => NotificationModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse<NotificationModel>> getNotification(
+      {required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.GET_NOTIFICATION, data: body);
+    var response = await _executeRequest<NotificationModel>(
+        method: request,
+        fromJsonModel: (json) => NotificationModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse> deleteNotification({required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.DELETE_NOTIFICATIONS, data: body);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+  static Future<ApiResponse> addEditNotification({
+    String? id,
+    required String title,
+    required String description,
+    required String url,
+    required DateTime date,
+    required bool isPro,
+    required PlatformFile? image,
+  }) async {
+    var body = {
+      if (id != null) "Id": id,
+      "Title": title,
+      "Description": description,
+      "Url": url,
+      "Date": date.toIso8601String(),
+      "IsPro": isPro,
+      if (image != null)
+        "Image": MultipartFile.fromBytes(image.bytes!.toList(),
+            filename: image.name),
+    };
+    FormData formData = FormData.fromMap(body);
+    final request = _post(ApiUrl.ADD_EDIT_NOTIFICATIONS, data: formData);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+// -------------------------End notification --------------------------
+
+// -------------------------withdrawal --------------------------
+
+  static Future<ApiResponse<WithdrawalModel>> getWithdrawals(
+      {required int skip, required int take, required String search}) async {
+    var queryParameters = {
+      "skip": skip,
+      "take": take,
+      "search": search,
+    };
+    final request =
+        _get(ApiUrl.GET_WITHDRAWALS, queryParameters: queryParameters);
+    var response = await _executeRequest<WithdrawalModel>(
+        method: request,
+        fromJsonModel: (json) => WithdrawalModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse<WithdrawalModel>> getCertificate(
+      {required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.GET_WITHDRAWAL, data: body);
+    var response = await _executeRequest<WithdrawalModel>(
+        method: request,
+        fromJsonModel: (json) => WithdrawalModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse> deleteCertificate({required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.DELETE_WITHDRAWALS, data: body);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+  static Future<ApiResponse> addEditCertificate({
+    String? id,
+    required String title,
+    required String description,
+    required String url,
+    required DateTime date,
+    required bool isPro,
+    required PlatformFile? image,
+  }) async {
+    var body = {
+      if (id != null) "Id": id,
+      "Title": title,
+      "Description": description,
+      "Url": url,
+      "Date": date.toIso8601String(),
+      "IsPro": isPro,
+      if (image != null)
+        "Image": MultipartFile.fromBytes(image.bytes!.toList(),
+            filename: image.name),
+    };
+    FormData formData = FormData.fromMap(body);
+    final request = _post(ApiUrl.ADD_EDIT_WITHDRAWALS, data: formData);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+// -------------------------End withdrawal --------------------------
+
+// -------------------------inventory --------------------------
+
+  static Future<ApiResponse<InventoryModel>> getInventories(
+      {required int skip, required int take, required String search}) async {
+    var queryParameters = {
+      "skip": skip,
+      "take": take,
+      "search": search,
+    };
+    final request =
+        _get(ApiUrl.GET_NOTIFICATIONS, queryParameters: queryParameters);
+    var response = await _executeRequest<InventoryModel>(
+        method: request,
+        fromJsonModel: (json) => InventoryModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse<InventoryModel>> getInventory(
+      {required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.GET_INVENTORY, data: body);
+    var response = await _executeRequest<InventoryModel>(
+        method: request,
+        fromJsonModel: (json) => InventoryModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse> deleteInventory({required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.DELETE_INVENTORIES, data: body);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+  static Future<ApiResponse> addEditInventory({
+    String? id,
+    required String title,
+    required String description,
+    required String url,
+    required DateTime date,
+    required bool isPro,
+    required PlatformFile? image,
+  }) async {
+    var body = {
+      if (id != null) "Id": id,
+      "Title": title,
+      "Description": description,
+      "Url": url,
+      "Date": date.toIso8601String(),
+      "IsPro": isPro,
+      if (image != null)
+        "Image": MultipartFile.fromBytes(image.bytes!.toList(),
+            filename: image.name),
+    };
+    FormData formData = FormData.fromMap(body);
+    final request = _post(ApiUrl.ADD_EDIT_INVENTORIES, data: formData);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+// -------------------------End inventory --------------------------
+
+// -------------------------transfer --------------------------
+
+  static Future<ApiResponse<TransferModel>> getTransfers(
+      {required int skip, required int take, required String search}) async {
+    var queryParameters = {
+      "skip": skip,
+      "take": take,
+      "search": search,
+    };
+    final request =
+        _get(ApiUrl.GET_NOTIFICATIONS, queryParameters: queryParameters);
+    var response = await _executeRequest<TransferModel>(
+        method: request, fromJsonModel: (json) => TransferModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse<TransferModel>> getTransfer(
+      {required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.GET_INVENTORY, data: body);
+    var response = await _executeRequest<TransferModel>(
+        method: request, fromJsonModel: (json) => TransferModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse> deleteTransfer({required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.DELETE_INVENTORIES, data: body);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+  static Future<ApiResponse> addEditTransfer({
+    String? id,
+    required String title,
+    required String description,
+    required String url,
+    required DateTime date,
+    required bool isPro,
+    required PlatformFile? image,
+  }) async {
+    var body = {
+      if (id != null) "Id": id,
+      "Title": title,
+      "Description": description,
+      "Url": url,
+      "Date": date.toIso8601String(),
+      "IsPro": isPro,
+      if (image != null)
+        "Image": MultipartFile.fromBytes(image.bytes!.toList(),
+            filename: image.name),
+    };
+    FormData formData = FormData.fromMap(body);
+    final request = _post(ApiUrl.ADD_EDIT_INVENTORIES, data: formData);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+// -------------------------End inventory --------------------------
+
+
+
+// -------------------------transfer --------------------------
+
+  static Future<ApiResponse<TransactionModel>> getTransactions(
+      {required int skip, required int take, required String search}) async {
+    var queryParameters = {
+      "skip": skip,
+      "take": take,
+      "search": search,
+    };
+    final request =
+    _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
+    var response = await _executeRequest<TransactionModel>(
+        method: request, fromJsonModel: (json) => TransactionModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse<TransactionModel>> getTransaction(
+      {required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.GET_TRANSACTION, data: body);
+    var response = await _executeRequest<TransactionModel>(
+        method: request, fromJsonModel: (json) => TransactionModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse> deleteTransactions({required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.DELETE_TRANSACTIONS, data: body);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+  static Future<ApiResponse> addEditTransactions({
+    String? id,
+    required String title,
+    required String description,
+    required String url,
+    required DateTime date,
+    required bool isPro,
+    required PlatformFile? image,
+  }) async {
+    var body = {
+      if (id != null) "Id": id,
+      "Title": title,
+      "Description": description,
+      "Url": url,
+      "Date": date.toIso8601String(),
+      "IsPro": isPro,
+      if (image != null)
+        "Image": MultipartFile.fromBytes(image.bytes!.toList(),
+            filename: image.name),
+    };
+    FormData formData = FormData.fromMap(body);
+    final request = _post(ApiUrl.ADD_EDIT_TRANSACTIONS, data: formData);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+// -------------------------End inventory --------------------------
+
+
+
+
+// -------------------------my warehouse --------------------------
+
+  static Future<ApiResponse<MyWarehouseModel>> getMyWarehouses(
+      {required int skip, required int take, required String search}) async {
+    var queryParameters = {
+      "skip": skip,
+      "take": take,
+      "search": search,
+    };
+    final request =
+    _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
+    var response = await _executeRequest<MyWarehouseModel>(
+        method: request, fromJsonModel: (json) => MyWarehouseModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse<MyWarehouseModel>> getMyWarehouse(
+      {required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.GET_TRANSACTION, data: body);
+    var response = await _executeRequest<MyWarehouseModel>(
+        method: request, fromJsonModel: (json) => MyWarehouseModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse> deleteTMyWarehouses({required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.DELETE_TRANSACTIONS, data: body);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+  static Future<ApiResponse> addEditMyWarehouses({
+    String? id,
+    required String title,
+    required String description,
+    required String url,
+    required DateTime date,
+    required bool isPro,
+    required PlatformFile? image,
+  }) async {
+    var body = {
+      if (id != null) "Id": id,
+      "Title": title,
+      "Description": description,
+      "Url": url,
+      "Date": date.toIso8601String(),
+      "IsPro": isPro,
+      if (image != null)
+        "Image": MultipartFile.fromBytes(image.bytes!.toList(),
+            filename: image.name),
+    };
+    FormData formData = FormData.fromMap(body);
+    final request = _post(ApiUrl.ADD_EDIT_TRANSACTIONS, data: formData);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+// -------------------------End my warehouse --------------------------
+
+
+
+
+// -------------------------withdrawal warehouse --------------------------
+
+  static Future<ApiResponse<WithdrawalWarehouseModel>> getWithdrawalWarehouses(
+      {required int skip, required int take, required String search}) async {
+    var queryParameters = {
+      "skip": skip,
+      "take": take,
+      "search": search,
+    };
+    final request =
+    _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
+    var response = await _executeRequest<WithdrawalWarehouseModel>(
+        method: request, fromJsonModel: (json) => WithdrawalWarehouseModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse<WithdrawalWarehouseModel>> getWithdrawalWarehouse(
+      {required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.GET_TRANSACTION, data: body);
+    var response = await _executeRequest<WithdrawalWarehouseModel>(
+        method: request, fromJsonModel: (json) => WithdrawalWarehouseModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse> deleteWithdrawalWarehouses({required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.DELETE_TRANSACTIONS, data: body);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+  static Future<ApiResponse> addEditWithdrawalWarehouses({
+    String? id,
+    required String title,
+    required String description,
+    required String url,
+    required DateTime date,
+    required bool isPro,
+    required PlatformFile? image,
+  }) async {
+    var body = {
+      if (id != null) "Id": id,
+      "Title": title,
+      "Description": description,
+      "Url": url,
+      "Date": date.toIso8601String(),
+      "IsPro": isPro,
+      if (image != null)
+        "Image": MultipartFile.fromBytes(image.bytes!.toList(),
+            filename: image.name),
+    };
+    FormData formData = FormData.fromMap(body);
+    final request = _post(ApiUrl.ADD_EDIT_TRANSACTIONS, data: formData);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+// -------------------------End withdrawal warehouse --------------------------
+
+
+
+
+
+// -------------------------transfer warehouse --------------------------
+
+  static Future<ApiResponse<TransferWarehouseModel>> getTransferWarehouses(
+      {required int skip, required int take, required String search}) async {
+    var queryParameters = {
+      "skip": skip,
+      "take": take,
+      "search": search,
+    };
+    final request =
+    _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
+    var response = await _executeRequest<TransferWarehouseModel>(
+        method: request, fromJsonModel: (json) => TransferWarehouseModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse<TransferWarehouseModel>> getTransferWarehouse(
+      {required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.GET_TRANSACTION, data: body);
+    var response = await _executeRequest<TransferWarehouseModel>(
+        method: request, fromJsonModel: (json) => TransferWarehouseModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse> deleteTransferWarehouses({required String id}) async {
+    var body = jsonEncode({
+      "id": id,
+    });
+    final request = _post(ApiUrl.DELETE_TRANSACTIONS, data: body);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+  static Future<ApiResponse> addEditTransferWarehouses({
+    String? id,
+    required String title,
+    required String description,
+    required String url,
+    required DateTime date,
+    required bool isPro,
+    required PlatformFile? image,
+  }) async {
+    var body = {
+      if (id != null) "Id": id,
+      "Title": title,
+      "Description": description,
+      "Url": url,
+      "Date": date.toIso8601String(),
+      "IsPro": isPro,
+      if (image != null)
+        "Image": MultipartFile.fromBytes(image.bytes!.toList(),
+            filename: image.name),
+    };
+    FormData formData = FormData.fromMap(body);
+    final request = _post(ApiUrl.ADD_EDIT_TRANSACTIONS, data: formData);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+
+// -------------------------End transfer warehouse --------------------------
 }

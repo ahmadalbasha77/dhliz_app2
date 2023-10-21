@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:pie_chart/pie_chart.dart';
 
-
 class StockMonitoringScreen extends StatefulWidget {
   const StockMonitoringScreen({Key? key}) : super(key: key);
 
@@ -17,6 +16,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
       child: Scaffold(
         backgroundColor: Color.fromARGB(255, 231, 231, 231),
         appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.black),
           elevation: 0,
           backgroundColor: Colors.white,
           title:
@@ -34,8 +34,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                   'Enter': 10,
                   'Transfer': 20,
                   'Withdrawal': 15,
-                }
-                ,
+                },
                 animationDuration: Duration(milliseconds: 800),
                 chartLegendSpacing: 32,
                 chartRadius: MediaQuery.of(context).size.width / 3.2,
@@ -218,8 +217,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: Text(
                             r'  -2,000 SAR',
-                            style:
-                                TextStyle(fontSize: 24, color: Colors.red),
+                            style: TextStyle(fontSize: 24, color: Colors.red),
                           ),
                         ),
                       ],

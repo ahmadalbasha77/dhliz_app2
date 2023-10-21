@@ -40,7 +40,7 @@ dependencies:
   google_maps_flutter: ^2.5.0
   get: ^4.6.5
   get_storage: ^2.1.1
-  firebase_core: ^2.18.0
+  firebase_core:
   firebase_auth:
   flutter_screenutil: ^5.6.0
   package_info_plus:
@@ -56,6 +56,11 @@ dependencies:
   google_maps:
   search_map_place_updated:
   flutter_google_maps_webservices: ^1.1.1
+  firebase_core_dart: ^1.0.1
+  platform_file: ^0.0.1
+  infinite_scroll_pagination:
+  google_nav_bar: ^5.0.6
+
 
 
   # The following adds the Cupertino Icons font to your application.

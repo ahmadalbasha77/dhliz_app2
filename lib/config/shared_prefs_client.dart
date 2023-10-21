@@ -1,22 +1,5 @@
+import 'package:dhliz_app/config/enum/user_role_enum.dart';
 import 'package:get_storage/get_storage.dart';
-
-import 'enum/user_role_enum.dart';
-
-
-
-
-final sharedPrefsClient = SharedPrefsClient();
-
-const String keyDeviceToken = "key_device_token";
-const String keyAccessToken = "key_access_token";
-const String keyApplicationId = "key_application_id";
-const String keyFullName = "key_full_name";
-const String keyImage = "key_image";
-const String keyIsLogin = "key_is_login";
-const String keyLanguage = "key_language";
-const String keyUserRole = "key_user_role";
-const String keyIsGMS = "key_is_gms";
-
 
 class SharedPrefsClient {
   static const String _storageName = "MyPref";
@@ -30,10 +13,10 @@ class SharedPrefsClient {
   void clearProfile() {
     isLogin = false;
     userRole = UserRoleEnum.unknown;
-    accessToken = "";
-    applicationId = "";
-    fullName = "";
-    image = "";
+    accessToken = '';
+    applicationId = '';
+    fullName = '';
+    image = '';
   }
 
   String get deviceToken => _storage.read(keyDeviceToken) ?? "";
@@ -78,10 +61,19 @@ class SharedPrefsClient {
     _storage.write(keyIsLogin, value);
   }
 
-  UserRoleEnum get userRole => UserRoleEnum.values.firstWhere((element) => element.value == (_storage.read(keyUserRole) ?? 0));
+  UserRoleEnum get userRole {
+    final storedValue = _storage.read(keyUserRole);
+    if (storedValue != null) {
+      return UserRoleEnum.values.firstWhere(
+              (element) => element.value == storedValue,
+          orElse: () => UserRoleEnum.unknown);
+    } else {
+      return UserRoleEnum.unknown;
+    }
+  }
 
   set userRole(UserRoleEnum roleEnum) {
-    _storage.write(keyUserRole, roleEnum.value);
+    _storage.write(keyUserRole, roleEnum?.value);
   }
 
   bool get isGMS => _storage.read(keyIsGMS) ?? true;
@@ -90,3 +82,15 @@ class SharedPrefsClient {
     _storage.write(keyIsGMS, value);
   }
 }
+
+final sharedPrefsClient = SharedPrefsClient();
+
+const String keyDeviceToken = "key_device_token";
+const String keyAccessToken = "key_access_token";
+const String keyApplicationId = "key_application_id";
+const String keyFullName = "key_full_name";
+const String keyImage = "key_image";
+const String keyIsLogin = "key_is_login";
+const String keyLanguage = "key_language";
+const String keyUserRole = "key_user_role";
+const String keyIsGMS = "key_is_gms";

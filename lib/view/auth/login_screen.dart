@@ -4,7 +4,6 @@ import '../../controllers/auth/sign_in_controller.dart';
 import '../main_screen.dart';
 import 'signup_screen.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -13,11 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
-
   final _controller = SignInController.to;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -171,9 +166,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     onPressed: () async {
-
                       _controller.signIn();
-                      },
+                    },
                     child: Text(
                       "Login",
                       style: TextStyle(

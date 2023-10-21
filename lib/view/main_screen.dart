@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
-import 'main/home_screen.dart';
-import 'main/notification_screen.dart';
-import 'main/profile_screen.dart';
-import 'main/transaction_screen.dart';
-
+import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import '../config/app_color.dart';
+import '../controllers/main_controller.dart';
+import '../widgets/src/custom_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -14,56 +14,49 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  List<Widget> _listBottomNavigationBar = [
-    HomeScreen(),
-    TransactionScreen(),
-    NotificationScreen(),
-    ProfileScreen(),
-
-  ];
-
-  int indexPage = 0;
-
-  void getIndex(int index) {
-    setState(() {
-      indexPage = index;
-    });
-  }
+  final _controller = MainController.to;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 231, 231, 231),
-
-        body: _listBottomNavigationBar[indexPage],
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Colors.black,
-          unselectedItemColor:Colors.black26 ,
-          currentIndex: indexPage,
-          elevation: 10,
-
-          onTap: getIndex,
-
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, ),
-              label: "",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.compare_arrows, ),
-              label: "",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications, ),
-              label: "",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person, ),
-              label: "",
-            ),
-          ],
-        ),
+    return GetBuilder<MainController>(
+      builder: (controller) => CustomWidget(
+        bottomNavigationBar: Container(
+            decoration: BoxDecoration(color: AppColor.darkGray, boxShadow: [
+              BoxShadow(
+                offset: Offset(0, -6),
+                spreadRadius: -13,
+                blurRadius: 27,
+                color: Color.fromRGBO(0, 0, 0, 0.4),
+              )
+            ]),
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+            child: GNav(
+                padding: EdgeInsets.only(
+                    left: 20.w, right: 20.w, top: 10.h, bottom: 10.h),
+                duration: const Duration(milliseconds: 100),
+                gap: 5,
+                backgroundColor: AppColor.darkGray,
+                color: Colors.black26,
+                tabs: [
+                  GButton(
+                    icon: Icons.home_filled,
+                  ),
+                  GButton(
+                    icon: Icons.compare_arrows,
+                  ),
+                  GButton(
+                    icon: Icons.notifications,
+                  ),
+                  GButton(
+                    icon: Icons.account_circle,
+                  ),
+                ],
+                selectedIndex: _controller.selectedIndex.value,
+                onTabChange: (index) {
+                  _controller.selectedIndex.value = index;
+                  _controller.update();
+                })),
+        child: _controller.tabs.elementAt(_controller.selectedIndex.value),
       ),
     );
   }

@@ -1,11 +1,8 @@
 import 'package:dhliz_app/config/binding.dart';
-import 'package:dhliz_app/config/shared_prefs_client.dart';
-import 'package:dhliz_app/config/translation.dart';
 import 'package:dhliz_app/controllers/app_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'view/auth/splash_screen.dart';
 
 void main() async {
@@ -40,6 +37,7 @@ class _MyAppState extends State<MyApp> {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) => GetMaterialApp(
+        initialRoute: '/',
         debugShowCheckedModeBanner: false,
         initialBinding: BindingQ(),
         // translations: Translation(),
