@@ -37,7 +37,6 @@ class _MyAppState extends State<MyApp> {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) => GetMaterialApp(
-        initialRoute: '/',
         debugShowCheckedModeBanner: false,
         initialBinding: BindingQ(),
         // translations: Translation(),

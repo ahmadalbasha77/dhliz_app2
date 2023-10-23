@@ -9,12 +9,15 @@ import '../config/constant.dart';
 import '../config/shared_prefs_client.dart';
 import 'dart:developer' as developer;
 import '../models/auth/login_model.dart';
+import '../models/auth/register_model.dart';
 import '../models/home/my_warehouse_model.dart';
 import '../models/home/transfer_model.dart';
 import '../models/home/transfer_warehouse_model.dart';
 import '../models/home/withdrawal_warehouse_model.dart';
 import '../models/main/notification_model.dart';
+import '../models/main/profile_model.dart';
 import '../models/main/transaction_model.dart';
+
 
 class RestApi {
   static final Map<String, dynamic> _headers = {
@@ -72,8 +75,8 @@ class RestApi {
 
   static Future<Response<dynamic>> _post(String path,
       {dynamic data,
-      Map<String, dynamic>? headers,
-      Map<String, dynamic>? queryParameters}) {
+        Map<String, dynamic>? headers,
+        Map<String, dynamic>? queryParameters}) {
     Map<String, dynamic> requestHeaders;
 
     if (headers == null) {
@@ -116,12 +119,12 @@ class RestApi {
       final response = await method;
       _networkLog(response);
       ApiResponse<T> apiResponse =
-          await _responseHandler(response, fromJsonModel);
+      await _responseHandler(response, fromJsonModel);
       return apiResponse;
     } on DioError catch (e) {
       _traceError(e);
       ApiResponse<T> apiResponse =
-          await _responseHandler(e.response, fromJsonModel);
+      await _responseHandler(e.response, fromJsonModel);
       return apiResponse;
     } catch (e) {
       _traceCatch(e);
@@ -132,9 +135,9 @@ class RestApi {
 
   static Future<String> _errorMessageHandler(Response response) async {
     final message =
-        (response.data is Map && response.data.containsKey('message'))
-            ? response.data["message"]
-            : "ErrorMessage";
+    (response.data is Map && response.data.containsKey('message'))
+        ? response.data["message"]
+        : "ErrorMessage";
     return message;
   }
 
@@ -216,6 +219,93 @@ class RestApi {
         method: request, fromJsonModel: (json) => LoginModel.fromJson(json));
     return response;
   }
+
+  static Future<ApiResponse<LoginModel>> forgotPassword(
+      {required String firebaseToken,
+        required String phoneNumber,
+        required String password}) async {
+    var body = jsonEncode({
+      "firebaseToken": firebaseToken,
+      "phoneNumber": phoneNumber,
+      "password": password,
+    });
+    final request = _post(ApiUrl.FORGOT_PASSWORD, data: body);
+    var response = await _executeRequest<LoginModel>(
+        method: request, fromJsonModel: (json) => LoginModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse<RegisterModel>> register({
+    required String firebaseToken,
+    required String username,
+    required String password,
+    required String fullName,
+    required String phoneNumber,
+    required String homeAddress,
+    required String workAddress,
+    required String email,
+    required String syndicateNumber,
+    // required PlatformFile? image,
+  }) async {
+    var body = {
+      "FirebaseToken": firebaseToken,
+      "Username": username,
+      "Password": password,
+      "FullName": fullName,
+      "PhoneNumber": phoneNumber,
+      "HomeAddress": homeAddress,
+      "WorkAddress": workAddress,
+      "Email": email,
+      "SyndicateNumber": syndicateNumber,
+      "DeviceToken": sharedPrefsClient.deviceToken,
+      "Platform": platform,
+      "Version": version,
+      "Language": sharedPrefsClient.language,
+      // if (image != null)
+      //   "Image": MultipartFile.fromBytes(image.bytes!.toList(),
+      //       filename: image.name),
+    };
+    FormData formData = FormData.fromMap(body);
+    final request = _post(ApiUrl.REGISTER, data: formData);
+    var response = await _executeRequest<RegisterModel>(
+        method: request, fromJsonModel: (json) => RegisterModel.fromJson(json));
+    return response;
+  }
+
+// -----------------start profile --------------------------
+
+  static Future<ApiResponse<ProfileModel>> getProfile() async {
+    final request = _get(ApiUrl.GET_PROFILE);
+    var response = await _executeRequest<ProfileModel>(
+        method: request, fromJsonModel: (json) => ProfileModel.fromJson(json));
+    return response;
+  }
+
+  static Future<ApiResponse> changeProfile({
+    required String fullName,
+    required String homeAddress,
+    required String workAddress,
+    required String email,
+    required String syndicateNumber,
+    required PlatformFile? image,
+  }) async {
+    var body = {
+      "FullName": fullName,
+      "HomeAddress": homeAddress,
+      "WorkAddress": workAddress,
+      "Email": email,
+      "SyndicateNumber": syndicateNumber,
+
+      if (image != null)
+        "Image": MultipartFile.fromBytes(image.bytes!.toList(),
+            filename: image.name),
+    };
+    FormData formData = FormData.fromMap(body);
+    final request = _post(ApiUrl.CHANGE_PROFILE, data: formData);
+    var response = await _executeRequest(method: request);
+    return response;
+  }
+// -----------------end profile --------------------------
 
 // -------------------------notification --------------------------
 

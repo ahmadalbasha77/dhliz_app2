@@ -1,5 +1,6 @@
-import 'package:dhliz_app/config/enum/user_role_enum.dart';
 import 'package:get_storage/get_storage.dart';
+
+import 'enum/user_role_enum.dart';
 
 class SharedPrefsClient {
   static const String _storageName = "MyPref";
@@ -13,10 +14,10 @@ class SharedPrefsClient {
   void clearProfile() {
     isLogin = false;
     userRole = UserRoleEnum.unknown;
-    accessToken = '';
-    applicationId = '';
-    fullName = '';
-    image = '';
+    accessToken = "";
+    applicationId = "";
+    fullName = "";
+    image = "";
   }
 
   String get deviceToken => _storage.read(keyDeviceToken) ?? "";
@@ -61,19 +62,11 @@ class SharedPrefsClient {
     _storage.write(keyIsLogin, value);
   }
 
-  UserRoleEnum get userRole {
-    final storedValue = _storage.read(keyUserRole);
-    if (storedValue != null) {
-      return UserRoleEnum.values.firstWhere(
-              (element) => element.value == storedValue,
-          orElse: () => UserRoleEnum.unknown);
-    } else {
-      return UserRoleEnum.unknown;
-    }
-  }
+  UserRoleEnum get userRole => UserRoleEnum.values.firstWhere(
+      (element) => element.value == (_storage.read(keyUserRole) ?? 0));
 
   set userRole(UserRoleEnum roleEnum) {
-    _storage.write(keyUserRole, roleEnum?.value);
+    _storage.write(keyUserRole, roleEnum.value);
   }
 
   bool get isGMS => _storage.read(keyIsGMS) ?? true;

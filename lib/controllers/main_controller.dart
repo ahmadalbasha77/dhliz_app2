@@ -5,7 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../view/main/home_screen.dart';
-import '../view/main/profile_screen.dart';
+import '../view/main/profile/profile_screen.dart';
 import '../view/main/transaction_screen.dart';
 
 class MainController extends GetxController {

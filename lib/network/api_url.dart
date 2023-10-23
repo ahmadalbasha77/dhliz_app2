@@ -2,10 +2,27 @@ import 'package:dhliz_app/config/shared_prefs_client.dart';
 import 'package:dhliz_app/config/utils.dart';
 
 class ApiUrl {
+  // ignore: non_constant_identifier_names
   static String API_BASE_URL =
       "https://api.doctors.association.faistec.com/${Utils.isEmpty(sharedPrefsClient.language) ? 'default' : sharedPrefsClient.language == 'en' ? 'en-US' : 'ar-JO'}/api";
 
+  // ignore: non_constant_identifier_names
   static String LOGIN = "/Auth/Login";
+
+  // ignore: non_constant_identifier_names
+  static String REGISTER = "/Auth/Register";
+
+  // ignore: non_constant_identifier_names
+  static String FORGOT_PASSWORD = "/Auth/ForgotPassword";
+
+  // -----------------start profile --------------------------
+  // ignore: non_constant_identifier_names
+  static String GET_PROFILE = "/User/GetProfile";
+
+  // ignore: non_constant_identifier_names
+  static String CHANGE_PROFILE = "/User/ChangeProfile";
+
+  // -----------------start profile --------------------------
 
 // -----------------start notification --------------------------
   // ignore: non_constant_identifier_names
@@ -22,8 +39,6 @@ class ApiUrl {
 
 // -----------------End notification --------------------------
 
-
-
 // -----------------start WITHDRAWAL --------------------------
   // ignore: non_constant_identifier_names
   static String GET_WITHDRAWALS = "/Event/GetEvents";
@@ -38,7 +53,6 @@ class ApiUrl {
   static String ADD_EDIT_WITHDRAWALS = "/Event/AddEditEvent";
 
 // -----------------End WITHDRAWAL --------------------------
-
 
 // -----------------start inventory --------------------------
   // ignore: non_constant_identifier_names
@@ -55,7 +69,6 @@ class ApiUrl {
 
 // -----------------End inventory --------------------------
 
-
 // -----------------start transfer --------------------------
   // ignore: non_constant_identifier_names
   static String GET_TRANSFERS = "/Event/GetEvents";
@@ -71,7 +84,6 @@ class ApiUrl {
 
 // -----------------End transfer --------------------------
 
-
 // -----------------start transaction --------------------------
   // ignore: non_constant_identifier_names
   static String GET_TRANSACTIONS = "/Event/GetEvents";
@@ -86,8 +98,6 @@ class ApiUrl {
   static String ADD_EDIT_TRANSACTIONS = "/Event/AddEditEvent";
 
 // -----------------End transaction --------------------------
-
-
 
 // -----------------start my warehouse --------------------------
   // ignore: non_constant_identifier_names
@@ -118,9 +128,6 @@ class ApiUrl {
   static String ADD_EDIT_WITHDRAWAL_WAREHOUSE = "/Event/AddEditEvent";
 
 // -----------------End withdrawal warehouse --------------------------
-
-
-
 
 // -----------------start transfer warehouse --------------------------
   // ignore: non_constant_identifier_names

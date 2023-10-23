@@ -4,12 +4,12 @@ import 'dart:developer';
 
 import 'package:dhliz_app/config/app_color.dart';
 import 'package:dhliz_app/widgets/src/custom_loading_dialog.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter/services.dart';
-
 
 class Utils {
   static bool isNotEmpty(String? s) => s != null && s.isNotEmpty;
@@ -66,5 +66,24 @@ class Utils {
     return result ?? false;
   }
 
-
+  static Future<List<PlatformFile>> pickImages(
+      {bool allowMultiple = true,
+      FileType type = FileType.image,
+      List<String>? allowedExtensions}) async {
+    try {
+      var pickFiles = await FilePicker.platform.pickFiles(
+        allowMultiple: allowMultiple,
+        type: type,
+        allowedExtensions: allowedExtensions,
+        withData: true,
+        onFileLoading: (FilePickerStatus status) => log(status.toString()),
+      );
+      return pickFiles?.files ?? [];
+    } on PlatformException catch (e) {
+      log('Unsupported operation $e');
+    } catch (e) {
+      log(e.toString());
+    }
+    return [];
+  }
 }

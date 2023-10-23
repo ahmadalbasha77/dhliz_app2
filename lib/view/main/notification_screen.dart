@@ -3,6 +3,8 @@ import 'package:dhliz_app/models/main/notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../config/shared_prefs_client.dart';
+
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({Key? key}) : super(key: key);
 
@@ -18,6 +20,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
     // TODO: implement initState
     super.initState();
     _controller.refreshPagingController();
+    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    print(sharedPrefsClient.isLogin);
   }
 
   @override
