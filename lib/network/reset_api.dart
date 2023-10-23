@@ -4,7 +4,7 @@ import 'package:dhliz_app/models/home/inventory_model.dart';
 import 'package:dhliz_app/models/home/withdrawal_model.dart';
 import 'package:dhliz_app/network/api_url.dart';
 import 'package:dio/dio.dart';
-import 'package:platform_file/platform_file.dart';
+import 'package:file_picker/file_picker.dart';
 import '../config/constant.dart';
 import '../config/shared_prefs_client.dart';
 import 'dart:developer' as developer;
@@ -203,7 +203,6 @@ class RestApi {
         return ApiResponse<T>.fromError(statusCode, errorHandler);
     }
   }
-
   static Future<ApiResponse<LoginModel>> signIn(
       {required String username, required String password}) async {
     var body = jsonEncode({

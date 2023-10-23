@@ -19,7 +19,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final AppController _controllerApp = AppController.to;
+
 
   @override
   void initState() {
@@ -29,15 +29,11 @@ class _SplashScreenState extends State<SplashScreen> {
       if (sharedPrefsClient.isLogin) {
         if (sharedPrefsClient.userRole == UserRoleEnum.user) {
           Get.offAll(() => const MainScreen());
-          print(sharedPrefsClient.isLogin);
-
         } else if (sharedPrefsClient.userRole == UserRoleEnum.admin) {
           Get.offAll(() => const MainScreen());
-          print(sharedPrefsClient.isLogin);
         }
       } else {
         Get.offAll(() => const LoginScreen());
-        print(sharedPrefsClient.isLogin);
       }
     });
   }

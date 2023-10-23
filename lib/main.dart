@@ -3,9 +3,11 @@ import 'package:dhliz_app/controllers/app_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'config/shared_prefs_client.dart';
 import 'view/auth/splash_screen.dart';
 
 void main() async {
+  await sharedPrefsClient.init();
   // بعدين
   // WidgetsFlutterBinding.ensureInitialized(); // Ensure that Flutter is initialized.
   // await Firebase.initializeApp(); // Initialize Firebase.

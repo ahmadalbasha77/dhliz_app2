@@ -61,7 +61,7 @@ dependencies:
   infinite_scroll_pagination:
   google_nav_bar: ^5.0.6
   cached_network_image: ^3.3.0
-  file_picker: ^6.0.0
+  file_picker: ^5.2.2
   font_awesome_flutter: ^10.6.0
   url_launcher: ^6.1.14
   pinput: ^3.0.1

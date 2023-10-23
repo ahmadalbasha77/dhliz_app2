@@ -2,6 +2,18 @@ import 'package:get_storage/get_storage.dart';
 
 import 'enum/user_role_enum.dart';
 
+final sharedPrefsClient = SharedPrefsClient();
+
+const String keyDeviceToken = "key_device_token";
+const String keyAccessToken = "key_access_token";
+const String keyApplicationId = "key_application_id";
+const String keyFullName = "key_full_name";
+const String keyImage = "key_image";
+const String keyIsLogin = "key_is_login";
+const String keyLanguage = "key_language";
+const String keyUserRole = "key_user_role";
+const String keyIsGMS = "key_is_gms";
+
 class SharedPrefsClient {
   static const String _storageName = "MyPref";
 
@@ -56,6 +68,7 @@ class SharedPrefsClient {
     _storage.write(keyLanguage, value);
   }
 
+
   bool get isLogin => _storage.read(keyIsLogin) ?? false;
 
   set isLogin(bool value) {
@@ -75,15 +88,3 @@ class SharedPrefsClient {
     _storage.write(keyIsGMS, value);
   }
 }
-
-final sharedPrefsClient = SharedPrefsClient();
-
-const String keyDeviceToken = "key_device_token";
-const String keyAccessToken = "key_access_token";
-const String keyApplicationId = "key_application_id";
-const String keyFullName = "key_full_name";
-const String keyImage = "key_image";
-const String keyIsLogin = "key_is_login";
-const String keyLanguage = "key_language";
-const String keyUserRole = "key_user_role";
-const String keyIsGMS = "key_is_gms";
