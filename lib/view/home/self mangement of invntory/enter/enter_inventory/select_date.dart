@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import 'select_stock_type.dart';
@@ -39,14 +40,13 @@ class _SelectDateState extends State<SelectDate> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
         body: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
+                SizedBox(
+                  height: 50,
+                ),
                 Image.asset(
                   'image/add/Date.png',
                   width: 220,
@@ -208,11 +208,7 @@ class _SelectDateState extends State<SelectDate> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => SelectStockType(),
-                        ),
-                      );
+                      Get.off(SelectStockType());
                     },
                     child: Text(
                       'Continue',

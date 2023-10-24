@@ -1,3 +1,5 @@
+import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/enter/enter_inventory/add_space.dart';
+import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/enter/enter_inventory/pay_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -54,9 +56,12 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
 
   void _drawRoute() async {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      'AIzaSyBGZuAzlhiW9_ZzL7n3A6wtHnye5uNvvYM', // Replace with your Google Maps API key
-      PointLatLng(widget.inventoryLocation.latitude, widget.inventoryLocation.longitude),
-      PointLatLng(widget.warehouseLocation.latitude, widget.warehouseLocation.longitude),
+      'AIzaSyBGZuAzlhiW9_ZzL7n3A6wtHnye5uNvvYM',
+      // Replace with your Google Maps API key
+      PointLatLng(widget.inventoryLocation.latitude,
+          widget.inventoryLocation.longitude),
+      PointLatLng(widget.warehouseLocation.latitude,
+          widget.warehouseLocation.longitude),
       travelMode: TravelMode.driving,
     );
 
@@ -161,6 +166,35 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                 },
               ),
             ),
+            Center(
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 20),
+                width: 200,
+                height: 50,
+                child: ElevatedButton(
+
+                  style: ButtonStyle(
+
+                    elevation: MaterialStatePropertyAll(0),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    )),
+                    backgroundColor: MaterialStateProperty.all(
+                      Color.fromARGB(255, 227, 227, 227),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => AddSpace(),
+                    ));
+                  },
+                  child: Text(
+                    'Continue',
+                    style: TextStyle(color: Colors.black54, fontSize: 20),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

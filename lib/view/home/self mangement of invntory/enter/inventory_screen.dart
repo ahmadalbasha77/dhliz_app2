@@ -1,9 +1,11 @@
 import 'package:dhliz_app/controllers/home/inventory_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../../models/home/inventory_model.dart';
 import 'enter_inventory/add_stock_screen.dart';
+import 'package:dhliz_app/config/enum/action_enum.dart';
 
 class InventoryScreen extends StatefulWidget {
   const InventoryScreen({Key? key}) : super(key: key);
@@ -58,9 +60,11 @@ class _InventoryScreenState extends State<InventoryScreen> {
                           backgroundColor:
                               MaterialStateProperty.all(Colors.black54)),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AddStockScreen(),
-                        ));
+                        Get.off(() =>
+                            AddStockScreen(
+                                data: InventoryDataModel.fromJson({}),
+                                action: ActionEnum.add))?.then(
+                            (value) => _controller.refreshPagingController());
                       },
                       child: Text("Add Stock")),
                 )

@@ -1,3 +1,4 @@
+import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/enter/enter_inventory/pay_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'select_date.dart';
@@ -103,7 +104,7 @@ class _AddSpaceState extends State<AddSpace> {
                         onPressed: () {
                           Navigator.of(context)
                               .pushReplacement(MaterialPageRoute(
-                            builder: (context) => SelectDate(),
+                            builder: (context) => PayScreen(),
                           ));
                         },
                         child: Text(

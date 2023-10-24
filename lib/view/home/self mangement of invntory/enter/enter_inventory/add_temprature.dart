@@ -1,4 +1,6 @@
+import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/enter/enter_inventory/select_date.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'add_space.dart';
 
@@ -43,12 +45,11 @@ class _AddTemperatureState extends State<AddTemperature> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
         body: Column(
           children: [
+            SizedBox(
+              height: 50,
+            ),
             Image.asset(
               'image/add/Temperature.png',
               width: 220,
@@ -139,11 +140,7 @@ class _AddTemperatureState extends State<AddTemperature> {
                 ),
                 onPressed: canContinue
                     ? () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => AddSpace(),
-                          ),
-                        );
+                        Get.off(SelectDate());
                       }
                     : null,
                 child: Text(

@@ -1,8 +1,10 @@
 import 'package:dhliz_app/models/home/my_warehouse_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../../../../../config/enum/action_enum.dart';
 import '../../../../../controllers/home/my_warehouse_controllerl.dart';
 import '../inventory_screen.dart';
 import 'add_warehouse_screen.dart';
@@ -83,9 +85,11 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                                 Color.fromARGB(255, 35, 37, 56),
                               )),
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AddWarehouseScreen(),
-                            ));
+                            Get.off(() => AddWarehouseScreen(
+                                    data: MyWarehouseDataModel.fromJson({}),
+                                    action: ActionEnum.add))
+                                ?.then((value) =>
+                                    _controller.refreshPagingController());
                           },
                           child: Text(
                             'Add Werehouse',

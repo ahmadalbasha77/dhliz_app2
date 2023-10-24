@@ -30,6 +30,12 @@ class RestApi {
     receiveTimeout: const Duration(seconds: 30),
   ));
 
+
+
+
+
+  //-------------------------Start Error and network log ------------------------------------
+
   static void _traceError(DioError e) {
     String trace = '════════════════════════════════════════ \n'
         '╔╣ Dio [ERROR] info ==> \n'
@@ -72,75 +78,14 @@ class RestApi {
         '╚ [END] ════════════════════════════════════════╝';
     developer.log(trace);
   }
+  //-------------------------End Error and network log ------------------------------------
 
-  static Future<Response<dynamic>> _post(String path,
-      {dynamic data,
-        Map<String, dynamic>? headers,
-        Map<String, dynamic>? queryParameters}) {
-    Map<String, dynamic> requestHeaders;
 
-    if (headers == null) {
-      requestHeaders = _headers;
-    } else {
-      requestHeaders = headers;
-    }
 
-    if (sharedPrefsClient.isLogin) {
-      requestHeaders
-          .addAll({'Authorization': "Bearer ${sharedPrefsClient.accessToken}"});
-    }
 
-    restDio.options.headers = requestHeaders;
-    return restDio.post(path, data: data, queryParameters: queryParameters);
-  }
 
-  static Future<Response<dynamic>> _get(String path,
-      {Map<String, dynamic>? headers, Map<String, dynamic>? queryParameters}) {
-    Map<String, dynamic> requestHeads;
 
-    if (headers == null) {
-      requestHeads = _headers;
-    } else {
-      requestHeads = headers;
-    }
-
-    if (sharedPrefsClient.isLogin) {
-      requestHeads
-          .addAll({'Authorization': "Bearer ${sharedPrefsClient.accessToken}"});
-    }
-
-    restDio.options.headers = requestHeads;
-    return restDio.get(path, queryParameters: queryParameters);
-  }
-
-  static Future<ApiResponse<T>> _executeRequest<T>(
-      {required Future<Response> method, Function? fromJsonModel}) async {
-    try {
-      final response = await method;
-      _networkLog(response);
-      ApiResponse<T> apiResponse =
-      await _responseHandler(response, fromJsonModel);
-      return apiResponse;
-    } on DioError catch (e) {
-      _traceError(e);
-      ApiResponse<T> apiResponse =
-      await _responseHandler(e.response, fromJsonModel);
-      return apiResponse;
-    } catch (e) {
-      _traceCatch(e);
-      ApiResponse<T> apiResponse = ApiResponse<T>.fromJson({}, fromJsonModel);
-      return apiResponse;
-    }
-  }
-
-  static Future<String> _errorMessageHandler(Response response) async {
-    final message =
-    (response.data is Map && response.data.containsKey('message'))
-        ? response.data["message"]
-        : "ErrorMessage";
-    return message;
-  }
-
+  //-------------------------Start response Handler ------------------------------------
   static Future<ApiResponse<T>> _responseHandler<T>(
       Response? response, Function? fromJsonModel) async {
     int statusCode = response?.statusCode ?? 600;
@@ -203,8 +148,96 @@ class RestApi {
         return ApiResponse<T>.fromError(statusCode, errorHandler);
     }
   }
+
+
+  static Future<String> _errorMessageHandler(Response response) async {
+    final message =
+    (response.data is Map && response.data.containsKey('message'))
+        ? response.data["message"]
+        : "ErrorMessage";
+    return message;
+  }
+
+  //-------------------------End response Handler ------------------------------------
+
+
+
+
+
+  //-------------------------Start  Execute Request ->  run api ------------------------------------
+
+  static Future<ApiResponse<T>> _executeRequest<T>(
+      {required Future<Response> method, Function? fromJsonModel}) async {
+    try {
+      final response = await method;
+      _networkLog(response);
+      ApiResponse<T> apiResponse =
+      await _responseHandler(response, fromJsonModel);
+      return apiResponse;
+    } on DioError catch (e) {
+      _traceError(e);
+      ApiResponse<T> apiResponse =
+      await _responseHandler(e.response, fromJsonModel);
+      return apiResponse;
+    } catch (e) {
+      _traceCatch(e);
+      ApiResponse<T> apiResponse = ApiResponse<T>.fromJson({}, fromJsonModel);
+      return apiResponse;
+    }
+  }
+  //-------------------------End Execute Request ------------------------------------
+
+
+
+  static Future<Response<dynamic>> _post(String path,
+      {dynamic data,
+        Map<String, dynamic>? headers,
+        Map<String, dynamic>? queryParameters}) {
+    Map<String, dynamic> requestHeaders;
+
+    if (headers == null) {
+      requestHeaders = _headers;
+    } else {
+      requestHeaders = headers;
+    }
+
+    if (sharedPrefsClient.isLogin) {
+      requestHeaders
+          .addAll({'Authorization': "Bearer ${sharedPrefsClient.accessToken}"});
+    }
+
+    restDio.options.headers = requestHeaders;
+    return restDio.post(path, data: data, queryParameters: queryParameters);
+  }
+
+
+
+  static Future<Response<dynamic>> _get(String path,
+      {Map<String, dynamic>? headers, Map<String, dynamic>? queryParameters}) {
+    Map<String, dynamic> requestHeads;
+
+    if (headers == null) {
+      requestHeads = _headers;
+    } else {
+      requestHeads = headers;
+    }
+
+    if (sharedPrefsClient.isLogin) {
+      requestHeads
+          .addAll({'Authorization': "Bearer ${sharedPrefsClient.accessToken}"});
+    }
+
+    restDio.options.headers = requestHeads;
+    return restDio.get(path, queryParameters: queryParameters);
+  }
+
+
+
+
   static Future<ApiResponse<LoginModel>> signIn(
       {required String username, required String password}) async {
+
+
     var body = jsonEncode({
       "username": username,
       "password": password,
@@ -214,8 +247,12 @@ class RestApi {
       "language": sharedPrefsClient.language,
     });
     final request = _post(ApiUrl.LOGIN, data: body);
+
+
     var response = await _executeRequest<LoginModel>(
         method: request, fromJsonModel: (json) => LoginModel.fromJson(json));
+
+
     return response;
   }
 
@@ -566,11 +603,11 @@ class RestApi {
     return response;
   }
 
-// -------------------------End inventory --------------------------
+// -------------------------End transfer --------------------------
 
 
 
-// -------------------------transfer --------------------------
+// -------------------------inventory --------------------------
 
   static Future<ApiResponse<TransactionModel>> getTransactions(
       {required int skip, required int take, required String search}) async {
