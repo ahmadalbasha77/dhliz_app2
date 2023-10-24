@@ -27,6 +27,22 @@ class _AddTemperatureState extends State<AddTemperature> {
   ];
 
   int selectedTemperatureIndex = -1;
+  String selectedTempName = '' ;
+
+
+  String get Temp {
+
+    if(selectedTemperatureIndex == 0 ) {
+      selectedTempName = 'Dry';
+      return selectedTempName ;
+    }if(selectedTemperatureIndex == 1){
+      selectedTempName = 'Cold';
+      return selectedTempName ;
+    }else {
+      return     selectedTempName = 'Freeze';
+    }
+
+  }
 
   void toggleSelection(int index) {
     setState(() {
@@ -140,7 +156,7 @@ class _AddTemperatureState extends State<AddTemperature> {
                 ),
                 onPressed: canContinue
                     ? () {
-                        Get.off(SelectDate());
+                        Get.off(SelectDate(Temp: Temp ,));
                       }
                     : null,
                 child: Text(

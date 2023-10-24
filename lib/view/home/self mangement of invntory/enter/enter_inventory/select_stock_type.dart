@@ -1,10 +1,23 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'map_screen.dart';
 
 class SelectStockType extends StatefulWidget {
-  const SelectStockType({super.key});
+  String Temp;
+
+  String FromDate;
+
+  String ToDate;
+  String numberOfDays;
+
+  SelectStockType(
+      {required this.Temp,
+      required this.FromDate,
+      required this.ToDate,
+      required this.numberOfDays,
+      super.key});
 
   @override
   State<SelectStockType> createState() => _SelectStockTypeState();
@@ -181,7 +194,12 @@ class _SelectStockTypeState extends State<SelectStockType> {
                     ),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => MapScreen(),
+                        builder: (context) => MapScreen(
+                            Temp: widget.Temp,
+                            FromDate: widget.FromDate,
+                            ToDate: widget.ToDate,
+                            numberOfDays: widget.numberOfDays,
+                            StockType: widget.numberOfDays),
                       ));
                     },
                     child: Text(
