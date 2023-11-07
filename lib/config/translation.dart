@@ -1,6 +1,8 @@
-import 'package:dhliz_app/config/ar.dart';
-import 'package:dhliz_app/config/en.dart';
 import 'package:get/get.dart';
+
+
+import 'ar.dart';
+import 'en.dart';
 
 class Translation extends Translations {
 

@@ -1,8 +1,7 @@
-import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/enter/enter_inventory/select_date.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'add_space.dart';
+import 'select_date.dart';
 
 class Temperature {
   String id;
@@ -27,21 +26,19 @@ class _AddTemperatureState extends State<AddTemperature> {
   ];
 
   int selectedTemperatureIndex = -1;
-  String selectedTempName = '' ;
+  String selectedTempName = '';
 
-
-  String get Temp {
-
-    if(selectedTemperatureIndex == 0 ) {
+  String get temp {
+    if (selectedTemperatureIndex == 0) {
       selectedTempName = 'Dry';
-      return selectedTempName ;
-    }if(selectedTemperatureIndex == 1){
-      selectedTempName = 'Cold';
-      return selectedTempName ;
-    }else {
-      return     selectedTempName = 'Freeze';
+      return selectedTempName;
     }
-
+    if (selectedTemperatureIndex == 1) {
+      selectedTempName = 'Cold';
+      return selectedTempName;
+    } else {
+      return selectedTempName = 'Freeze';
+    }
   }
 
   void toggleSelection(int index) {
@@ -147,22 +144,21 @@ class _AddTemperatureState extends State<AddTemperature> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  backgroundColor: MaterialStateProperty.all(
-                    canContinue
-                        ? Color.fromARGB(255, 227, 227, 227)
-                        : Colors
-                            .grey, // تمكين أو تعطيل الزر استنادًا إلى التحديد
-                  ),
+                  backgroundColor: MaterialStateProperty.all(canContinue
+                      ? Color.fromRGBO(38, 50, 56, 1)
+                      : Color.fromARGB(255, 227, 227, 227)),
                 ),
                 onPressed: canContinue
                     ? () {
-                        Get.off(SelectDate(Temp: Temp ,));
+                        Get.off(SelectDate(
+                          temp: temp,
+                        ));
                       }
                     : null,
                 child: Text(
                   'Continue',
                   style: TextStyle(
-                    color: canContinue ? Colors.black54 : Colors.white,
+                    color: canContinue ? Colors.white : Colors.black54,
                     fontSize: 20,
                   ),
                 ),

@@ -17,20 +17,20 @@ class MarkerInfo {
   final String title;
   final String snippet;
 
-  final double pricePerMeter ;
-  final int numberOfMeter ;
-  final int numberOfWp ;
+  final double pricePerMeter;
+
+  final int numberOfMeter;
+
+  final int numberOfWp;
 
   MarkerInfo({
     required this.id,
     required this.position,
     required this.title,
     required this.snippet,
-
-    required this.pricePerMeter ,
-    required this.numberOfMeter ,
-    required this.numberOfWp ,
-
+    required this.pricePerMeter,
+    required this.numberOfMeter,
+    required this.numberOfWp,
   });
 }
 
@@ -43,21 +43,21 @@ class RouteInfo {
 }
 
 class MapScreen extends StatefulWidget {
-  String Temp;
+  String temp;
 
-  String FromDate;
+  String fromDate;
 
-  String ToDate;
+  String toDate;
   String numberOfDays;
 
-  String StockType;
+  String stockType;
 
   MapScreen(
-      {required this.Temp,
-      required this.FromDate,
-      required this.ToDate,
+      {required this.temp,
+      required this.fromDate,
+      required this.toDate,
       required this.numberOfDays,
-      required this.StockType,
+      required this.stockType,
       super.key});
 
   @override
@@ -82,7 +82,7 @@ class _MapScreenState extends State<MapScreen> {
       title: 'مخزن 1',
       snippet: 'وصف المخزن 1',
       pricePerMeter: 10.5,
-      numberOfMeter:1 ,
+      numberOfMeter: 1,
       numberOfWp: 3,
     ),
     MarkerInfo(
@@ -90,13 +90,10 @@ class _MapScreenState extends State<MapScreen> {
       position: LatLng(31.96636860276579, 35.87890932894158),
       title: 'مخزن 2',
       snippet: ' وصف مخزن 2',
-      pricePerMeter: 12.90 ,
-      numberOfMeter: 1 ,
+      pricePerMeter: 12.90,
+      numberOfMeter: 1,
       numberOfWp: 9,
-
-
     ),
-
   ];
 
   late PolylinePoints polylinePoints;
@@ -213,20 +210,31 @@ class _MapScreenState extends State<MapScreen> {
       mapController = controller;
     });
   }
+
   void _showStoreDetailsDialog(MarkerInfo markerInfo) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(markerInfo.title),
-          content: Column(
-            children: [
-              Text("وصف المخزن: ${markerInfo.pricePerMeter}"),
-              // يمكنك إضافة المزيد من التفاصيل هنا
-            ],
+          content: SizedBox(
+            height: 70,
+            child: Column(
+              children: [
+                Text("السعر لكل متر  : ${markerInfo.pricePerMeter}"),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                    "${markerInfo.numberOfMeter} M² = ${markerInfo.numberOfWp} Woorden Pallets"),
+              ],
+            ),
           ),
           actions: [
             ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStatePropertyAll(Color.fromRGBO(38, 50, 56, 1))),
               child: Text('إغلاق'),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -237,6 +245,7 @@ class _MapScreenState extends State<MapScreen> {
       },
     );
   }
+
   Set<Marker> _createMarkers() {
     for (var markerInfo in markerInfoList) {
       markers.add(
@@ -245,15 +254,14 @@ class _MapScreenState extends State<MapScreen> {
           position: markerInfo.position,
           icon: customIcon1,
           infoWindow: InfoWindow(
-              onTap: (){
-                _showStoreDetailsDialog(markerInfo);
-              },
+            onTap: () {
+              _showStoreDetailsDialog(markerInfo);
+            },
             title: markerInfo.title,
             snippet: 'اضغط هنا لعرض نفاصيل المخزن',
           ),
           onTap: () {
             setState(() {
-
               selectWarehouse = markerInfo;
 
               _drawRoute();
@@ -515,9 +523,8 @@ class _MapScreenState extends State<MapScreen> {
                                                             warehouseName:
                                                                 selectWarehouse!
                                                                     .title,
-                                                            price:
-                                                                selectWarehouse!
-                                                                    .pricePerMeter,
+                                                            price: selectWarehouse!
+                                                                .pricePerMeter,
                                                             distance: routeInfo
                                                                 .distance
                                                                 .toStringAsFixed(

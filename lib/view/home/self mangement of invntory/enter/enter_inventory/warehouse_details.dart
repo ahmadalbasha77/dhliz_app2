@@ -1,8 +1,8 @@
-import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/enter/enter_inventory/add_space.dart';
-import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/enter/enter_inventory/pay_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+
+import 'add_space.dart';
 
 class WarehouseDetails extends StatefulWidget {
   final String id;
@@ -12,7 +12,8 @@ class WarehouseDetails extends StatefulWidget {
   final LatLng warehouseLocation;
   final LatLng inventoryLocation;
 
-  WarehouseDetails({
+  const WarehouseDetails({
+    super.key,
     required this.id,
     required this.warehouseName,
     required this.price,
@@ -168,19 +169,17 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
             ),
             Center(
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                width: 200,
+                margin: EdgeInsets.symmetric(vertical: 25),
+                width: 250,
                 height: 50,
                 child: ElevatedButton(
-
                   style: ButtonStyle(
-
                     elevation: MaterialStatePropertyAll(0),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     )),
                     backgroundColor: MaterialStateProperty.all(
-                      Color.fromARGB(255, 227, 227, 227),
+                      Color.fromRGBO(38, 50, 56, 1),
                     ),
                   ),
                   onPressed: () {
@@ -190,7 +189,7 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                   },
                   child: Text(
                     'Continue',
-                    style: TextStyle(color: Colors.black54, fontSize: 20),
+                    style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
               ),

@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dhliz_app/controllers/home/add_edit_inventory_controller.dart';
 import 'package:dhliz_app/models/home/inventory_model.dart';
@@ -7,15 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import 'package:intl/intl.dart' as intl;
+
 
 import '../../../../../config/app_color.dart';
 import '../../../../../config/constant.dart';
 import '../../../../../config/enum/action_enum.dart';
-import '../../../../../config/validation.dart';
-import '../../../../../widgets/src/custom_text_field.dart';
+
 
 class AddStockScreen extends StatefulWidget {
   final ActionEnum action;
@@ -218,6 +215,110 @@ class _AddStockScreenState extends State<AddStockScreen> {
                         borderSide: BorderSide(color: Colors.white),
                         borderRadius:
                             BorderRadius.circular(screenSize.width * 0.04),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: screenSize.width * 0.04,
+                      vertical: screenSize.height * 0.015),
+                  child: TextField(
+                    controller: _controller.controllerTitle,
+                    decoration: InputDecoration(
+                      label: Text(
+                        'Unit',
+                        style: TextStyle(color: Colors.black54),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: screenSize.width * 0.04,
+                      vertical: screenSize.height * 0.015),
+                  child: TextField(
+                    controller: _controller.controllerTitle,
+                    decoration: InputDecoration(
+                      label: Text(
+                        'The number',
+                        style: TextStyle(color: Colors.black54),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: screenSize.width * 0.04,
+                      vertical: screenSize.height * 0.015),
+                  child: TextField(
+                    controller: _controller.controllerTitle,
+                    decoration: InputDecoration(
+                      label: Text(
+                        'The number',
+                        style: TextStyle(color: Colors.black54),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: screenSize.width * 0.04,
+                      vertical: screenSize.height * 0.015),
+                  child: TextField(
+                    controller: _controller.controllerTitle,
+                    decoration: InputDecoration(
+                      label: Text(
+                        'The details',
+                        style: TextStyle(color: Colors.black54),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04),
                       ),
                     ),
                   ),

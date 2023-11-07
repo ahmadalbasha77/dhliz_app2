@@ -5,11 +5,11 @@ import 'package:intl/intl.dart';
 import 'select_stock_type.dart';
 
 class SelectDate extends StatefulWidget {
-  String Temp;
+  String temp;
 
 
 
-   SelectDate({required this.Temp,  super.key});
+   SelectDate({required this.temp,  super.key});
 
   @override
   State<SelectDate> createState() => _SelectDateState();
@@ -213,7 +213,7 @@ class _SelectDateState extends State<SelectDate> {
                       ),
                     ),
                     onPressed: () {
-                      Get.off(SelectStockType(Temp: widget.Temp , FromDate: from.text, ToDate: to.text,numberOfDays: dateDifference,));
+                      Get.off(SelectStockType(temp: widget.temp , fromDate: from.text, toDate: to.text,numberOfDays: dateDifference,));
                     },
                     child: Text(
                       'Continue',
