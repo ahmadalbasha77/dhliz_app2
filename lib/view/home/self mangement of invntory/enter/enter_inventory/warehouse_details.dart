@@ -169,9 +169,9 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
             ),
             Center(
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 25),
+                margin: EdgeInsets.symmetric(vertical: 10),
                 width: 250,
-                height: 50,
+                height: 55,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     elevation: MaterialStatePropertyAll(0),

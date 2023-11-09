@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:get/get.dart';
 
-
-import '../home/packges_screen/packges_screen.dart';
 import '../home/self mangement of invntory/self_management_of_inventory_screen.dart';
 import '../home/account_monitoring_screen.dart';
 
@@ -11,7 +10,7 @@ class HomeScreen extends StatelessWidget {
 
   _callNumber() async {
     var number = '0777363661';
-    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+    await FlutterPhoneDirectCaller.callNumber(number);
   }
 
   @override
@@ -48,41 +47,35 @@ class HomeScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SelfManagementOfInventoryScreen(),
-                ));
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white, borderRadius: BorderRadius.circular(15)),
-                margin: EdgeInsets.symmetric(
-                    vertical: screenSize.width * 0.01,
-                    horizontal: screenSize.width * 0.04),
+            Container(
+              height: 120,
+              padding: EdgeInsets.symmetric(
+                  vertical: screenSize.width * 0.025,
+                  horizontal: screenSize.width * 0.001),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(15)),
+              margin: EdgeInsets.symmetric(
+                  vertical: screenSize.width * 0.01,
+                  horizontal: screenSize.width * 0.04),
+              child: InkWell(
+                onTap: () {
+                  Get.to(SelfManagementOfInventoryScreen());
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  SelfManagementOfInventoryScreen(),
-                            ));
-                          },
-                          child: Container(
-                              child: Text(
-                                "Self management of inventory",
-                                style:
-                                    TextStyle(fontSize: screenSize.width * 0.042),
-                              ),
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: screenSize.width * 0.03,
-                                  vertical: screenSize.width * 0.02)),
-                        ),
+                        Container(
+                            child: Text(
+                              "Self management of inventory",
+                              style:
+                                  TextStyle(fontSize: screenSize.width * 0.042),
+                            ),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: screenSize.width * 0.03,
+                                vertical: screenSize.width * 0.02)),
                         Container(
                           margin: EdgeInsets.symmetric(
                               horizontal: screenSize.width * 0.035),
@@ -94,50 +87,54 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Container(
-                            child: TextButton.icon(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        SelfManagementOfInventoryScreen(),
-                                  ));
-                                },
-                                icon: Icon(
+                            margin: EdgeInsets.only(
+                                top: screenSize.width * 0.03,
+                                left: screenSize.width * 0.045),
+                            child: Row(
+                              children: [
+                                Icon(
                                   Icons.apps_rounded,
                                   color: Colors.black,
                                   size: screenSize.width * 0.045,
                                 ),
-                                label: Text(
+                                Text(
                                   "control panel",
                                   style: TextStyle(color: Colors.black),
-                                )),
-                            margin: EdgeInsets.only(
-                                top: screenSize.width * 0.025,
-                                left: screenSize.width * 0.035)),
+                                )
+                              ],
+                            ))
                       ],
                     ),
                     Container(
-                      child: Image.asset('image/home/SELF.png',
-                          width: screenSize.width * 0.24),
+                      child: Image.asset(
+                        'image/home/SELF.png',
+                        width: screenSize.width * 0.24,
+                        height: screenSize.height * 0.13,
+                      ),
                     )
                   ],
                 ),
               ),
             ),
             Container(
+              height: 120,
+              padding: EdgeInsets.symmetric(
+                  vertical: screenSize.width * 0.025,
+                  horizontal: screenSize.width * 0.001),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(15)),
               margin: EdgeInsets.symmetric(
                   vertical: screenSize.width * 0.01,
                   horizontal: screenSize.width * 0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        onTap: _callNumber,
-                        child: Container(
+              child: InkWell(
+                onTap: _callNumber,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
                             child: Text(
                               "call customer care",
                               style:
@@ -146,42 +143,44 @@ class HomeScreen extends StatelessWidget {
                             margin: EdgeInsets.symmetric(
                                 horizontal: screenSize.width * 0.035,
                                 vertical: screenSize.width * 0.02)),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: screenSize.width * 0.035),
-                        child: Text(
-                          "you can add your inventory thought\ncustomer care",
-                          style: TextStyle(
-                              fontSize: screenSize.width * 0.025,
-                              color: Colors.black38),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: screenSize.width * 0.035),
+                          child: Text(
+                            "you can add your inventory thought\ncustomer care",
+                            style: TextStyle(
+                                fontSize: screenSize.width * 0.025,
+                                color: Colors.black38),
+                          ),
                         ),
-                      ),
-                      Container(
-                          child: TextButton.icon(
-                              onPressed: _callNumber,
-                              icon: Icon(
-                                Icons.call,
-                                color: Colors.black87,
-                                size: screenSize.width * 0.045,
-                              ),
-                              label: Text(
-                                "call now",
-                                style: TextStyle(color: Colors.black87),
-                              )),
+                        Container(
                           margin: EdgeInsets.only(
-                              top: screenSize.width * 0.025,
-                              left: screenSize.width * 0.035)),
-                    ],
-                  ),
-                  Container(
-                    child: Image.asset(
-                      'image/home/Customer careCustomer care.png',
-                      width: screenSize.width * 0.3,
-                      alignment: Alignment.topRight,
+                              top: screenSize.width * 0.03,
+                              left: screenSize.width * 0.045),
+                          child: Row(children: [
+                            Icon(
+                              Icons.call,
+                              color: Colors.black87,
+                              size: screenSize.width * 0.045,
+                            ),
+                            Text(
+                              "call now",
+                              style: TextStyle(color: Colors.black87),
+                            )
+                          ]),
+                        )
+                      ],
                     ),
-                  )
-                ],
+                    Container(
+                      child: Image.asset(
+                        'image/home/Customer careCustomer care.png',
+                        width: screenSize.width * 0.3,
+                        height: screenSize.height * 0.13,
+                        alignment: Alignment.topRight,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
             Container(
@@ -196,12 +195,11 @@ class HomeScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => StockMonitoringScreen(),
-                ));
+                Get.to(StockMonitoringScreen());
               },
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: screenSize.width * 0.04),
+                margin:
+                    EdgeInsets.symmetric(horizontal: screenSize.width * 0.04),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Color.fromARGB(255, 40, 40, 51)),
@@ -223,24 +221,18 @@ class HomeScreen extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.symmetric(
                               horizontal: screenSize.width * 0.035),
-                          child: Text("Analysis of your inventory\ncan be found",
+                          child: Text(
+                              "Analysis of your inventory\ncan be found",
                               style: TextStyle(
                                   fontSize: screenSize.width * 0.035,
                                   color: Colors.white30)),
                         ),
                         Container(
-                          margin: EdgeInsets.only(
-                              top: screenSize.width * 0.045,
-                              left: screenSize.width * 0.005),
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => StockMonitoringScreen(),
-                              ));
-                            },
-                            child: Text("view",
-                                style: TextStyle(color: Colors.white)),
-                          ),
+                          margin: EdgeInsets.symmetric(
+                              vertical: screenSize.width * 0.045,
+                              horizontal: screenSize.width * 0.06),
+                          child: Text("view",
+                              style: TextStyle(color: Colors.white)),
                         ),
                       ],
                     ),
@@ -251,64 +243,6 @@ class HomeScreen extends StatelessWidget {
                     )
                   ],
                 ),
-              ),
-            ),
-            Container(
-              
-              padding: EdgeInsets.symmetric(horizontal: screenSize.width * .04),
-              margin: EdgeInsets.symmetric(
-                  horizontal: screenSize.width * 0.04,
-                  vertical: screenSize.height * .021),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15), color: Colors.white),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-
-                        margin: EdgeInsets.all(screenSize.width * 0.01),
-                        child: Text(
-                          "Subscription packages",
-                          style: TextStyle(
-                              fontSize: screenSize.width * 0.036,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      Container(
-                        width: screenSize.width * .3,
-                        margin: EdgeInsets.only(
-                            top: screenSize.width * 0.04,
-                            bottom: screenSize.height * 0.01,
-                            left: screenSize.width * 0.005),
-                        child: TextButton(
-                          style: ButtonStyle(
-                              shape: MaterialStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(17))),
-                              backgroundColor: MaterialStatePropertyAll(
-                                  Color.fromARGB(255, 40, 40, 51))),
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PackgesScreen(),
-                            ));
-                          },
-                          child:
-                              Text("view", style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(screenSize.width * 0.005),
-                    child: Image.asset(
-                        'image/dehliz/undraw_discount_d4bd-removebg-preview.png',
-                        width: screenSize.width * 0.35),
-                  )
-                ],
               ),
             ),
           ],

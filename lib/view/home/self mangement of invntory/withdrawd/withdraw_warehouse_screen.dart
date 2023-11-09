@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../../controllers/home/withdrawal_warehouses_controller.dart';
 import '../../../../models/home/withdrawal_warehouse_model.dart';
+import '../../../thank_you.dart';
 import 'withdrawal_of_inventory_screen.dart';
 
 bool value = false;
@@ -50,6 +52,8 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
       child: Scaffold(
         backgroundColor: Color.fromARGB(255, 245, 245, 245),
         appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.black),
+
           centerTitle: true,
           title: Text('Withdraw Warehouse',
               textAlign: TextAlign.center,
@@ -59,28 +63,16 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 1000,
-                child: PagedListView(
-                  pagingController: _controller.pagingController,
-                  builderDelegate:
-                      PagedChildBuilderDelegate<WithdrawalWarehouseDataModel>(
-                    itemBuilder: (context, item, index) => Padding(
-                        padding: EdgeInsets.all(7),
-                        child: WithdrawalWarehouseItem(
-                            title: item.title.toString(),
-                            description: item.description.toString(),
-                            imageUrl: item.image.toString())),
-                  ),
-                ),
-              )
-            ],
+        body: PagedListView(
+          pagingController: _controller.pagingController,
+          builderDelegate:
+              PagedChildBuilderDelegate<WithdrawalWarehouseDataModel>(
+            itemBuilder: (context, item, index) => Padding(
+                padding: EdgeInsets.all(7),
+                child: WithdrawalWarehouseItem(
+                    title: item.title.toString(),
+                    description: item.description.toString(),
+                    imageUrl: item.image.toString())),
           ),
         ),
       ),
@@ -134,7 +126,9 @@ class WithdrawalWarehouseItem extends StatelessWidget {
                           backgroundColor: MaterialStatePropertyAll(
                             Color.fromARGB(255, 35, 37, 56),
                           )),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.off(ThankYouScreen());
+                      },
                       child: Text(
                         'View map',
                         style: TextStyle(fontSize: 12),

@@ -1,6 +1,7 @@
-import 'dart:io';
+
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -24,20 +25,21 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text('invoice')),
-      body: PdfPreview(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('invoice'),
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => InventoryScreen(),
-                ));
+                Get.off(InventoryScreen());
               },
               icon: Text(
                 'done',
                 style: TextStyle(color: Colors.white),
               ))
         ],
+      ),
+      body: PdfPreview(
         canDebug: false,
         build: (format) async {
           final imageProvider = await loadImage();

@@ -1,4 +1,6 @@
+import 'package:dhliz_app/view/thank_you.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ViewDetailsTransferScreen extends StatefulWidget {
   String id;
@@ -21,6 +23,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
       backgroundColor: Color.fromARGB(255, 231, 231, 231),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
+
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
@@ -217,7 +220,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
                           borderRadius:
                               BorderRadius.circular(screenWidth * 0.03)))),
                   onPressed: () {
-                    // Handle Transfer button press
+                    Get.off(ThankYouScreen());
                   },
                   child: Text("Transfer")),
             )

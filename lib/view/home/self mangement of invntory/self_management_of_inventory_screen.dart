@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'enter/enter_inventory.dart';
 import 'enter/my_warehouse/my_warehouse_screen.dart';
 import 'transfer/transfer_warehouse_screen.dart';
@@ -31,7 +32,6 @@ class _SelfManagementOfInventoryScreenState
             "Self management of inventory",
             style: TextStyle(color: Colors.black),
           ),
-          titleSpacing: screenSize.width * 0.14,
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -58,9 +58,7 @@ class _SelfManagementOfInventoryScreenState
                   horizontal: screenSize.width * 0.06),
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => EnterInventory(),
-                  ));
+                  Get.to(EnterInventory());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -125,9 +123,7 @@ class _SelfManagementOfInventoryScreenState
                   horizontal: screenSize.width * 0.06),
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => WithdrawWarehouseScreen(),
-                  ));
+                  Get.to(WithdrawWarehouseScreen());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -192,9 +188,7 @@ class _SelfManagementOfInventoryScreenState
                   horizontal: screenSize.width * 0.06),
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => TransferWarehouseScreen(),
-                  ));
+                  Get.to(TransferWarehouseScreen());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -265,9 +259,7 @@ class _SelfManagementOfInventoryScreenState
                   horizontal: screenSize.width * 0.06),
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => MyWareHouseScreen(),
-                  ));
+                  Get.to(MyWareHouseScreen());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

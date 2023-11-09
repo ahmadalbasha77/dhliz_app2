@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:search_map_place_updated/search_map_place_updated.dart';
@@ -7,7 +6,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'dart:math';
 
-import '../../../../../config/app_color.dart';
 import 'warehouse_details.dart';
 
 class MarkerInfo {
@@ -514,10 +512,7 @@ class _MapScreenState extends State<MapScreen> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pushReplacement(
-                                                              MaterialPageRoute(
-                                                        builder: (context) => WarehouseDetails(
+                                                      Get.off( WarehouseDetails(
                                                             id: selectWarehouse!
                                                                 .id,
                                                             warehouseName:
@@ -534,7 +529,7 @@ class _MapScreenState extends State<MapScreen> {
                                                                     .position,
                                                             inventoryLocation:
                                                                 _pickedLocation),
-                                                      ));
+                                                      );
                                                     },
                                                     child: Text('موافق'),
                                                   ),

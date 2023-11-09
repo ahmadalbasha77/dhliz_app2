@@ -1,11 +1,10 @@
+import 'package:dhliz_app/view/thank_you.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-
 class ViewDetailsWithdrawScreen extends StatefulWidget {
-  String id;
-
-  ViewDetailsWithdrawScreen({required this.id, Key? key}) : super(key: key);
+  const ViewDetailsWithdrawScreen({Key? key}) : super(key: key);
 
   @override
   State<ViewDetailsWithdrawScreen> createState() =>
@@ -27,7 +26,6 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -58,7 +56,8 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                             vertical: screenWidth * 0.02,
                             horizontal: screenWidth * 0.03),
                         child: CircleAvatar(
-                            backgroundImage: AssetImage('image/dehliz/1633444786084.jpeg'),
+                            backgroundImage:
+                                AssetImage('image/dehliz/1633444786084.jpeg'),
                             radius: screenWidth * 0.12),
                       )
                     ],
@@ -269,7 +268,9 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                             Color.fromARGB(255, 38, 50, 56)),
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.off(ThankYouScreen());
+                    },
                     child: const Text('Withdraw Now')),
               ),
             )

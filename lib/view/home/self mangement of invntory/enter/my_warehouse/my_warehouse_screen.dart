@@ -6,6 +6,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../../../config/enum/action_enum.dart';
 import '../../../../../controllers/home/my_warehouse_controllerl.dart';
+import '../../../../thank_you.dart';
 import '../inventory_screen.dart';
 import 'add_warehouse_screen.dart';
 
@@ -62,58 +63,55 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                      width: 130,
-                      height: 45,
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                              backgroundColor: MaterialStatePropertyAll(
-                                Color.fromARGB(255, 35, 37, 56),
-                              )),
-                          onPressed: () {
-                            Get.off(() => AddWarehouseScreen(
-                                    data: MyWarehouseDataModel.fromJson({}),
-                                    action: ActionEnum.add))
-                                ?.then((value) =>
-                                    _controller.refreshPagingController());
-                          },
-                          child: Text(
-                            'Add Werehouse',
-                            style: TextStyle(color: Colors.white, fontSize: 12),
-                          ))),
-                ],
-              ),
-              SizedBox(
-                height: 1000,
-                child: PagedListView(
-                  pagingController: _controller.pagingController,
-                  builderDelegate:
-                      PagedChildBuilderDelegate<MyWarehouseDataModel>(
-                    itemBuilder: (context, item, index) => Padding(
-                        padding: EdgeInsets.all(7),
-                        child: MyWarehouseItem(
-                            title: item.title.toString(),
-                            description: item.description.toString(),
-                            imageUrl: item.image.toString())),
-                  ),
+        body: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    width: 130,
+                    height: 45,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            shape:
+                                MaterialStatePropertyAll(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            )),
+                            backgroundColor: MaterialStatePropertyAll(
+                              Color.fromARGB(255, 35, 37, 56),
+                            )),
+                        onPressed: () {
+                          Get.off(() =>
+                              AddWarehouseScreen(
+                                  data: MyWarehouseDataModel.fromJson({}),
+                                  action: ActionEnum.add))?.then(
+                              (value) => _controller.refreshPagingController());
+                        },
+                        child: Text(
+                          'Add Werehouse',
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ))),
+              ],
+            ),
+            Expanded(
+              child: PagedListView(
+                pagingController: _controller.pagingController,
+                builderDelegate:
+                    PagedChildBuilderDelegate<MyWarehouseDataModel>(
+                  itemBuilder: (context, item, index) => Padding(
+                      padding: EdgeInsets.all(7),
+                      child: MyWarehouseItem(
+                          title: item.title.toString(),
+                          description: item.description.toString(),
+                          imageUrl: item.image.toString())),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -131,6 +129,7 @@ class MyWarehouseItem extends StatelessWidget {
     required this.imageUrl,
   });
 
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -165,7 +164,9 @@ class MyWarehouseItem extends StatelessWidget {
                           backgroundColor: MaterialStatePropertyAll(
                             Color.fromARGB(255, 35, 37, 56),
                           )),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.off(ThankYouScreen());
+                      },
                       child: Text(
                         'View map',
                         style: TextStyle(fontSize: 12),
@@ -278,7 +279,9 @@ class MyWarehouseItem extends StatelessWidget {
                           backgroundColor: MaterialStatePropertyAll(
                             Color.fromARGB(255, 253, 191, 8),
                           )),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.off(ThankYouScreen());
+                      },
                       child: Text(
                         'Upgrade Space',
                         style: TextStyle(fontSize: 10),

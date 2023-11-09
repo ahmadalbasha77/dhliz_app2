@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'enter_inventory/add_temprature.dart';
 import 'my_warehouse/my_warehouse_screen.dart';
@@ -20,7 +21,7 @@ class _EnterInventoryState extends State<EnterInventory> {
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text('Enter Inventory', style: TextStyle(color: Colors.black)),
+        title: Text('Inventory', style: TextStyle(color: Colors.black)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -49,9 +50,7 @@ class _EnterInventoryState extends State<EnterInventory> {
                 horizontal: screenSize.width * 0.06),
             child: InkWell(
               onTap: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => AddTemperature(),
-                ));
+                Get.to(AddTemperature());
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,9 +100,7 @@ class _EnterInventoryState extends State<EnterInventory> {
                 horizontal: screenSize.width * 0.06),
             child: InkWell(
               onTap: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => MyWareHouseScreen(),
-                ));
+                Get.to(MyWareHouseScreen());
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

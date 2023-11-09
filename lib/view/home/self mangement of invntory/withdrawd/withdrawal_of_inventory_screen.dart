@@ -1,5 +1,7 @@
 import 'package:dhliz_app/controllers/home/withdrawal_controller.dart';
+import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/withdrawd/view_details._withdraw_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../../models/home/withdrawal_model.dart';
@@ -102,7 +104,9 @@ class WithdrawalItem extends StatelessWidget {
                     margin:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(ViewDetailsWithdrawScreen());
+                      },
                       child: const Text('Withdraw stock',
                           style: TextStyle(color: Colors.black)),
                     ),
