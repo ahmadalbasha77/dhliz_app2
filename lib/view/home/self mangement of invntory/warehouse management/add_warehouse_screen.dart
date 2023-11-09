@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dhliz_app/controllers/home/add_edit_warehouse_controller.dart';
 import 'package:dhliz_app/models/home/my_warehouse_model.dart';
@@ -8,11 +10,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../config/constant.dart';
-import '../../../../../config/enum/action_enum.dart';
+import 'package:http/http.dart' as http;
+import '../../../../config/constant.dart';
+import '../../../../config/enum/action_enum.dart';
 
 
-import '../enter_inventory/map_screen.dart';
+import '../enter/enter_inventory/map_screen.dart';
 
 class AddWarehouseScreen extends StatefulWidget {
   final ActionEnum action;
@@ -26,6 +29,66 @@ class AddWarehouseScreen extends StatefulWidget {
 }
 
 class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
+
+
+  // NEW CODE ==============================================================
+  List<dynamic> data = [];
+  List<String> coordinatesList = [];
+  TextEditingController capacityController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+    from.text = "";
+    to.text = "";
+    dateDifference = "";
+    super.initState();
+    if (widget.action == ActionEnum.edit) {
+      _controller.id.value = widget.data.id;
+    }
+    _controller.controllerTitle.text = widget.data.title;
+  }
+
+  Future<void> fetchData({int? capacity}) async {
+    final Map<String, String> headers = {'ngrok-skip-browser-warning': 'latest'};
+    final Uri uri = Uri.parse('https://10bf-81-253-114-36.ngrok-free.app/api/Warehouse/GetAllWarehouseLabelDto');
+
+    final Map<String, dynamic> queryParameters = capacity != null ? {'Capacity': capacity.toString()} : {};
+    final Uri filteredUri = uri.replace(queryParameters: queryParameters);
+
+    final response = await http.get(filteredUri, headers: headers);
+
+    if (response.statusCode == 200) {
+      print('Request successful');
+      Map<String, dynamic> responseData = json.decode(response.body);
+      if (responseData['isSuccess']) {
+        data = responseData['response'][0];
+
+        // Clear the coordinates list before adding new coordinates
+        coordinatesList.clear();
+
+        // Extract and store coordinates
+        for (final item in data) {
+          String lat = item['lat'].toString();
+          String lon = item['lot'].toString();
+          String coordinates = '($lat, $lon)';
+          coordinatesList.add(coordinates);
+        }
+      } else {
+        print('API returned an error: ${responseData['error']}');
+      }
+    } else {
+      print('Request failed');
+      print('Failed to load data: ${response.statusCode}');
+    }
+
+    // Trigger a rebuild to display the data
+    setState(() {});
+  }
+
+  // END NEW CODE ==========================================================
+
   final _controller = AddEditWarehouseController.to;
 
   List multipleSelected = [];
@@ -51,17 +114,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
   TextEditingController to = TextEditingController();
   String dateDifference = "";
 
-  @override
-  void initState() {
-    from.text = "";
-    to.text = "";
-    dateDifference = "";
-    super.initState();
-    if (widget.action == ActionEnum.edit) {
-      _controller.id.value = widget.data.id;
-    }
-    _controller.controllerTitle.text = widget.data.title;
-  }
+
 
   void updateDateDifference() {
     if (from.text.isNotEmpty && to.text.isNotEmpty) {
@@ -145,7 +198,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                   height: 50,
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
-                      controller: _controller.controllerTitle,
+                      controller: capacityController,
                       decoration: InputDecoration(
                           suffixText: 'M²',
                           suffixStyle:
@@ -367,61 +420,9 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                       ),
                     ),
                   ),
-                if (widget.action == ActionEnum.info ||
-                    widget.action == ActionEnum.edit)
-                  widget.data.image.isEmpty || _controller.image.value != null
-                      ? Container()
-                      : CachedNetworkImage(
-                          imageUrl: widget.data.image,
-                          width: 150.w,
-                          fit: BoxFit.fitWidth,
-                        ),
-                if (widget.action == ActionEnum.add ||
-                    widget.action == ActionEnum.edit)
-                  Column(
-                    children: [
-                      Text(
-                        'Add Image'.tr,
-                        style: kStyleTextTitle,
-                      ),
-                      SizedBox(height: 10.h),
-                      InkWell(
-                        borderRadius: BorderRadius.all(Radius.circular(100.r)),
-                        onTap: () async {
-                          _controller.selectImage();
-                        },
-                        child: _controller.image.value != null
-                            ? Padding(
-                                padding: EdgeInsets.all(8.0.sp),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(FontAwesomeIcons.image),
-                                    SizedBox(width: 8.w),
-                                    Flexible(
-                                      child:
-                                          Text(_controller.image.value!.name),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Container(
-                                padding: EdgeInsets.all(16.sp),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(100.r)),
-                                  color: Colors.grey,
-                                ),
-                                child: Icon(
-                                  FontAwesomeIcons.plus,
-                                  size: 60.sp,
-                                ),
-                              ),
-                      ),
-                    ],
-                  ),
+
                 SizedBox(
-                  height: selected == 'other' ? 10 : 110,
+                  height: selected == 'other' ? 2 : 40,
                 ),
                 Center(
                   child: Container(
@@ -441,7 +442,14 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                         ),
                       ),
                       onPressed: () {
-                        _controller.addEditWarehouse();
+
+                        int? capacity = int.tryParse(capacityController.text);
+                        if (capacity != null) {
+                          fetchData(capacity: capacity);
+                        } else {
+                          print('Invalid capacity value');
+                        }
+                        Get.off( MapScreen(temp: 'temp', fromDate: 'fromDate', toDate: 'toDate', numberOfDays: 'numberOfDays', stockType: 'stockType' , coordinatesList: coordinatesList ,));
                       },
                       child: Text(
                         'Continue',

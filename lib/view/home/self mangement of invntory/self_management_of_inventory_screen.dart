@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'enter/enter_inventory.dart';
-import 'enter/my_warehouse/my_warehouse_screen.dart';
+import 'warehouse management/my_warehouse_screen.dart';
 import 'transfer/transfer_warehouse_screen.dart';
 import 'withdrawd/withdraw_warehouse_screen.dart';
 

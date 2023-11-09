@@ -1,4 +1,4 @@
-import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/enter/my_warehouse/my_warehouse_screen.dart';
+import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/warehouse%20management/my_warehouse_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';

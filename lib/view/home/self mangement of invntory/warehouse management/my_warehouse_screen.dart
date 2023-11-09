@@ -6,8 +6,9 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../../../config/enum/action_enum.dart';
 import '../../../../../controllers/home/my_warehouse_controllerl.dart';
-import '../../../../thank_you.dart';
-import '../inventory_screen.dart';
+
+import '../../../thank_you.dart';
+import '../enter/inventory_screen.dart';
 import 'add_warehouse_screen.dart';
 
 bool value = false;

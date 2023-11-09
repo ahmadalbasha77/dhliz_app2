@@ -8,8 +8,10 @@ import 'package:file_picker/file_picker.dart';
 import '../config/constant.dart';
 import '../config/shared_prefs_client.dart';
 import 'dart:developer' as developer;
+import '../models/api_new_response.dart';
 import '../models/auth/login_model.dart';
 import '../models/auth/register_model.dart';
+import '../models/home/get_warehouses_in_map.dart';
 import '../models/home/my_warehouse_model.dart';
 import '../models/home/transfer_model.dart';
 import '../models/home/transfer_warehouse_model.dart';
@@ -17,7 +19,6 @@ import '../models/home/withdrawal_warehouse_model.dart';
 import '../models/main/notification_model.dart';
 import '../models/main/profile_model.dart';
 import '../models/main/transaction_model.dart';
-
 
 class RestApi {
   static final Map<String, dynamic> _headers = {
@@ -29,10 +30,6 @@ class RestApi {
     connectTimeout: const Duration(seconds: 30),
     receiveTimeout: const Duration(seconds: 30),
   ));
-
-
-
-
 
   //-------------------------Start Error and network log ------------------------------------
 
@@ -78,12 +75,8 @@ class RestApi {
         '╚ [END] ════════════════════════════════════════╝';
     developer.log(trace);
   }
+
   //-------------------------End Error and network log ------------------------------------
-
-
-
-
-
 
   //-------------------------Start response Handler ------------------------------------
   static Future<ApiResponse<T>> _responseHandler<T>(
@@ -149,20 +142,15 @@ class RestApi {
     }
   }
 
-
   static Future<String> _errorMessageHandler(Response response) async {
     final message =
-    (response.data is Map && response.data.containsKey('message'))
-        ? response.data["message"]
-        : "ErrorMessage";
+        (response.data is Map && response.data.containsKey('message'))
+            ? response.data["message"]
+            : "ErrorMessage";
     return message;
   }
 
   //-------------------------End response Handler ------------------------------------
-
-
-
-
 
   //-------------------------Start  Execute Request ->  run api ------------------------------------
 
@@ -172,12 +160,12 @@ class RestApi {
       final response = await method;
       _networkLog(response);
       ApiResponse<T> apiResponse =
-      await _responseHandler(response, fromJsonModel);
+          await _responseHandler(response, fromJsonModel);
       return apiResponse;
     } on DioError catch (e) {
       _traceError(e);
       ApiResponse<T> apiResponse =
-      await _responseHandler(e.response, fromJsonModel);
+          await _responseHandler(e.response, fromJsonModel);
       return apiResponse;
     } catch (e) {
       _traceCatch(e);
@@ -185,14 +173,13 @@ class RestApi {
       return apiResponse;
     }
   }
+
   //-------------------------End Execute Request ------------------------------------
-
-
 
   static Future<Response<dynamic>> _post(String path,
       {dynamic data,
-        Map<String, dynamic>? headers,
-        Map<String, dynamic>? queryParameters}) {
+      Map<String, dynamic>? headers,
+      Map<String, dynamic>? queryParameters}) {
     Map<String, dynamic> requestHeaders;
 
     if (headers == null) {
@@ -209,8 +196,6 @@ class RestApi {
     restDio.options.headers = requestHeaders;
     return restDio.post(path, data: data, queryParameters: queryParameters);
   }
-
-
 
   static Future<Response<dynamic>> _get(String path,
       {Map<String, dynamic>? headers, Map<String, dynamic>? queryParameters}) {
@@ -231,13 +216,8 @@ class RestApi {
     return restDio.get(path, queryParameters: queryParameters);
   }
 
-
-
-
   static Future<ApiResponse<LoginModel>> signIn(
       {required String username, required String password}) async {
-
-
     var body = jsonEncode({
       "username": username,
       "password": password,
@@ -248,18 +228,16 @@ class RestApi {
     });
     final request = _post(ApiUrl.LOGIN, data: body);
 
-
     var response = await _executeRequest<LoginModel>(
         method: request, fromJsonModel: (json) => LoginModel.fromJson(json));
-
 
     return response;
   }
 
   static Future<ApiResponse<LoginModel>> forgotPassword(
       {required String firebaseToken,
-        required String phoneNumber,
-        required String password}) async {
+      required String phoneNumber,
+      required String password}) async {
     var body = jsonEncode({
       "firebaseToken": firebaseToken,
       "phoneNumber": phoneNumber,
@@ -331,7 +309,6 @@ class RestApi {
       "WorkAddress": workAddress,
       "Email": email,
       "SyndicateNumber": syndicateNumber,
-
       if (image != null)
         "Image": MultipartFile.fromBytes(image.bytes!.toList(),
             filename: image.name),
@@ -341,6 +318,7 @@ class RestApi {
     var response = await _executeRequest(method: request);
     return response;
   }
+
 // -----------------end profile --------------------------
 
 // -------------------------notification --------------------------
@@ -605,8 +583,6 @@ class RestApi {
 
 // -------------------------End transfer --------------------------
 
-
-
 // -------------------------inventory --------------------------
 
   static Future<ApiResponse<TransactionModel>> getTransactions(
@@ -617,9 +593,10 @@ class RestApi {
       "search": search,
     };
     final request =
-    _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
+        _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
     var response = await _executeRequest<TransactionModel>(
-        method: request, fromJsonModel: (json) => TransactionModel.fromJson(json));
+        method: request,
+        fromJsonModel: (json) => TransactionModel.fromJson(json));
     return response;
   }
 
@@ -630,7 +607,8 @@ class RestApi {
     });
     final request = _post(ApiUrl.GET_TRANSACTION, data: body);
     var response = await _executeRequest<TransactionModel>(
-        method: request, fromJsonModel: (json) => TransactionModel.fromJson(json));
+        method: request,
+        fromJsonModel: (json) => TransactionModel.fromJson(json));
     return response;
   }
 
@@ -671,9 +649,6 @@ class RestApi {
 
 // -------------------------End inventory --------------------------
 
-
-
-
 // -------------------------my warehouse --------------------------
 
   static Future<ApiResponse<MyWarehouseModel>> getMyWarehouses(
@@ -684,9 +659,10 @@ class RestApi {
       "search": search,
     };
     final request =
-    _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
+        _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
     var response = await _executeRequest<MyWarehouseModel>(
-        method: request, fromJsonModel: (json) => MyWarehouseModel.fromJson(json));
+        method: request,
+        fromJsonModel: (json) => MyWarehouseModel.fromJson(json));
     return response;
   }
 
@@ -697,7 +673,8 @@ class RestApi {
     });
     final request = _post(ApiUrl.GET_TRANSACTION, data: body);
     var response = await _executeRequest<MyWarehouseModel>(
-        method: request, fromJsonModel: (json) => MyWarehouseModel.fromJson(json));
+        method: request,
+        fromJsonModel: (json) => MyWarehouseModel.fromJson(json));
     return response;
   }
 
@@ -731,15 +708,12 @@ class RestApi {
             filename: image.name),
     };
     FormData formData = FormData.fromMap(body);
-    final request = _post(ApiUrl.ADD_EDIT_TRANSACTIONS, data: formData);
+    final request = _post(ApiUrl.ADD_EDIT_MY_WAREHOUSE, data: formData);
     var response = await _executeRequest(method: request);
     return response;
   }
 
 // -------------------------End my warehouse --------------------------
-
-
-
 
 // -------------------------withdrawal warehouse --------------------------
 
@@ -751,9 +725,10 @@ class RestApi {
       "search": search,
     };
     final request =
-    _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
+        _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
     var response = await _executeRequest<WithdrawalWarehouseModel>(
-        method: request, fromJsonModel: (json) => WithdrawalWarehouseModel.fromJson(json));
+        method: request,
+        fromJsonModel: (json) => WithdrawalWarehouseModel.fromJson(json));
     return response;
   }
 
@@ -764,11 +739,13 @@ class RestApi {
     });
     final request = _post(ApiUrl.GET_TRANSACTION, data: body);
     var response = await _executeRequest<WithdrawalWarehouseModel>(
-        method: request, fromJsonModel: (json) => WithdrawalWarehouseModel.fromJson(json));
+        method: request,
+        fromJsonModel: (json) => WithdrawalWarehouseModel.fromJson(json));
     return response;
   }
 
-  static Future<ApiResponse> deleteWithdrawalWarehouses({required String id}) async {
+  static Future<ApiResponse> deleteWithdrawalWarehouses(
+      {required String id}) async {
     var body = jsonEncode({
       "id": id,
     });
@@ -805,10 +782,6 @@ class RestApi {
 
 // -------------------------End withdrawal warehouse --------------------------
 
-
-
-
-
 // -------------------------transfer warehouse --------------------------
 
   static Future<ApiResponse<TransferWarehouseModel>> getTransferWarehouses(
@@ -819,9 +792,10 @@ class RestApi {
       "search": search,
     };
     final request =
-    _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
+        _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
     var response = await _executeRequest<TransferWarehouseModel>(
-        method: request, fromJsonModel: (json) => TransferWarehouseModel.fromJson(json));
+        method: request,
+        fromJsonModel: (json) => TransferWarehouseModel.fromJson(json));
     return response;
   }
 
@@ -832,11 +806,13 @@ class RestApi {
     });
     final request = _post(ApiUrl.GET_TRANSACTION, data: body);
     var response = await _executeRequest<TransferWarehouseModel>(
-        method: request, fromJsonModel: (json) => TransferWarehouseModel.fromJson(json));
+        method: request,
+        fromJsonModel: (json) => TransferWarehouseModel.fromJson(json));
     return response;
   }
 
-  static Future<ApiResponse> deleteTransferWarehouses({required String id}) async {
+  static Future<ApiResponse> deleteTransferWarehouses(
+      {required String id}) async {
     var body = jsonEncode({
       "id": id,
     });
@@ -872,4 +848,11 @@ class RestApi {
   }
 
 // -------------------------End transfer warehouse --------------------------
+
+//**************************************** NEW API ****************************************************
+//***************************************** New API ***************************************************
+
+
+
+
 }

@@ -39,3 +39,4 @@ class ApiResponse<T> {
         "result": List<dynamic>.from(result.map((x) => x)),
       };
 }
+

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'enter_inventory/add_temprature.dart';
-import 'my_warehouse/my_warehouse_screen.dart';
+import '../warehouse management/my_warehouse_screen.dart';
 
 class EnterInventory extends StatefulWidget {
   const EnterInventory({super.key});

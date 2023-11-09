@@ -49,6 +49,7 @@ class MapScreen extends StatefulWidget {
   String numberOfDays;
 
   String stockType;
+ final List<dynamic> coordinatesList ;
 
   MapScreen(
       {required this.temp,
@@ -56,6 +57,7 @@ class MapScreen extends StatefulWidget {
       required this.toDate,
       required this.numberOfDays,
       required this.stockType,
+        required this.coordinatesList ,
       super.key});
 
   @override
@@ -73,26 +75,7 @@ class _MapScreenState extends State<MapScreen> {
   LatLng _pickedLocation = LatLng(0, 0);
   MarkerInfo? selectWarehouse;
   Set<Marker> markers = {};
-  List<MarkerInfo> markerInfoList = [
-    MarkerInfo(
-      id: 'w1',
-      position: LatLng(31.003440015132856, 34.85960476038715),
-      title: 'مخزن 1',
-      snippet: 'وصف المخزن 1',
-      pricePerMeter: 10.5,
-      numberOfMeter: 1,
-      numberOfWp: 3,
-    ),
-    MarkerInfo(
-      id: 'w2',
-      position: LatLng(31.96636860276579, 35.87890932894158),
-      title: 'مخزن 2',
-      snippet: ' وصف مخزن 2',
-      pricePerMeter: 12.90,
-      numberOfMeter: 1,
-      numberOfWp: 9,
-    ),
-  ];
+  late List<MarkerInfo> markerInfoList ;
 
   late PolylinePoints polylinePoints;
   List<LatLng> polylineCoordinates = [];
@@ -103,7 +86,26 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     _determinePosition();
     _loadCustomIcons();
+    print(widget.coordinatesList);
     polylinePoints = PolylinePoints();
+
+    for (int i = 0; i < widget.coordinatesList.length; i += 2) {
+      double lat = double.parse(widget.coordinatesList[i]);
+      double lon = double.parse(widget.coordinatesList[i + 1]);
+
+      MarkerInfo markerInfo = MarkerInfo(
+        id: UniqueKey().toString(),
+        position: LatLng(lat, lon),
+        title: 'مخزن ${i ~/ 2 + 1}',
+        snippet: 'وصف المخزن ${i ~/ 2 + 1}',
+        pricePerMeter: 10.5,
+        numberOfMeter: 1,
+        numberOfWp: 3,
+      );
+
+      markerInfoList.add(markerInfo);
+    }
+  print('======================================${widget.coordinatesList}================================================================');
   }
 
   void _loadCustomIcons() async {
@@ -210,10 +212,12 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _showStoreDetailsDialog(MarkerInfo markerInfo) {
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+
           title: Text(markerInfo.title),
           content: SizedBox(
             height: 70,

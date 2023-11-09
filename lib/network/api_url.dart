@@ -4,7 +4,7 @@ import 'package:dhliz_app/config/utils.dart';
 class ApiUrl {
   // ignore: non_constant_identifier_names
   static String API_BASE_URL =
-      "https://api.doctors.association.faistec.com/${Utils.isEmpty(sharedPrefsClient.language) ? 'default' : sharedPrefsClient.language == 'en' ? 'en-US' : 'ar-JO'}/api";
+      "https://localhost:7110/api";
 
   // ignore: non_constant_identifier_names
   static String LOGIN = "/Auth/Login";
@@ -94,8 +94,8 @@ class ApiUrl {
   // ignore: non_constant_identifier_names
   static String DELETE_TRANSACTIONS = "/Event/DeleteEvent";
 
-  // ignore: non_constant_identifier_names
-  static String ADD_EDIT_TRANSACTIONS = "/Event/AddEditEvent";
+  // ignore: non_constant_identifier_names 777777777777777777777777777777777777777777777777777777777
+  static String ADD_EDIT_TRANSACTIONS = "/Warehouse/GetAllWarehouseLabelDto";
 
 // -----------------End transaction --------------------------
 
@@ -110,7 +110,7 @@ class ApiUrl {
   static String DELETE_MY_WAREHOUSE = "/Event/DeleteEvent";
 
   // ignore: non_constant_identifier_names
-  static String ADD_EDIT_MY_WAREHOUSE = "/Event/AddEditEvent";
+  static String ADD_EDIT_MY_WAREHOUSE = "/Warehouse/GetAllWarehouseLabelDto";
 
 // -----------------End warehouse --------------------------
 
@@ -143,4 +143,12 @@ class ApiUrl {
   static String ADD_EDIT_TRANSFER_WAREHOUSE = "/Event/AddEditEvent";
 
 // -----------------End transfer warehouse --------------------------
+
+
+//**************************************** NEW API ****************************************************
+//***************************************** New API ***************************************************
+
+  static String GET_WAREHOUSES_IN_MAP = "/Warehouse/GetAllWarehouseLabelDto";
+
+
 }
