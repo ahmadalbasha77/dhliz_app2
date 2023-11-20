@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
 class TestMap extends StatefulWidget {
+  const TestMap({Key? key}) : super(key: key);
+
   @override
   _TestMapState createState() => _TestMapState();
 }
@@ -21,56 +22,86 @@ class _TestMapState extends State<TestMap> {
     fetchData();
   }
 
-  Future<void> fetchData({int? capacity}) async {
-    final Map<String, String> headers = {'ngrok-skip-browser-warning': 'latest'};
-    final Uri uri = Uri.parse('https://10bf-81-253-114-36.ngrok-free.app/api/Warehouse/GetAllWarehouseLabelDto');
+  Future<void> fetchData({int? capacity, String? address = 'Address'}) async {
+    final Map<String, String> headers = {
+      'ngrok-skip-browser-warning': 'latest',
+    };
+    final Uri uri = Uri.parse(
+        'https://c87a-46-185-210-30.ngrok-free.app/api/Warehouse/Find');
 
-    final Map<String, dynamic> queryParameters = capacity != null ? {'Capacity': capacity.toString()} : {};
+    // Initialize queryParameters with the 'Capacity' parameter
+    final Map<String, dynamic> queryParameters =
+        capacity != null ? {'Capacity': capacity.toString()} : {};
+
+    // Add 'include' parameter to queryParameters if address is provided
+    queryParameters['include'] = address;
+
     final Uri filteredUri = uri.replace(queryParameters: queryParameters);
 
-    final response = await http.get(filteredUri, headers: headers);
+    try {
+      final response = await http.get(filteredUri, headers: headers);
 
-    if (response.statusCode == 200) {
-      print('Request successful');
-      Map<String, dynamic> responseData = json.decode(response.body);
-      if (responseData['isSuccess']) {
-        data = responseData['response'][0];
+      if (response.statusCode == 200) {
+        print('Request successful');
+        Map<String, dynamic> responseData = json.decode(response.body);
+        if (responseData['isSuccess']) {
+          data = responseData['response'][0];
 
-        // Clear the markers list before adding new markers
-        markers.clear();
+          // Clear the markers list before adding new markers
+          markers.clear();
 
-        // Extract and store coordinates
-        for (final item in data) {
-          double lat = double.parse(item['lat'].toString());
-          double lon = double.parse(item['lot'].toString());
+          // Extract and store coordinates from the 'address' part
+          for (final item in data) {
+            if (item['address'] != null &&
+                item['address'] is Map<String, dynamic>) {
+              Map<String, dynamic> address = item['address']!;
 
-          // Add markers for each coordinate
-          markers.add(
-            Marker(
-              markerId: MarkerId(item['id'].toString()),
-              position: LatLng(lat, lon),
-              infoWindow: InfoWindow(
-                title: item['name'],
-                snippet: 'Capacity: ${item['capacity']}',
-              ),
-            ),
-          );
+              double? lat =
+                  address['lat'] != null ? double.parse(address['lat']) : null;
+              double? lon =
+                  address['lot'] != null ? double.parse(address['lot']) : null;
+
+              if (lat != null && lon != null) {
+                // Add markers for each coordinate
+                markers.add(
+                  Marker(
+                    markerId: MarkerId(item['id'].toString()),
+                    position: LatLng(lat, lon),
+                    infoWindow: InfoWindow(
+                      title: item['name'] ?? '',
+                      snippet: 'Capacity: ${item['capacity'] ?? ''}',
+                    ),
+                  ),
+                );
+              } else {
+                print('Latitude or longitude is null for item: $item');
+              }
+            } else {
+              print(
+                  'Address is null or not in the expected format for item: $item');
+            }
+          }
+
+          // Move the camera to fit all markers
+          if (markers.isNotEmpty) {
+            LatLngBounds bounds = boundsFromLatLngList(
+                markers.map((marker) => marker.position).toList());
+            mapController
+                ?.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50.0));
+          }
+
+          // Trigger a rebuild to display the updated data
+          setState(() {});
+        } else {
+          print('API returned an error: ${responseData['error']}');
         }
-
-        // Move the camera to fit all markers
-        if (markers.isNotEmpty) {
-          LatLngBounds bounds = boundsFromLatLngList(markers.map((marker) => marker.position).toList());
-          mapController?.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50.0));
-        }
-
-        // Trigger a rebuild to display the updated data
-        setState(() {});
       } else {
-        print('API returned an error: ${responseData['error']}');
+        print('Request failed');
+        print('Failed to load data: ${response.statusCode}');
       }
-    } else {
-      print('Request failed');
-      print('Failed to load data: ${response.statusCode}');
+    } catch (error) {
+      print('Error during HTTP request: $error');
+      // Handle errors here
     }
   }
 
@@ -84,7 +115,8 @@ class _TestMapState extends State<TestMap> {
       if (y1 == null || latLng.longitude > y1!) y1 = latLng.longitude;
     }
 
-    return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
+    return LatLngBounds(
+        northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
   }
 
   @override
@@ -122,21 +154,20 @@ class _TestMapState extends State<TestMap> {
             data.isEmpty
                 ? CircularProgressIndicator()
                 : Expanded(
-              child: GoogleMap(
-                onMapCreated: (GoogleMapController controller) {
-                  mapController = controller;
-                },
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(0, 0),
-                  zoom: 10.0,
-                ),
-                markers: Set.from(markers),
-              ),
-            ),
+                    child: GoogleMap(
+                      onMapCreated: (GoogleMapController controller) {
+                        mapController = controller;
+                      },
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(31, 20),
+                        zoom: 10.0,
+                      ),
+                      markers: Set.from(markers),
+                    ),
+                  ),
           ],
         ),
       ),
     );
   }
 }
-
