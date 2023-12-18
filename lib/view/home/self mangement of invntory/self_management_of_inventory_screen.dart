@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'enter/enter_inventory.dart';
+
+import 'enter/inventory_warehouse.dart';
 import 'warehouse management/my_warehouse_screen.dart';
 import 'transfer/transfer_warehouse_screen.dart';
 import 'withdrawd/withdraw_warehouse_screen.dart';
@@ -29,24 +30,103 @@ class _SelfManagementOfInventoryScreenState
           elevation: 0,
           backgroundColor: Colors.white,
           title: Text(
-            "Self management of inventory",
-            style: TextStyle(color: Colors.black),
+            'Self management of inventory'.tr,
+            style: TextStyle(
+              color: Colors.black,
+            ),
           ),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: 10,
+            ),
             Container(
               margin: EdgeInsets.symmetric(
                   horizontal: screenSize.width * 0.05,
                   vertical: screenSize.height * 0.01),
               child: Text(
-                "operation",
+                "Start Adding Warehouse".tr,
+                style: TextStyle(
+                    fontSize: screenSize.width * 0.045,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(screenSize.width * 0.04)),
+              padding:
+                  EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
+              margin: EdgeInsets.symmetric(
+                  vertical: screenSize.height * 0.003,
+                  horizontal: screenSize.width * 0.06),
+              child: InkWell(
+                onTap: () {
+                  Get.to(MyWareHouseScreen());
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            child: Text(
+                              "Warehouse Management".tr,
+                              style:
+                                  TextStyle(fontSize: screenSize.width * 0.04),
+                            ),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: screenSize.width * 0.015,
+                                vertical: screenSize.height * 0.02)),
+                        Container(
+                          width: 180,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: screenSize.width * 0.015),
+                          child: Text(
+                            "You can add warehouse and view warehouse list".tr,
+                            style: TextStyle(
+                                fontSize: screenSize.width * 0.028,
+                                color: Colors.black38),
+                          ),
+                        ),
+                        Container(
+                            child: Text(
+                              "Management Now".tr,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            margin: EdgeInsets.symmetric(
+                                vertical: screenSize.height * 0.016,
+                                horizontal: screenSize.width * 0.035)),
+                      ],
+                    ),
+                    Image.asset(
+                      'image/home/warehouse ManagementManagement.png',
+                      width: screenSize.width * 0.28,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(
+                  horizontal: screenSize.width * 0.05,
+                  vertical: screenSize.height * 0.008),
+              child: Text(
+                "operations".tr,
                 style: TextStyle(
                     fontSize: screenSize.width * 0.05,
                     color: Colors.black,
-                    fontWeight: FontWeight.w500),
+                    fontWeight: FontWeight.bold),
               ),
             ),
             Container(
@@ -58,7 +138,7 @@ class _SelfManagementOfInventoryScreenState
                   horizontal: screenSize.width * 0.06),
               child: InkWell(
                 onTap: () {
-                  Get.to(EnterInventory());
+                  Get.to(InventoryWarehouse());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,7 +148,7 @@ class _SelfManagementOfInventoryScreenState
                       children: [
                         Container(
                             child: Text(
-                              "Enter Inventory",
+                              "Enter Inventory".tr,
                               style:
                                   TextStyle(fontSize: screenSize.width * 0.036),
                             ),
@@ -76,10 +156,11 @@ class _SelfManagementOfInventoryScreenState
                                 horizontal: screenSize.width * 0.035,
                                 vertical: screenSize.height * 0.015)),
                         Container(
+                          width: 150,
                           margin: EdgeInsets.symmetric(
                               horizontal: screenSize.width * 0.035),
                           child: Text(
-                            "Your invntory can be added to\nthe werehous",
+                            "Your inventory can be added to the warehouse".tr,
                             style: TextStyle(
                                 fontSize: screenSize.width * 0.024,
                                 color: Colors.black38),
@@ -93,8 +174,11 @@ class _SelfManagementOfInventoryScreenState
                                   color: Colors.green,
                                   size: screenSize.width * 0.045,
                                 ),
+                                SizedBox(
+                                  width: 5,
+                                ),
                                 Text(
-                                  " Enter stock Now",
+                                  "Enter stock Now".tr,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),
@@ -133,7 +217,7 @@ class _SelfManagementOfInventoryScreenState
                         children: [
                           Container(
                               child: Text(
-                                "Withdrawad of inventory",
+                                "Withdrawal of inventory".tr,
                                 style: TextStyle(
                                     fontSize: screenSize.width * 0.036),
                               ),
@@ -141,10 +225,12 @@ class _SelfManagementOfInventoryScreenState
                                   horizontal: screenSize.width * 0.035,
                                   vertical: screenSize.height * 0.015)),
                           Container(
+                            width: 160,
                             margin: EdgeInsets.symmetric(
                                 horizontal: screenSize.width * 0.035),
                             child: Text(
-                              "you can withdrawad your invmtory\nfrom the werehous",
+                              "You can withdraw your inventory from the warehouse"
+                                  .tr,
                               style: TextStyle(
                                   fontSize: screenSize.width * 0.024,
                                   color: Colors.black38),
@@ -158,8 +244,11 @@ class _SelfManagementOfInventoryScreenState
                                     color: Colors.red,
                                     size: screenSize.width * 0.045,
                                   ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
                                   Text(
-                                    " Withdrawad Stock Now",
+                                    "Withdrawal Stock Now".tr,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500),
@@ -198,7 +287,7 @@ class _SelfManagementOfInventoryScreenState
                       children: [
                         Container(
                             child: Text(
-                              "Transfer Inventory",
+                              "Transfer Inventory".tr,
                               style:
                                   TextStyle(fontSize: screenSize.width * 0.036),
                             ),
@@ -206,10 +295,12 @@ class _SelfManagementOfInventoryScreenState
                                 horizontal: screenSize.width * 0.035,
                                 vertical: screenSize.height * 0.015)),
                         Container(
+                          width: 160,
                           margin: EdgeInsets.symmetric(
                               horizontal: screenSize.width * 0.035),
                           child: Text(
-                            "you can add your inventory thought\ncustomer care",
+                            "You can transfer your inventory to the anther warehouse"
+                                .tr,
                             style: TextStyle(
                                 fontSize: screenSize.width * 0.024,
                                 color: Colors.black38),
@@ -223,8 +314,11 @@ class _SelfManagementOfInventoryScreenState
                                   color: Colors.green,
                                   size: screenSize.width * 0.045,
                                 ),
+                                SizedBox(
+                                  width: 5,
+                                ),
                                 Text(
-                                  " Transfer Stock Now",
+                                  "Transfer Stock Now".tr,
                                   style: TextStyle(
                                       color: Colors.black87,
                                       fontWeight: FontWeight.w500),
@@ -241,65 +335,6 @@ class _SelfManagementOfInventoryScreenState
                           width: screenSize.width * 0.3,
                           alignment: Alignment.topRight),
                     )
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 110,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(screenSize.width * 0.04)),
-              padding:
-                  EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
-              margin: EdgeInsets.symmetric(
-                  vertical: screenSize.height * 0.005,
-                  horizontal: screenSize.width * 0.06),
-              child: InkWell(
-                onTap: () {
-                  Get.to(MyWareHouseScreen());
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            child: Text(
-                              "Warehouse Management",
-                              style:
-                                  TextStyle(fontSize: screenSize.width * 0.036),
-                            ),
-                            margin: EdgeInsets.symmetric(
-                                horizontal: screenSize.width * 0.035,
-                                vertical: screenSize.height * 0.015)),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: screenSize.width * 0.035),
-                          child: Text(
-                            "You can add warehouse and view \nwarehouse list",
-                            style: TextStyle(
-                                fontSize: screenSize.width * 0.024,
-                                color: Colors.black38),
-                          ),
-                        ),
-                        Container(
-                            child: Text(
-                              "Management Now",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            margin: EdgeInsets.symmetric(
-                                vertical: screenSize.height * 0.016,
-                                horizontal: screenSize.width * 0.035)),
-                      ],
-                    ),
-                    Image.asset('image/home/warehouse ManagementManagement.png',
-                        width: screenSize.width * 0.3)
                   ],
                 ),
               ),

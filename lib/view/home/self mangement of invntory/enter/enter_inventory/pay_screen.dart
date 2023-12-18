@@ -1,43 +1,98 @@
-import 'package:flutter/material.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../../../network/api_url.dart';
 import 'invoice_screen.dart';
 
 class PayScreen extends StatefulWidget {
-  const PayScreen({super.key});
+  int customerId;
+  String warehouseId;
+  String warehouseName;
+  String expiredDate;
+  String address;
+  int capacity;
+  double price;
+  String space;
+  String from;
+  String to;
+  bool dry;
+  bool cold;
+  bool freezing;
+
+  PayScreen({
+    super.key,
+    required this.customerId,
+    required this.warehouseId,
+    required this.warehouseName,
+    required this.capacity,
+    required this.expiredDate,
+    required this.address,
+    required this.price,
+    required this.space,
+    required this.from,
+    required this.to,
+    required this.dry,
+    required this.cold,
+    required this.freezing,
+  });
 
   @override
   State<PayScreen> createState() => _PayScreenState();
 }
 
 class _PayScreenState extends State<PayScreen> {
-  List multipleSelected = [];
-  List checkListItems = [
-    {
-      "id": 1,
-      "value": true,
-      "title": "Dry",
-    },
-    {
-      "id": 2,
-      "value": false,
-      "title": "Cold",
-    },
-    {
-      "id": 3,
-      "value": false,
-      "title": "Freezing",
+  double calculateTotalPrice() {
+    return widget.price * widget.capacity;
+  }
+
+  void postData() async {
+    final String apiUrl = '${ApiUrl.API_BASE_URL}/Subscription/Create';
+
+    Map<String, dynamic> requestBody = {
+      "reservedSpace": widget.capacity,
+      "customerId": widget.customerId,
+      "warehouseId": int.parse(widget.warehouseId),
+    };
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      print("POST request successful!");
+      print("Response: ${response.body}");
+    } else {
+      print("Failed to make POST request. Status code: ${response.statusCode}");
+      print("Response: ${response.body}");
     }
-  ];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.customerId);
+    print(widget.space);
+    print(widget.warehouseId);
+    print('==============================');
+  }
 
   @override
   Widget build(BuildContext context) {
+    final totalPrice = calculateTotalPrice();
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 231, 231, 231),
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          'Werehouse Information',
+          'Warehouse Information'.tr,
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -60,7 +115,7 @@ class _PayScreenState extends State<PayScreen> {
               children: [
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Text('Expired WH : 12/10/2023     30 Days',
+                  child: Text('${'Expired WH'.tr} : ${widget.to} ',
                       style: TextStyle(color: Colors.black54, fontSize: 12)),
                 ),
                 Row(
@@ -69,7 +124,7 @@ class _PayScreenState extends State<PayScreen> {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: Text(
-                        'Werehouse 1',
+                        widget.warehouseName,
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.w500),
                       ),
@@ -79,13 +134,14 @@ class _PayScreenState extends State<PayScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                Text('Address : Jordan ,Amman',
+                Text('${'Address'.tr} : ${widget.address}',
                     style: TextStyle(
                       fontSize: 11,
                     )),
                 Container(
                   margin: EdgeInsets.only(top: 10),
-                  child: Text('Price : 12 SAR / 1 M2 per month',
+                  child: Text(
+                      '${'Price'.tr} : ${widget.price} SAR / 1 M2 per month',
                       style: TextStyle(
                         fontSize: 11,
                       )),
@@ -95,46 +151,70 @@ class _PayScreenState extends State<PayScreen> {
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Text('Temperature',
+                  child: Text('${"Temperature".tr}',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
-                Container(
-                  height: 55,
-                  child: GridView.builder(
-                    physics: ScrollPhysics(parent: ScrollPhysics()),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, childAspectRatio: 4.7),
-                    itemCount: checkListItems.length,
-                    itemBuilder: (context, index) => Container(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
                         child: Row(children: [
                       AbsorbPointer(
                         absorbing: true,
                         child: Checkbox(
                           fillColor: MaterialStatePropertyAll(Colors.black),
-                          value: checkListItems[index]['value'],
-                          onChanged: (value) {
-                            setState(() {
-                              checkListItems[index]['value'] = value!;
-                            });
-                          },
+                          value: widget.dry,
+                          onChanged: (value) {},
                         ),
                       ),
                       Text(
-                        checkListItems[index]['title'],
+                        'Dry'.tr,
                         style: TextStyle(
                           fontSize: 12,
                         ),
                       ),
                     ])),
-                  ),
+                    Row(children: [
+                      AbsorbPointer(
+                        absorbing: true,
+                        child: Checkbox(
+                          fillColor: MaterialStatePropertyAll(Colors.black),
+                          value: widget.cold,
+                          onChanged: (bool? value) {},
+                        ),
+                      ),
+                      Text(
+                        'Cold'.tr,
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ]),
+                    Row(children: [
+                      AbsorbPointer(
+                        absorbing: true,
+                        child: Checkbox(
+                          fillColor: MaterialStatePropertyAll(Colors.black),
+                          value: widget.freezing,
+                          onChanged: (bool? value) {},
+                        ),
+                      ),
+                      Text(
+                        'Freezing'.tr,
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ]),
+                  ],
                 ),
                 SizedBox(
                   height: 40,
                 ),
                 Row(
                   children: [
-                    Text('Used',
+                    Text('${'Used'.tr}',
                         style: TextStyle(fontSize: 14, color: Colors.black54)),
                     LinearPercentIndicator(
                       barRadius: Radius.circular(15),
@@ -154,25 +234,26 @@ class _PayScreenState extends State<PayScreen> {
                   height: 15,
                 ),
                 Text(
-                  'spece :12 M²',
+                  '${'space'.tr} :${widget.space} ${'M²'.tr}',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
                   height: 80,
                 ),
-                Text('Total : 133/month',
+                Text(
+                    '${'Total price'.tr} : ${widget.price * widget.capacity} ${'SR'.tr}',
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
               ],
             ),
           ),
           SizedBox(
-            height: 110,
+            height: 80,
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 20),
             width: 300,
-            height: 65,
+            height: 55,
             child: ElevatedButton(
               style: ButtonStyle(
                 elevation: MaterialStatePropertyAll(0),
@@ -184,12 +265,23 @@ class _PayScreenState extends State<PayScreen> {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => InvoiceScreen(),
+                postData();
+
+                Get.off(InvoiceScreen(
+                  warehouseId: widget.warehouseId,
+                  warehouseName: widget.warehouseName,
+                  space: widget.space,
+                  address: widget.address,
+                  total: totalPrice,
+                  fromDate: widget.from,
+                  toDate: widget.to,
+                  dry: widget.dry,
+                  cold: widget.cold,
+                  freezing: widget.freezing,
                 ));
               },
               child: Text(
-                'Pay now',
+                'Pay now'.tr,
                 style: TextStyle(color: Colors.black54, fontSize: 20),
               ),
             ),

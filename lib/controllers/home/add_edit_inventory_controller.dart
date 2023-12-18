@@ -1,4 +1,4 @@
-import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/enter/inventory_screen.dart';
+import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/enter/stock_inventory.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -67,7 +67,7 @@ class AddEditInventoryController extends GetxController {
       if (result.code == 200) {
         Utils.hideLoadingDialog();
 
-        Get.off(InventoryScreen());
+        // Get.off(InventoryScreen());
       } else {
         Utils.showSnackbar('Please try again'.tr, result.message);
       }

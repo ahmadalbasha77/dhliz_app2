@@ -68,6 +68,9 @@ dependencies:
   google_sign_in: ^6.1.5
   sign_in_button: ^3.2.0
   date_format: ^2.0.7
+  shared_preferences: ^2.2.2
+  location:
+  geocoding: ^2.1.1
 
 
   # The following adds the Cupertino Icons font to your application.

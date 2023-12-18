@@ -103,10 +103,7 @@ class _AddSpaceState extends State<AddSpace> {
                               Color.fromARGB(255, 227, 227, 227),
                             )),
                         onPressed: () {
-                          Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(
-                            builder: (context) => PayScreen(),
-                          ));
+
                         },
                         child: Text(
                           'Continue',

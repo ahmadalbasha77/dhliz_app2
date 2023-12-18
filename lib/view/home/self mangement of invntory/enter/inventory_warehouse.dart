@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -8,17 +7,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../network/api_url.dart';
 import '../warehouse management/map_warehouse.dart';
-import 'withdrawal_of_inventory_screen.dart';
+import '../withdrawd/withdraw_warehouse_screen.dart';
+import 'stock_inventory.dart';
 
-class WithdrawWarehouseScreen extends StatefulWidget {
-  const WithdrawWarehouseScreen({super.key});
+class InventoryWarehouse extends StatefulWidget {
+  const InventoryWarehouse({super.key});
 
   @override
-  State<WithdrawWarehouseScreen> createState() =>
-      _WithdrawWarehouseScreenState();
+  State<InventoryWarehouse> createState() => _InventoryWarehouseState();
 }
 
-class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
+class _InventoryWarehouseState extends State<InventoryWarehouse> {
   List<Map<String, dynamic>> data = [];
 
   Future<void> fetchData() async {
@@ -53,7 +52,7 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
         centerTitle: true,
-        title: Text('Withdraw Warehouse',
+        title: Text('Inventory Warehouse'.tr,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.black,
@@ -67,28 +66,28 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
           Expanded(
             child: data.isEmpty
                 ? FutureBuilder(
-                    future: Future.delayed(Duration(seconds: 3)),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('No Data', style: TextStyle(fontSize: 16)),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Text('Check your internet connection',
-                                  style: TextStyle(color: Colors.red)),
-                            ],
-                          ),
-                        );
-                      }
-                    },
-                  )
-                : ListView.builder(
+              future: Future.delayed(Duration(seconds: 3)),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('No Data'),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Text('Check your internet connection',
+                            style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                  );
+                }
+              },
+            )
+                :  ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (context, index) => Container(
                       margin:
@@ -102,7 +101,7 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WithdrawalOfInventoryScreen(
+                            builder: (context) => StockInventoryScreen(
                               id: data[index]['id'],
                             ),
                           ));
@@ -133,7 +132,7 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
                                             Color.fromARGB(255, 35, 37, 56),
                                           )),
                                       onPressed: () {
-                                        MapWarehouseScreen(
+                                        Get.to(() => MapWarehouseScreen(
                                             nameWh: data[index]['warehouse']
                                                 ['name'],
                                             lat: double.parse(data[index]
@@ -141,7 +140,7 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
                                                 ['lat']),
                                             lon: double.parse(data[index]
                                                     ['warehouse']['address']
-                                                ['lot']));
+                                                ['lot'])));
                                       },
                                       child: Text(
                                         'View map'.tr,
@@ -161,7 +160,7 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Text(
-                                  '${'Price'.tr} :  ${data[index]['warehouse']['price']}  SAR / 1 M² per month',
+                                  '${'Price'.tr} :  ${data[index]['warehouse']['price']} SAR / 1 M² per month',
                                   style: TextStyle(
                                     fontSize: 11,
                                   )),
@@ -249,36 +248,31 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
                                   progressColor: Colors.black54,
                                 ),
                                 Text(
-                                  '20%',
+                                  '${data[index]['warehouse']['spaceUsed']}%',
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold),
                                 )
                               ],
                             ),
-                            SizedBox(
-                              height: 25,
-                            ),
-                            Text(
-                              '${'Reserved Space'.tr} : ${data[index]['reservedSpace'].toString()} M²',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 35, 37, 56),
+                            Container(
+                              margin: EdgeInsets.only(top: 25),
+                              child: Text(
+                                '${'Reserved Space'.tr} : ${data[index]['reservedSpace'].toString()} M²',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Color.fromARGB(255, 35, 37, 56),
+                                ),
                               ),
                             ),
                             SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '${'Expired WH'.tr} : ${data[index]['endDate'].toString()}  ',
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.black54),
-                                ),
-                              ],
+                            Text(
+                              '${'Expired WH'.tr} : ${data[index]['endDate'].toString()}  ',
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black54),
                             ),
                           ],
                         ),

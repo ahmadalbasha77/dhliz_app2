@@ -100,7 +100,7 @@ class _EnterInventoryState extends State<EnterInventory> {
                 horizontal: screenSize.width * 0.06),
             child: InkWell(
               onTap: () {
-                Get.to(MyWareHouseScreen());
+                Get.to(() => MyWareHouseScreen());
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

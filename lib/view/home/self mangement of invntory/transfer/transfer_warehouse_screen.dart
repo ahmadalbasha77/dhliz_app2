@@ -1,32 +1,16 @@
+import 'dart:convert';
+
+import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/warehouse%20management/map_warehouse.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../controllers/home/transfer_warehouses_controller.dart';
-import '../../../../models/home/transfer_warehouse_model.dart';
+import '../../../../network/api_url.dart';
 import '../../../thank_you.dart';
+import '../withdrawd/withdraw_warehouse_screen.dart';
 import 'transfer_inventory_screen.dart';
-
-bool value = false;
-List multipleSelected = [];
-List checkListItems = [
-  {
-    "id": 0,
-    "value": false,
-    "title": "Dry",
-  },
-  {
-    "id": 1,
-    "value": true,
-    "title": "Cold ",
-  },
-  {
-    "id": 2,
-    "value": true,
-    "title": "Freezing",
-  },
-];
 
 class TransferWarehouseScreen extends StatefulWidget {
   const TransferWarehouseScreen({super.key});
@@ -37,204 +21,271 @@ class TransferWarehouseScreen extends StatefulWidget {
 }
 
 class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
-  final _controller = TransferWarehousesController.to;
+  List<Map<String, dynamic>> data = [];
+
+  Future<void> fetchData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? id = prefs.getInt('postId');
+    print(id);
+
+    final response = await http.get(Uri.parse(
+        '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=$id'));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        data = List<Map<String, dynamic>>.from(
+            json.decode(response.body)['response'][0]);
+      });
+      print(response.body);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
+    fetchData();
     super.initState();
-    _controller.refreshPagingController();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 245, 245, 245),
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.black),
-
-          centerTitle: true,
-          title: Text('Transfer Warehouse',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-              )),
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
-        body: PagedListView(
-          pagingController: _controller.pagingController,
-          builderDelegate:
-              PagedChildBuilderDelegate<TransferWarehouseDataModel>(
-            itemBuilder: (context, item, index) => Padding(
-                padding: EdgeInsets.all(7),
-                child: NotificationsItem(
-                    title: item.title.toString(),
-                    description: item.description.toString(),
-                    imageUrl: item.image.toString())),
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 245, 245, 245),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        centerTitle: true,
+        title: Text('My Warehouse'.tr,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+            )),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(
+            child:data.isEmpty
+                ? FutureBuilder(
+              future: Future.delayed(Duration(seconds: 3)),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('No Data'),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Text('Check your internet connection',
+                            style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                  );
+                }
+              },
+            )
+                : ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) => Container(
+                      margin:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.white,
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => TransferInventoryScreen(
+                              id: data[index]['id'],
+                              data: data,
+                            ),
+                          ));
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  data[index]['warehouse']['name'],
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 35,
+                                  child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          shape: MaterialStatePropertyAll(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15))),
+                                          backgroundColor:
+                                              MaterialStatePropertyAll(
+                                            Color.fromARGB(255, 35, 37, 56),
+                                          )),
+                                      onPressed: () {
+                                        MapWarehouseScreen(
+                                            nameWh: data[index]['warehouse']
+                                                ['name'],
+                                            lat: double.parse(data[index]
+                                                    ['warehouse']['address']
+                                                ['lat']),
+                                            lon: double.parse(data[index]
+                                                    ['warehouse']['address']
+                                                ['lot']));
+                                      },
+                                      child: Text(
+                                        'View map'.tr,
+                                        style: TextStyle(fontSize: 12),
+                                      )),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                                '${'Address'.tr} : ${data[index]['warehouse']['address']['city']} , ${data[index]['warehouse']['address']['state']} , ${data[index]['warehouse']['address']['street']} ',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                )),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Text(
+                                  '${'Price'.tr} : ${data[index]['warehouse']['price']}  SAR / 1 M² per month',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                  )),
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              child: Text('Temperature'.tr,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                    child: Row(children: [
+                                      AbsorbPointer(
+                                        absorbing: true,
+                                        child: Checkbox(
+                                          fillColor: MaterialStatePropertyAll(
+                                              Colors.black),
+                                          value: data[index]['warehouse']
+                                          ['temperature']['high'],
+                                          onChanged: (value) {},
+                                        ),
+                                      ),
+                                      Text(
+                                        'Dry'.tr,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ])),
+                                Row(children: [
+                                  AbsorbPointer(
+                                    absorbing: true,
+                                    child: Checkbox(
+                                      fillColor: MaterialStatePropertyAll(
+                                          Colors.black),
+                                      value: data[index]['warehouse']
+                                      ['temperature']['cold'],
+                                      onChanged: (bool? value) {},
+                                    ),
+                                  ),
+                                  Text(
+                                    'Cold'.tr,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ]),
+                                Row(children: [
+                                  AbsorbPointer(
+                                    absorbing: true,
+                                    child: Checkbox(
+                                      fillColor: MaterialStatePropertyAll(
+                                          Colors.black),
+                                      value: data[index]['warehouse']
+                                      ['temperature']['freezing'],
+                                      onChanged: (bool? value) {},
+                                    ),
+                                  ),
+                                  Text(
+                                    'Freezing'.tr,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ]),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text('Used'.tr,
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.black54)),
+                                LinearPercentIndicator(
+                                  barRadius: Radius.circular(15),
+                                  width: 250,
+                                  lineHeight: 14.0,
+                                  percent: data[index]['warehouse']
+                                          ['spaceUsed'] /
+                                      100,
+                                  backgroundColor: Colors.grey,
+                                  progressColor: Colors.black54,
+                                ),
+                                Text(
+                                  '${data[index]['warehouse']['spaceUsed']}%',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 25),
+                              child: Text(
+                                '${'Reserved Space'.tr} : ${data[index]['reservedSpace'].toString()} M²',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Color.fromARGB(255, 35, 37, 56),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              '${'Expired WH'.tr} : ${data[index]['endDate'].toString()}  ',
+                              style: TextStyle(
+                                  fontSize: 13, color: Colors.black54),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class NotificationsItem extends StatelessWidget {
-  final String title;
-  final String description;
-  final String imageUrl;
-
-  const NotificationsItem({
-    required this.title,
-    required this.description,
-    required this.imageUrl,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => TransferInventoryScreen(),
-          ));
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-                ),
-                SizedBox(
-                  height: 35,
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          shape: MaterialStatePropertyAll(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15))),
-                          backgroundColor: MaterialStatePropertyAll(
-                            Color.fromARGB(255, 35, 37, 56),
-                          )),
-                      onPressed: () {
-                        Get.off(ThankYouScreen());
-                      },
-                      child: Text(
-                        'View map',
-                        style: TextStyle(fontSize: 12),
-                      )),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text('Address : Amman , jabal alhusan , Yafa 33  ',
-                style: TextStyle(
-                  fontSize: 11,
-                )),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 5),
-              child: Text('Price : 12 SAR / 1 M² per month',
-                  style: TextStyle(
-                    fontSize: 11,
-                  )),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: Text('Temperature',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            ),
-            Container(
-              height: 45,
-              child: GridView.builder(
-                physics: ScrollPhysics(parent: ScrollPhysics()),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3, childAspectRatio: 4.5),
-                itemCount: checkListItems.length,
-                itemBuilder: (context, index) => Container(
-                    child: Row(children: [
-                  AbsorbPointer(
-                    absorbing: true,
-                    child: Checkbox(
-                      fillColor: MaterialStatePropertyAll(Colors.black),
-                      value: checkListItems[index]['value'],
-                      onChanged: (value) {},
-                    ),
-                  ),
-                  Text(
-                    checkListItems[index]['title'],
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
-                  ),
-                ])),
-              ),
-            ),
-            Row(
-              children: [
-                Text('Used',
-                    style: TextStyle(fontSize: 14, color: Colors.black54)),
-                LinearPercentIndicator(
-                  barRadius: Radius.circular(15),
-                  width: 250,
-                  lineHeight: 14.0,
-                  percent: .2,
-                  backgroundColor: Colors.grey,
-                  progressColor: Colors.black54,
-                ),
-                Text(
-                  '20%',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                )
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 25),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Total : 133/month',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 35, 37, 56),
-                      )),
-                  Text(
-                    'spece :12 M²',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Color.fromARGB(255, 35, 37, 56),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Expired WH : 12/10/2023    30 Days',
-                  style: TextStyle(fontSize: 10, color: Colors.black54),
-                ),
-              ],
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }

@@ -1,15 +1,36 @@
-
-
+import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/warehouse%20management/my_warehouse_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-import '../inventory_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InvoiceScreen extends StatefulWidget {
-  const InvoiceScreen({super.key});
+  String warehouseId;
+  String warehouseName;
+  String address;
+  String fromDate;
+  String toDate;
+  String space;
+  double total;
+  bool dry;
+  bool cold;
+  bool freezing;
+
+  InvoiceScreen(
+      {super.key,
+      required this.warehouseId,
+      required this.warehouseName,
+      required this.address,
+      required this.space,
+      required this.fromDate,
+      required this.toDate,
+      required this.dry,
+      required this.cold,
+      required this.freezing,
+      required this.total});
 
   @override
   State<InvoiceScreen> createState() => _InvoiceScreenState();
@@ -22,20 +43,25 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     );
   }
 
+  Future<int?> getSavedIdFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('postId');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('invoice'),
+        title: Text('invoice'.tr),
         actions: [
           IconButton(
               onPressed: () {
-                Get.off(InventoryScreen());
+                Get.off(() => const MyWareHouseScreen());
               },
               icon: Text(
-                'done',
-                style: TextStyle(color: Colors.white),
+                'done'.tr,
+                style: TextStyle(color: Colors.blue),
               ))
         ],
       ),
@@ -81,7 +107,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               style: pw.TextStyle(fontSize: 16),
                             ),
                             pw.Text(
-                              'ID: 15442298',
+                              'Warehouse ID: ${widget.warehouseId}',
                               style: pw.TextStyle(fontSize: 16),
                             ),
                           ]),
@@ -90,7 +116,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       margin:
                           pw.EdgeInsets.symmetric(horizontal: 20, vertical: 7),
                       child: pw.Text(
-                        'Address : Amman , jabal alhusan , Yafa 33',
+                        'Address : ${widget.address} , jabal alhusan , Yafa 33',
                         style: pw.TextStyle(fontSize: 16),
                       ),
                     ),
@@ -99,18 +125,18 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           pw.EdgeInsets.symmetric(horizontal: 20, vertical: 7),
                       child: pw.Row(children: [
                         pw.Text(
-                          'Warehouse Name : ',
+                          'Warehouse Name :',
                           style: pw.TextStyle(
                               fontSize: 16, fontWeight: pw.FontWeight.bold),
                         ),
                         pw.Text(
-                          'Warehouse One',
+                          ' ${widget.warehouseName}',
                           style: pw.TextStyle(fontSize: 16),
                         ),
                       ]),
                     ),
                     pw.Divider(),
-                    pw.Text('Warehouse Features',
+                    pw.Text('${'Warehouse Features'}',
                         style: pw.TextStyle(
                             fontSize: 18, fontWeight: pw.FontWeight.bold)),
                     pw.Container(
@@ -127,20 +153,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       child: pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                           children: [
+                            widget.dry == true?
                             pw.Text(
-                              '1- Dry : ',
+                              '- Dry : ',
                               style: pw.TextStyle(
                                 fontSize: 16,
                               ),
-                            ),
+                            ):pw.Container(),
+                            widget.cold == true?
                             pw.Text(
-                              '2- Cold',
+                              '- Cold',
                               style: pw.TextStyle(fontSize: 16),
-                            ),
+                            ):pw.Container(),
+                            widget.freezing == true?
                             pw.Text(
-                              '3- Freezing',
+                              '- Freezing',
                               style: pw.TextStyle(fontSize: 16),
-                            ),
+                            ):pw.Container(),
                           ]),
                     ),
                     pw.Container(
@@ -153,7 +182,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               fontSize: 16, fontWeight: pw.FontWeight.bold),
                         ),
                         pw.Text(
-                          '20 M²',
+                          '${widget.space} M²',
                           style: pw.TextStyle(fontSize: 16),
                         ),
                       ]),
@@ -174,7 +203,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               ),
                             ),
                             pw.Text(
-                              '15/10/2023',
+                              widget.fromDate,
                               style: pw.TextStyle(fontSize: 16),
                             ),
                           ]),
@@ -192,7 +221,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               ),
                             ),
                             pw.Text(
-                              '15/12/2023',
+                              widget.toDate,
                               style: pw.TextStyle(fontSize: 16),
                             ),
                           ]),
@@ -205,7 +234,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
                           children: [
                             pw.Text(
-                              'TAX : ',
+                              '${'TAX'} : ',
                               style: pw.TextStyle(
                                   fontSize: 20, fontWeight: pw.FontWeight.bold),
                             ),
@@ -223,12 +252,12 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
                           children: [
                             pw.Text(
-                              'Total  : ',
+                              'Total price  : ',
                               style: pw.TextStyle(
                                   fontSize: 24, fontWeight: pw.FontWeight.bold),
                             ),
                             pw.Text(
-                              '500 SAR',
+                              '${widget.total} ${'SAR'.tr}',
                               style: pw.TextStyle(
                                   fontSize: 24, fontWeight: pw.FontWeight.bold),
                             ),

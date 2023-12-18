@@ -31,133 +31,131 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      _controller.getProfile();
-    });
+    // SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+    //   _controller.getProfile();
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ProfileController>(
-      builder: (controller) => CustomWidget(
-        alignment: Alignment.topCenter,
-        child: CustomSingleChildScrollView(
-          padding: EdgeInsets.zero,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+    return CustomWidget(
+      alignment: Alignment.topCenter,
+      child: CustomSingleChildScrollView(
+        padding: EdgeInsets.zero,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
 
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 30.h),
-                    Center(
-                      child: Text(
-                        "${'Expiration'.tr}:  ${_controller.profile.value.licenseExpiry == null ? '' : intl.DateFormat(dateFormat).format(_controller.profile.value.licenseExpiry!)}",
-                        style: kStyleTextExpiration,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20.h, right: 25.w, left: 25.w, bottom: 30.h),
-                      child: Text("Settings".tr, style: kStyleTextTitleLarge),
-                    ),
-                    Material(
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Text('Edit Profile'.tr),
-                            leading: const Icon(FontAwesomeIcons.person, color: Colors.black),
-                            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black),
-                            onTap: () {
-                              Get.to(() => EditProfileScreen(profile: _controller.profile.value))?.then((value) => _controller.getProfile());
-                            },
-                          ),
-                          // ListTile(
-                          //   title: Text('History'.tr),
-                          //   leading: const Icon(FontAwesomeIcons.clockRotateLeft, color: Colors.black),
-                          //   trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black),
-                          // ),
-                          ListTile(
-                            title: Text('Contact Us'.tr),
-                            leading: const Icon(FontAwesomeIcons.headset, color: Colors.black),
-                            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black),
-                            onTap: () {
-                              Get.defaultDialog(
-                                title: 'Contact Us'.tr,
-                                content: Text('${'Call the following number for assistance'.tr}.\ntel: $phoneNumber'),
-                                textCancel: 'Close'.tr,
-                                textConfirm: 'Call'.tr,
-                                confirmTextColor: Colors.white,
-                                onConfirm: () {
-                                  Get.back();
-                                  launchUrlString('tel:$phoneNumber');
-                                },
-                                barrierDismissible: true,
-                              );
-                            },
-                          ),
-                          ListTile(
-                            title: Text('Language'.tr),
-                            leading: const Icon(FontAwesomeIcons.language, color: Colors.black),
-                            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black),
-                            onTap: () {
-                              Get.defaultDialog(
-                                title: 'Language'.tr,
-                                content: Column(
-                                  children: [
-                                    ListTile(
-                                      onTap: () {
-                                        sharedPrefsClient.language = 'en';
-                                        Get.updateLocale(Locale(sharedPrefsClient.language));
-                                        Get.back();
-                                      },
-                                      title: const Text('English'),
-                                    ),
-                                    ListTile(
-                                      onTap: () {
-                                        sharedPrefsClient.language = 'ar';
-                                        Get.updateLocale(Locale(sharedPrefsClient.language));
-                                        Get.back();
-                                      },
-                                      title: const Text('العربية'),
-                                    ),
-                                  ],
-                                ),
-                                barrierDismissible: true,
-                              );
-                            },
-                          ),
-                          ListTile(
-                            title: Text('Sign Out'.tr),
-                            leading: const Icon(FontAwesomeIcons.arrowRightFromBracket, color: Colors.black),
-                            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black),
-                            onTap: () async {
-                              if (await Utils.showAreYouSureDialog(title: 'Sign Out'.tr)) {
-                                sharedPrefsClient.clearProfile();
-                                Get.deleteAll();
-                                Get.offAll(() => const LoginScreen());
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    )
-                  ],
-                ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
               ),
-            ],
-          ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 30.h),
+                  Center(
+                    child: Text(
+                      "${'Expiration'.tr}: }",
+                      style: kStyleTextExpiration,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.h, right: 25.w, left: 25.w, bottom: 30.h),
+                    child: Text("Settings".tr, style: kStyleTextTitleLarge),
+                  ),
+                  Material(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        // ListTile(
+                        //   title: Text('Edit Profile'.tr),
+                        //   leading: const Icon(FontAwesomeIcons.person, color: Colors.black),
+                        //   trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black),
+                        //   onTap: () {
+                        //     Get.to(() => EditProfileScreen(profile: _controller.profile.value))?.then((value) => _controller.getProfile());
+                        //   },
+                        // ),
+                        // ListTile(
+                        //   title: Text('History'.tr),
+                        //   leading: const Icon(FontAwesomeIcons.clockRotateLeft, color: Colors.black),
+                        //   trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black),
+                        // ),
+                        ListTile(
+                          title: Text('Contact Us'.tr),
+                          leading: const Icon(FontAwesomeIcons.headset, color: Colors.black),
+                          trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black),
+                          onTap: () {
+                            Get.defaultDialog(
+                              title: 'Contact Us'.tr,
+                              content: Text('${'Call the following number for assistance'.tr}.\ntel: $phoneNumber'),
+                              textCancel: 'Close'.tr,
+                              textConfirm: 'Call'.tr,
+                              confirmTextColor: Colors.white,
+                              onConfirm: () {
+                                Get.back();
+                                launchUrlString('tel:$phoneNumber');
+                              },
+                              barrierDismissible: true,
+                            );
+                          },
+                        ),
+                        ListTile(
+                          title: Text('Language'.tr),
+                          leading: const Icon(FontAwesomeIcons.language, color: Colors.black),
+                          trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black),
+                          onTap: () {
+                            Get.defaultDialog(
+                              title: 'Language'.tr,
+                              content: Column(
+                                children: [
+                                  ListTile(
+                                    onTap: () {
+                                      sharedPrefsClient.language = 'en';
+                                      Get.updateLocale(Locale(sharedPrefsClient.language));
+                                      Get.back();
+                                    },
+                                    title: const Text('English'),
+                                  ),
+                                  ListTile(
+                                    onTap: () {
+                                      sharedPrefsClient.language = 'ar';
+                                      Get.updateLocale(Locale(sharedPrefsClient.language));
+                                      Get.back();
+                                    },
+                                    title: const Text('العربية'),
+                                  ),
+                                ],
+                              ),
+                              barrierDismissible: true,
+                            );
+                          },
+                        ),
+                        ListTile(
+                          title: Text('Sign Out'.tr),
+                          leading: const Icon(FontAwesomeIcons.arrowRightFromBracket, color: Colors.black),
+                          trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black),
+                          onTap: () async {
+                            if (await Utils.showAreYouSureDialog(title: 'Sign Out'.tr)) {
+                              sharedPrefsClient.clearProfile();
+                              Get.deleteAll();
+                              Get.offAll(() => const LoginScreen());
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

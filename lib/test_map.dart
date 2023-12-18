@@ -27,7 +27,7 @@ class _TestMapState extends State<TestMap> {
       'ngrok-skip-browser-warning': 'latest',
     };
     final Uri uri = Uri.parse(
-        'https://c87a-46-185-210-30.ngrok-free.app/api/Warehouse/Find');
+        'https://1706-46-248-204-177.ngrok-free.app/api/Warehouse/Find');
 
     // Initialize queryParameters with the 'Capacity' parameter
     final Map<String, dynamic> queryParameters =

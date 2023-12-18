@@ -1,6 +1,5 @@
 import 'package:dhliz_app/config/binding.dart';
 import 'package:dhliz_app/controllers/app_controller.dart';
-import 'package:dhliz_app/test_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -42,11 +41,15 @@ class _MyAppState extends State<MyApp> {
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+          useMaterial3: false,
+        ),
         initialBinding: BindingQ(),
         translations: Translation(),
         locale: Locale(sharedPrefsClient.language),
         fallbackLocale: const Locale('en'),
-        home: TestMap(),
+        home: const SplashScreen(),
       ),
     );
   }

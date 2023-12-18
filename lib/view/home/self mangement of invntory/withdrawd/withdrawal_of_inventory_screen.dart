@@ -1,13 +1,16 @@
-import 'package:dhliz_app/controllers/home/withdrawal_controller.dart';
-import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/withdrawd/view_details._withdraw_screen.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
-import '../../../../models/home/withdrawal_model.dart';
+import 'package:http/http.dart' as http;
+import '../../../../network/api_url.dart';
+import 'view_details._withdraw_screen.dart';
 
 class WithdrawalOfInventoryScreen extends StatefulWidget {
-  const WithdrawalOfInventoryScreen({Key? key}) : super(key: key);
+  int id;
+
+  WithdrawalOfInventoryScreen({super.key, required this.id});
 
   @override
   State<WithdrawalOfInventoryScreen> createState() =>
@@ -16,112 +19,166 @@ class WithdrawalOfInventoryScreen extends StatefulWidget {
 
 class _WithdrawalOfInventoryScreenState
     extends State<WithdrawalOfInventoryScreen> {
-  final _controller = WithdrawalController.to;
+  List<Map<String, dynamic>> data = [];
+
+  Future<void> fetchData() async {
+    final response = await http.get(Uri.parse(
+        '${ApiUrl.API_BASE_URL}/Stock/Find?SubscriptionId=${widget.id}&PageIndex=0&PageSize=100'));
+
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      final responseData = jsonResponse['result']['response'][0];
+
+      if (responseData != null) {
+        setState(() {
+          data = List<Map<String, dynamic>>.from(responseData);
+        });
+      } else {
+        print('Invalid response structure');
+      }
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
+    fetchData();
     super.initState();
-    _controller.refreshPagingController();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 231, 231, 231),
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
-          centerTitle: true,
-          title: const Text('Withdrawal of invntory',
-              style: TextStyle(color: Colors.black)),
-          backgroundColor: Colors.white,
-        ),
-        body: PagedListView(
-          pagingController: _controller.pagingController,
-          builderDelegate: PagedChildBuilderDelegate<WithdrawalDataModel>(
-            itemBuilder: (context, item, index) => WithdrawalItem(
-              title: item.title.toString(),
-              description: item.description.toString(),
-              imageUrl: item.image.toString(),
-              id: item.id.toString(),
-            ),
-          ),
-        ));
-  }
-}
-
-class WithdrawalItem extends StatelessWidget {
-  final String id;
-  final String title;
-  final String description;
-  final String imageUrl;
-
-  const WithdrawalItem({
-    super.key,
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.imageUrl,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: Colors.white),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: const Color.fromARGB(255, 231, 231, 231),
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
+        centerTitle: true,
+        title: const Text('Withdrawal of invntory',
+            style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
+      ),
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                child: Text(title,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w500)),
-              ),
-              Row(
-                children: [
-                  Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 20),
-                      child: Text(
-                        'weight: 20',
-                        style: const TextStyle(
-                            color: Colors.black54, fontSize: 12),
-                      )),
-                  Text(
-                    'stock Id: 10002',
-                    style: const TextStyle(color: Colors.black54, fontSize: 12),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: TextButton(
-                      onPressed: () {
-                        Get.to(ViewDetailsWithdrawScreen());
-                      },
-                      child: const Text('Withdraw stock',
-                          style: TextStyle(color: Colors.black)),
-                    ),
-                  ),
-                ],
+                margin: EdgeInsets.all(25),
+                child: Icon(Icons.filter_list, size: 30),
               ),
             ],
           ),
-          SizedBox(
-            width: 110,
-            child: CircleAvatar(
-              radius: 40,
-              backgroundImage: NetworkImage(imageUrl),
-            ),
+          Expanded(
+            child: data.isEmpty
+                ? FutureBuilder(
+              future: Future.delayed(Duration(seconds: 3)),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('No Data'),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Text('Check your internet connection',
+                            style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                  );
+                }
+              },
+            )
+                : ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) => Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    child: Text(data[index]['name'],
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500)),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 20),
+                                          child: Text(
+                                            '${'space'.tr} : ${data[index]['capacity']} ',
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 13),
+                                          )),
+                                      Container(
+                                          child: Text(
+                                        '${'Stock ID'.tr} : ${data[index]['id']}',
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 13),
+                                      )),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 20),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ViewDetailsWithdrawScreen(
+                                                id: data[index]['id'],
+                                                nameWarehouse: data[index]
+                                                    ['name'],
+                                                desWarehouse: data[index]
+                                                    ['description'],
+                                                image: data[index]['photo'],
+                                              ),
+                                            ));
+                                          },
+                                          child: Text('Stock withdrawal'.tr,
+                                              style: TextStyle(
+                                                  color: Colors.black)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                child: CircleAvatar(
+                                    radius: 40,
+                                    backgroundImage:
+                                        Image.file(File(data[index]['photo']))
+                                            .image),
+                                width: 110,
+                              )
+                            ])),
+                  ),
           ),
-        ]));
+        ],
+      ),
+    );
   }
 }

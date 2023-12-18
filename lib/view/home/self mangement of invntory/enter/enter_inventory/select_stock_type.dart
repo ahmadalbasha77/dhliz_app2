@@ -191,15 +191,7 @@ class _SelectStockTypeState extends State<SelectStockType> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => MapScreen(
-                            coordinatesList: [],
-                            temp: widget.temp,
-                            fromDate: widget.fromDate,
-                            toDate: widget.toDate,
-                            numberOfDays: widget.numberOfDays,
-                            stockType: widget.numberOfDays),
-                      ));
+
                     },
                     child: Text(
                       'Continue',

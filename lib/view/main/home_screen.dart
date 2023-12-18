@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white,
         title: Text(
-          "Home",
+          "Home".tr,
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                   horizontal: screenSize.width * 0.05,
                   vertical: screenSize.height * 0.02),
               child: Text(
-                "Inventory",
+                "Inventory".tr,
                 style: TextStyle(
                     fontSize: screenSize.width * 0.055,
                     color: Colors.black,
@@ -48,7 +48,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Container(
-              height: 120,
+              height: 140,
               padding: EdgeInsets.symmetric(
                   vertical: screenSize.width * 0.025,
                   horizontal: screenSize.width * 0.001),
@@ -69,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Container(
                             child: Text(
-                              "Self management of inventory",
+                              "Self management of inventory".tr,
                               style:
                                   TextStyle(fontSize: screenSize.width * 0.042),
                             ),
@@ -79,17 +79,22 @@ class HomeScreen extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.symmetric(
                               horizontal: screenSize.width * 0.035),
-                          child: Text(
-                            "you can enter, withdraw, and transfer\nthe inventory alone",
-                            style: TextStyle(
-                                fontSize: screenSize.width * 0.025,
-                                color: Colors.black38),
+                          child: Container(
+                            width: 160,
+                            child: Text(
+                              "you can enter, withdraw, and transfer the inventory alone"
+                                  .tr,
+                              style: TextStyle(
+                                  fontSize: screenSize.width * 0.025,
+                                  color: Colors.black38),
+                            ),
                           ),
                         ),
                         Container(
                             margin: EdgeInsets.only(
-                                top: screenSize.width * 0.03,
-                                left: screenSize.width * 0.045),
+                                top: screenSize.height * 0.0082,
+                                left: screenSize.width * 0.045,
+                                right: screenSize.width * 0.045),
                             child: Row(
                               children: [
                                 Icon(
@@ -97,27 +102,28 @@ class HomeScreen extends StatelessWidget {
                                   color: Colors.black,
                                   size: screenSize.width * 0.045,
                                 ),
+                                SizedBox(
+                                  width: 5,
+                                ),
                                 Text(
-                                  "control panel",
+                                  "control panel".tr,
                                   style: TextStyle(color: Colors.black),
                                 )
                               ],
                             ))
                       ],
                     ),
-                    Container(
-                      child: Image.asset(
-                        'image/home/SELF.png',
-                        width: screenSize.width * 0.24,
-                        height: screenSize.height * 0.13,
-                      ),
+                    Image.asset(
+                      'image/home/SELF.png',
+                      width: screenSize.width * 0.22,
+                      height: screenSize.height * 0.13,
                     )
                   ],
                 ),
               ),
             ),
             Container(
-              height: 120,
+              height: 140,
               padding: EdgeInsets.symmetric(
                   vertical: screenSize.width * 0.025,
                   horizontal: screenSize.width * 0.001),
@@ -136,48 +142,54 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Container(
                             child: Text(
-                              "call customer care",
+                              "call customer care".tr,
                               style:
-                                  TextStyle(fontSize: screenSize.width * 0.045),
+                                  TextStyle(fontSize: screenSize.width * 0.042),
                             ),
                             margin: EdgeInsets.symmetric(
-                                horizontal: screenSize.width * 0.035,
+                                horizontal: screenSize.width * 0.03,
                                 vertical: screenSize.width * 0.02)),
                         Container(
                           margin: EdgeInsets.symmetric(
                               horizontal: screenSize.width * 0.035),
-                          child: Text(
-                            "you can add your inventory thought\ncustomer care",
-                            style: TextStyle(
-                                fontSize: screenSize.width * 0.025,
-                                color: Colors.black38),
+                          child: Container(
+                            width: 160,
+                            child: Text(
+                              "you can add your inventory by customer care".tr,
+                              style: TextStyle(
+                                  fontSize: screenSize.width * 0.025,
+                                  color: Colors.black38),
+                            ),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(
-                              top: screenSize.width * 0.03,
-                              left: screenSize.width * 0.045),
-                          child: Row(children: [
-                            Icon(
-                              Icons.call,
-                              color: Colors.black87,
-                              size: screenSize.width * 0.045,
-                            ),
-                            Text(
-                              "call now",
-                              style: TextStyle(color: Colors.black87),
-                            )
-                          ]),
-                        )
+                            margin: EdgeInsets.only(
+                                top: screenSize.height * 0.0082,
+                                left: screenSize.width * 0.045,
+                                right: screenSize.width * 0.045),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.call,
+                                  color: Colors.black,
+                                  size: screenSize.width * 0.045,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "call now".tr,
+                                  style: TextStyle(color: Colors.black),
+                                )
+                              ],
+                            ))
                       ],
                     ),
-                    Container(
-                      child: Image.asset(
-                        'image/home/Customer careCustomer care.png',
-                        width: screenSize.width * 0.3,
-                        height: screenSize.height * 0.13,
-                        alignment: Alignment.topRight,
-                      ),
+                    Image.asset(
+                      'image/home/Customer careCustomer care.png',
+                      width: screenSize.width * 0.25,
+                      height: screenSize.height * 0.13,
+                      alignment: Alignment.topRight,
                     )
                   ],
                 ),
@@ -186,7 +198,7 @@ class HomeScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.all(screenSize.width * 0.05),
               child: Text(
-                "Monitoring",
+                "Monitoring".tr,
                 style: TextStyle(
                     fontSize: screenSize.width * 0.05,
                     color: Colors.black,
@@ -212,17 +224,18 @@ class HomeScreen extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.all(screenSize.width * 0.045),
                           child: Text(
-                            "Account Monitoring",
+                            "Account Monitoring".tr,
                             style: TextStyle(
                                 fontSize: screenSize.width * 0.048,
                                 color: Colors.white),
                           ),
                         ),
                         Container(
+                          width: 170,
                           margin: EdgeInsets.symmetric(
                               horizontal: screenSize.width * 0.035),
                           child: Text(
-                              "Analysis of your inventory\ncan be found",
+                              "Analysis of your inventory can be found".tr,
                               style: TextStyle(
                                   fontSize: screenSize.width * 0.035,
                                   color: Colors.white30)),
@@ -231,7 +244,7 @@ class HomeScreen extends StatelessWidget {
                           margin: EdgeInsets.symmetric(
                               vertical: screenSize.width * 0.045,
                               horizontal: screenSize.width * 0.06),
-                          child: Text("view",
+                          child: Text("view".tr,
                               style: TextStyle(color: Colors.white)),
                         ),
                       ],
@@ -239,7 +252,7 @@ class HomeScreen extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.all(screenSize.width * 0.005),
                       child: Image.asset('image/home/analytics.png',
-                          width: screenSize.width * 0.35),
+                          width: screenSize.width * 0.33),
                     )
                   ],
                 ),

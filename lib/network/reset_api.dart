@@ -652,14 +652,18 @@ class RestApi {
 // -------------------------my warehouse --------------------------
 
   static Future<ApiResponse<MyWarehouseModel>> getMyWarehouses(
-      {required int skip, required int take, required String search}) async {
+      {required int skip,
+      required int take,
+      required String search,
+      required int? id}) async {
     var queryParameters = {
       "skip": skip,
       "take": take,
       "search": search,
+      "id": id
     };
     final request =
-        _get(ApiUrl.GET_TRANSACTIONS, queryParameters: queryParameters);
+        _get(ApiUrl.GET_MY_WAREHOUSES, queryParameters: queryParameters);
     var response = await _executeRequest<MyWarehouseModel>(
         method: request,
         fromJsonModel: (json) => MyWarehouseModel.fromJson(json));
@@ -851,8 +855,4 @@ class RestApi {
 
 //**************************************** NEW API ****************************************************
 //***************************************** New API ***************************************************
-
-
-
-
 }

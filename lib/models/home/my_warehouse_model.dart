@@ -33,40 +33,31 @@ class MyWarehouseModel {
 class MyWarehouseDataModel {
   MyWarehouseDataModel({
     required this.id,
-    required this.title,
-    required this.description,
-    required this.image,
-    required this.url,
-    required this.isPro,
-    required this.date,
+    required this.startDate,
+    required this.endDate,
+    required this.reservedSpace,
+
   });
 
   String id;
-  String title;
-  String description;
-  String image;
-  String url;
-  bool isPro;
-  DateTime? date;
+  String startDate;
+  String endDate;
+  int reservedSpace;
 
   factory MyWarehouseDataModel.fromJson(Map<String, dynamic> json) =>
       MyWarehouseDataModel(
         id: json["id"] ?? "",
-        title: json["title"] ?? "",
-        description: json["description"] ?? "",
-        image: json["image"] ?? "",
-        url: json["url"] ?? "",
-        isPro: json["isPro"] ?? false,
-        date: DateTime.tryParse(json["date"] ?? ""),
+        startDate: json["startDate"] ?? "",
+        endDate: json["endDate"] ?? "",
+        reservedSpace: json["reservedSpace"] ?? "",
+
       );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "title": title,
-    "description": description,
-    "image": image,
-    "url": url,
-    "isPro": isPro,
-    "datePublication": date?.toIso8601String() ?? '',
+    "startDate": startDate,
+    "endDate": endDate,
+    "reservedSpace": reservedSpace,
+
   };
 }

@@ -1,10 +1,29 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+
 import 'package:dhliz_app/view/thank_you.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../network/api_url.dart';
+import '../warehouse management/my_warehouse_screen.dart';
+import 'delivery_location_screen.dart';
+
 class ViewDetailsWithdrawScreen extends StatefulWidget {
-  const ViewDetailsWithdrawScreen({Key? key}) : super(key: key);
+  int id;
+  String nameWarehouse;
+  String desWarehouse;
+  String image;
+
+  ViewDetailsWithdrawScreen(
+      {Key? key,
+      required this.id,
+      required this.nameWarehouse,
+      required this.desWarehouse,
+      required this.image})
+      : super(key: key);
 
   @override
   State<ViewDetailsWithdrawScreen> createState() =>
@@ -12,9 +31,43 @@ class ViewDetailsWithdrawScreen extends StatefulWidget {
 }
 
 class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
+  void postData() async {
+    final String apiUrl = '${ApiUrl.API_BASE_URL}/Transaction/Create';
+
+    Map<String, dynamic> requestBody = {
+      "quantity": int.parse(space.text),
+      "actionType": 0,
+      "fromStockId": widget.id,
+      "rejectReason": "string"
+    };
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      print("POST request successful!");
+      print("Response: ${response.body}");
+
+      // Parse the JSON response
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      Get.back();
+      // Now you can use the postId variable as needed.
+    } else {
+      print("Failed to make POST request. Status code: ${response.statusCode}");
+      print("Response: ${response.body}");
+    }
+  }
+
   String? x;
   var selected;
   TextEditingController date = TextEditingController();
+  TextEditingController space = TextEditingController();
 
   void initState() {
     date.text = "";
@@ -35,7 +88,8 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
         backgroundColor: Colors.white,
-        title: Text('wh', style: TextStyle(color: Colors.black)),
+        title:
+            Text(widget.nameWarehouse, style: TextStyle(color: Colors.black)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -57,7 +111,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                             horizontal: screenWidth * 0.03),
                         child: CircleAvatar(
                             backgroundImage:
-                                AssetImage('image/dehliz/1633444786084.jpeg'),
+                                Image.file(File(widget.image)).image,
                             radius: screenWidth * 0.12),
                       )
                     ],
@@ -70,13 +124,13 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                             top: screenWidth * 0.04,
                             left: screenWidth * 0.008,
                             bottom: screenWidth * 0.01),
-                        child: Text('wh',
+                        child: Text(widget.nameWarehouse,
                             style: TextStyle(fontSize: screenWidth * 0.04)),
                       ),
                       Container(
                         margin: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.008),
-                        child: Text('Stock ID : 10002',
+                        child: Text('${'Stock ID'.tr} : ${widget.id}',
                             style: TextStyle(
                                 color: Colors.black54,
                                 fontSize: screenWidth * 0.024)),
@@ -86,7 +140,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                             top: screenWidth * 0.02,
                             left: screenWidth * 0.008,
                             bottom: screenWidth * 0.015),
-                        child: Text('aaaaaa',
+                        child: Text(widget.desWarehouse,
                             style: TextStyle(color: Colors.black54)),
                       ),
                     ],
@@ -95,14 +149,14 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
               ),
             ),
             SizedBox(
-              height: 25,
+              height: 10,
             ),
             Container(
                 margin: EdgeInsets.symmetric(
                     vertical: screenWidth * 0.02,
                     horizontal: screenWidth * 0.05),
                 child: Text(
-                  'The space to be withdrawn',
+                  'The space to be withdrawn'.tr,
                   style: TextStyle(
                       fontSize: 16,
                       color: Color.fromARGB(255, 38, 50, 56),
@@ -111,13 +165,14 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 25),
               child: TextField(
+                  controller: space,
                   decoration: InputDecoration(
-                      suffixText: 'M²',
+                      suffixText: 'M²'.tr,
                       suffixStyle:
                           TextStyle(fontSize: 16, color: Colors.black54),
                       filled: true,
                       fillColor: Colors.white,
-                      label: Text('space',
+                      label: Text('space'.tr,
                           style: TextStyle(color: Colors.black54)),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
@@ -134,7 +189,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     vertical: screenWidth * 0.02,
                     horizontal: screenWidth * 0.05),
                 child: Text(
-                  'Withdrawal date',
+                  'Withdrawal date'.tr,
                   style: TextStyle(
                       fontSize: 16,
                       color: Color.fromARGB(255, 38, 50, 56),
@@ -176,8 +231,8 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     prefixIcon: Icon(Icons.calendar_month_sharp),
                     filled: true,
                     fillColor: Colors.white,
-                    label:
-                        Text('date', style: TextStyle(color: Colors.black54)),
+                    label: Text('date'.tr,
+                        style: TextStyle(color: Colors.black54)),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide.none),
@@ -192,14 +247,16 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
             Container(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  'Default: Receive from warehouse',
+                  'Default: Receive from warehouse'.tr,
                   style: TextStyle(fontSize: 16, color: Colors.black38),
                 )),
             Container(
                 margin: EdgeInsets.only(
-                    top: screenWidth * 0.05, left: screenWidth * 0.05),
+                    top: screenWidth * 0.05,
+                    left: screenWidth * 0.05,
+                    right: screenWidth * 0.05),
                 child: Text(
-                  'Other services',
+                  'Other services'.tr + ' :',
                   style: TextStyle(
                       fontSize: 16,
                       color: Color.fromARGB(255, 38, 50, 56),
@@ -217,7 +274,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     },
                   ),
                   Text(
-                    'With delivery to a new location',
+                    'With delivery to a new location'.tr,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ])),
@@ -232,9 +289,11 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                         backgroundColor: MaterialStatePropertyAll(
                           Color.fromARGB(255, 38, 50, 56),
                         )),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => DeliveryLocationScreen());
+                    },
                     child: Text(
-                      'Select a delivery location',
+                      'Select a delivery location'.tr,
                       style: TextStyle(fontSize: 12),
                     )),
               ),
@@ -250,12 +309,12 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     },
                   ),
                   Text(
-                    'With packaging',
+                    'With packaging'.tr,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ])),
             SizedBox(
-              height: isSelectedOne ? 10 : 45,
+              height: isSelectedOne ? 0 : 35,
             ),
             Center(
               child: Container(
@@ -269,9 +328,9 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     onPressed: () {
-                      Get.off(ThankYouScreen());
+                      postData();
                     },
-                    child: const Text('Withdraw Now')),
+                    child: Text('Withdraw Now'.tr)),
               ),
             )
           ],

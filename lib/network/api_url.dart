@@ -1,10 +1,12 @@
-import 'package:dhliz_app/config/shared_prefs_client.dart';
-import 'package:dhliz_app/config/utils.dart';
+
 
 class ApiUrl {
   // ignore: non_constant_identifier_names
   static String API_BASE_URL =
-      "https://localhost:7110/api";
+      "https://3e56-176-29-241-12.ngrok-free.app/api";
+
+
+
 
   // ignore: non_constant_identifier_names
   static String LOGIN = "/Auth/Login";
@@ -101,7 +103,7 @@ class ApiUrl {
 
 // -----------------start my warehouse --------------------------
   // ignore: non_constant_identifier_names
-  static String GET_MY_WAREHOUSES = "/Event/GetEvents";
+  static String GET_MY_WAREHOUSES = "/Customer/GetSupscriptionByCustomerId";
 
   // ignore: non_constant_identifier_names
   static String GET_MY_WAREHOUSE = "/Event/GetEvent";

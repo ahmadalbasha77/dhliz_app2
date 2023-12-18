@@ -6,10 +6,12 @@ import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../config/enum/user_role_enum.dart';
 import '../../config/shared_prefs_client.dart';
 import '../../controllers/app_controller.dart';
+import 'create_customer.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,22 +22,30 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
+  static Future<bool> getLoginState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLogin') ?? false;
+  }
+   Future<bool> isLogin =  getLoginState();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      if (sharedPrefsClient.isLogin) {
-        if (sharedPrefsClient.userRole == UserRoleEnum.user) {
-          Get.offAll(() => const MainScreen());
-        } else if (sharedPrefsClient.userRole == UserRoleEnum.admin) {
-          Get.offAll(() => const MainScreen());
-        }
-      } else {
-        Get.offAll(() => const LoginScreen());
-      }
-    });
+    initializeApp();
+  }
+
+  Future<void> initializeApp() async {
+    isLogin = getLoginState();
+
+    // Wait for the future to complete and then execute the logic
+    await Future.delayed(const Duration(seconds: 2));
+    print(await isLogin);
+    // Now, you can check the value of isLogin
+    if (await isLogin == true) {
+      Get.offAll(() => const MainScreen());
+    } else {
+      Get.offAll(() => const CreateCustomerScreen());
+    }
   }
 
   @override
