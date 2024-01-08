@@ -152,7 +152,7 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
               style: TextStyle(fontSize: 16),
             ),
             Text(
-              '${'capacity'.tr}: ${widget.warehouseCap} ',
+              '${'capacity'.tr}: ${widget.capacity} ',
               style: TextStyle(fontSize: 16),
             ),
             Text(
@@ -235,7 +235,7 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                         warehouseName: widget.warehouseName,
                         address: widget.address,
                         price: widget.price,
-                        expiredDate: '14/12/2023',
+                        expiredDate: widget.to,
                         space: widget.capacity.toString(),
                         dry: widget.dry,
                         cold: widget.cold,

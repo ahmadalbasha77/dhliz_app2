@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../network/api_url.dart';
 
@@ -66,6 +67,8 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
   }
 
   TextEditingController space = TextEditingController();
+  TextEditingController date = TextEditingController();
+
   var selected;
 
   @override
@@ -156,42 +159,42 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
                 ],
               ),
             ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(
-                  vertical: screenWidth * 0.01, horizontal: screenWidth * 0.05),
-              padding: EdgeInsets.symmetric(vertical: screenWidth * 0.015),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: screenWidth * 0.05,
-                        vertical: screenWidth * 0.04),
-                    child: Text('Warehouse name',
-                        style: TextStyle(fontSize: screenWidth * 0.045)),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: screenWidth * 0.07,
-                        vertical: screenWidth * 0.015),
-                    child: Text('${'Address WH'.tr} : amman',
-                        style: TextStyle(color: Colors.black54)),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                        bottom: screenWidth * 0.02,
-                        left: screenWidth * 0.07,
-                        right: screenWidth * 0.07,
-                        top: screenWidth * 0.015),
-                    child: Text('${'Warehouse name'.tr} : wh1',
-                        style: TextStyle(color: Colors.black54)),
-                  )
-                ],
-              ),
-            ),
+            // Container(
+            //   width: double.infinity,
+            //   margin: EdgeInsets.symmetric(
+            //       vertical: screenWidth * 0.01, horizontal: screenWidth * 0.05),
+            //   padding: EdgeInsets.symmetric(vertical: screenWidth * 0.015),
+            //   decoration: BoxDecoration(
+            //       color: Colors.white, borderRadius: BorderRadius.circular(20)),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Container(
+            //         margin: EdgeInsets.symmetric(
+            //             horizontal: screenWidth * 0.05,
+            //             vertical: screenWidth * 0.04),
+            //         child: Text('Warehouse name',
+            //             style: TextStyle(fontSize: screenWidth * 0.045)),
+            //       ),
+            //       Container(
+            //         margin: EdgeInsets.symmetric(
+            //             horizontal: screenWidth * 0.07,
+            //             vertical: screenWidth * 0.015),
+            //         child: Text('${'Address WH'.tr} : amman',
+            //             style: TextStyle(color: Colors.black54)),
+            //       ),
+            //       Container(
+            //         margin: EdgeInsets.only(
+            //             bottom: screenWidth * 0.02,
+            //             left: screenWidth * 0.07,
+            //             right: screenWidth * 0.07,
+            //             top: screenWidth * 0.015),
+            //         child: Text('${'Warehouse name'.tr} : wh1',
+            //             style: TextStyle(color: Colors.black54)),
+            //       )
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               height: 25,
             ),
@@ -276,7 +279,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
                     value: item['id'],
                     // Adjust this based on your data structure
                     child: Text(
-                      item['id'].toString(),
+                      item['warehouse']['name'].toString(),
                       // Adjust this based on your data structure
                       style: TextStyle(color: Colors.black),
                     ),
@@ -285,7 +288,67 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
               ),
             ),
             SizedBox(
-              height: screenWidth * 0.35,
+              height: 20,
+            ),
+            Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: screenWidth * 0.02,
+                    horizontal: screenWidth * 0.05),
+                child: Text(
+                  'Transfer date'.tr,
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Color.fromARGB(255, 38, 50, 56),
+                      fontWeight: FontWeight.w500),
+                )),
+            Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: 25,
+              ),
+              child: TextField(
+                  readOnly: true,
+                  controller: date,
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        //DateTime.now() - not to allow to choose before today.
+                        lastDate: DateTime(2101));
+
+                    if (pickedDate != null) {
+                      print(
+                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                      String formattedDate =
+                          DateFormat('yyyy-MM-dd').format(pickedDate);
+                      print(
+                          formattedDate); //formatted date output using intl package =>  2021-03-16
+                      //you can implement different kind of Date Format here according to your requirement
+
+                      setState(() {
+                        date.text =
+                            formattedDate; //set output date to TextField value.
+                      });
+                    } else {
+                      print("Date is not selected");
+                    }
+                  },
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.calendar_month_sharp),
+                    filled: true,
+                    fillColor: Colors.white,
+                    label: Text('date'.tr,
+                        style: TextStyle(color: Colors.black54)),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none),
+                  )),
+            ),
+            SizedBox(
+              height: screenWidth * 0.4,
             ),
             Center(
               child: SizedBox(

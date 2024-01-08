@@ -161,7 +161,7 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Text(
-                                  '${'Price'.tr} :  ${data[index]['warehouse']['price']}  SAR / 1 M² per month',
+                                  '${'Price'.tr} :  ${data[index]['warehouse']['price']['cost']}  SAR / 1 M² per month',
                                   style: TextStyle(
                                     fontSize: 11,
                                   )),

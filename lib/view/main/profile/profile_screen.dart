@@ -147,91 +147,84 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       padding:
                           EdgeInsets.symmetric(vertical: screenWidth * 0.03),
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.25
-                                  ,
-                                  vertical: screenWidth * 0.025,
-                                ),
-                                child: Text(
-                                  'Personal Information'.tr,
-                                  style:
-                                      TextStyle(fontSize: screenWidth * 0.04),
-                                ),
+                          Center(
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                top: screenWidth * 0.025,
+                                bottom: screenWidth * 0.04,
+                                // right: screenWidth * 0.25,
+                                // left: screenWidth * 0.15
                               ),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.05,
-                                  vertical: screenWidth * 0.015,
-                                ),
-                                child: Text(
-                                  '${'Username'.tr} : ${data[0]['info']['name']}',
-                                  style:
-                                      TextStyle(fontSize: screenWidth * 0.035),
-                                ),
+                              child: Text(
+                                '${'Personal Information'.tr}   ',
+                                style: TextStyle(fontSize: screenWidth * 0.04),
                               ),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.05,
-                                  vertical: screenWidth * 0.015,
-                                ),
-                                child: Text(
-                                  '${'phone'.tr} : ${data[0]['info']['phone']}',
-                                  style:
-                                      TextStyle(fontSize: screenWidth * 0.035),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.05,
-                                  vertical: screenWidth * 0.015,
-                                ),
-                                child: Text(
-                                  '${'Business Name'.tr} : ${data[0]['businessName']}',
-                                  style:
-                                      TextStyle(fontSize: screenWidth * 0.035),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.05,
-                                  vertical: screenWidth * 0.015,
-                                ),
-                                child: Text(
-                                  '${'Business Competence'.tr} : ${data[0]['businessCompetence']}',
-                                  style:
-                                      TextStyle(fontSize: screenWidth * 0.035),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.05,
-                                  vertical: screenWidth * 0.015,
-                                ),
-                                child: Text(
-                                  '${'Address'.tr} : ${data[0]['info']['address']['city']} , ${data[0]['info']['address']['street']}',
-                                  style:
-                                      TextStyle(fontSize: screenWidth * 0.035),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.05,
-                                  vertical: screenWidth * 0.015,
-                                ),
-                                child: Text(
-                                  '${'Subscription Ends'.tr} : 20/10/2024',
-                                  style:
-                                      TextStyle(fontSize: screenWidth * 0.035),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05,
+                              vertical: screenWidth * 0.015,
+                            ),
+                            child: Text(
+                              '${'Username'.tr} : ${data[0]['info']['name']}',
+                              style: TextStyle(fontSize: screenWidth * 0.035),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05,
+                              vertical: screenWidth * 0.015,
+                            ),
+                            child: Text(
+                              '${'phone'.tr} : ${data[0]['info']['phone']}',
+                              style: TextStyle(fontSize: screenWidth * 0.035),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05,
+                              vertical: screenWidth * 0.015,
+                            ),
+                            child: Text(
+                              '${'Business Name'.tr} : ${data[0]['businessName']}',
+                              style: TextStyle(fontSize: screenWidth * 0.035),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05,
+                              vertical: screenWidth * 0.015,
+                            ),
+                            child: Text(
+                              '${'Business Competence'.tr} : ${data[0]['businessCompetence']}',
+                              style: TextStyle(fontSize: screenWidth * 0.035),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05,
+                              vertical: screenWidth * 0.015,
+                            ),
+                            child: Text(
+                              '${'Address'.tr} : ${data[0]['info']['address']['city']} , ${data[0]['info']['address']['street']}',
+                              style: TextStyle(fontSize: screenWidth * 0.035),
+                            ),
+                          ),
+                          // Container(
+                          //   margin: EdgeInsets.symmetric(
+                          //     horizontal: screenWidth * 0.05,
+                          //     vertical: screenWidth * 0.015,
+                          //   ),
+                          //   child: Text(
+                          //     '${'Subscription Ends'.tr} : 20/10/2024',
+                          //     style:
+                          //         TextStyle(fontSize: screenWidth * 0.035),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

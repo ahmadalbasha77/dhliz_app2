@@ -86,7 +86,7 @@ class _StockInventoryScreenState extends State<StockInventoryScreen> {
                             id: widget.id,
                           ));
                     },
-                    child: Text("Add Stock".tr)),
+                    child: Text("Add Item".tr)),
               )
             ],
           ),

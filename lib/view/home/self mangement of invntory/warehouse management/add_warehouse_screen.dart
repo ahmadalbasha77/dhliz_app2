@@ -48,6 +48,8 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
   TextEditingController to = TextEditingController();
   String dateDifference = "";
 
+  final _formKey = GlobalKey<FormState>();
+
   void updateDateDifference() {
     if (from.text.isNotEmpty && to.text.isNotEmpty) {
       DateTime fromDate = DateFormat('yyyy-MM-dd').parse(from.text);
@@ -75,23 +77,26 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
       ),
       body: SingleChildScrollView(
         child: Form(
+          key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: 250,
-                child: Text(
-                  textAlign: TextAlign.center,
-                  'Properties of the warehouse to be added to the warehouse list'
-                      .tr,
-                  style: TextStyle(fontSize: 14, color: Colors.black54),
+              Center(
+                child: SizedBox(
+                  width: 250,
+                  child: Text(
+                    'Properties of the warehouse to be added to the warehouse list'
+                        .tr,
+                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
               SizedBox(
                 height: 40,
               ),
               Container(
-                alignment: Alignment.centerRight,
+                // alignment: Alignment.centerRight,
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 child: Text('Temperature'.tr,
                     style:
@@ -125,19 +130,26 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                 ),
               ),
               Container(
-                alignment: Alignment.centerRight,
+                // alignment: Alignment.centerRight,
                 margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 child: Text('Space Needed'.tr,
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
               Container(
-                height: 50,
+                // height: 80,
                 margin: EdgeInsets.symmetric(horizontal: 20),
-                child: TextField(
+                child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter the space you need'.tr;
+                      } else {}
+                    },
                     keyboardType: TextInputType.number,
                     controller: capacityController,
                     decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                         suffixText: 'M²'.tr,
                         suffixStyle:
                             TextStyle(fontSize: 16, color: Colors.black54),
@@ -148,6 +160,14 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none))),
@@ -161,7 +181,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                 height: 15,
               ),
               Container(
-                alignment: Alignment.centerRight,
+                // alignment: Alignment.centerRight,
                 margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 child: Text('Booking Date'.tr,
                     style:
@@ -172,7 +192,12 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                 children: [
                   Container(
                     width: 165,
-                    child: TextField(
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the date'.tr;
+                        } else {}
+                      },
                       readOnly: true,
                       controller: from,
                       onTap: () async {
@@ -208,6 +233,14 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide.none,
                         ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide.none,
@@ -220,7 +253,12 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                   ),
                   Container(
                     width: 165,
-                    child: TextField(
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the date'.tr;
+                        } else {}
+                      },
                       readOnly: true,
                       controller: to,
                       onTap: () async {
@@ -252,7 +290,15 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                         fillColor: Colors.white,
                         label: Text('To'.tr,
                             style: TextStyle(color: Colors.black38)),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
                         enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide.none,
                         ),
@@ -268,100 +314,106 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                   ),
                 ],
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                child: Text(dateDifference,
-                    style: TextStyle(color: Colors.black38)),
+              Center(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                  child: Text(dateDifference,
+                      style: TextStyle(color: Colors.black38)),
+                ),
               ),
               SizedBox(
                 height: 5,
               ),
-              Container(
-                alignment: Alignment.centerRight,
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                child: Text('Stock Type'.tr,
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: DropdownSearch<String>(
-                  popupProps: PopupProps.menu(
-                    showSearchBox: true,
-                    disabledItemFn: (String s) => s.startsWith('I'),
-                  ),
-                  items: [
-                    "Foodstuffs".tr,
-                    "Chemicals".tr,
-                    "Electrical materials".tr,
-                    'other'.tr
-                  ],
-                  dropdownDecoratorProps: DropDownDecoratorProps(
-                    dropdownSearchDecoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide.none,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: screenSize.height * 0.022,
-                        horizontal: screenSize.height * 0.015,
-                      ),
-                      label: Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: screenSize.width * 0.025,
-                        ),
-                        child: Text(
-                          'Type'.tr,
-                          style: TextStyle(color: Colors.black38),
-                        ),
-                      ),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      selected = value!;
-                    });
-                  },
-                ),
-              ),
-              if (selected == 'other')
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide.none,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: screenSize.height * 0.022,
-                      ),
-                      label: Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: screenSize.width * 0.025,
-                        ),
-                        child: Text(
-                          'What type of material ?'.tr,
-                          style: TextStyle(color: Colors.black38),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              // Container(
+              //   alignment: Alignment.centerRight,
+              //   margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              //   child: Text('Stock Type'.tr,
+              //       style:
+              //           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              // ),
+              // Container(
+              //   margin: EdgeInsets.symmetric(horizontal: 20),
+              //   child: DropdownSearch<String>(
+              //     popupProps: PopupProps.menu(
+              //       showSearchBox: true,
+              //       disabledItemFn: (String s) => s.startsWith('I'),
+              //     ),
+              //     items: [
+              //       "Foodstuffs".tr,
+              //       "Chemicals".tr,
+              //       "Electrical materials".tr,
+              //       'other'.tr
+              //     ],
+              //     dropdownDecoratorProps: DropDownDecoratorProps(
+              //       dropdownSearchDecoration: InputDecoration(
+              //         filled: true,
+              //         fillColor: Colors.white,
+              //         focusedBorder: OutlineInputBorder(
+              //           borderRadius: BorderRadius.circular(15),
+              //           borderSide: BorderSide.none,
+              //         ),
+              //         enabledBorder: OutlineInputBorder(
+              //           borderRadius: BorderRadius.circular(15),
+              //           borderSide: BorderSide.none,
+              //         ),
+              //         contentPadding: EdgeInsets.symmetric(
+              //           vertical: screenSize.height * 0.022,
+              //           horizontal: screenSize.height * 0.015,
+              //         ),
+              //         label: Container(
+              //           margin: EdgeInsets.symmetric(
+              //             horizontal: screenSize.width * 0.025,
+              //           ),
+              //           child: Text(
+              //             'Type'.tr,
+              //             style: TextStyle(color: Colors.black38),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     onChanged: (value) {
+              //       setState(() {
+              //         selected = value!;
+              //       });
+              //     },
+              //   ),
+              // ),
+              // if (selected == 'other')
+              //   Container(
+              //     margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              //     child: TextField(
+              //       decoration: InputDecoration(
+              //         filled: true,
+              //         fillColor: Colors.white,
+              //         focusedBorder: OutlineInputBorder(
+              //           borderRadius: BorderRadius.circular(15),
+              //           borderSide: BorderSide.none,
+              //         ),
+              //         enabledBorder: OutlineInputBorder(
+              //           borderRadius: BorderRadius.circular(15),
+              //           borderSide: BorderSide.none,
+              //         ),
+              //         contentPadding: EdgeInsets.symmetric(
+              //           vertical: screenSize.height * 0.022,
+              //         ),
+              //         label: Container(
+              //           margin: EdgeInsets.symmetric(
+              //             horizontal: screenSize.width * 0.025,
+              //           ),
+              //           child: Text(
+              //             'What type of material ?'.tr,
+              //             style: TextStyle(color: Colors.black38),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // SizedBox(
+              //   height: selected == 'other' ? 2 : 40,
+              // ),
+
               SizedBox(
-                height: selected == 'other' ? 2 : 40,
+                height: 100,
               ),
               Center(
                 child: Container(
@@ -377,25 +429,24 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                         ),
                       ),
                       backgroundColor: MaterialStateProperty.all(
-                        Color.fromARGB(255, 227, 227, 227),
+                        Color.fromARGB(255, 35, 37, 56),
                       ),
                     ),
                     onPressed: () {
-                      print(checkListItems[0]['value']);
-                      print(checkListItems[1]['value']);
-                      print(checkListItems[2]['value']);
-                      Get.off(MapScreen(
-                        space: int.tryParse(capacityController.text) ?? 0,
-                        dry: checkListItems[0]['value'],
-                        cold: checkListItems[1]['value'],
-                        freezing: checkListItems[2]['value'],
-                        from: from.text,
-                        to: to.text,
-                      ));
+                      if (_formKey.currentState!.validate()) {
+                        Get.off(MapScreen(
+                          space: int.tryParse(capacityController.text) ?? 0,
+                          dry: checkListItems[0]['value'],
+                          cold: checkListItems[1]['value'],
+                          freezing: checkListItems[2]['value'],
+                          from: from.text,
+                          to: to.text,
+                        ));
+                      }
                     },
                     child: Text(
                       'Continue'.tr,
-                      style: TextStyle(color: Colors.black54, fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
                 ),

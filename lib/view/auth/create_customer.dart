@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:dhliz_app/view/main/home_screen.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../network/api_url.dart';
+import '../main_screen.dart';
 
 class SharedPrefsHelper {
   static Future<void> saveLoginState(bool isLogin) async {
@@ -43,8 +45,8 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
           "city": cityController.text,
           "state": stateController.text,
           "street": streetController.text,
-          "lat": latController.text,
-          "lot": lotController.text
+          "lat": '2.0',
+          "lot": '25.5'
         }
       }
     };
@@ -75,9 +77,9 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
 
         // Save login state (assuming the user is logged in after creating a customer)
         SharedPrefsHelper.saveLoginState(true);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => MainScreen()),
         );
         // Now you can use the postId variable as needed.
       }
@@ -109,67 +111,124 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
   TextEditingController streetController = TextEditingController();
   TextEditingController latController = TextEditingController();
   TextEditingController lotController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Data Entry Screen'),
+        centerTitle: true,
+        title: Text('User Registration'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextField(
-                controller: businessNameController,
-                decoration: InputDecoration(labelText: 'Business Name'),
-              ),
-              TextField(
-                controller: businessCompetenceController,
-                decoration: InputDecoration(labelText: 'Business Competence'),
-              ),
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: phoneController,
-                decoration: InputDecoration(labelText: 'Phone'),
-              ),
-              TextField(
-                controller: phone2Controller,
-                decoration: InputDecoration(labelText: 'Phone 2'),
-              ),
-              TextField(
-                controller: cityController,
-                decoration: InputDecoration(labelText: 'City'),
-              ),
-              TextField(
-                controller: stateController,
-                decoration: InputDecoration(labelText: 'State'),
-              ),
-              TextField(
-                controller: streetController,
-                decoration: InputDecoration(labelText: 'Street'),
-              ),
-              TextField(
-                controller: latController,
-                decoration: InputDecoration(labelText: 'Latitude'),
-              ),
-              TextField(
-                controller: lotController,
-                decoration: InputDecoration(labelText: 'Longitude'),
-              ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () async {
-                  postData();
-                },
-                child: Text('Submit'),
-              ),
-            ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter this field'.tr;
+                    } else {}
+                  },
+                  controller: businessNameController,
+                  decoration: InputDecoration(labelText: 'Business Name'.tr),
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter this field'.tr;
+                    } else {}
+                  },
+                  controller: businessCompetenceController,
+                  decoration:
+                      InputDecoration(labelText: 'Business Competence'.tr),
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter this field'.tr;
+                    } else {}
+                  },
+                  controller: nameController,
+                  decoration: InputDecoration(labelText: 'Name'.tr),
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter this field'.tr;
+                    } else {}
+                  },
+                  controller: phoneController,
+                  decoration: InputDecoration(labelText: 'Phone'.tr),
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter this field'.tr;
+                    } else {}
+                  },
+                  controller: phone2Controller,
+                  decoration: InputDecoration(labelText: 'Phone 2'.tr),
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter this field'.tr;
+                    } else {}
+                  },
+                  controller: cityController,
+                  decoration: InputDecoration(labelText: 'City'.tr),
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter this field'.tr;
+                    } else {}
+                  },
+                  controller: stateController,
+                  decoration: InputDecoration(labelText: 'State'.tr),
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter this field'.tr;
+                    } else {}
+                  },
+                  controller: streetController,
+                  decoration: InputDecoration(labelText: 'Street'.tr),
+                ),
+                // TextField(
+                //   controller: latController,
+                //   decoration: InputDecoration(labelText: 'Latitude'),
+                // ),
+                // TextField(
+                //   controller: lotController,
+                //   decoration: InputDecoration(labelText: 'Longitude'),
+                // ),
+                SizedBox(height: 16),
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(
+                    Color.fromARGB(255, 35, 37, 56),
+                  )),
+                  onPressed: () async {
+                    if(_formKey.currentState!.validate()){
+                      postData();
+                    }
+
+                  },
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

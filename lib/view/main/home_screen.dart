@@ -66,6 +66,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
                             child: Text(
@@ -80,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                           margin: EdgeInsets.symmetric(
                               horizontal: screenSize.width * 0.035),
                           child: Container(
-                            width: 160,
+                            width: 170,
                             child: Text(
                               "you can enter, withdraw, and transfer the inventory alone"
                                   .tr,
@@ -139,6 +140,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
                             child: Text(
@@ -153,7 +155,7 @@ class HomeScreen extends StatelessWidget {
                           margin: EdgeInsets.symmetric(
                               horizontal: screenSize.width * 0.035),
                           child: Container(
-                            width: 160,
+                            width: 170,
                             child: Text(
                               "you can add your inventory by customer care".tr,
                               style: TextStyle(

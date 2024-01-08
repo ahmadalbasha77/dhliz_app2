@@ -18,7 +18,7 @@ class MainController extends GetxController {
   final tabs = [
     const HomeScreen(),
     const TransactionScreen(),
-    const NotificationScreen(),
+    // const NotificationScreen(),
     const ProfileScreen(),
   ];
 }

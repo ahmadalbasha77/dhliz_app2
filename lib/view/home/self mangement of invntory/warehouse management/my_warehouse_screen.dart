@@ -28,7 +28,7 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
     int? id = prefs.getInt('postId');
     print(id);
 
-    https://8021-176-29-239-106.ngrok-free.app/api/Customer/GetSupscriptionByCustomerId
+    https: //8021-176-29-239-106.ngrok-free.app/api/Customer/GetSupscriptionByCustomerId
     final response = await http.get(Uri.parse(
         '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=$id'));
 
@@ -85,7 +85,7 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
           Expanded(
             child: data.isEmpty
                 ? FutureBuilder(
-                    future: Future.delayed(Duration(seconds: 3)),
+                    future: Future.delayed(Duration(seconds: 7)),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -180,7 +180,7 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Text(
-                                  '${'Price'.tr} : ${data[index]['warehouse']['price']}  SAR / 1 M² per month',
+                                  '${'Price'.tr} : ${data[index]['warehouse']['price']['cost']}  SAR / 1 M² per month',
                                   style: TextStyle(
                                     fontSize: 11,
                                   )),
@@ -261,18 +261,27 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                                   barRadius: Radius.circular(15),
                                   width: 250,
                                   lineHeight: 14.0,
-                                  percent: data[index]['warehouse']
-                                          ['spaceUsed'] /
+                                  trailing: Text(
+                                    ((data[index]['warehouse']['spaceUsed'] /
+                                                    data[index]
+                                                        ['reservedSpace']) *
+                                                100)
+                                            .toStringAsFixed(2) +
+                                        '%', // Adjust the number of decimal places as needed
+                                  ),
+                                  percent: (data[index]['warehouse']
+                                              ['spaceUsed'] /
+                                          data[index]['reservedSpace']) *
                                       100,
                                   backgroundColor: Colors.grey,
                                   progressColor: Colors.black54,
                                 ),
-                                Text(
-                                  '${data[index]['warehouse']['spaceUsed']}%',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                )
+                                // Text(
+                                //   '${data[index]['warehouse']['spaceUsed']}%',
+                                //   style: TextStyle(
+                                //       fontSize: 14,
+                                //       fontWeight: FontWeight.bold),
+                                // )
                               ],
                             ),
                             Container(

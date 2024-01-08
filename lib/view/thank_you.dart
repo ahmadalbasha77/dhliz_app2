@@ -11,7 +11,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Thank You')),
+      body: Center(child: Text('Coming Soon')),
     );
   }
 }

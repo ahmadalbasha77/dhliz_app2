@@ -261,7 +261,8 @@ class _PayScreenState extends State<PayScreen> {
                   borderRadius: BorderRadius.circular(20),
                 )),
                 backgroundColor: MaterialStateProperty.all(
-                  Color.fromARGB(245, 211, 211, 211),
+                  Color.fromARGB(255, 35, 37, 56),
+
                 ),
               ),
               onPressed: () {
@@ -282,7 +283,7 @@ class _PayScreenState extends State<PayScreen> {
               },
               child: Text(
                 'Pay now'.tr,
-                style: TextStyle(color: Colors.black54, fontSize: 20),
+                style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
           )

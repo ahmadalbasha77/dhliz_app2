@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/warehouse%20management/map_warehouse.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -8,8 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../network/api_url.dart';
-import '../../../thank_you.dart';
-import '../withdrawd/withdraw_warehouse_screen.dart';
+import '../warehouse management/map_warehouse.dart';
 import 'transfer_inventory_screen.dart';
 
 class TransferWarehouseScreen extends StatefulWidget {
@@ -67,29 +65,29 @@ class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Expanded(
-            child:data.isEmpty
+            child: data.isEmpty
                 ? FutureBuilder(
-              future: Future.delayed(Duration(seconds: 3)),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('No Data'),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Text('Check your internet connection',
-                            style: TextStyle(color: Colors.red)),
-                      ],
-                    ),
-                  );
-                }
-              },
-            )
+                    future: Future.delayed(Duration(seconds: 3)),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('No Data'),
+                              SizedBox(
+                                height: 50,
+                              ),
+                              Text('Check your internet connection',
+                                  style: TextStyle(color: Colors.red)),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                  )
                 : ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (context, index) => Container(
@@ -164,7 +162,7 @@ class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Text(
-                                  '${'Price'.tr} : ${data[index]['warehouse']['price']}  SAR / 1 M² per month',
+                                  '${'Price'.tr} : ${data[index]['warehouse']['price']['cost']}  SAR / 1 M² per month',
                                   style: TextStyle(
                                     fontSize: 11,
                                   )),
@@ -177,28 +175,27 @@ class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
                                       fontWeight: FontWeight.bold)),
                             ),
                             Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                     child: Row(children: [
-                                      AbsorbPointer(
-                                        absorbing: true,
-                                        child: Checkbox(
-                                          fillColor: MaterialStatePropertyAll(
-                                              Colors.black),
-                                          value: data[index]['warehouse']
+                                  AbsorbPointer(
+                                    absorbing: true,
+                                    child: Checkbox(
+                                      fillColor: MaterialStatePropertyAll(
+                                          Colors.black),
+                                      value: data[index]['warehouse']
                                           ['temperature']['high'],
-                                          onChanged: (value) {},
-                                        ),
-                                      ),
-                                      Text(
-                                        'Dry'.tr,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ])),
+                                      onChanged: (value) {},
+                                    ),
+                                  ),
+                                  Text(
+                                    'Dry'.tr,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ])),
                                 Row(children: [
                                   AbsorbPointer(
                                     absorbing: true,
@@ -206,7 +203,7 @@ class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
                                       fillColor: MaterialStatePropertyAll(
                                           Colors.black),
                                       value: data[index]['warehouse']
-                                      ['temperature']['cold'],
+                                          ['temperature']['cold'],
                                       onChanged: (bool? value) {},
                                     ),
                                   ),
@@ -224,7 +221,7 @@ class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
                                       fillColor: MaterialStatePropertyAll(
                                           Colors.black),
                                       value: data[index]['warehouse']
-                                      ['temperature']['freezing'],
+                                          ['temperature']['freezing'],
                                       onChanged: (bool? value) {},
                                     ),
                                   ),

@@ -16,6 +16,9 @@ class SelfManagementOfInventoryScreen extends StatefulWidget {
 
 class _SelfManagementOfInventoryScreenState
     extends State<SelfManagementOfInventoryScreen> {
+
+
+
   @override
   Widget build(BuildContext context) {
     // Get the screen size

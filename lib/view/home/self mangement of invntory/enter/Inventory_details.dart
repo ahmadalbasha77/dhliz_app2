@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../network/api_url.dart';
 
@@ -199,23 +200,80 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
             SizedBox(
               height: 20,
             ),
-            SizedBox(
-              height: 200,
-            ),
-            Center(
-              child: Container(
-                width: 350,
-                margin: EdgeInsets.symmetric(horizontal: 20),
+            Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: screenWidth * 0.02,
+                    horizontal: screenWidth * 0.05),
                 child: Text(
-                    textAlign: TextAlign.center,
-                    'Note: The stock to be stored must be the same as the stored stock'
-                        .tr,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black54)),
+                  'Enter date'.tr,
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Color.fromARGB(255, 38, 50, 56),
+                      fontWeight: FontWeight.w500),
+                )),
+            Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: 25,
               ),
+              child: TextField(
+                  readOnly: true,
+                  controller: date,
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        //DateTime.now() - not to allow to choose before today.
+                        lastDate: DateTime(2101));
+
+                    if (pickedDate != null) {
+                      print(
+                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                      String formattedDate =
+                          DateFormat('yyyy-MM-dd').format(pickedDate);
+                      print(
+                          formattedDate); //formatted date output using intl package =>  2021-03-16
+                      //you can implement different kind of Date Format here according to your requirement
+
+                      setState(() {
+                        date.text =
+                            formattedDate; //set output date to TextField value.
+                      });
+                    } else {
+                      print("Date is not selected");
+                    }
+                  },
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.calendar_month_sharp),
+                    filled: true,
+                    fillColor: Colors.white,
+                    label: Text('date'.tr,
+                        style: TextStyle(color: Colors.black54)),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none),
+                  )),
             ),
+            SizedBox(
+              height: 170,
+            ),
+            // Center(
+            //   child: Container(
+            //     width: 350,
+            //     margin: EdgeInsets.symmetric(horizontal: 20),
+            //     child: Text(
+            //         textAlign: TextAlign.center,
+            //         'Note: The stock to be stored must be the same as the stored stock'
+            //             .tr,
+            //         style: TextStyle(
+            //             fontSize: 14,
+            //             fontWeight: FontWeight.bold,
+            //             color: Colors.black54)),
+            //   ),
+            // ),
             Center(
               child: Container(
                 width: 270,

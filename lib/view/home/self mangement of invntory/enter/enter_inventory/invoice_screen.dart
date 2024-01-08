@@ -52,14 +52,18 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text('invoice'.tr),
+        title: Text(
+          'invoice'.tr,
+          style: TextStyle(color: Colors.black),
+        ),
         actions: [
-          IconButton(
+          TextButton(
               onPressed: () {
-                Get.off(() => const MyWareHouseScreen());
+                Navigator.of(context).pop();
               },
-              icon: Text(
+              child: Text(
                 'done'.tr,
                 style: TextStyle(color: Colors.blue),
               ))
@@ -153,23 +157,26 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       child: pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                           children: [
-                            widget.dry == true?
-                            pw.Text(
-                              '- Dry : ',
-                              style: pw.TextStyle(
-                                fontSize: 16,
-                              ),
-                            ):pw.Container(),
-                            widget.cold == true?
-                            pw.Text(
-                              '- Cold',
-                              style: pw.TextStyle(fontSize: 16),
-                            ):pw.Container(),
-                            widget.freezing == true?
-                            pw.Text(
-                              '- Freezing',
-                              style: pw.TextStyle(fontSize: 16),
-                            ):pw.Container(),
+                            widget.dry == true
+                                ? pw.Text(
+                                    '- Dry : ',
+                                    style: pw.TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  )
+                                : pw.Container(),
+                            widget.cold == true
+                                ? pw.Text(
+                                    '- Cold',
+                                    style: pw.TextStyle(fontSize: 16),
+                                  )
+                                : pw.Container(),
+                            widget.freezing == true
+                                ? pw.Text(
+                                    '- Freezing',
+                                    style: pw.TextStyle(fontSize: 16),
+                                  )
+                                : pw.Container(),
                           ]),
                     ),
                     pw.Container(

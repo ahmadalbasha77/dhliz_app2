@@ -66,7 +66,7 @@ class _InventoryWarehouseState extends State<InventoryWarehouse> {
           Expanded(
             child: data.isEmpty
                 ? FutureBuilder(
-              future: Future.delayed(Duration(seconds: 3)),
+              future: Future.delayed(Duration(seconds: 7)),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -160,7 +160,7 @@ class _InventoryWarehouseState extends State<InventoryWarehouse> {
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Text(
-                                  '${'Price'.tr} :  ${data[index]['warehouse']['price']} SAR / 1 M² per month',
+                                  '${'Price'.tr} :  ${data[index]['warehouse']['price']['cost']} SAR / 1 M² per month',
                                   style: TextStyle(
                                     fontSize: 11,
                                   )),

@@ -44,9 +44,9 @@ class _MainScreenState extends State<MainScreen> {
                   GButton(
                     icon: Icons.compare_arrows,
                   ),
-                  GButton(
-                    icon: Icons.notifications,
-                  ),
+                  // GButton(
+                  //   icon: Icons.notifications,
+                  // ),
                   GButton(
                     icon: Icons.account_circle,
                   ),
