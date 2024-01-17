@@ -25,8 +25,10 @@ class _InventoryWarehouseState extends State<InventoryWarehouse> {
     int? id = prefs.getInt('postId');
     print(id);
 
-    final response = await http.get(Uri.parse(
-        '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=$id'));
+    final response = await http.get(
+        Uri.parse(
+            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=2'),
+        headers: {'Authorization': ApiUrl.tokenLogin});
 
     if (response.statusCode == 200) {
       setState(() {
@@ -66,28 +68,28 @@ class _InventoryWarehouseState extends State<InventoryWarehouse> {
           Expanded(
             child: data.isEmpty
                 ? FutureBuilder(
-              future: Future.delayed(Duration(seconds: 7)),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('No Data'),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Text('Check your internet connection',
-                            style: TextStyle(color: Colors.red)),
-                      ],
-                    ),
-                  );
-                }
-              },
-            )
-                :  ListView.builder(
+                    future: Future.delayed(Duration(seconds: 7)),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('No Data'),
+                              SizedBox(
+                                height: 50,
+                              ),
+                              Text('Check your internet connection',
+                                  style: TextStyle(color: Colors.red)),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                  )
+                : ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (context, index) => Container(
                       margin:

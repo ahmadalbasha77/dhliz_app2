@@ -166,12 +166,7 @@ class _StockInventoryScreenState extends State<StockInventoryScreen> {
                                               .push(MaterialPageRoute(
                                             builder: (context) =>
                                                 InventoryDetailsScreen(
-                                              id: data[index]['id'],
-                                              nameWarehouse: data[index]
-                                                  ['name'],
-                                              desWarehouse: data[index]
-                                                  ['description'],
-                                              image: data[index]['photo'],
+                                              data: data[index],
                                             ),
                                           ));
                                         },

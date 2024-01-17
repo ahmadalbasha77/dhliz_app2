@@ -11,11 +11,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import '../../../../config/app_color.dart';
-import '../../../../config/constant.dart';
-import '../../../../config/enum/action_enum.dart';
 import '../../../../network/api_url.dart';
-import '../../../main/home_screen.dart';
-import '../warehouse management/my_warehouse_screen.dart';
+import 'Inventory_details.dart';
 
 class AddStockScreen extends StatefulWidget {
   int id;
@@ -27,18 +24,22 @@ class AddStockScreen extends StatefulWidget {
 }
 
 class _AddStockScreenState extends State<AddStockScreen> {
+  bool isLoading = false;
+
   void postData() async {
-    final String apiUrl =
-        '${ApiUrl.API_BASE_URL}/Stock/Create';
+    setState(() {
+      isLoading = true;
+    });
+    final String apiUrl = '${ApiUrl.API_BASE_URL}/Stock/Create';
 
     Map<String, dynamic> requestBody = {
-      "name": controllerName.text,
-      "code": controllerCode.text,
-      "brand": controllerBrand.text,
-      "upc": controllerUpc.text,
-      "photo": _image!.path.toString(),
-      "description": controllerDescription.text,
-      "capacity": controllerCapacity.text,
+      "Name": controllerName.text,
+      "Code": controllerCode.text,
+      "Brand": controllerBrand.text,
+      "UPC": controllerUpc.text,
+      "Photo": _image!.path.toString(),
+      "Description": controllerDescription.text,
+      "Capacity": controllerCapacity.text,
       "subscriptionId": widget.id,
       "temperature": {
         "high": true,
@@ -74,11 +75,15 @@ class _AddStockScreenState extends State<AddStockScreen> {
 
       // Parse the JSON response
       Map<String, dynamic> jsonResponse = json.decode(response.body);
-      print(jsonResponse);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MyWareHouseScreen()),
-      );
+      print(jsonResponse['response'][0]);
+      print('***********************************');
+
+      Get.off(() => InventoryDetailsScreen(
+            data: jsonResponse['response'][0],
+          ));
+      setState(() {
+        isLoading = false;
+      });
       // Now you can use the postId variable as needed.
     } else {
       print("Failed to make POST request. Status code: ${response.statusCode}");
@@ -154,7 +159,6 @@ class _AddStockScreenState extends State<AddStockScreen> {
 
   @override
   void initState() {
-
     print(widget.id);
     super.initState();
   }
@@ -171,7 +175,7 @@ class _AddStockScreenState extends State<AddStockScreen> {
         onPressed: () {
           postData();
         },
-        child: Icon(Icons.add),
+        child: isLoading ?CircularProgressIndicator(): Icon(Icons.add)  ,
       ),
       backgroundColor: Color.fromARGB(255, 225, 225, 225),
       appBar: AppBar(
@@ -254,6 +258,7 @@ class _AddStockScreenState extends State<AddStockScreen> {
                   horizontal: screenSize.width * 0.04,
                   vertical: screenSize.height * 0.015),
               child: TextField(
+                keyboardType: TextInputType.number,
                 controller: controllerCapacity,
                 decoration: InputDecoration(
                   suffixText: 'M²'.tr,
@@ -281,16 +286,13 @@ class _AddStockScreenState extends State<AddStockScreen> {
                   horizontal: screenSize.width * 0.04,
                   vertical: screenSize.height * 0.015),
               child: TextField(
+                keyboardType: TextInputType.number,
                 controller: controllerCode,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                       onPressed: () async {
-                        var res = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const SimpleBarcodeScannerPage(),
-                            ));
+                        var res =
+                            await Get.to(() => SimpleBarcodeScannerPage());
                         setState(() {
                           if (res is String) {
                             result = res;
@@ -349,6 +351,7 @@ class _AddStockScreenState extends State<AddStockScreen> {
                   horizontal: screenSize.width * 0.04,
                   vertical: screenSize.height * 0.015),
               child: TextField(
+                keyboardType: TextInputType.number,
                 controller: controllerUpc,
                 decoration: InputDecoration(
                   label: Text(

@@ -6,6 +6,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../../network/api_url.dart';
+import '../payment_screen.dart';
 import 'invoice_screen.dart';
 
 class PayScreen extends StatefulWidget {
@@ -45,17 +46,19 @@ class PayScreen extends StatefulWidget {
 }
 
 class _PayScreenState extends State<PayScreen> {
-  double calculateTotalPrice() {
-    return widget.price * widget.capacity;
+
+  int calculateTotalPrice() {
+    return int.parse(((widget.price * widget.capacity).round()).toString());
   }
 
   void postData() async {
+    final totalPrice = calculateTotalPrice();
     final String apiUrl = '${ApiUrl.API_BASE_URL}/Subscription/Create';
 
     Map<String, dynamic> requestBody = {
-      "reservedSpace": widget.capacity,
-      "customerId": widget.customerId,
-      "warehouseId": int.parse(widget.warehouseId),
+      "ReservedSpace": widget.capacity.toString(),
+      "CustomerId": '2',
+      "WarehouseId": widget.warehouseId,
     };
 
     final response = await http.post(
@@ -69,9 +72,24 @@ class _PayScreenState extends State<PayScreen> {
     if (response.statusCode == 200) {
       print("POST request successful!");
       print("Response: ${response.body}");
+      Get.off(PaymentScreen(amount: totalPrice,));
+      // Get.off(InvoiceScreen(
+      //   warehouseId: widget.warehouseId,
+      //   warehouseName: widget.warehouseName,
+      //   space: widget.space,
+      //   address: widget.address,
+      //   total: totalPrice,
+      //   fromDate: widget.from,
+      //   toDate: widget.to,
+      //   dry: widget.dry,
+      //   cold: widget.cold,
+      //   freezing: widget.freezing,
+      // ));
     } else {
       print("Failed to make POST request. Status code: ${response.statusCode}");
       print("Response: ${response.body}");
+      print("Request Body: $requestBody");
+
     }
   }
 
@@ -86,7 +104,6 @@ class _PayScreenState extends State<PayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final totalPrice = calculateTotalPrice();
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 231, 231, 231),
       appBar: AppBar(
@@ -262,24 +279,10 @@ class _PayScreenState extends State<PayScreen> {
                 )),
                 backgroundColor: MaterialStateProperty.all(
                   Color.fromARGB(255, 35, 37, 56),
-
                 ),
               ),
               onPressed: () {
                 postData();
-
-                Get.off(InvoiceScreen(
-                  warehouseId: widget.warehouseId,
-                  warehouseName: widget.warehouseName,
-                  space: widget.space,
-                  address: widget.address,
-                  total: totalPrice,
-                  fromDate: widget.from,
-                  toDate: widget.to,
-                  dry: widget.dry,
-                  cold: widget.cold,
-                  freezing: widget.freezing,
-                ));
               },
               child: Text(
                 'Pay now'.tr,

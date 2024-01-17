@@ -27,7 +27,7 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
     print(id);
 
     final response = await http.get(Uri.parse(
-        '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=$id'));
+        '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=2'), headers: {'Authorization': ApiUrl.tokenLogin});
 
     if (response.statusCode == 200) {
       setState(() {

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dhliz_app/view/auth/login_screen.dart';
+import 'package:dhliz_app/view/main/home_screen.dart';
 import 'package:dhliz_app/view/main_screen.dart';
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,14 +45,14 @@ class _SplashScreenState extends State<SplashScreen> {
     if (await isLogin == true) {
       Get.offAll(() => const MainScreen());
     } else {
-      Get.offAll(() => const CreateCustomerScreen());
+      Get.offAll(() => const MainScreen());
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return EasySplashScreen(
-      logo: Image.asset('image/home/Artboard 10.png'),
+      logo: Image.asset('image/dehliz/logo_dhlez.png'),
       logoWidth: 100,
       backgroundColor: Colors.white,
       showLoader: true,

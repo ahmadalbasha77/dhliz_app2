@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../network/api_url.dart';
-import '../../../thank_you.dart';
 import 'add_warehouse_screen.dart';
 import 'stock_warehouse.dart';
 
@@ -29,8 +28,10 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
     print(id);
 
     https: //8021-176-29-239-106.ngrok-free.app/api/Customer/GetSupscriptionByCustomerId
-    final response = await http.get(Uri.parse(
-        '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=$id'));
+    final response = await http.get(
+        Uri.parse(
+            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=2'),
+        headers: {'Authorization': ApiUrl.tokenLogin});
 
     if (response.statusCode == 200) {
       setState(() {
@@ -306,27 +307,27 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                                   style: TextStyle(
                                       fontSize: 13, color: Colors.black54),
                                 ),
-                                SizedBox(
-                                  height: 30,
-                                  child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStatePropertyAll(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10))),
-                                          backgroundColor:
-                                              MaterialStatePropertyAll(
-                                            Color.fromARGB(255, 253, 191, 8),
-                                          )),
-                                      onPressed: () {
-                                        Get.off(ThankYouScreen());
-                                      },
-                                      child: Text(
-                                        'Upgrade Space'.tr,
-                                        style: TextStyle(fontSize: 10),
-                                      )),
-                                )
+                                // SizedBox(
+                                //   height: 30,
+                                //   child: ElevatedButton(
+                                //       style: ButtonStyle(
+                                //           shape: MaterialStatePropertyAll(
+                                //               RoundedRectangleBorder(
+                                //                   borderRadius:
+                                //                       BorderRadius.circular(
+                                //                           10))),
+                                //           backgroundColor:
+                                //               MaterialStatePropertyAll(
+                                //             Color.fromARGB(255, 253, 191, 8),
+                                //           )),
+                                //       onPressed: () {
+                                //         Get.off(ThankYouScreen());
+                                //       },
+                                //       child: Text(
+                                //         'Upgrade Space'.tr,
+                                //         style: TextStyle(fontSize: 10),
+                                //       )),
+                                // )
                               ],
                             ),
                           ],

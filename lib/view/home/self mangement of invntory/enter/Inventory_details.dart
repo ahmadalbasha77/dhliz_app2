@@ -9,18 +9,12 @@ import 'package:intl/intl.dart';
 import '../../../../network/api_url.dart';
 
 class InventoryDetailsScreen extends StatefulWidget {
-  int id;
-  String nameWarehouse;
-  String desWarehouse;
-  String image;
+  Map<String, dynamic> data;
 
-  InventoryDetailsScreen(
-      {Key? key,
-      required this.id,
-      required this.nameWarehouse,
-      required this.desWarehouse,
-      required this.image})
-      : super(key: key);
+  InventoryDetailsScreen({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   State<InventoryDetailsScreen> createState() => _InventoryDetailsScreenState();
@@ -33,7 +27,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
     Map<String, dynamic> requestBody = {
       "quantity": int.parse(space.text),
       "actionType": 1,
-      "fromStockId": widget.id,
+      "fromStockId": widget.data['id'],
       "rejectReason": "string"
     };
 
@@ -67,6 +61,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
 
   void initState() {
     date.text = "";
+    print(widget.data);
     super.initState();
   }
 
@@ -84,8 +79,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
         backgroundColor: Colors.white,
-        title:
-            Text(widget.nameWarehouse, style: TextStyle(color: Colors.black)),
+        title: Text('Enter Stock', style: TextStyle(color: Colors.black)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -106,8 +100,10 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                             vertical: screenWidth * 0.02,
                             horizontal: screenWidth * 0.03),
                         child: CircleAvatar(
-                            backgroundImage:
-                                Image.file(File(widget.image)).image,
+                            backgroundImage: Image.file(File(
+                                    widget.data['photo'] ??
+                                        widget.data['Photo']))
+                                .image,
                             radius: screenWidth * 0.12),
                       )
                     ],
@@ -119,7 +115,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                         margin: EdgeInsets.only(
                             top: screenWidth * 0.04,
                             bottom: screenWidth * 0.01),
-                        child: Text(widget.nameWarehouse,
+                        child: Text(widget.data['name'] ?? widget.data['Name'],
                             style: TextStyle(fontSize: screenWidth * 0.047)),
                       ),
                       SizedBox(
@@ -128,7 +124,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                       Container(
                         margin: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.008),
-                        child: Text('${'Stock ID'.tr} : ${widget.id}',
+                        child: Text('${'Stock ID'.tr} : ${widget.data['id']??widget.data['Id']}',
                             style: TextStyle(
                                 color: Colors.black54,
                                 fontSize: screenWidth * 0.026)),
@@ -137,7 +133,8 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                         height: 7,
                       ),
                       Container(
-                        child: Text('${'Barcode'.tr}: 2000211',
+                        child: Text(
+                            '${'Barcode'.tr}: ${widget.data['code'] ?? widget.data['Code']}',
                             style:
                                 TextStyle(color: Colors.black54, fontSize: 12)),
                       ),
@@ -145,7 +142,8 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                         height: 7,
                       ),
                       Container(
-                        child: Text('${"The number".tr}: 122000',
+                        child: Text(
+                            '${"The number".tr}: ${widget.data['upc'] ?? widget.data['UPC']}',
                             style:
                                 TextStyle(color: Colors.black54, fontSize: 12)),
                       ),
@@ -155,7 +153,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                       Container(
                         width: 230,
                         margin: EdgeInsets.only(bottom: screenWidth * 0.015),
-                        child: Text(widget.desWarehouse,
+                        child: Text(widget.data['description'] ?? widget.data['Description'],
                             style:
                                 TextStyle(color: Colors.black87, fontSize: 13)),
                       ),

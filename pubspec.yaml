@@ -71,6 +71,8 @@ dependencies:
   shared_preferences: ^2.2.2
   location:
   geocoding: ^2.1.1
+  moyasar: ^2.0.5
+
 
 
 

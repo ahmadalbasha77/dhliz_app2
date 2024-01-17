@@ -1,11 +1,9 @@
-
-
 class ApiUrl {
   // ignore: non_constant_identifier_names
   static String API_BASE_URL =
-      "https://api.dhlez.sa/api";
+      "https://52aa-176-29-240-49.ngrok-free.app/api";
 
-
+  static String tokenLogin = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwIiwiZ2l2ZW5fbmFtZSI6InN0cmluZyIsInVuaXF1ZV9uYW1lIjoiQ3VzdG9tZXIiLCJqdGkiOiIxYmI1YTEyOC0zZWFlLTRlYWMtOWI2Yy03ZTIxZTUwZjU1OGEiLCJleHAiOjE3MDU0Nzg2NzMsImlzcyI6IkRobGl6IiwiYXVkIjoiRGhsaXoifQ.FXfqAzifkyBOm_TdBv7Oi9lcv96re6RR3X5EBsTVrOk';
 
 
   // ignore: non_constant_identifier_names

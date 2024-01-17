@@ -72,7 +72,21 @@ class _TransactionScreenState extends State<TransactionScreen> {
         backgroundColor: Colors.white,
       ),
       body: data.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? FutureBuilder(
+              future: Future.delayed(Duration(seconds: 7)),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  return Center(
+                    child: Text(
+                      'No Data',
+                      style: TextStyle(color: Colors.red[700], fontSize: 18),
+                    ),
+                  );
+                }
+              },
+            )
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

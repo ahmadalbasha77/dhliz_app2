@@ -6,8 +6,7 @@ import 'package:intl/intl.dart';
 import '../enter/enter_inventory/map_screen.dart';
 
 class AddWarehouseScreen extends StatefulWidget {
-  // final ActionEnum action;
-  // final MyWarehouseDataModel data;
+
 
   const AddWarehouseScreen({
     Key? key,

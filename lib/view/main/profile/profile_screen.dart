@@ -24,8 +24,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int? id = prefs.getInt('postId');
       print(id);
-      final response = await http
-          .get(Uri.parse('${ApiUrl.API_BASE_URL}/Customer/GetById?id=$id'));
+      final response = await http.get(
+          Uri.parse('${ApiUrl.API_BASE_URL}/Customer/GetById?id=2'),
+          headers: {'Authorization': ApiUrl.tokenLogin});
       print(response.body);
 
       if (response.statusCode == 200) {

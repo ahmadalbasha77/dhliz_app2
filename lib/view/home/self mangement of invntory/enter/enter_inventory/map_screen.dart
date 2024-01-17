@@ -627,10 +627,9 @@ class _MapScreenState extends State<MapScreen> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
-                                                      Navigator.pop(
-                                                          context);
-                                                      Get.off(()=>
-                                                        WarehouseDetails(
+                                                      Navigator.pop(context);
+                                                      Get.off(
+                                                        () => WarehouseDetails(
                                                           address:
                                                               selectWarehouse!
                                                                   .address,
