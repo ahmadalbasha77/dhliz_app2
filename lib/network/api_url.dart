@@ -1,10 +1,10 @@
 class ApiUrl {
   // ignore: non_constant_identifier_names
-  static String API_BASE_URL =
-      "https://52aa-176-29-240-49.ngrok-free.app/api";
+  static String API_BASE_URL = "https://4cb4-176-29-242-145.ngrok-free.app/api";
 
-  static String tokenLogin = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwIiwiZ2l2ZW5fbmFtZSI6InN0cmluZyIsInVuaXF1ZV9uYW1lIjoiQ3VzdG9tZXIiLCJqdGkiOiIxYmI1YTEyOC0zZWFlLTRlYWMtOWI2Yy03ZTIxZTUwZjU1OGEiLCJleHAiOjE3MDU0Nzg2NzMsImlzcyI6IkRobGl6IiwiYXVkIjoiRGhsaXoifQ.FXfqAzifkyBOm_TdBv7Oi9lcv96re6RR3X5EBsTVrOk';
+  static String tokenLogin =
 
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6IiIsIlBob25lIjoiMDc5MTkzNzg1NyIsIk5hbWUiOiJ6YWlkIiwiUGVybWlzc2lvbiI6IkN1c3RvbWVyLkdldEFsbER0byIsImV4cCI6MTcwNjA5MjYxOH0.89CzeosH0GL5nDfgs7Jh0Q3gCZw1KFJJ4o-VfOciTZg';
 
   // ignore: non_constant_identifier_names
   static String LOGIN = "/Auth/Login";
@@ -144,11 +144,8 @@ class ApiUrl {
 
 // -----------------End transfer warehouse --------------------------
 
-
 //**************************************** NEW API ****************************************************
 //***************************************** New API ***************************************************
 
   static String GET_WAREHOUSES_IN_MAP = "/Warehouse/GetAllWarehouseLabelDto";
-
-
 }

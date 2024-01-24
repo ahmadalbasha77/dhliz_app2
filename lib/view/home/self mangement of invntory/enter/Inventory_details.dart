@@ -25,11 +25,15 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
     final String apiUrl = '${ApiUrl.API_BASE_URL}/Transaction/Create';
 
     Map<String, dynamic> requestBody = {
-      "quantity": int.parse(space.text),
+      "id": 0,
+      "quantity": space.text,
       "actionType": 1,
+      "status": 0,
       "fromStockId": widget.data['id'],
+      "toStockId": widget.data['id'],
       "rejectReason": "string"
     };
+    print(requestBody);
 
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -41,7 +45,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
 
     if (response.statusCode == 200) {
       print("POST request successful!");
-      print("Response: ${response.body}");
+      // print("Response: ${response.body}");
 
       // Parse the JSON response
       Map<String, dynamic> jsonResponse = json.decode(response.body);
@@ -179,6 +183,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 25),
               child: TextField(
+                keyboardType: TextInputType.number,
                   controller: space,
                   decoration: InputDecoration(
                       suffixText: 'M²'.tr,

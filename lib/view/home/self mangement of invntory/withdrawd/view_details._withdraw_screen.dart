@@ -38,6 +38,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
       "quantity": int.parse(space.text),
       "actionType": 0,
       "fromStockId": widget.id,
+      "toStockId": widget.id,
       "rejectReason": "string"
     };
 
