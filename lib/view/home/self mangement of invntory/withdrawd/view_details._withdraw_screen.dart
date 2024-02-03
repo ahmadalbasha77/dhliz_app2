@@ -35,8 +35,10 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
     final String apiUrl = '${ApiUrl.API_BASE_URL}/Transaction/Create';
 
     Map<String, dynamic> requestBody = {
-      "quantity": int.parse(space.text),
+      "id": 0,
+      "quantity": space.text,
       "actionType": 0,
+      "status": 0,
       "fromStockId": widget.id,
       "toStockId": widget.id,
       "rejectReason": "string"

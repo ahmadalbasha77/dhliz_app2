@@ -1,7 +1,12 @@
+import 'package:dhliz_app/config/shared_prefs_client.dart';
+import 'package:dhliz_app/widgets/hitn_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
+import '../../config/utils.dart';
+import '../auth/login_screen.dart';
 import '../home/self mangement of invntory/self_management_of_inventory_screen.dart';
 import '../home/account_monitoring_screen.dart';
 
@@ -209,7 +214,12 @@ class HomeScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Get.to(StockMonitoringScreen());
+                print('************************************');
+                print(sharedPrefsClient.accessToken);
+
+                print('************************************');
+                 Get.to(StockMonitoringScreen());
+
               },
               child: Container(
                 margin:
@@ -259,6 +269,22 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+            ListTile(
+              title: Text('Sign Out'.tr),
+              leading: const Icon(
+                  FontAwesomeIcons.arrowRightFromBracket,
+                  color: Colors.black),
+              trailing: const Icon(Icons.arrow_forward_ios,
+                  color: Colors.black),
+              onTap: () async {
+                if (await Utils.showAreYouSureDialog(
+                    title: 'Sign Out'.tr)) {
+                  sharedPrefsClient.clearProfile();
+                  Get.deleteAll();
+                  Get.offAll(() => const LoginScreen());
+                }
+              },
             ),
           ],
         ),

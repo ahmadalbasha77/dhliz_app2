@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'config/shared_prefs_client.dart';
 import 'config/translation.dart';
+import 'view/auth/login_screen.dart';
 import 'view/auth/splash_screen.dart';
 
 void main() async {
@@ -49,7 +50,7 @@ class _MyAppState extends State<MyApp> {
         translations: Translation(),
         locale: Locale(sharedPrefsClient.language),
         fallbackLocale: const Locale('en'),
-        home: const SplashScreen(),
+        home:  SplashScreen(),
       ),
     );
   }

@@ -1,6 +1,6 @@
 class ApiUrl {
   // ignore: non_constant_identifier_names
-  static String API_BASE_URL = "https://4cb4-176-29-242-145.ngrok-free.app/api";
+  static String API_BASE_URL = "https://c0ed-176-29-242-143.ngrok-free.app/api";
 
   static String tokenLogin =
 

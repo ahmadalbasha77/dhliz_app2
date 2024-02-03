@@ -216,38 +216,38 @@ class RestApi {
     return restDio.get(path, queryParameters: queryParameters);
   }
 
-  static Future<ApiResponse<LoginModel>> signIn(
-      {required String username, required String password}) async {
-    var body = jsonEncode({
-      "username": username,
-      "password": password,
-      "deviceToken": sharedPrefsClient.deviceToken,
-      "platform": platform,
-      "version": version,
-      "language": sharedPrefsClient.language,
-    });
-    final request = _post(ApiUrl.LOGIN, data: body);
-
-    var response = await _executeRequest<LoginModel>(
-        method: request, fromJsonModel: (json) => LoginModel.fromJson(json));
-
-    return response;
-  }
-
-  static Future<ApiResponse<LoginModel>> forgotPassword(
-      {required String firebaseToken,
-      required String phoneNumber,
-      required String password}) async {
-    var body = jsonEncode({
-      "firebaseToken": firebaseToken,
-      "phoneNumber": phoneNumber,
-      "password": password,
-    });
-    final request = _post(ApiUrl.FORGOT_PASSWORD, data: body);
-    var response = await _executeRequest<LoginModel>(
-        method: request, fromJsonModel: (json) => LoginModel.fromJson(json));
-    return response;
-  }
+  // static Future<ApiResponse<LoginModel>> signIn(
+  //     {required String username, required String password}) async {
+  //   var body = jsonEncode({
+  //     "username": username,
+  //     "password": password,
+  //     "deviceToken": sharedPrefsClient.deviceToken,
+  //     "platform": platform,
+  //     "version": version,
+  //     "language": sharedPrefsClient.language,
+  //   });
+  //   final request = _post(ApiUrl.LOGIN, data: body);
+  //
+  //   var response = await _executeRequest<LoginModel>(
+  //       method: request, fromJsonModel: (json) => LoginModel.fromJson(json));
+  //
+  //   return response;
+  // }
+  //
+  // static Future<ApiResponse<LoginModel>> forgotPassword(
+  //     {required String firebaseToken,
+  //     required String phoneNumber,
+  //     required String password}) async {
+  //   var body = jsonEncode({
+  //     "firebaseToken": firebaseToken,
+  //     "phoneNumber": phoneNumber,
+  //     "password": password,
+  //   });
+  //   final request = _post(ApiUrl.FORGOT_PASSWORD, data: body);
+  //   var response = await _executeRequest<LoginModel>(
+  //       method: request, fromJsonModel: (json) => LoginModel.fromJson(json));
+  //   return response;
+  // }
 
   static Future<ApiResponse<RegisterModel>> register({
     required String firebaseToken,

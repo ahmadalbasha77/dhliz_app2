@@ -36,10 +36,12 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
     final String apiUrl = '${ApiUrl.API_BASE_URL}/Transaction/Create';
 
     Map<String, dynamic> requestBody = {
-      "quantity": int.parse(space.text),
+      "id": 0,
+      "quantity": space.text,
       "actionType": 2,
+      "status": 0,
       "fromStockId": widget.id,
-      "toStockId": selected,
+      "toStockId": widget.id,
       "rejectReason": "string"
     };
 

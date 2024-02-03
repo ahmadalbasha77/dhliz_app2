@@ -1,37 +1,43 @@
-import 'dart:convert';
+class UserResponse {
+  final List<User> response;
+  final String error;
+  final bool isSuccess;
 
-LoginModel loginModelFromJson(String str) => LoginModel.fromJson(json.decode(str));
+  UserResponse({required this.response, required this.error, required this.isSuccess});
 
-String loginModelToJson(LoginModel data) => json.encode(data.toJson());
+  factory UserResponse.fromJson(Map<String, dynamic> json) {
+    return UserResponse(
+      response: json['response'] != null
+          ? List<User>.from(json['response'].map((user) => User.fromJson(user)))
+          : [],
+      error: json['error'],
+      isSuccess: json['isSuccess'],
+    );
+  }
+}
 
-class LoginModel {
-  LoginModel({
-    required this.accessToken,
-    required this.applicationId,
-    required this.role,
-    required this.fullName,
-    required this.image,
-  });
+class User {
+  final String username;
+  final String email;
+  final String phone;
+  final int userId;
 
-  String accessToken;
-  String applicationId;
-  String role;
-  String fullName;
-  String image;
+  final String token;
 
-  factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
-        accessToken: json["accessToken"] ?? "",
-        applicationId: json["applicationId"] ?? "",
-        role: json["role"] ?? "",
-        fullName: json["fullName"] ?? "",
-        image: json["image"] ?? "",
-      );
+  User(
+      {required this.username,
+        required this.email,
+        required this.phone,
+        required this.userId,
+        required this.token});
 
-  Map<String, dynamic> toJson() => {
-        "accessToken": accessToken,
-        "applicationId": applicationId,
-        "role": role,
-        "fullName": fullName,
-        "image": image,
-      };
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      username: json['username'],
+      email: json['email'],
+      phone: json['phone'],
+      userId: json['userId'],
+      token: json['token'],
+    );
+  }
 }
