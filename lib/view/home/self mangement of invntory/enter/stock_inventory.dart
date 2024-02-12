@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../../../../config/shared_prefs_client.dart';
 import '../../../../network/api_url.dart';
 import 'Inventory_details.dart';
 import 'add_stock_screen.dart';
@@ -22,8 +23,10 @@ class _StockInventoryScreenState extends State<StockInventoryScreen> {
   List<Map<String, dynamic>> data = [];
 
   Future<void> fetchData() async {
-    final response = await http.get(Uri.parse(
-        '${ApiUrl.API_BASE_URL}/Stock/Find?SubscriptionId=${widget.id}&PageIndex=0&PageSize=100'));
+    final response = await http.get(
+        Uri.parse(
+            '${ApiUrl.API_BASE_URL}/Stock/Find?SubscriptionId=${widget.id}'),
+        headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
     print(response.body);
 
@@ -99,17 +102,7 @@ class _StockInventoryScreenState extends State<StockInventoryScreen> {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('No Data'),
-                              SizedBox(
-                                height: 50,
-                              ),
-                              Text('Check your internet connection',
-                                  style: TextStyle(color: Colors.red)),
-                            ],
-                          ),
+                          child: Text('No Data'),
                         );
                       }
                     },

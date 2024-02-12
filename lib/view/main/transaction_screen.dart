@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:http/http.dart' as http;
+import '../../config/shared_prefs_client.dart';
 import '../../network/api_url.dart';
 
 class TransactionScreen extends StatefulWidget {
@@ -20,7 +21,10 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Future<void> fetchData() async {
     try {
       final response = await http.get(
-          Uri.parse('${ApiUrl.API_BASE_URL}/Transaction/GetAllTransaction'));
+          Uri.parse('${ApiUrl.API_BASE_URL}/Transaction/GetAllTransaction'),
+          headers: {
+            'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
+          });
 
       print(response.body);
 

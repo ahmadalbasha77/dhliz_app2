@@ -61,7 +61,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         actions: [
           TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Get.off(() => MyWareHouseScreen());
               },
               child: Text(
                 'done'.tr,

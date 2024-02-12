@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../enter/enter_inventory/map_screen.dart';
+import 'map_screen.dart';
 
 class AddWarehouseScreen extends StatefulWidget {
 

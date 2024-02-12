@@ -5,9 +5,9 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../config/shared_prefs_client.dart';
 import '../../../../network/api_url.dart';
 import '../warehouse management/map_warehouse.dart';
-import '../withdrawd/withdraw_warehouse_screen.dart';
 import 'stock_inventory.dart';
 
 class InventoryWarehouse extends StatefulWidget {
@@ -27,8 +27,8 @@ class _InventoryWarehouseState extends State<InventoryWarehouse> {
 
     final response = await http.get(
         Uri.parse(
-            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=2'),
-        headers: {'Authorization': ApiUrl.tokenLogin});
+            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=4'),
+        headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
     if (response.statusCode == 200) {
       setState(() {
@@ -74,17 +74,7 @@ class _InventoryWarehouseState extends State<InventoryWarehouse> {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('No Data'),
-                              SizedBox(
-                                height: 50,
-                              ),
-                              Text('Check your internet connection',
-                                  style: TextStyle(color: Colors.red)),
-                            ],
-                          ),
+                          child: Text('No Data'),
                         );
                       }
                     },

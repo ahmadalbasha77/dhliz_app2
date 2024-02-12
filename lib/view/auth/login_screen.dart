@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../controllers/auth/sign_in_controller.dart';
-import '../main_screen.dart';
-import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,7 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _controller = SignInController.to;
+  final _controller = LoginController.to;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +25,15 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 SizedBox(
-                  height: screenSize.height * 0.05,
+                  height: screenSize.height * 0.1,
                 ),
                 Image.asset(
+                  alignment: Alignment.center,
                   "image/home/Artboard 15.png",
-                  width: screenSize.width * 0.8,
+                  width: screenSize.width * 0.49,
                 ),
                 SizedBox(
-                  height: screenSize.height * 0.05,
+                  height: screenSize.height * 0.08,
                 ),
                 Center(
                   child: Text(
@@ -61,15 +60,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: screenSize.height * 0.025,
+                  height: screenSize.height * 0.07,
                 ),
                 Container(
                   margin:
-                      EdgeInsets.symmetric(horizontal: screenSize.width * .07),
+                  EdgeInsets.symmetric(horizontal: screenSize.width * .07),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter Your email';
+                        return 'Please enter Your Username';
                       }
                     },
                     controller: _controller.controllerUsername,
@@ -121,42 +120,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: screenSize.height * 0.07,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account ?  ",
-                      style: TextStyle(
-                          color: Colors.black45,
-                          fontSize: screenSize.width * .038),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignUpScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Sign Up',
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: screenSize.width * .04),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: screenSize.height * 0.013,
+                  height: screenSize.height * 0.08,
                 ),
                 Container(
                   width: double.infinity,
                   margin:
-                      EdgeInsets.symmetric(horizontal: screenSize.width * .1),
+                  EdgeInsets.symmetric(horizontal: screenSize.width * .1),
                   height: screenSize.height * 0.079,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(

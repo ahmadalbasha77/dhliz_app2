@@ -27,13 +27,18 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
           child: Column(
             children: [
               SizedBox(
-                height: 40,
+                height: 20,
+              ),
+              Text('سوف يتم تحليل البيانات قريبا',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(
+                height: 20,
               ),
               PieChart(
                 dataMap: {
-                  'Enter': 10,
-                  'Transfer': 20,
-                  'Withdrawal': 15,
+                  'Enter': 0,
+                  'Transfer': 0,
+                  'Withdrawal': 0,
                 },
                 animationDuration: Duration(milliseconds: 800),
                 chartLegendSpacing: 32,
@@ -85,7 +90,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            ' 2,500 WP',
+                            ' 0 WP',
                             style:
                                 TextStyle(fontSize: 24, color: Colors.black54),
                           ),
@@ -118,7 +123,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            r' 3,500 WP',
+                            r' 0 WP',
                             style:
                                 TextStyle(fontSize: 24, color: Colors.black54),
                           ),
@@ -151,7 +156,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            '1,300 WP',
+                            '0 WP',
                             style:
                                 TextStyle(fontSize: 24, color: Colors.black54),
                           ),
@@ -184,7 +189,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            r' 10,000 SAR',
+                            r' 0 SAR',
                             style:
                                 TextStyle(fontSize: 24, color: Colors.black54),
                           ),
@@ -216,7 +221,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            r'  -2,000 SAR',
+                            r'0 SAR',
                             style: TextStyle(fontSize: 24, color: Colors.red),
                           ),
                         ),

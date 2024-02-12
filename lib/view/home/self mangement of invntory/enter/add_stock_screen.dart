@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import '../../../../config/app_color.dart';
+import '../../../../config/shared_prefs_client.dart';
 import '../../../../network/api_url.dart';
 import 'Inventory_details.dart';
 
@@ -32,39 +33,36 @@ class _AddStockScreenState extends State<AddStockScreen> {
     });
     final String apiUrl = '${ApiUrl.API_BASE_URL}/Stock/Create';
 
+
     Map<String, dynamic> requestBody = {
-      "Name": controllerName.text,
-      "Code": controllerCode.text,
-      "Brand": controllerBrand.text,
-      "UPC": controllerUpc.text,
-      "Photo": _image!.path.toString(),
-      "Description": controllerDescription.text,
-      "Capacity": controllerCapacity.text,
-      "subscriptionId": widget.id,
+      "id": 0,
+      "name": controllerName.text,
+      "code": controllerCode.text,
+      "brand": controllerBrand.text,
+      "upc": controllerUpc.text,
+      "photo":  _image!.path.toString(),
+      "description": controllerDescription.text,
+      "capacity": 20,
       "temperature": {
+        "id": 0,
+        "createdDate": "2024-02-06T09:22:46.662Z",
         "high": true,
-        "warm": true,
-        "roomTemperature": true,
         "cold": true,
-        "freezing": true,
-        "createdDate": null,
-        "updateDate": null,
-        "createdBy": null,
-        "updateBy": null
+        "freezing": true
       },
       "materialType": {
-        "name": "string",
-        "createdDate": null,
-        "updateDate": null,
-        "createdBy": null,
-        "updateBy": null
+        "id": 0,
+        "createdDate": "2024-02-06T09:22:46.662Z",
+        "name": "string"
       },
+      "subscriptionId": widget.id
     };
 
     final response = await http.post(
       Uri.parse(apiUrl),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
+      headers: {
+        'Authorization': 'Bearer ${sharedPrefsClient.accessToken}',
+        'Content-Type': 'application/json', // Ensure Content-Type is set
       },
       body: jsonEncode(requestBody),
     );
@@ -175,7 +173,7 @@ class _AddStockScreenState extends State<AddStockScreen> {
         onPressed: () {
           postData();
         },
-        child: isLoading ?CircularProgressIndicator(): Icon(Icons.add)  ,
+        child: isLoading ? CircularProgressIndicator() : Icon(Icons.add),
       ),
       backgroundColor: Color.fromARGB(255, 225, 225, 225),
       appBar: AppBar(

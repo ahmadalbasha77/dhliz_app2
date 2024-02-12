@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/warehouse%20management/map_warehouse.dart';
+import 'package:dhliz_app/config/shared_prefs_client.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../network/api_url.dart';
-import 'add_warehouse_screen.dart';
+import 'add warehouse/add_warehouse_screen.dart';
+import 'map_warehouse.dart';
 import 'stock_warehouse.dart';
 
 class MyWareHouseScreen extends StatefulWidget {
@@ -23,15 +23,10 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
   List<Map<String, dynamic>> data = [];
 
   Future<void> fetchData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? id = prefs.getInt('postId');
-    print(id);
-
-    https: //8021-176-29-239-106.ngrok-free.app/api/Customer/GetSupscriptionByCustomerId
     final response = await http.get(
         Uri.parse(
-            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=2'),
-        headers: {'Authorization': ApiUrl.tokenLogin});
+            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=4'),
+        headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
     if (response.statusCode == 200) {
       setState(() {
@@ -47,6 +42,9 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
   @override
   void initState() {
     fetchData();
+    print('*****************************');
+    print(sharedPrefsClient.accessToken);
+    print('******************************');
     super.initState();
   }
 
@@ -76,7 +74,7 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                       Color.fromARGB(255, 35, 37, 56),
                     )),
                 onPressed: () {
-                  Get.to(AddWarehouseScreen());
+                  Get.off(() => AddWarehouseScreen());
                 },
                 child: Text(
                   'Add Warehouse'.tr,

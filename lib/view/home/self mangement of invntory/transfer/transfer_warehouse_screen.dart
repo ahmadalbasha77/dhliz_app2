@@ -6,6 +6,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../config/shared_prefs_client.dart';
 import '../../../../network/api_url.dart';
 import '../warehouse management/map_warehouse.dart';
 import 'transfer_inventory_screen.dart';
@@ -26,8 +27,10 @@ class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
     int? id = prefs.getInt('postId');
     print(id);
 
-    final response = await http.get(Uri.parse(
-        '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=2'), headers: {'Authorization': ApiUrl.tokenLogin});
+    final response = await http.get(
+        Uri.parse(
+            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=4'),
+        headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
     if (response.statusCode == 200) {
       setState(() {

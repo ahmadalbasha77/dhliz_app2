@@ -6,7 +6,9 @@ import 'package:dhliz_app/view/thank_you.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:quickalert/quickalert.dart';
 
+import '../../../../config/shared_prefs_client.dart';
 import '../../../../network/api_url.dart';
 import '../warehouse management/my_warehouse_screen.dart';
 import 'delivery_location_screen.dart';
@@ -48,6 +50,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
       Uri.parse(apiUrl),
       headers: <String, String>{
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${sharedPrefsClient.accessToken}',
       },
       body: jsonEncode(requestBody),
     );
@@ -60,7 +63,16 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       print(jsonResponse);
       Get.back();
-      // Now you can use the postId variable as needed.
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        text:
+        'A new withdraw transaction request has been sent. Please wait for approval',
+        showConfirmBtn: true,
+        confirmBtnColor: Colors.white,
+        confirmBtnTextStyle: TextStyle(color: Colors.black),
+        title: ' Completed Successfully!',
+      );
     } else {
       print("Failed to make POST request. Status code: ${response.statusCode}");
       print("Response: ${response.body}");

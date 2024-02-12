@@ -12,7 +12,7 @@ class BindingQ extends Bindings{
   void dependencies (){
 
     Get.lazyPut(() => AppController());
-    Get.lazyPut(() => SignInController());
+    Get.lazyPut(() => LoginController());
     Get.lazyPut(() => NotificationController());
     Get.lazyPut(() => WithdrawalController());
     Get.lazyPut(() => EditProfileController());

@@ -16,9 +16,6 @@ class SelfManagementOfInventoryScreen extends StatefulWidget {
 
 class _SelfManagementOfInventoryScreenState
     extends State<SelfManagementOfInventoryScreen> {
-
-
-
   @override
   Widget build(BuildContext context) {
     // Get the screen size
@@ -69,7 +66,7 @@ class _SelfManagementOfInventoryScreenState
                   horizontal: screenSize.width * 0.06),
               child: InkWell(
                 onTap: () {
-                  Get.to(MyWareHouseScreen());
+                  Get.to(() => const MyWareHouseScreen());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -141,7 +138,7 @@ class _SelfManagementOfInventoryScreenState
                   horizontal: screenSize.width * 0.06),
               child: InkWell(
                 onTap: () {
-                  Get.to(InventoryWarehouse());
+                  Get.to(() => const InventoryWarehouse());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -210,7 +207,7 @@ class _SelfManagementOfInventoryScreenState
                   horizontal: screenSize.width * 0.06),
               child: InkWell(
                 onTap: () {
-                  Get.to(WithdrawWarehouseScreen());
+                  Get.to(() => const WithdrawWarehouseScreen());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -280,7 +277,7 @@ class _SelfManagementOfInventoryScreenState
                   horizontal: screenSize.width * 0.06),
               child: InkWell(
                 onTap: () {
-                  Get.to(TransferWarehouseScreen());
+                  Get.to(() => const TransferWarehouseScreen());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

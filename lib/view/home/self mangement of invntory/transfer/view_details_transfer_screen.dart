@@ -5,7 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:quickalert/quickalert.dart';
 
+import '../../../../config/shared_prefs_client.dart';
 import '../../../../network/api_url.dart';
 
 class ViewDetailsTransferScreen extends StatefulWidget {
@@ -14,6 +16,7 @@ class ViewDetailsTransferScreen extends StatefulWidget {
   String desWarehouse;
   String image;
   List<Map<String, dynamic>> data;
+  List<Map<String, dynamic>> dataStock;
 
   ViewDetailsTransferScreen(
       {Key? key,
@@ -21,6 +24,7 @@ class ViewDetailsTransferScreen extends StatefulWidget {
       required this.nameWarehouse,
       required this.desWarehouse,
       required this.data,
+      required this.dataStock,
       required this.image})
       : super(key: key);
 
@@ -49,6 +53,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
       Uri.parse(apiUrl),
       headers: <String, String>{
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${sharedPrefsClient.accessToken}',
       },
       body: jsonEncode(requestBody),
     );
@@ -61,6 +66,16 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       print(jsonResponse);
       Get.back();
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        text:
+        'A new transfer transaction request has been sent. Please wait for approval',
+        showConfirmBtn: true,
+        confirmBtnColor: Colors.white,
+        confirmBtnTextStyle: TextStyle(color: Colors.black),
+        title: ' Completed Successfully!',
+      );
       // Now you can use the postId variable as needed.
     } else {
       print("Failed to make POST request. Status code: ${response.statusCode}");
@@ -76,8 +91,10 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
   @override
   void initState() {
     print('+++++++++++++++++++');
-    data = widget.data;
-    print(data);
+    data = widget.dataStock;
+    print(widget.dataStock);
+    print('________________________________*******************');
+
     super.initState();
   }
 
@@ -214,6 +231,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 25),
               child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: space,
                   decoration: InputDecoration(
                       suffixText: 'M²',
@@ -264,7 +282,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
                       horizontal: screenWidth * 0.025,
                     ),
                     child: Text(
-                      'Warehouse name'.tr,
+                      'Stock Name'.tr,
                       style: TextStyle(color: Colors.black54),
                     ),
                   ),
@@ -281,7 +299,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
                     value: item['id'],
                     // Adjust this based on your data structure
                     child: Text(
-                      item['warehouse']['name'].toString(),
+                      item['name'].toString(),
                       // Adjust this based on your data structure
                       style: TextStyle(color: Colors.black),
                     ),

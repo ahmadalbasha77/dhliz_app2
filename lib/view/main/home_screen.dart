@@ -2,13 +2,17 @@ import 'package:dhliz_app/config/shared_prefs_client.dart';
 import 'package:dhliz_app/widgets/hitn_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../../config/utils.dart';
 import '../auth/login_screen.dart';
 import '../home/self mangement of invntory/self_management_of_inventory_screen.dart';
 import '../home/account_monitoring_screen.dart';
+import 'package:quickalert/quickalert.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -64,7 +68,7 @@ class HomeScreen extends StatelessWidget {
                   horizontal: screenSize.width * 0.04),
               child: InkWell(
                 onTap: () {
-                  Get.to(SelfManagementOfInventoryScreen());
+                  Get.to(() => const SelfManagementOfInventoryScreen());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,6 +206,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+
             Container(
               margin: EdgeInsets.all(screenSize.width * 0.05),
               child: Text(
@@ -218,8 +223,7 @@ class HomeScreen extends StatelessWidget {
                 print(sharedPrefsClient.accessToken);
 
                 print('************************************');
-                 Get.to(StockMonitoringScreen());
-
+                Get.to(() => const StockMonitoringScreen());
               },
               child: Container(
                 margin:
@@ -270,22 +274,22 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            ListTile(
-              title: Text('Sign Out'.tr),
-              leading: const Icon(
-                  FontAwesomeIcons.arrowRightFromBracket,
-                  color: Colors.black),
-              trailing: const Icon(Icons.arrow_forward_ios,
-                  color: Colors.black),
-              onTap: () async {
-                if (await Utils.showAreYouSureDialog(
-                    title: 'Sign Out'.tr)) {
-                  sharedPrefsClient.clearProfile();
-                  Get.deleteAll();
-                  Get.offAll(() => const LoginScreen());
-                }
-              },
-            ),
+            // ListTile(
+            //   title: Text('Sign Out'.tr),
+            //   leading: const Icon(
+            //       FontAwesomeIcons.arrowRightFromBracket,
+            //       color: Colors.black),
+            //   trailing: const Icon(Icons.arrow_forward_ios,
+            //       color: Colors.black),
+            //   onTap: () async {
+            //     if (await Utils.showAreYouSureDialog(
+            //         title: 'Sign Out'.tr)) {
+            //       sharedPrefsClient.clearProfile();
+            //       Get.deleteAll();
+            //       Get.offAll(() => const LoginScreen());
+            //     }
+            //   },
+            // ),
           ],
         ),
       ),

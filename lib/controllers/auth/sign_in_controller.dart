@@ -1,16 +1,16 @@
 import 'dart:convert';
+import 'package:dhliz_app/view/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../../config/shared_prefs_client.dart';
 import '../../config/utils.dart';
 import '../../models/auth/login_model.dart';
-import '../../view/main/home_screen.dart';
 
-class SignInController extends GetxController {
-  static SignInController get to => Get.isRegistered<SignInController>()
-      ? Get.find<SignInController>()
-      : Get.put(SignInController());
+class LoginController extends GetxController {
+  static LoginController get to => Get.isRegistered<LoginController>()
+      ? Get.find<LoginController>()
+      : Get.put(LoginController());
 
   final keyForm = GlobalKey<FormState>();
 
@@ -19,21 +19,40 @@ class SignInController extends GetxController {
 
   Future<UserResponse> authenticateUser(
       String emailOrUsername, String password) async {
-    String url = 'https://c0ed-176-29-242-143.ngrok-free.app/Login';
+    String url = 'https://5a7d-176-29-242-143.ngrok-free.app/Login';
     Map<String, String> headers = {"Content-type": "application/json"};
     String jsonBody =
-        json.encode({"emailOrUsername": emailOrUsername, "password": password});
+    json.encode({"emailOrUsername": emailOrUsername, "password": password});
 
     try {
       var response =
-          await http.post(Uri.parse(url), headers: headers, body: jsonBody);
+      await http.post(Uri.parse(url), headers: headers, body: jsonBody);
       if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        print(data);
+
         print(response.body);
-        sharedPrefsClient.isLogin = true;
-        sharedPrefsClient.accessToken = json.decode(response.body)['token'];
-        print('************************************');
-        print(sharedPrefsClient.accessToken);
-        print('************************************');
+
+        // UserResponse userResponse =
+        // UserResponse.fromJson(json.decode(response.body));
+
+        if (json.decode(response.body)['isSuccess'] == true) {
+          var responseData = json.decode(response.body)['response'][0];
+          String token = responseData['token'];
+          sharedPrefsClient.isLogin = true;
+          sharedPrefsClient.accessToken = token;
+
+          // sharedPrefsClient.accessToken = data['response']['token'].toString();
+          print('***********************************');
+          print(token);
+          print('***********************************');
+          Get.offAll(() => MainScreen());
+          print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+        } else {
+          print('aaaaaaaaaaaaaaaaaaaaaaa');
+          Utils.showSnackbar('Please try again'.tr, data['error'].toString());
+        }
+
         return UserResponse.fromJson(json.decode(response.body));
       } else {
         throw Exception('Failed to authenticate user');
@@ -46,16 +65,12 @@ class SignInController extends GetxController {
   signIn() async {
     if (keyForm.currentState!.validate()) {
       Utils.showLoadingDialog();
+      print('aaaaaaaaaaaaaaaaaaaaaaa');
       try {
         UserResponse userResponse = await authenticateUser(
             controllerUsername.text, controllerPassword.text);
-        print(userResponse);
-        // Handle user response as needed
       } catch (e) {
         // Handle authentication error
-      } finally {
-        Utils.showLoadingDialog();
-        Get.off(() => HomeScreen());
       }
     }
   }

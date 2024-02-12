@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../../../../config/shared_prefs_client.dart';
 import '../../../../network/api_url.dart';
 import 'view_details_transfer_screen.dart';
 
@@ -24,8 +25,10 @@ class _TransferInventoryScreenState extends State<TransferInventoryScreen> {
   List<Map<String, dynamic>> data = [];
 
   Future<void> fetchData() async {
-    final response = await http.get(Uri.parse(
-        '${ApiUrl.API_BASE_URL}/Stock/Find?SubscriptionId=${widget.id}&PageIndex=0&PageSize=100'));
+    final response = await http.get(
+        Uri.parse(
+            '${ApiUrl.API_BASE_URL}/Stock/Find?SubscriptionId=${widget.id}'),
+        headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
     print(response.body);
 
@@ -84,17 +87,7 @@ class _TransferInventoryScreenState extends State<TransferInventoryScreen> {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('No Data'),
-                              SizedBox(
-                                height: 50,
-                              ),
-                              Text('Check your internet connection',
-                                  style: TextStyle(color: Colors.red)),
-                            ],
-                          ),
+                          child: Text('No Data'),
                         );
                       }
                     },
@@ -159,6 +152,7 @@ class _TransferInventoryScreenState extends State<TransferInventoryScreen> {
                                                     ['description'],
                                                 image: data[index]['photo'],
                                                 data: widget.data,
+                                                    dataStock: data,
                                               ),
                                             ));
                                           },

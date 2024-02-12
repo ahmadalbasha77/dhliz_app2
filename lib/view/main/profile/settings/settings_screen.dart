@@ -141,20 +141,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             );
                           },
                         ),
-                        ListTile(
-                          title: Text('Delete Account'.tr),
-                          leading: const Icon(FontAwesomeIcons.deleteLeft,
-                              color: Colors.black),
-                          trailing: const Icon(Icons.arrow_forward_ios,
-                              color: Colors.black),
-                          onTap: () async {
-                            const url = "https://www.google.com/";
-                            final Uri _url = Uri.parse(url);
-
-                            await launchUrl(_url,
-                                mode: LaunchMode.externalApplication);
-                          },
-                        ),
+                        // ListTile(
+                        //   title: Text('Delete Account'.tr),
+                        //   leading: const Icon(FontAwesomeIcons.deleteLeft,
+                        //       color: Colors.black),
+                        //   trailing: const Icon(Icons.arrow_forward_ios,
+                        //       color: Colors.black),
+                        //   onTap: () async {
+                        //     const url = "https://www.google.com/";
+                        //     final Uri _url = Uri.parse(url);
+                        //
+                        //     await launchUrl(_url,
+                        //         mode: LaunchMode.externalApplication);
+                        //   },
+                        // ),
                         ListTile(
                           title: Text('Terms & Conditions'.tr),
                           leading: const Icon(FontAwesomeIcons.gavel,

@@ -5,7 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:quickalert/quickalert.dart';
 
+import '../../../../config/shared_prefs_client.dart';
 import '../../../../network/api_url.dart';
 
 class InventoryDetailsScreen extends StatefulWidget {
@@ -39,6 +41,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
       Uri.parse(apiUrl),
       headers: <String, String>{
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${sharedPrefsClient.accessToken}',
       },
       body: jsonEncode(requestBody),
     );
@@ -51,6 +54,17 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       print(jsonResponse);
       Get.back();
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        text:
+        'A new entry transaction request has been sent. Please wait for approval',
+        showConfirmBtn: true,
+        confirmBtnColor: Colors.white,
+        confirmBtnTextStyle: TextStyle(color: Colors.black),
+        title: 'Completed Successfully!',
+        textAlignment: TextAlign.center
+      );
       // Now you can use the postId variable as needed.
     } else {
       print("Failed to make POST request. Status code: ${response.statusCode}");
@@ -128,7 +142,8 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                       Container(
                         margin: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.008),
-                        child: Text('${'Stock ID'.tr} : ${widget.data['id']??widget.data['Id']}',
+                        child: Text(
+                            '${'Stock ID'.tr} : ${widget.data['id'] ?? widget.data['Id']}',
                             style: TextStyle(
                                 color: Colors.black54,
                                 fontSize: screenWidth * 0.026)),
@@ -157,7 +172,9 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                       Container(
                         width: 230,
                         margin: EdgeInsets.only(bottom: screenWidth * 0.015),
-                        child: Text(widget.data['description'] ?? widget.data['Description'],
+                        child: Text(
+                            widget.data['description'] ??
+                                widget.data['Description'],
                             style:
                                 TextStyle(color: Colors.black87, fontSize: 13)),
                       ),
@@ -183,7 +200,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 25),
               child: TextField(
-                keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.number,
                   controller: space,
                   decoration: InputDecoration(
                       suffixText: 'M²'.tr,

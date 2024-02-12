@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../../config/shared_prefs_client.dart';
 import '../../../../../network/api_url.dart';
-import '../payment_screen.dart';
+import 'payment_screen.dart';
 import 'invoice_screen.dart';
 
 class PayScreen extends StatefulWidget {
@@ -46,52 +47,11 @@ class PayScreen extends StatefulWidget {
 }
 
 class _PayScreenState extends State<PayScreen> {
-
   int calculateTotalPrice() {
     return int.parse(((widget.price * widget.capacity).round()).toString());
   }
 
-  void postData() async {
-    final totalPrice = calculateTotalPrice();
-    final String apiUrl = '${ApiUrl.API_BASE_URL}/Subscription/Create';
 
-    Map<String, dynamic> requestBody = {
-      "ReservedSpace": widget.capacity.toString(),
-      "CustomerId": '2',
-      "WarehouseId": widget.warehouseId,
-    };
-
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(requestBody),
-    );
-
-    if (response.statusCode == 200) {
-      print("POST request successful!");
-      print("Response: ${response.body}");
-      Get.off(PaymentScreen(amount: totalPrice,));
-      // Get.off(InvoiceScreen(
-      //   warehouseId: widget.warehouseId,
-      //   warehouseName: widget.warehouseName,
-      //   space: widget.space,
-      //   address: widget.address,
-      //   total: totalPrice,
-      //   fromDate: widget.from,
-      //   toDate: widget.to,
-      //   dry: widget.dry,
-      //   cold: widget.cold,
-      //   freezing: widget.freezing,
-      // ));
-    } else {
-      print("Failed to make POST request. Status code: ${response.statusCode}");
-      print("Response: ${response.body}");
-      print("Request Body: $requestBody");
-
-    }
-  }
 
   @override
   void initState() {
@@ -282,7 +242,14 @@ class _PayScreenState extends State<PayScreen> {
                 ),
               ),
               onPressed: () {
-                postData();
+                final totalPrice = calculateTotalPrice();
+                // postData();
+                Get.off(PaymentScreen(
+                  amount: totalPrice,
+                  customerId: 4,
+                  capacity: widget.capacity,
+                  warehouseId: widget.warehouseId,
+                ));
               },
               child: Text(
                 'Pay now'.tr,
