@@ -21,6 +21,7 @@ class User {
   final String email;
   final String phone;
   final int userId;
+  final int customerId;
 
   final String token;
 
@@ -29,7 +30,8 @@ class User {
         required this.email,
         required this.phone,
         required this.userId,
-        required this.token});
+        required this.token,
+        required this.customerId});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -38,6 +40,7 @@ class User {
       phone: json['phone'],
       userId: json['userId'],
       token: json['token'],
+      customerId: json['customerId'],
     );
   }
 }

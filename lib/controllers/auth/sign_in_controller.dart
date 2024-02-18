@@ -19,7 +19,7 @@ class LoginController extends GetxController {
 
   Future<UserResponse> authenticateUser(
       String emailOrUsername, String password) async {
-    String url = 'https://5a7d-176-29-242-143.ngrok-free.app/Login';
+    String url = 'https://api.dhlez.sa/Login';
     Map<String, String> headers = {"Content-type": "application/json"};
     String jsonBody =
     json.encode({"emailOrUsername": emailOrUsername, "password": password});
@@ -39,12 +39,14 @@ class LoginController extends GetxController {
         if (json.decode(response.body)['isSuccess'] == true) {
           var responseData = json.decode(response.body)['response'][0];
           String token = responseData['token'];
+          int customerId = responseData['customerId'];
           sharedPrefsClient.isLogin = true;
           sharedPrefsClient.accessToken = token;
+          sharedPrefsClient.customerId = customerId;
 
           // sharedPrefsClient.accessToken = data['response']['token'].toString();
           print('***********************************');
-          print(token);
+          print('Customer : '+ sharedPrefsClient.customerId.toString());
           print('***********************************');
           Get.offAll(() => MainScreen());
           print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');

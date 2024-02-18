@@ -1,6 +1,6 @@
 class ApiUrl {
   // ignore: non_constant_identifier_names
-  static String API_BASE_URL = "https://5a7d-176-29-242-143.ngrok-free.app/api";
+  static String API_BASE_URL = "https://api.dhlez.sa/api";
 
 
 

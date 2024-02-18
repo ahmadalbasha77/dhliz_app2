@@ -36,7 +36,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     Map<String, dynamic> requestBody = {
       "ReservedSpace": widget.capacity.toString(),
-      "CustomerId": '4',
+      "CustomerId": '${sharedPrefsClient.customerId}',
       "WarehouseId": widget.warehouseId,
     };
 

@@ -25,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       int? id = prefs.getInt('postId');
       print(id);
       final response = await http.get(
-          Uri.parse('${ApiUrl.API_BASE_URL}/Customer/GetById?id=4'),
+          Uri.parse('${ApiUrl.API_BASE_URL}/Customer/GetById?id=19'),
           headers: {
             'Authorization': 'Bearer ${sharedPrefsClient.accessToken}',
           });
