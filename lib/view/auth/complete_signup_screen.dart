@@ -233,9 +233,10 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                       if (value == null || value.isEmpty) {
                         return 'please enter phone number 2';
                       }
-                      if (value!.length > 10 || value.length < 10) {
+                      if (value.length > 10 || value.length < 10) {
                         return 'Enter a correct number';
                       }
+                      return null;
                     },
                     keyboardType: TextInputType.number,
                     style: TextStyle(color: Colors.black87),

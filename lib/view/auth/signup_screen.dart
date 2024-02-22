@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'complete_signup_screen.dart';
 import 'login_screen.dart';
-import 'package:http/http.dart' as http;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -74,8 +71,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter Your email';
+                        return 'please enter email';
                       }
+
+                      return null;
                     },
                     controller: email,
                     decoration: InputDecoration(
@@ -103,8 +102,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
+                        return 'please enter password';
                       }
+                      if (value.length < 8) {
+                        return 'Enter more than 8 characters';
+                      }
+                      return null;
                     },
                     style: TextStyle(color: Colors.black87),
                     controller: password,
@@ -172,10 +175,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     onPressed: () {
-                      Get.to(() => CompleteSignupScreen(
-                            email: email.text,
-                            password: password.text,
-                          ));
+                      if (formKey.currentState!.validate()) {
+                        Get.to(() => CompleteSignupScreen(
+                              email: email.text,
+                              password: password.text,
+                            ));
+                      }
                     },
                     child: Text(
                       "Sign Up",
