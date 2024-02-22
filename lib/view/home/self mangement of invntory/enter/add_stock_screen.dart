@@ -43,18 +43,18 @@ class _AddStockScreenState extends State<AddStockScreen> {
       "photo": _image!.path.toString(),
       "description": controllerDescription.text,
       "capacity": int.parse(controllerCapacity.text),
-      // "temperature": {
-      //   "id": 0,
-      //   "createdDate": "2024-02-06T09:22:46.662Z",
-      //   "high": true,
-      //   "cold": true,
-      //   "freezing": true
-      // },
-      // "materialType": {
-      //   "id": 0,
-      //   "createdDate": "2024-02-06T09:22:46.662Z",
-      //   "name": "string"
-      // },
+      "temperature": {
+        "id": 0,
+        "createdDate": "2024-02-06T09:22:46.662Z",
+        "high": true,
+        "cold": true,
+        "freezing": true
+      },
+      "materialType": {
+        "id": 0,
+        "createdDate": "2024-02-06T09:22:46.662Z",
+        "name": "string"
+      },
       "subscriptionId": widget.id
     };
 
