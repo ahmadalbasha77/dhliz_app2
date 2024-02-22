@@ -17,16 +17,19 @@ class LoginController extends GetxController {
   final controllerUsername = TextEditingController();
   final controllerPassword = TextEditingController();
 
+  bool isNotVisible = true;
+
+
   Future<UserResponse> authenticateUser(
       String emailOrUsername, String password) async {
     String url = 'https://api.dhlez.sa/Login';
     Map<String, String> headers = {"Content-type": "application/json"};
     String jsonBody =
-    json.encode({"emailOrUsername": emailOrUsername, "password": password});
+        json.encode({"emailOrUsername": emailOrUsername, "password": password});
 
     try {
       var response =
-      await http.post(Uri.parse(url), headers: headers, body: jsonBody);
+          await http.post(Uri.parse(url), headers: headers, body: jsonBody);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         print(data);
@@ -39,14 +42,17 @@ class LoginController extends GetxController {
         if (json.decode(response.body)['isSuccess'] == true) {
           var responseData = json.decode(response.body)['response'][0];
           String token = responseData['token'];
+          String userName = responseData['username'];
           int customerId = responseData['customerId'];
           sharedPrefsClient.isLogin = true;
           sharedPrefsClient.accessToken = token;
+          sharedPrefsClient.fullName = userName;
           sharedPrefsClient.customerId = customerId;
 
           // sharedPrefsClient.accessToken = data['response']['token'].toString();
           print('***********************************');
-          print('Customer : '+ sharedPrefsClient.customerId.toString());
+          print('Customer : ' + sharedPrefsClient.customerId.toString());
+
           print('***********************************');
           Get.offAll(() => MainScreen());
           print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');

@@ -22,7 +22,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
     try {
       final response = await http.get(
           Uri.parse(
-              '${ApiUrl.API_BASE_URL}/Transaction/GetAllTransaction?PageIndex=0&PageSize=100'),
+              '${ApiUrl.API_BASE_URL}/Transaction/GetAllTransaction?CustomerName=${sharedPrefsClient.fullName}&PageIndex=0&PageSize=100'),
           headers: {
             'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
           });

@@ -11,6 +11,7 @@ import 'payment_screen.dart';
 import 'invoice_screen.dart';
 
 class PayScreen extends StatefulWidget {
+  double totalAmount;
   int customerId;
   String warehouseId;
   String warehouseName;
@@ -27,6 +28,7 @@ class PayScreen extends StatefulWidget {
 
   PayScreen({
     super.key,
+    required this.totalAmount,
     required this.customerId,
     required this.warehouseId,
     required this.warehouseName,
@@ -50,8 +52,6 @@ class _PayScreenState extends State<PayScreen> {
   int calculateTotalPrice() {
     return int.parse(((widget.price * widget.capacity).round()).toString());
   }
-
-
 
   @override
   void initState() {
@@ -217,8 +217,7 @@ class _PayScreenState extends State<PayScreen> {
                 SizedBox(
                   height: 80,
                 ),
-                Text(
-                    '${'Total price'.tr} : ${widget.price * widget.capacity} ${'SR'.tr}',
+                Text('${'Total price'.tr} : ${widget.totalAmount} ${'SR'.tr}',
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
               ],
@@ -245,7 +244,9 @@ class _PayScreenState extends State<PayScreen> {
                 final totalPrice = calculateTotalPrice();
                 // postData();
                 Get.off(PaymentScreen(
-                  amount: totalPrice,
+                  from: widget.from,
+                  to: widget.to,
+                  amount: widget.totalAmount,
                   customerId: 4,
                   capacity: widget.capacity,
                   warehouseId: widget.warehouseId,

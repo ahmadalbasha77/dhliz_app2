@@ -1,4 +1,7 @@
+import 'package:dhliz_app/view/auth/signup_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/auth/sign_in_controller.dart';
 
@@ -60,11 +63,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: screenSize.height * 0.07,
+                  height: screenSize.height * 0.06,
                 ),
                 Container(
                   margin:
-                  EdgeInsets.symmetric(horizontal: screenSize.width * .07),
+                      EdgeInsets.symmetric(horizontal: screenSize.width * .07),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -102,8 +105,27 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     style: TextStyle(color: Colors.black87),
                     controller: _controller.controllerPassword,
-                    obscureText: true,
+                    obscureText: _controller.isNotVisible,
                     decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          style: ButtonStyle(
+                            
+                              shadowColor:
+                                  MaterialStatePropertyAll(Colors.white)),
+                          onPressed: () {
+                            setState(() {
+                              _controller.isNotVisible =
+                                  !_controller.isNotVisible;
+                            });
+                          },
+                          icon: Icon(
+                            _controller.isNotVisible
+                                ? CupertinoIcons.eye_fill
+                                : CupertinoIcons.eye_slash_fill,
+                            color: Colors.black45,
+                            size: 22,
+                          ),
+                        ),
                         contentPadding: EdgeInsets.symmetric(
                             vertical: screenSize.height * .027,
                             horizontal: screenSize.width * .03),
@@ -120,12 +142,38 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: screenSize.height * 0.08,
+                  height: screenSize.height * 0.06,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't Have Account ?  ",
+                      style: TextStyle(
+                          color: Colors.black45,
+                          fontSize: screenSize.width * .038),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(SignUpScreen());
+                      },
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w500,
+                            fontSize: screenSize.width * .04),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Container(
                   width: double.infinity,
                   margin:
-                  EdgeInsets.symmetric(horizontal: screenSize.width * .1),
+                      EdgeInsets.symmetric(horizontal: screenSize.width * .1),
                   height: screenSize.height * 0.079,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(

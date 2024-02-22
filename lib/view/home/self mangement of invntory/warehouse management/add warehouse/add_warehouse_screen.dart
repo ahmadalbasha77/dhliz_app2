@@ -6,8 +6,6 @@ import 'package:intl/intl.dart';
 import 'map_screen.dart';
 
 class AddWarehouseScreen extends StatefulWidget {
-
-
   const AddWarehouseScreen({
     Key? key,
   }) : super(key: key);
@@ -54,7 +52,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
       DateTime fromDate = DateFormat('yyyy-MM-dd').parse(from.text);
       DateTime toDate = DateFormat('yyyy-MM-dd').parse(to.text);
       Duration difference = toDate.difference(fromDate);
-      dateDifference = ' ${difference.inDays} days.';
+      dateDifference = '${difference.inDays}';
     } else {
       dateDifference = "";
     }
@@ -316,7 +314,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
               Center(
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                  child: Text(dateDifference,
+                  child: Text('$dateDifference days',
                       style: TextStyle(color: Colors.black38)),
                 ),
               ),
@@ -440,6 +438,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                           freezing: checkListItems[2]['value'],
                           from: from.text,
                           to: to.text,
+                          days: dateDifference,
                         ));
                       }
                     },

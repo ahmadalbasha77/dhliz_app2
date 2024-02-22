@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'complete_signup_screen.dart';
 import 'login_screen.dart';
-
+import 'package:http/http.dart' as http;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -54,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   width: screenSize.width * 0.7,
                   child: Text(
-                    "Enter your your data to register in our warehouse",
+                    "Enter your data to register in our warehouse",
                     style: TextStyle(
                       fontSize: screenSize.width * 0.039,
                       color: Colors.black38,
@@ -147,6 +150,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         'Login',
                         style: TextStyle(
                             color: Colors.black54,
+                            fontWeight: FontWeight.w500,
                             fontSize: screenSize.width * .04),
                       ),
                     ),
@@ -167,11 +171,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(25),
                       ),
                     ),
-                    onPressed: () async {
-
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => CompleteSignupScreen(),
-                        ));
+                    onPressed: () {
+                      Get.to(() => CompleteSignupScreen(
+                            email: email.text,
+                            password: password.text,
+                          ));
                     },
                     child: Text(
                       "Sign Up",
