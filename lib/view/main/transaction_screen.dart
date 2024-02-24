@@ -21,7 +21,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Future<void> fetchData() async {
     try {
       final response = await http.get(
-          Uri.parse('${ApiUrl.API_BASE_URL}/Transaction/GetAllTransaction'),
+          Uri.parse(
+              '${ApiUrl.API_BASE_URL}/Transaction/GetAllTransaction?CustomerName=${sharedPrefsClient.fullName}&PageIndex=0&PageSize=100'),
           headers: {
             'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
           });
@@ -56,6 +57,10 @@ class _TransactionScreenState extends State<TransactionScreen> {
   @override
   void initState() {
     fetchData();
+    print('****************************************');
+    print(sharedPrefsClient.accessToken);
+    print('****************************************');
+
     super.initState();
   }
 
@@ -270,18 +275,18 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500)),
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                              vertical:
-                                                  screenSize.height * .012,
-                                              horizontal:
-                                                  screenSize.width * .18),
-                                          child: Text('${'Date'.tr} : 12/10 ',
-                                              style: TextStyle(
-                                                  color: Colors.black38,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500)),
-                                        ),
+                                        // Container(
+                                        //   margin: EdgeInsets.symmetric(
+                                        //       vertical:
+                                        //           screenSize.height * .012,
+                                        //       horizontal:
+                                        //           screenSize.width * .18),
+                                        //   child: Text('${'Date'.tr} : 12/10 ',
+                                        //       style: TextStyle(
+                                        //           color: Colors.black38,
+                                        //           fontSize: 12,
+                                        //           fontWeight: FontWeight.w500)),
+                                        // ),
                                         // Container(
                                         //   margin: EdgeInsets.symmetric(
                                         //       horizontal:
@@ -328,8 +333,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                               Text(
                                                   data[index]['status'] == 0
                                                       ? 'Under Review'.tr
-                                                      : data[index][
-                                                                  'actionType'] ==
+                                                      : data[index]['status'] ==
                                                               1
                                                           ? 'Accepted'.tr
                                                           : 'Rejected'.tr,
@@ -339,7 +343,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                               0
                                                           ? Colors.amber
                                                           : data[index][
-                                                                      'actionType'] ==
+                                                                      'status'] ==
                                                                   1
                                                               ? Colors.green
                                                               : Colors.red,
@@ -350,18 +354,14 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                               Icon(
                                                 data[index]['status'] == 0
                                                     ? Icons.pending
-                                                    : data[index][
-                                                                'actionType'] ==
-                                                            1
+                                                    : data[index]['status'] == 1
                                                         ? Icons
                                                             .check_circle_outline
                                                         : Icons.cancel_outlined,
                                                 color: data[index]['status'] ==
                                                         0
                                                     ? Colors.amber
-                                                    : data[index][
-                                                                'actionType'] ==
-                                                            1
+                                                    : data[index]['status'] == 1
                                                         ? Colors.green
                                                         : Colors.red,
                                                 size: 20,

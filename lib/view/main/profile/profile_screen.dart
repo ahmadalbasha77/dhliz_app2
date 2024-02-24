@@ -21,11 +21,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> fetchData() async {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      int? id = prefs.getInt('postId');
-      print(id);
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // int? id = prefs.getInt('postId');
+      // print(id);
       final response = await http.get(
-          Uri.parse('${ApiUrl.API_BASE_URL}/Customer/GetById?id=4'),
+          Uri.parse(
+              '${ApiUrl.API_BASE_URL}/Customer/GetById?id=${sharedPrefsClient.customerId}'),
           headers: {
             'Authorization': 'Bearer ${sharedPrefsClient.accessToken}',
           });
@@ -116,6 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         ),
+
                         Container(
                           width: screenWidth * 0.34,
                           child: ElevatedButton(
@@ -183,6 +185,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               vertical: screenWidth * 0.015,
                             ),
                             child: Text(
+                              '${'Email'.tr} : ${data[0]['info']['email']}',
+                              style: TextStyle(fontSize: screenWidth * 0.035),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05,
+                              vertical: screenWidth * 0.015,
+                            ),
+                            child: Text(
                               '${'phone'.tr} : ${data[0]['info']['phone']}',
                               style: TextStyle(fontSize: screenWidth * 0.035),
                             ),
@@ -207,16 +219,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               style: TextStyle(fontSize: screenWidth * 0.035),
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: screenWidth * 0.05,
-                              vertical: screenWidth * 0.015,
-                            ),
-                            child: Text(
-                              '${'Address'.tr} : ${data[0]['info']['address']['city']} , ${data[0]['info']['address']['street']}',
-                              style: TextStyle(fontSize: screenWidth * 0.035),
-                            ),
-                          ),
+                          // Container(
+                          //   margin: EdgeInsets.symmetric(
+                          //     horizontal: screenWidth * 0.05,
+                          //     vertical: screenWidth * 0.015,
+                          //   ),
+                          //   child:
+                          //   Text(
+                          //     '${'Address'.tr} : ${data[0]['info']['address']['city']} , ${data[0]['info']['address']['street']}',
+                          //     style: TextStyle(fontSize: screenWidth * 0.035),
+                          //   ),
+                          // ),
                           // Container(
                           //   margin: EdgeInsets.symmetric(
                           //     horizontal: screenWidth * 0.05,

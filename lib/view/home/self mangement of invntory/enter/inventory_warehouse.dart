@@ -27,7 +27,7 @@ class _InventoryWarehouseState extends State<InventoryWarehouse> {
 
     final response = await http.get(
         Uri.parse(
-            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=4'),
+            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=${sharedPrefsClient.customerId}'),
         headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
     if (response.statusCode == 200) {

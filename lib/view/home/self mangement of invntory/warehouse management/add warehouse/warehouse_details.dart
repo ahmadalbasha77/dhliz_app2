@@ -8,6 +8,7 @@ import 'package:geocoding/geocoding.dart';
 import 'pay_screen.dart';
 
 class WarehouseDetails extends StatefulWidget {
+  double totalAmount;
   final String id;
   final String warehouseName;
   final String warehouseCap;
@@ -24,8 +25,9 @@ class WarehouseDetails extends StatefulWidget {
   bool cold;
   bool freezing;
 
-   WarehouseDetails({
+  WarehouseDetails({
     super.key,
+    required this.totalAmount,
     required this.id,
     required this.warehouseName,
     required this.warehouseCap,
@@ -229,6 +231,7 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                     int? customerId = await getSavedIdFromSharedPreferences();
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => PayScreen(
+                        totalAmount: widget.totalAmount,
                         customerId: customerId ?? 0,
                         warehouseId: widget.id,
                         capacity: widget.capacity,

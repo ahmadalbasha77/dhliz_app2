@@ -12,16 +12,20 @@ import '../../../../../network/api_url.dart';
 import '../../../../../widgets/payment.dart';
 
 class PaymentScreen extends StatefulWidget {
-  int amount;
+  double amount;
   int customerId;
   String warehouseId;
   int capacity;
+  String to;
+  String from;
 
   PaymentScreen(
       {super.key,
       required this.amount,
       required this.customerId,
       required this.capacity,
+      required this.from,
+      required this.to,
       required this.warehouseId});
 
   @override
@@ -29,15 +33,44 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
+  bool loading = false;
   PaymentConfig? paymentConfig;
+
+  void financialCreditor() async {
+    final String apiUrl =
+        '${ApiUrl.API_BASE_URL}/Finantial/Creditor?id=${widget.warehouseId}&balance=${widget.amount}';
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer ${sharedPrefsClient.accessToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print("POST request successful!");
+        print("Response: ${response.body}");
+      } else {
+        print(
+            "Failed to make POST request. Status code: ${response.statusCode}");
+        print("Response: ${response.body}");
+
+      }
+    } catch (e) {
+      print("Error making POST request: $e");
+    }
+  }
 
   void postData() async {
     final String apiUrl = '${ApiUrl.API_BASE_URL}/Subscription/Create';
 
     Map<String, dynamic> requestBody = {
       "ReservedSpace": widget.capacity.toString(),
-      "CustomerId": '4',
+      "CustomerId": '${sharedPrefsClient.customerId}',
       "WarehouseId": widget.warehouseId,
+      'startDate': widget.from,
+      'endDate': widget.to,
     };
 
     final response = await http.post(
@@ -51,8 +84,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     if (response.statusCode == 200) {
       print("POST request successful!");
+      print("555555555555555555555555555555!");
+
+      financialCreditor();
+      print("1111111111111111111111!");
       print("Response: ${response.body}");
       Get.off(() => MyWareHouseScreen());
+
       QuickAlert.show(
         context: context,
         type: QuickAlertType.success,
@@ -123,10 +161,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   void initState() {
+    int parsedAmount = double.parse(widget.amount.toString()).toInt();
+    int finalAmount = parsedAmount * 100;
     super.initState();
     paymentConfig = PaymentConfig(
       publishableApiKey: 'pk_test_UcyrYkYmFtUSViCZvHphAJ1EfG59BxhREzHDQtNc',
-      amount: widget.amount * 100,
+      amount: finalAmount,
       description: 'order #1324',
       metadata: {'size': '250g'},
       creditCard: CreditCardConfig(saveCard: false, manual: false),

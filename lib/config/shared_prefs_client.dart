@@ -7,6 +7,7 @@ final sharedPrefsClient = SharedPrefsClient();
 const String keyDeviceToken = "key_device_token";
 const String keyAccessToken = "key_access_token";
 const String keyApplicationId = "key_application_id";
+const String keyCustomerId = 'key_customer_Id';
 const String keyFullName = "key_full_name";
 const String keyImage = "key_image";
 const String keyIsLogin = "key_is_login";
@@ -27,6 +28,7 @@ class SharedPrefsClient {
     isLogin = false;
     userRole = UserRoleEnum.unknown;
     accessToken = "";
+    customerId = 0;
     applicationId = "";
     fullName = "";
     image = "";
@@ -42,6 +44,12 @@ class SharedPrefsClient {
 
   set accessToken(String value) {
     _storage.write(keyAccessToken, value);
+  }
+
+  int get customerId => _storage.read(keyCustomerId) ?? 0;
+
+  set customerId(int value) {
+    _storage.write(keyCustomerId, value);
   }
 
   String get applicationId => _storage.read(keyApplicationId) ?? "";

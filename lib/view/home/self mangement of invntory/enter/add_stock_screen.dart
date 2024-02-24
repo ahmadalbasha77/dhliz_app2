@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -33,16 +34,15 @@ class _AddStockScreenState extends State<AddStockScreen> {
     });
     final String apiUrl = '${ApiUrl.API_BASE_URL}/Stock/Create';
 
-
     Map<String, dynamic> requestBody = {
       "id": 0,
       "name": controllerName.text,
       "code": controllerCode.text,
       "brand": controllerBrand.text,
       "upc": controllerUpc.text,
-      "photo":  _image!.path.toString(),
+      "photo": _image!.path.toString(),
       "description": controllerDescription.text,
-      "capacity": 20,
+      "capacity": int.parse(controllerCapacity.text),
       "temperature": {
         "id": 0,
         "createdDate": "2024-02-06T09:22:46.662Z",
@@ -98,6 +98,19 @@ class _AddStockScreenState extends State<AddStockScreen> {
 
   File? _image;
 
+  File? image;
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      setState(() => this._image = imageTemp);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
   Future<void> _getImageFromCamera() async {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -113,19 +126,19 @@ class _AddStockScreenState extends State<AddStockScreen> {
     });
   }
 
-  Future<void> _getImageFromGallery() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        print(_image);
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
+  // Future<void> _getImageFromGallery() async {
+  //   final picker = ImagePicker();
+  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
+  //
+  //   setState(() {
+  //     if (pickedFile != null) {
+  //       _image = File(pickedFile.path);
+  //       print(_image);
+  //     } else {
+  //       print('No image selected.');
+  //     }
+  //   });
+  // }
 
   Future showOptions() async {
     showCupertinoModalPopup(
@@ -138,7 +151,7 @@ class _AddStockScreenState extends State<AddStockScreen> {
               // close the options modal
               Navigator.of(context).pop();
               // get image from gallery
-              _getImageFromGallery();
+              pickImage();
             },
           ),
           CupertinoActionSheetAction(

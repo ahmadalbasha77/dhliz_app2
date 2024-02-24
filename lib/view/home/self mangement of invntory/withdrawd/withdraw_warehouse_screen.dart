@@ -29,7 +29,7 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
 
     final response = await http.get(
         Uri.parse(
-            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=4'),
+            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=${sharedPrefsClient.customerId}'),
         headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
     if (response.statusCode == 200) {
@@ -76,17 +76,7 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('No Data', style: TextStyle(fontSize: 16)),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Text('Check your internet connection',
-                                  style: TextStyle(color: Colors.red)),
-                            ],
-                          ),
+                          child: Text('No Data', style: TextStyle(fontSize: 16)),
                         );
                       }
                     },

@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'config/shared_prefs_client.dart';
 import 'config/translation.dart';
-import 'view/auth/login_screen.dart';
 import 'view/auth/splash_screen.dart';
 
 void main() async {
@@ -14,7 +13,7 @@ void main() async {
   // WidgetsFlutterBinding.ensureInitialized(); // Ensure that Flutter is initialized.
   // await Firebase.initializeApp(); // Initialize Firebase.
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -50,7 +49,7 @@ class _MyAppState extends State<MyApp> {
         translations: Translation(),
         locale: Locale(sharedPrefsClient.language),
         fallbackLocale: const Locale('en'),
-        home:  SplashScreen(),
+        home:  const SplashScreen(),
       ),
     );
   }

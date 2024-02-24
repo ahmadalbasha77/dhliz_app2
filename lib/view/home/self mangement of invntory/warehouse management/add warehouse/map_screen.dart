@@ -49,14 +49,17 @@ class MapScreen extends StatefulWidget {
   bool freezing;
   String from;
   String to;
+  String days;
 
-  MapScreen({Key? key,
-    required this.space,
-    required this.cold,
-    required this.dry,
-    required this.freezing,
-    required this.from,
-    required this.to})
+  MapScreen(
+      {Key? key,
+      required this.space,
+      required this.cold,
+      required this.dry,
+      required this.freezing,
+      required this.from,
+      required this.to,
+      required this.days})
       : super(key: key);
 
   @override
@@ -85,6 +88,8 @@ class _MapScreenState extends State<MapScreen> {
     _determinePosition();
     _loadCustomIcons();
     fetchData();
+    print(widget.to);
+    print(widget.from);
     polylinePoints = PolylinePoints();
   }
 
@@ -177,7 +182,7 @@ class _MapScreenState extends State<MapScreen> {
 
     // Initialize queryParameters with the 'Capacity' parameter
     final Map<String, dynamic> queryParameters =
-    widget.space != null ? {'Capacity': widget.space.toString()} : {};
+        widget.space != null ? {'Capacity': widget.space.toString()} : {};
 
     // Add 'include' parameter to queryParameters if address is provided
     queryParameters['include'] = address;
@@ -212,9 +217,9 @@ class _MapScreenState extends State<MapScreen> {
               Map<String, dynamic> address = item['address']!;
 
               double? lat =
-              address['lat'] != null ? double.parse(address['lat']) : null;
+                  address['lat'] != null ? double.parse(address['lat']) : null;
               double? lon =
-              address['lot'] != null ? double.parse(address['lot']) : null;
+                  address['lot'] != null ? double.parse(address['lot']) : null;
 
               if (lat != null && lon != null) {
                 // Add markers for each coordinate
@@ -227,7 +232,7 @@ class _MapScreenState extends State<MapScreen> {
                       onTap: () {
                         _showStoreDetailsDialog(MarkerInfo(
                           address:
-                          '${item['address']['city']} ,${item['address']['state']} , ${item['address']['street']} ',
+                              '${item['address']['city']} ,${item['address']['state']} , ${item['address']['street']} ',
                           id: item['id'].toString(),
                           position: LatLng(lat, lon),
                           nameWarehouse: item['name'] ?? '',
@@ -244,12 +249,12 @@ class _MapScreenState extends State<MapScreen> {
                       setState(() {
                         selectWarehouse = MarkerInfo(
                           address:
-                          '${item['address']['city']} ,${item['address']['state']} , ${item['address']['street']} ',
+                              '${item['address']['city']} ,${item['address']['state']} , ${item['address']['street']} ',
                           id: item['id'].toString(),
                           position: LatLng(lat, lon),
                           nameWarehouse: item['name'] ?? '',
                           capacity: '${item['capacity'] ?? ''}',
-                          pricePerMeter: 2.5,
+                          pricePerMeter: item['cost']?.toDouble() ?? 0.0,
                           numberOfMeter: 5,
                           phone: item['phone'] ?? '',
                         );
@@ -332,8 +337,7 @@ class _MapScreenState extends State<MapScreen> {
                     height: 20,
                   ),
                   Text(
-                      "${'Total price'.tr} : ${info.pricePerMeter *
-                          widget.space} "),
+                      "${'Total price'.tr} : ${info.pricePerMeter * widget.space * int.parse(widget.days)} "),
                 ],
               ),
             ),
@@ -342,7 +346,7 @@ class _MapScreenState extends State<MapScreen> {
             ElevatedButton(
               style: ButtonStyle(
                   backgroundColor:
-                  MaterialStatePropertyAll(Color.fromRGBO(38, 50, 56, 1))),
+                      MaterialStatePropertyAll(Color.fromRGBO(38, 50, 56, 1))),
               child: Text('cancel'.tr),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -390,10 +394,7 @@ class _MapScreenState extends State<MapScreen> {
           children: [
             Container(
               margin: EdgeInsets.all(5),
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
+              height: MediaQuery.of(context).size.height,
               child: GoogleMap(
                 myLocationButtonEnabled: false,
                 myLocationEnabled: true,
@@ -459,8 +460,7 @@ class _MapScreenState extends State<MapScreen> {
                       children: [
                         ListTile(
                           title: Text(
-                            '${'distance'.tr}: ${routeInfo.distance
-                                .toStringAsFixed(2)} كم',
+                            '${'distance'.tr}: ${routeInfo.distance.toStringAsFixed(2)} كم',
                             textAlign: TextAlign.right,
                           ),
                           // subtitle: Text(
@@ -469,15 +469,15 @@ class _MapScreenState extends State<MapScreen> {
                         ListTile(
                           title: _pickedLocation != LatLng(0.0, 0.0)
                               ? Text(
-                            'You have selected the inventory location'.tr,
-                            style: TextStyle(fontSize: 14),
-                            textAlign: TextAlign.center,
-                          )
+                                  'You have selected the inventory location'.tr,
+                                  style: TextStyle(fontSize: 14),
+                                  textAlign: TextAlign.center,
+                                )
                               : Text(
-                            'Locate inventory'.tr,
-                            style: TextStyle(fontSize: 14),
-                            textAlign: TextAlign.center,
-                          ),
+                                  'Locate inventory'.tr,
+                                  style: TextStyle(fontSize: 14),
+                                  textAlign: TextAlign.center,
+                                ),
                           subtitle: Text('', textAlign: TextAlign.right),
                           leading: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -506,7 +506,7 @@ class _MapScreenState extends State<MapScreen> {
                                             ),
                                             Padding(
                                               padding:
-                                              const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Text(
                                                 'Click on any location on the map to choose the inventory location'
                                                     .tr,
@@ -542,9 +542,9 @@ class _MapScreenState extends State<MapScreen> {
                                             Navigator.pop(context);
                                           },
                                           child: _pickedLocation !=
-                                              LatLng(0.0, 0.0)
+                                                  LatLng(0.0, 0.0)
                                               ? Text('change Inventory location'
-                                              .tr)
+                                                  .tr)
                                               : Text('Locate inventory'.tr),
                                         ),
                                       ],
@@ -562,12 +562,9 @@ class _MapScreenState extends State<MapScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width - 0.4,
+                              width: MediaQuery.of(context).size.width - 0.4,
                               padding:
-                              const EdgeInsets.symmetric(horizontal: 90),
+                                  const EdgeInsets.symmetric(horizontal: 90),
                               child: ElevatedButton(
                                 style: ButtonStyle(
                                     shape: MaterialStateProperty.all<
@@ -579,8 +576,8 @@ class _MapScreenState extends State<MapScreen> {
                                     ),
                                     backgroundColor: MaterialStateProperty.all(
                                         selectWarehouse != null &&
-                                            _pickedLocation !=
-                                                LatLng(0.0, 0.0)
+                                                _pickedLocation !=
+                                                    LatLng(0.0, 0.0)
                                             ? Color.fromRGBO(38, 50, 56, 1)
                                             : Color.fromRGBO(38, 50, 56, 0.2))),
                                 onPressed: () {
@@ -590,116 +587,120 @@ class _MapScreenState extends State<MapScreen> {
                                   if (selectWarehouse != null) {
                                     _pickedLocation == LatLng(0.0, 0.0)
                                         ? showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: Text(
-                                              'Please select a inventory location'
-                                                  .tr),
-                                          content: Text(
-                                              'Locate your inventory on the map now'
-                                                  .tr),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); // إغلاق الرسالة
-                                              },
-                                              child: Text('cancel'.tr),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('Ok'.tr),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    )
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    'Please select a inventory location'
+                                                        .tr),
+                                                content: Text(
+                                                    'Locate your inventory on the map now'
+                                                        .tr),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(
+                                                          context); // إغلاق الرسالة
+                                                    },
+                                                    child: Text('cancel'.tr),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text('Ok'.tr),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          )
                                         : showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: Text(
-                                              'Confirm the operation'.tr),
-                                          content: Text(
-                                              '${'Do you want to store in the warehouse'
-                                                  .tr} :  ${selectWarehouse!
-                                                  .nameWarehouse} ${'?'.tr}'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); // إغلاق الرسالة
-                                              },
-                                              child: Text('cancel'.tr),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                Get.off(
-                                                      () =>
-                                                      WarehouseDetails(
-                                                        address:
-                                                        selectWarehouse!
-                                                            .address,
-                                                        capacity:
-                                                        widget.space,
-                                                        phone:
-                                                        selectWarehouse!
-                                                            .phone,
-                                                        warehouseCap:
-                                                        selectWarehouse!
-                                                            .capacity,
-                                                        id: selectWarehouse!
-                                                            .id,
-                                                        warehouseName:
-                                                        selectWarehouse!
-                                                            .nameWarehouse,
-                                                        price: selectWarehouse!
-                                                            .pricePerMeter,
-                                                        distance: routeInfo
-                                                            .distance
-                                                            .toStringAsFixed(
-                                                            2),
-                                                        warehouseLocation:
-                                                        selectWarehouse!
-                                                            .position,
-                                                        inventoryLocation:
-                                                        _pickedLocation,
-                                                        dry: widget.dry,
-                                                        cold: widget.cold,
-                                                        freezing:
-                                                        widget.freezing,
-                                                        from: widget.from,
-                                                        to: widget.to,
-                                                      ),
-                                                );
-                                              },
-                                              child: Text('Ok'.tr),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    'Confirm the operation'.tr),
+                                                content: Text(
+                                                    '${'Do you want to store in the warehouse'.tr} :  ${selectWarehouse!.nameWarehouse} ${'?'.tr}'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(
+                                                          context); // إغلاق الرسالة
+                                                    },
+                                                    child: Text('cancel'.tr),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      Get.off(
+                                                        () => WarehouseDetails(
+                                                          totalAmount:
+                                                              selectWarehouse!
+                                                                      .pricePerMeter *
+                                                                  widget.space *
+                                                                  int.parse(
+                                                                      widget
+                                                                          .days),
+                                                          address:
+                                                              selectWarehouse!
+                                                                  .address,
+                                                          capacity:
+                                                              widget.space,
+                                                          phone:
+                                                              selectWarehouse!
+                                                                  .phone,
+                                                          warehouseCap:
+                                                              selectWarehouse!
+                                                                  .capacity,
+                                                          id: selectWarehouse!
+                                                              .id,
+                                                          warehouseName:
+                                                              selectWarehouse!
+                                                                  .nameWarehouse,
+                                                          price: selectWarehouse!
+                                                              .pricePerMeter,
+                                                          distance: routeInfo
+                                                              .distance
+                                                              .toStringAsFixed(
+                                                                  2),
+                                                          warehouseLocation:
+                                                              selectWarehouse!
+                                                                  .position,
+                                                          inventoryLocation:
+                                                              _pickedLocation,
+                                                          dry: widget.dry,
+                                                          cold: widget.cold,
+                                                          freezing:
+                                                              widget.freezing,
+                                                          from: widget.from,
+                                                          to: widget.to,
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Text('Ok'.tr),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
                                   } else {
                                     _pickedLocation == LatLng(0.0, 0.0)
                                         ? ScaffoldMessenger.of(context)
-                                        .showSnackBar(
-                                      SnackBar(
-                                        content:
-                                        Text('Locate inventory'.tr),
-                                      ),
-                                    )
+                                            .showSnackBar(
+                                            SnackBar(
+                                              content:
+                                                  Text('Locate inventory'.tr),
+                                            ),
+                                          )
                                         : ScaffoldMessenger.of(context)
-                                        .showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            'Select the warehouse to continue'
-                                                .tr),
-                                      ),
-                                    );
+                                            .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Select the warehouse to continue'
+                                                      .tr),
+                                            ),
+                                          );
                                   }
                                 },
                                 child: Text('continue'.tr),
@@ -783,7 +784,7 @@ class _MapScreenState extends State<MapScreen> {
             distance / 60.0; // افتراض معدل السرعة 60 كم/ساعة
         int estimatedHours = estimatedTimeInHours.toInt();
         int estimatedMinutes =
-        ((estimatedTimeInHours - estimatedHours) * 60).toInt();
+            ((estimatedTimeInHours - estimatedHours) * 60).toInt();
 
         setState(() {
           routeInfo = RouteInfo(distance, estimatedHours, estimatedMinutes);

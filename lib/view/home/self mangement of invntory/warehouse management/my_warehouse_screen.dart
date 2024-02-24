@@ -25,7 +25,7 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
   Future<void> fetchData() async {
     final response = await http.get(
         Uri.parse(
-            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=4'),
+            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=${sharedPrefsClient.customerId}'),
         headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
     if (response.statusCode == 200) {
@@ -43,7 +43,10 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
   void initState() {
     fetchData();
     print('*****************************');
-    print(sharedPrefsClient.accessToken);
+    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+
+    print(sharedPrefsClient.customerId);
+
     print('******************************');
     super.initState();
   }
@@ -90,17 +93,7 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('No Data'),
-                              SizedBox(
-                                height: 50,
-                              ),
-                              Text('Check your internet connection',
-                                  style: TextStyle(color: Colors.red)),
-                            ],
-                          ),
+                          child: Text('No Data'),
                         );
                       }
                     },
