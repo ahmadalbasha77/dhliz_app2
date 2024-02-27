@@ -378,8 +378,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                           onPressed: () {
                                             Share.share(
                                               'Transactions Details  \n\nName Item : ${data[index]['stockName']}   \n\n Transactions Id :${data[index]['transactionId']}  \n\n '
-                                                  'quantity : ${data[index]['quantity']} \n\n status :  ${data[index]['status'] == 0 ? 'Under Review'.tr : data[index]['status'] == 1 ? 'Accepted'.tr : 'Rejected'.tr}'
-                                                  '  ',
+                                              'quantity : ${data[index]['quantity']} \n\n status :  ${data[index]['status'] == 0 ? 'Under Review'.tr : data[index]['status'] == 1 ? 'Accepted'.tr : 'Rejected'.tr}'
+                                              '  ',
                                             );
                                           },
                                           icon: Icon(Icons.share,

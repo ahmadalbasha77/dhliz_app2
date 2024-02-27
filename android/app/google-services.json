@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "37042313350",
-    "project_id": "dhliz-bb277",
-    "storage_bucket": "dhliz-bb277.appspot.com"
+    "project_number": "156415235765",
+    "project_id": "dhlizapp",
+    "storage_bucket": "dhlizapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:37042313350:android:c72ef94554ea855cad9907",
+        "mobilesdk_app_id": "1:156415235765:android:dda3a46483a1a16c82d0fc",
         "android_client_info": {
-          "package_name": "com.example.dhliz_app"
+          "package_name": "com.fuais.dhliz_app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyATOmxAoIEWBOJyP_3R79m4teNRoWNYHHU"
+          "current_key": "AIzaSyCJ3bC4h3RL1Gd3_3X8FoXEXiVLm02sw2I"
         }
       ],
       "services": {

@@ -1,4 +1,5 @@
 import 'package:dhliz_app/config/shared_prefs_client.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,15 +9,33 @@ import '../../config/utils.dart';
 import '../auth/login_screen.dart';
 import '../home/account_monitoring_screen.dart';
 import '../home/self mangement of invntory/self_management_of_inventory_screen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   _callNumber() async {
-    var number = '0777363661';
+    var number = '0559559700';
     await FlutterPhoneDirectCaller.callNumber(number);
   }
 
+
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
   @override
   Widget build(BuildContext context) {
     // Get the screen size
@@ -275,11 +294,12 @@ class HomeScreen extends StatelessWidget {
             //   trailing:
             //       const Icon(Icons.arrow_forward_ios, color: Colors.black),
             //   onTap: () async {
-            //     if (await Utils.showAreYouSureDialog(title: 'Sign Out'.tr)) {
-            //       sharedPrefsClient.clearProfile();
-            //       Get.deleteAll();
-            //       Get.offAll(() => const LoginScreen());
-            //     }
+            //     signInWithGoogle();
+            //     // if (await Utils.showAreYouSureDialog(title: 'Sign Out'.tr)) {
+            //     //   sharedPrefsClient.clearProfile();
+            //     //   Get.deleteAll();
+            //     //   Get.offAll(() => const LoginScreen());
+            //     // }
             //   },
             // ),
           ],
