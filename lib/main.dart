@@ -46,7 +46,13 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context, Widget? child) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.white,
+
+              secondary: Color.fromRGBO(80, 46, 144, 1.0)),
+
+          progressIndicatorTheme: ProgressIndicatorThemeData(
+              color: Color.fromRGBO(80, 46, 144, 1.0)),
           useMaterial3: false,
         ),
         initialBinding: BindingQ(),

@@ -74,7 +74,7 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                     shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
                     backgroundColor: MaterialStatePropertyAll(
-                      Color.fromARGB(255, 35, 37, 56),
+                      Color.fromRGBO(80, 46, 144, 1.0),
                     )),
                 onPressed: () {
                   Get.off(() => AddWarehouseScreen());
@@ -142,7 +142,7 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                                                           15))),
                                           backgroundColor:
                                               MaterialStatePropertyAll(
-                                            Color.fromARGB(255, 35, 37, 56),
+                                                Color.fromRGBO(80, 46, 144, 1.0),
                                           )),
                                       onPressed: () {
                                         Get.to(MapWarehouseScreen(
@@ -172,7 +172,7 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Text(
-                                  '${'Price'.tr} : ${data[index]['warehouse']['price']['cost']}  SAR / 1 M² per month',
+                                  '${'Price'.tr} : ${data[index]['warehouse']['price']['cost']}  SAR / 1 M² per day',
                                   style: TextStyle(
                                     fontSize: 11,
                                   )),

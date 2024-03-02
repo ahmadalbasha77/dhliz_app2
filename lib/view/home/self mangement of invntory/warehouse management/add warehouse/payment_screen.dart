@@ -190,7 +190,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 Padding(
                     padding: EdgeInsets.all(70),
                     child: Image.asset(
-                      'image/dehliz/logo_dhlez.png',
+                      'image/home/dhlez_app_logo_without_bg.png',
                     )),
                 PaymentMethods(
                   paymentConfig: paymentConfig!,

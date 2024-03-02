@@ -37,6 +37,7 @@ class _MainScreenState extends State<MainScreen> {
                 gap: 5,
                 backgroundColor: AppColor.darkGray,
                 color: Colors.black26,
+                activeColor: AppColor.buttonColor,
                 tabs: [
                   GButton(
                     icon: Icons.home_filled,

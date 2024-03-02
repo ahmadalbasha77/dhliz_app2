@@ -124,7 +124,7 @@ class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
                                                           15))),
                                           backgroundColor:
                                               MaterialStatePropertyAll(
-                                            Color.fromARGB(255, 35, 37, 56),
+                                                Color.fromRGBO(80, 46, 144, 1.0),
                                           )),
                                       onPressed: () {
                                         MapWarehouseScreen(

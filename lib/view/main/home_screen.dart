@@ -243,7 +243,7 @@ class HomeScreen extends StatelessWidget {
                     EdgeInsets.symmetric(horizontal: screenSize.width * 0.04),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: Color.fromARGB(255, 40, 40, 51)),
+                    color:  Color.fromRGBO(80, 46, 144, 1.0)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dhliz_app/config/app_color.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -377,7 +378,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
                 child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
-                            Color.fromARGB(255, 35, 37, 56)),
+                            AppColor.buttonColor),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(screenWidth * 0.03)))),

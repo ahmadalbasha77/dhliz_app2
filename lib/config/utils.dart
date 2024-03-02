@@ -53,6 +53,7 @@ class Utils {
 
   static Future<bool> showAreYouSureDialog({required String title}) async {
     var result = await Get.defaultDialog(
+      // buttonColor: Color.fromRGBO(80, 46, 144, 1.0),
       title: title,
       content: Text('Are you sure?'.tr),
       textCancel: 'Cancel'.tr,

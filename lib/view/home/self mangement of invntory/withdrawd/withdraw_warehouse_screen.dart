@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dhliz_app/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -123,7 +124,7 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
                                                           15))),
                                           backgroundColor:
                                               MaterialStatePropertyAll(
-                                            Color.fromARGB(255, 35, 37, 56),
+                                                AppColor.buttonColor,
                                           )),
                                       onPressed: () {
                                         MapWarehouseScreen(

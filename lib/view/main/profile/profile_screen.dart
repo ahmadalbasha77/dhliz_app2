@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../config/app_color.dart';
 import '../../../config/shared_prefs_client.dart';
 import '../../../network/api_url.dart';
 
@@ -123,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: ElevatedButton(
                             style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.black),
+                                  MaterialStateProperty.all(AppColor.buttonColor),
                             ),
                             onPressed: () {
                               Get.to(SettingsScreen());

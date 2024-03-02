@@ -302,7 +302,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                 child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: const MaterialStatePropertyAll(
-                            Color.fromARGB(255, 38, 50, 56)),
+                            Color.fromRGBO(80, 46, 144, 1.0)),
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     onPressed: () {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:dhliz_app/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
@@ -382,7 +383,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromRGBO(38, 50, 56, 1),
+        backgroundColor: AppColor.buttonColor,
         onPressed: () {
           getLocation();
         },
@@ -486,7 +487,7 @@ class _MapScreenState extends State<MapScreen> {
                                   backgroundColor: MaterialStateProperty.all(
                                       _pickedLocation == LatLng(0.0, 0.0)
                                           ? Color.fromRGBO(38, 50, 56, 0.2)
-                                          : Color.fromRGBO(38, 50, 56, 1))),
+                                          : AppColor.buttonColor)),
                               onPressed: () {
                                 showDialog(
                                   context: context,
@@ -578,7 +579,7 @@ class _MapScreenState extends State<MapScreen> {
                                         selectWarehouse != null &&
                                                 _pickedLocation !=
                                                     LatLng(0.0, 0.0)
-                                            ? Color.fromRGBO(38, 50, 56, 1)
+                                            ? AppColor.buttonColor
                                             : Color.fromRGBO(38, 50, 56, 0.2))),
                                 onPressed: () {
                                   // هنا يمكنك وضع الكود الذي تريد تنفيذه بعد الضغط على الزر

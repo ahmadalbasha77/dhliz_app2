@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../../config/app_color.dart';
 import '../../../../../config/shared_prefs_client.dart';
 import '../../../../../network/api_url.dart';
 import 'payment_screen.dart';
@@ -237,7 +238,7 @@ class _PayScreenState extends State<PayScreen> {
                   borderRadius: BorderRadius.circular(20),
                 )),
                 backgroundColor: MaterialStateProperty.all(
-                  Color.fromARGB(255, 35, 37, 56),
+                  AppColor.buttonColor,
                 ),
               ),
               onPressed: () {

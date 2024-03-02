@@ -36,11 +36,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return EasySplashScreen(
-      logo: Image.asset('image/dehliz/logo_dhlez.png'),
+      logo: Image.asset('image/home/dhlez_app_logo_without_bg.png'),
       logoWidth: 100,
       backgroundColor: Colors.white,
       showLoader: true,
-      loaderColor: Colors.black,
+      loaderColor: Color.fromRGBO(80, 46, 144, 1.0),
     );
   }
 }

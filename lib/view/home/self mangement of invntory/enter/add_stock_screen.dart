@@ -182,7 +182,7 @@ class _AddStockScreenState extends State<AddStockScreen> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
+        backgroundColor: AppColor.buttonColor,
         onPressed: () {
           postData();
         },

@@ -83,7 +83,7 @@ class _StockInventoryScreenState extends State<StockInventoryScreen> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.black54)),
+                            MaterialStateProperty.all( Color.fromRGBO(80, 46, 144, 1.0))),
                     onPressed: () {
                       Get.off(() => AddStockScreen(
                             id: widget.id,

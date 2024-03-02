@@ -28,7 +28,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="Dhliz Warehouse Management">
+        android:label="دهليز لإدارة المخزون والمستودع">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDeH6nQy7GwB5hCPLYvF-Pbj5WH647Z-P4" />

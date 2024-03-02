@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dhliz_app/config/app_color.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:dhliz_app/view/thank_you.dart';
@@ -339,7 +340,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                 child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: const MaterialStatePropertyAll(
-                            Color.fromARGB(255, 38, 50, 56)),
+                            AppColor.buttonColor),
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     onPressed: () {

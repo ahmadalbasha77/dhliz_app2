@@ -1,3 +1,4 @@
+import 'package:dhliz_app/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -134,6 +135,7 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColor.buttonColor,
         title: Text('Warehouse details'.tr),
       ),
       body: Padding(
@@ -224,7 +226,7 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                       borderRadius: BorderRadius.circular(20),
                     )),
                     backgroundColor: MaterialStateProperty.all(
-                      Color.fromRGBO(38, 50, 56, 1),
+                      AppColor.buttonColor,
                     ),
                   ),
                   onPressed: () async {
