@@ -731,7 +731,7 @@ class _MapScreenState extends State<MapScreen> {
                 bgColor: Colors.white,
                 textColor: Colors.black,
                 hasClearButton: false,
-                apiKey: 'AIzaSyBGZuAzlhiW9_ZzL7n3A6wtHnye5uNvvYM',
+                apiKey: 'AIzaSyDeH6nQy7GwB5hCPLYvF-Pbj5WH647Z-P4',
                 placeType: PlaceType.address,
                 placeholder: 'Search Location'.tr,
                 onSelected: (Place place) async {
@@ -757,7 +757,7 @@ class _MapScreenState extends State<MapScreen> {
   void _drawRoute() async {
     if (selectWarehouse != null) {
       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        'AIzaSyBGZuAzlhiW9_ZzL7n3A6wtHnye5uNvvYM',
+        'AIzaSyDeH6nQy7GwB5hCPLYvF-Pbj5WH647Z-P4',
         PointLatLng(_pickedLocation.latitude, _pickedLocation.longitude),
         PointLatLng(selectWarehouse!.position.latitude,
             selectWarehouse!.position.longitude),
