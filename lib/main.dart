@@ -1,3 +1,4 @@
+import 'package:dhliz_app/config/app_color.dart';
 import 'package:dhliz_app/config/binding.dart';
 import 'package:dhliz_app/controllers/app_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,12 +48,11 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
+              primary: AppColor.primaryColorScreen,
               seedColor: Colors.white,
-
-              secondary: Color.fromRGBO(80, 46, 144, 1.0)),
-
-          progressIndicatorTheme: ProgressIndicatorThemeData(
-              color: Color.fromRGBO(80, 46, 144, 1.0)),
+              secondary: AppColor.primaryColorScreen),
+          progressIndicatorTheme: const ProgressIndicatorThemeData(
+              color: AppColor.primaryColorScreen),
           useMaterial3: false,
         ),
         initialBinding: BindingQ(),

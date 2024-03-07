@@ -50,6 +50,7 @@ class  AppColor {
   static const Color dTextColor= Color.fromRGBO(35,53,95,1) ;
   static const Color fillColorTextField = Color.fromRGBO(230,288,221,1) ;
   static const Color buttonColor = Color.fromRGBO(80, 46, 144, 1.0) ;
+  static const Color primaryColorScreen = Color.fromRGBO(80, 46, 144, 1.0) ;
   static const Color buttonColor2 = Color.fromRGBO(233, 78, 36, 1.0) ;
 
 
