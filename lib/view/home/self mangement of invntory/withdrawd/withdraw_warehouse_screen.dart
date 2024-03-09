@@ -77,7 +77,8 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         return Center(
-                          child: Text('No Data', style: TextStyle(fontSize: 16)),
+                          child:
+                              Text('No Data', style: TextStyle(fontSize: 16)),
                         );
                       }
                     },
@@ -124,10 +125,10 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
                                                           15))),
                                           backgroundColor:
                                               MaterialStatePropertyAll(
-                                                AppColor.buttonColor,
+                                            AppColor.buttonColor,
                                           )),
                                       onPressed: () {
-                                        MapWarehouseScreen(
+                                        Get.to(() => MapWarehouseScreen(
                                             nameWh: data[index]['warehouse']
                                                 ['name'],
                                             lat: double.parse(data[index]
@@ -135,7 +136,7 @@ class _WithdrawWarehouseScreenState extends State<WithdrawWarehouseScreen> {
                                                 ['lat']),
                                             lon: double.parse(data[index]
                                                     ['warehouse']['address']
-                                                ['lot']));
+                                                ['lot'])));
                                       },
                                       child: Text(
                                         'View map'.tr,

@@ -57,7 +57,7 @@ class _MapWarehouseScreenState extends State<MapWarehouseScreen> {
           : GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: LatLng(widget.lat, widget.lon),
-                zoom: 10,
+                zoom: 15,
               ),
               markers: {
                 Marker(

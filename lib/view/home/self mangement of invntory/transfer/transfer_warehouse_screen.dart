@@ -127,15 +127,15 @@ class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
                                                 Color.fromRGBO(80, 46, 144, 1.0),
                                           )),
                                       onPressed: () {
-                                        MapWarehouseScreen(
+                                        Get.to(() => MapWarehouseScreen(
                                             nameWh: data[index]['warehouse']
-                                                ['name'],
+                                            ['name'],
                                             lat: double.parse(data[index]
-                                                    ['warehouse']['address']
-                                                ['lat']),
+                                            ['warehouse']['address']
+                                            ['lat']),
                                             lon: double.parse(data[index]
-                                                    ['warehouse']['address']
-                                                ['lot']));
+                                            ['warehouse']['address']
+                                            ['lot'])));
                                       },
                                       child: Text(
                                         'View map'.tr,
