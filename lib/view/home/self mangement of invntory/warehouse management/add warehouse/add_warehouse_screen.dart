@@ -43,7 +43,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
   String selected = '';
   TextEditingController from = TextEditingController();
   TextEditingController to = TextEditingController();
-  String dateDifference = "";
+  String dateDifference = "0";
 
   final _formKey = GlobalKey<FormState>();
 
@@ -52,7 +52,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
       DateTime fromDate = DateFormat('yyyy-MM-dd').parse(from.text);
       DateTime toDate = DateFormat('yyyy-MM-dd').parse(to.text);
       Duration difference = toDate.difference(fromDate);
-      dateDifference = '${difference.inDays}';
+      dateDifference = '${difference.inDays + 1}';
     } else {
       dateDifference = "";
     }
@@ -169,13 +169,13 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none))),
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                child: Text('10 M²  = 12 wooden pallets'.tr,
-                    style: TextStyle(color: Colors.black38)),
-              ),
+              // Container(
+              //   margin: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+              //   child: Text('10 M²  = 12 wooden pallets'.tr,
+              //       style: TextStyle(color: Colors.black38)),
+              // ),
               SizedBox(
-                height: 15,
+                height: 35,
               ),
               Container(
                 // alignment: Alignment.centerRight,
@@ -199,7 +199,6 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                       controller: from,
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
-
                           context: context,
                           initialDate: from.text.isNotEmpty
                               ? DateFormat('yyyy-MM-dd').parse(from.text)
