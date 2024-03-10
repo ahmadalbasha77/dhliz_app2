@@ -36,8 +36,33 @@ class ViewDetailsTransferScreen extends StatefulWidget {
 
 class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
   List<Map<String, dynamic>> data = [];
+  List<Map<String, dynamic>> dataAllStock = [];
 
-  void postData() async {
+  Future<void> fetchData() async {
+    final response = await http.get(
+        Uri.parse(
+            '${ApiUrl.API_BASE_URL}/Stock/Find?CustomerName=${sharedPrefsClient.fullName}&PageIndex=0&PageSize=100'),
+        headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
+
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      final responseData = jsonResponse['result']['response'][0];
+
+      if (responseData != null) {
+        setState(() {
+          dataAllStock = List<Map<String, dynamic>>.from(responseData);
+        });
+      } else {
+        print('Invalid response structure');
+      }
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  void postData(int toId) async {
     final String apiUrl = '${ApiUrl.API_BASE_URL}/Transaction/Create';
 
     Map<String, dynamic> requestBody = {
@@ -46,7 +71,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
       "actionType": 2,
       "status": 0,
       "fromStockId": widget.id,
-      "toStockId": widget.id,
+      "toStockId": toId,
       "rejectReason": "string"
     };
 
@@ -60,6 +85,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
     );
 
     if (response.statusCode == 200) {
+      print(requestBody);
       print("POST request successful!");
       print("Response: ${response.body}");
 
@@ -71,7 +97,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
         context: context,
         type: QuickAlertType.success,
         text:
-        'A new transfer transaction request has been sent. Please wait for approval',
+            'A new transfer transaction request has been sent. Please wait for approval',
         showConfirmBtn: true,
         confirmBtnColor: Colors.white,
         confirmBtnTextStyle: TextStyle(color: Colors.black),
@@ -95,7 +121,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
     data = widget.dataStock;
     print(widget.dataStock);
     print('________________________________*******************');
-
+    fetchData();
     super.initState();
   }
 
@@ -295,7 +321,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
                     print(selected);
                   });
                 },
-                items: data.map((item) {
+                items: dataAllStock.map((item) {
                   return DropdownMenuItem(
                     value: item['id'],
                     // Adjust this based on your data structure
@@ -377,13 +403,13 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
                 height: screenWidth * 0.14,
                 child: ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            AppColor.buttonColor),
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColor.buttonColor),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(screenWidth * 0.03)))),
                     onPressed: () {
-                      postData();
+                      postData(selected);
                     },
                     child: Text("Transfer now".tr)),
               ),
