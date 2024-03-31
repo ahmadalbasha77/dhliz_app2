@@ -12,7 +12,20 @@
           "package_name": "com.fuais.dhliz_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "156415235765-523fq70236t8jb1qa6ovd444dp37iu8d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fuais.dhliz_app",
+            "certificate_hash": "a652ccebac454286b9b71b47e7ba81269969c1a0"
+          }
+        },
+        {
+          "client_id": "156415235765-qc44tcu058hauk6fib9pj79qiagvdslu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCJ3bC4h3RL1Gd3_3X8FoXEXiVLm02sw2I"
@@ -20,7 +33,49 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156415235765-qc44tcu058hauk6fib9pj79qiagvdslu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156415235765:android:89d4aa8d70dc1b9882d0fc",
+        "android_client_info": {
+          "package_name": "com.fuais.dhliz_warehouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156415235765-2ga5u9mjf4sch8ttf37h2cboueoc3d2e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fuais.dhliz_warehouse",
+            "certificate_hash": "a652ccebac454286b9b71b47e7ba81269969c1a0"
+          }
+        },
+        {
+          "client_id": "156415235765-qc44tcu058hauk6fib9pj79qiagvdslu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ3bC4h3RL1Gd3_3X8FoXEXiVLm02sw2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156415235765-qc44tcu058hauk6fib9pj79qiagvdslu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -1,6 +1,8 @@
 import 'package:dhliz_app/config/app_color.dart';
 import 'package:dhliz_app/config/binding.dart';
+import 'package:dhliz_app/config/messaging_config.dart';
 import 'package:dhliz_app/controllers/app_controller.dart';
+import 'package:dhliz_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +14,9 @@ import 'view/auth/splash_screen.dart';
 
 void main() async {
   await sharedPrefsClient.init();
-  // بعدين
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp();
-  var dToken = await FirebaseMessaging.instance.getToken() ?? "";
-  print(dToken);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  MessagingConfig.init();
   runApp(const MyApp());
 }
 
