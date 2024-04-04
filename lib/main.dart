@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dhliz_app/config/app_color.dart';
 import 'package:dhliz_app/config/binding.dart';
 import 'package:dhliz_app/controllers/app_controller.dart';
@@ -5,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:get/get.dart';
 import 'config/shared_prefs_client.dart';
 import 'config/translation.dart';
@@ -12,12 +15,12 @@ import 'view/auth/splash_screen.dart';
 
 void main() async {
   await sharedPrefsClient.init();
-  // بعدين
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
   var dToken = await FirebaseMessaging.instance.getToken() ?? "";
-  print(dToken);
+  log(dToken);
   runApp(const MyApp());
 }
 
@@ -40,6 +43,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    print(sharedPrefsClient.language);
+    print('**************************');
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
@@ -58,7 +63,7 @@ class _MyAppState extends State<MyApp> {
         initialBinding: BindingQ(),
         translations: Translation(),
         locale: Locale(sharedPrefsClient.language),
-        fallbackLocale: const Locale('en'),
+        fallbackLocale: const Locale('ar'),
         home: const SplashScreen(),
       ),
     );

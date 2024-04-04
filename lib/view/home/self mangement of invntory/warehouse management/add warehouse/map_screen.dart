@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dhliz_app/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -22,6 +23,7 @@ class MarkerInfo {
   final int numberOfMeter;
   final String phone;
   final String address;
+  final double transportationFees;
 
   MarkerInfo({
     required this.id,
@@ -32,6 +34,7 @@ class MarkerInfo {
     required this.numberOfMeter,
     required this.phone,
     required this.address,
+    required this.transportationFees,
   });
 }
 
@@ -179,7 +182,8 @@ class _MapScreenState extends State<MapScreen> {
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
     };
-    final Uri uri = Uri.parse('${ApiUrl.API_BASE_URL}/Warehouse/Find');
+    final Uri uri = Uri.parse(
+        '${ApiUrl.API_BASE_URL}/Warehouse/Find?PageIndex=0&PageSize=100');
 
     // Initialize queryParameters with the 'Capacity' parameter
     final Map<String, dynamic> queryParameters =
@@ -187,9 +191,10 @@ class _MapScreenState extends State<MapScreen> {
 
     // Add 'include' parameter to queryParameters if address is provided
     queryParameters['include'] = address;
-    queryParameters['Temperature.High'] = widget.dry ? 'false' : '';
-    queryParameters['Temperature.Cold'] = widget.cold ? 'false' : '';
-    queryParameters['Temperature.Freezing'] = widget.freezing ? 'false' : '';
+    queryParameters['Dry'] = widget.dry ? 'true' : '';
+    queryParameters['Cold'] = widget.cold ? 'true' : '';
+    queryParameters['PageIndex'] = '0';
+    queryParameters['PageSize'] = '200';
 
     final Uri filteredUri = uri.replace(queryParameters: queryParameters);
 
@@ -197,6 +202,8 @@ class _MapScreenState extends State<MapScreen> {
       final response = await http.get(filteredUri, headers: headers);
 
       if (response.statusCode == 200) {
+        print(filteredUri);
+        print(queryParameters);
         print('Request successful');
         Map<String, dynamic> responseData = json.decode(response.body);
         if (responseData['isSuccess']) {
@@ -241,24 +248,27 @@ class _MapScreenState extends State<MapScreen> {
                           pricePerMeter: item['cost']?.toDouble() ?? 0.0,
                           numberOfMeter: 5,
                           phone: item['phone'] ?? '',
+                          transportationFees:
+                              item['transportationFees']?.toDouble() ?? 0.0,
                         ));
                       },
                       title: item['name'],
-                      snippet: 'اضغط هنا لعرض نفاصيل المخزن',
+                      snippet: 'اضغط هنا لعرض تفاصيل المخزن',
                     ),
                     onTap: () {
                       setState(() {
                         selectWarehouse = MarkerInfo(
-                          address:
-                              '${item['address']['city']} ,${item['address']['state']} , ${item['address']['street']} ',
-                          id: item['id'].toString(),
-                          position: LatLng(lat, lon),
-                          nameWarehouse: item['name'] ?? '',
-                          capacity: '${item['capacity'] ?? ''}',
-                          pricePerMeter: item['cost']?.toDouble() ?? 0.0,
-                          numberOfMeter: 5,
-                          phone: item['phone'] ?? '',
-                        );
+                            address:
+                                '${item['address']['city']} ,${item['address']['state']} , ${item['address']['street']} ',
+                            id: item['id'].toString(),
+                            position: LatLng(lat, lon),
+                            nameWarehouse: item['name'] ?? '',
+                            capacity: '${item['capacity'] ?? ''}',
+                            pricePerMeter: item['cost']?.toDouble() ?? 0.0,
+                            numberOfMeter: 5,
+                            phone: item['phone'] ?? '',
+                            transportationFees:
+                                item['transportationFees']?.toDouble() ?? 0.0);
                         _drawRoute();
                       });
                     },
@@ -327,18 +337,23 @@ class _MapScreenState extends State<MapScreen> {
                 children: [
                   Text('${'capacity'.tr} : ${info.capacity}'),
                   SizedBox(
-                    height: 20,
+                    height: 10.h,
                   ),
                   Text("${'phone'.tr} : ${info.phone}"),
                   SizedBox(
-                    height: 20,
+                    height: 10.h,
                   ),
                   Text("${'price Per Meter'.tr} : ${info.pricePerMeter}"),
                   SizedBox(
-                    height: 20,
+                    height: 10.h,
                   ),
                   Text(
-                      "${'Total price'.tr} : ${info.pricePerMeter * widget.space * int.parse(widget.days)} "),
+                      "${'Transportation Fees'.tr} : ${info.transportationFees} "),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text(
+                      "${'Total price'.tr} : ${info.pricePerMeter * widget.space * int.parse(widget.days) + info.transportationFees} "),
                 ],
               ),
             ),
@@ -636,13 +651,13 @@ class _MapScreenState extends State<MapScreen> {
                                                       Navigator.pop(context);
                                                       Get.off(
                                                         () => WarehouseDetails(
-                                                          totalAmount:
-                                                              selectWarehouse!
+                                                          totalAmount: selectWarehouse!
                                                                       .pricePerMeter *
                                                                   widget.space *
-                                                                  int.parse(
-                                                                      widget
-                                                                          .days),
+                                                                  int.parse(widget
+                                                                      .days) +
+                                                              selectWarehouse!
+                                                                  .transportationFees,
                                                           address:
                                                               selectWarehouse!
                                                                   .address,
@@ -676,6 +691,9 @@ class _MapScreenState extends State<MapScreen> {
                                                               widget.freezing,
                                                           from: widget.from,
                                                           to: widget.to,
+                                                          transportationFees:
+                                                              selectWarehouse!
+                                                                  .transportationFees,
                                                         ),
                                                       );
                                                     },

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +16,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey();
+  bool isNotVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +35,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Image.asset(
                   "image/home/Artboard 16.png",
-                  width: screenSize.width * 0.72,
+                  width: screenSize.width * 0.49,
                 ),
                 SizedBox(
                   height: screenSize.height * 0.05,
                 ),
                 Center(
                   child: Text(
-                    "SignUp",
+                    "Sign Up".tr,
                     style: TextStyle(
                       fontSize: screenSize.width * 0.07,
                       color: Colors.black,
@@ -54,16 +56,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   width: screenSize.width * 0.7,
                   child: Text(
-                    "Enter your data to register in our warehouse",
+                    "Enter your data to register in our warehouse".tr,
                     style: TextStyle(
-                      fontSize: screenSize.width * 0.039,
+                      fontSize: screenSize.width * 0.042,
                       color: Colors.black38,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 SizedBox(
-                  height: screenSize.height * 0.025,
+                  height: screenSize.height * 0.075,
                 ),
                 Container(
                   margin:
@@ -71,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'please enter email';
+                        return 'please enter email'.tr;
                       }
 
                       return null;
@@ -91,7 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         filled: true,
                         fillColor: Color.fromRGBO(243, 242, 238, 1),
-                        labelText: "email",
+                        labelText: "email".tr,
                         labelStyle: TextStyle(color: Colors.black45)),
                   ),
                 ),
@@ -102,17 +104,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'please enter password';
+                        return 'please enter password'.tr;
                       }
                       if (value.length < 8) {
-                        return 'Enter more than 8 characters';
+                        return 'Please use at least 8 characters'.tr;
                       }
                       return null;
                     },
                     style: TextStyle(color: Colors.black87),
                     controller: password,
-                    obscureText: true,
+                    obscureText: isNotVisible,
                     decoration: InputDecoration(
+
+                        suffixIcon: IconButton(
+                          style: ButtonStyle(
+                              shadowColor:
+                                  MaterialStatePropertyAll(Colors.white)),
+                          onPressed: () {
+                            setState(() {
+                              isNotVisible = !isNotVisible;
+                            });
+                          },
+                          icon: Icon(
+                            isNotVisible
+                                ? CupertinoIcons.eye_fill
+                                : CupertinoIcons.eye_slash_fill,
+                            color: Colors.black45,
+                            size: 22,
+                          ),
+                        ),
                         contentPadding: EdgeInsets.symmetric(
                             vertical: screenSize.height * .027,
                             horizontal: screenSize.width * .03),
@@ -124,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         filled: true,
                         fillColor: Color.fromRGBO(243, 242, 238, 1),
-                        labelText: "password",
+                        labelText: "password".tr,
                         labelStyle: TextStyle(color: Colors.black45)),
                   ),
                 ),
@@ -135,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Already have any account?  ",
+                      "Already have any account?  ".tr,
                       style: TextStyle(
                           color: Colors.black45,
                           fontSize: screenSize.width * .038),
@@ -150,7 +170,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         );
                       },
                       child: Text(
-                        'Login',
+                        'Login'.tr,
                         style: TextStyle(
                             color: Colors.black54,
                             fontWeight: FontWeight.w500,
@@ -169,7 +189,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: screenSize.height * 0.079,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:  Color.fromRGBO(80, 46, 144, 1.0),
+                      backgroundColor: Color.fromRGBO(80, 46, 144, 1.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),
@@ -183,7 +203,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }
                     },
                     child: Text(
-                      "Sign Up",
+                      "Sign Up".tr,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: screenSize.width * .05),

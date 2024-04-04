@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'package:dhliz_app/network/reset_api.dart';
+import 'package:dhliz_app/policy_screen.dart';
 import 'package:dhliz_app/view/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +21,6 @@ class LoginController extends GetxController {
   final controllerPassword = TextEditingController();
 
   bool isNotVisible = true;
-
 
   Future<UserResponse> authenticateUser(
       String emailOrUsername, String password) async {
@@ -42,9 +44,10 @@ class LoginController extends GetxController {
         if (json.decode(response.body)['isSuccess'] == true) {
           var responseData = json.decode(response.body)['response'][0];
           String token = responseData['token'];
+          int userId = responseData['userId'];
+          bool isActive = responseData['isActive'];
           String userName = responseData['username'];
           int customerId = responseData['customerId'];
-          sharedPrefsClient.isLogin = true;
           sharedPrefsClient.accessToken = token;
           sharedPrefsClient.fullName = userName;
           sharedPrefsClient.customerId = customerId;
@@ -52,18 +55,36 @@ class LoginController extends GetxController {
           // sharedPrefsClient.accessToken = data['response']['token'].toString();
           print('***********************************');
           print('Customer : ' + sharedPrefsClient.customerId.toString());
-
           print('***********************************');
-          Get.offAll(() => MainScreen());
-          print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+          print('is active : ' + isActive.toString());
+          print(response.body);
+          print('988888888888888888888888');
+
+          print(userId);
+          if (isActive == true) {
+            Get.offAll(() => const MainScreen());
+            sharedPrefsClient.isLogin = true;
+            print('***************************');
+          } else {
+            Get.to(() => PolicyScreen(
+                  userId: userId,
+                ));
+            print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+          }
         } else {
           print('aaaaaaaaaaaaaaaaaaaaaaa');
-          Utils.showSnackbar('Please try again'.tr, data['error'].toString());
+          // Utils.showSnackbar('Please try again'.tr, data['error'].toString());
         }
 
         return UserResponse.fromJson(json.decode(response.body));
+      } else if (response.statusCode == 400) {
+        Utils.showSnackbar(
+            'Please try again'.tr, 'Email or password is incorrect');
+        throw Exception('Failed to authenticate user ${response.statusCode}');
       } else {
-        throw Exception('Failed to authenticate user');
+        Utils.showSnackbar(
+            'Please try again'.tr, 'Check your internet connection');
+        throw Exception('Failed to authenticate user ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Error: $e');
@@ -74,12 +95,36 @@ class LoginController extends GetxController {
     if (keyForm.currentState!.validate()) {
       Utils.showLoadingDialog();
       print('aaaaaaaaaaaaaaaaaaaaaaa');
-      try {
-        UserResponse userResponse = await authenticateUser(
-            controllerUsername.text, controllerPassword.text);
-      } catch (e) {
-        // Handle authentication error
-      }
+      UserResponse userResponse = await authenticateUser(
+          controllerUsername.text, controllerPassword.text);
+    }
+  }
+
+   UserResponse? userResponse;
+
+  ssignIn() async {
+    if (keyForm.currentState!.validate()) {
+      Utils.showLoadingDialog();
+    log(controllerUsername.text);
+    log(controllerPassword.text);
+    userResponse = await RestApi.login(jsonEncode({
+      'emailOrUsername': controllerUsername.text,
+      'password': controllerPassword.text
+    }));
+
+    if (userResponse!.isSuccess == true) {
+      var response = userResponse!.response.first;
+      sharedPrefsClient.accessToken = response.token;
+      sharedPrefsClient.fullName = response.username;
+      sharedPrefsClient.customerId = response.customerId;
+      if (response.isActive == true) {
+        Get.offAll(() => const MainScreen());
+        sharedPrefsClient.isLogin = true;
+      } else {
+        Get.to(() => PolicyScreen(
+              userId: response.userId,
+            ));
+      }}
     }
   }
 }

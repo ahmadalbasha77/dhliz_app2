@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 SizedBox(
-                  height: screenSize.height * 0.1,
+                  height: screenSize.height * 0.04,
                 ),
                 Image.asset(
                   alignment: Alignment.center,
@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Center(
                   child: Text(
-                    "Login",
+                    "Login".tr,
                     style: TextStyle(
                       fontSize: screenSize.width * 0.07,
                       color: Colors.black,
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   width: screenSize.width * 0.7,
                   child: Text(
-                    "Enter your email and password to access the warehouse",
+                    "Enter your email and password to access the warehouse".tr,
                     style: TextStyle(
                       fontSize: screenSize.width * 0.039,
                       color: Colors.black38,
@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter Your Username';
+                        return 'Please enter Your Username'.tr;
                       }
                     },
                     controller: _controller.controllerUsername,
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         filled: true,
                         fillColor: Color.fromRGBO(243, 242, 238, 1),
-                        labelText: "email",
+                        labelText: "email".tr,
                         labelStyle: TextStyle(color: Colors.black45)),
                   ),
                 ),
@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
+                        return 'Please enter your password'.tr;
                       }
                     },
                     style: TextStyle(color: Colors.black87),
@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         filled: true,
                         fillColor: Color.fromRGBO(243, 242, 238, 1),
-                        labelText: "password",
+                        labelText: "password".tr,
                         labelStyle: TextStyle(color: Colors.black45)),
                   ),
                 ),
@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Don't Have Account ?  ",
+                      "Don't Have Account ?  ".tr,
                       style: TextStyle(
                           color: Colors.black45,
                           fontSize: screenSize.width * .038),
@@ -158,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Get.to(SignUpScreen());
                       },
                       child: Text(
-                        'Sign Up',
+                        'Sign Up'.tr,
                         style: TextStyle(
                             color: Colors.black54,
                             fontWeight: FontWeight.w500,
@@ -183,10 +183,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     onPressed: () async {
-                      _controller.signIn();
+                      _controller.ssignIn();
                     },
                     child: Text(
-                      "Login",
+                      "Login".tr,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: screenSize.width * .05),

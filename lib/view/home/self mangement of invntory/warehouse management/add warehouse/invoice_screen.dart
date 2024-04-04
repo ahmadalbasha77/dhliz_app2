@@ -39,7 +39,7 @@ class InvoiceScreen extends StatefulWidget {
 class _InvoiceScreenState extends State<InvoiceScreen> {
   Future<pw.ImageProvider> loadImage() async {
     return await imageFromAssetBundle(
-      'image/home/Artboard 10.png',
+      'image/home/dhlez_app_logo_without_bg.png',
     );
   }
 
@@ -85,7 +85,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                     // Title
                     pw.SizedBox(height: 20),
                     pw.Center(
-                      child: pw.Image(imageProvider, width: 140),
+                      child: pw.Image(imageProvider, width: 100),
                     ),
 
                     // Date
@@ -111,7 +111,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               style: pw.TextStyle(fontSize: 16),
                             ),
                             pw.Text(
-                              'Warehouse ID: ${widget.warehouseId}',
+                              'Tax Number: 3116620574',
                               style: pw.TextStyle(fontSize: 16),
                             ),
                           ]),

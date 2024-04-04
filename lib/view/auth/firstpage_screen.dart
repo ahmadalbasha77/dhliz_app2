@@ -1,4 +1,6 @@
+import 'package:dhliz_app/config/shared_prefs_client.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'login_screen.dart';
 
 class FirstPageScreen extends StatefulWidget {
@@ -20,7 +22,7 @@ class _FirstPageScreenState extends State<FirstPageScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: screenSize.height * 0.1,
+              height: screenSize.height * 0.05,
             ),
             Image.asset(
               "image/home/Artboard 14.png",
@@ -28,21 +30,26 @@ class _FirstPageScreenState extends State<FirstPageScreen> {
               height: screenSize.height * 0.2,
             ),
             SizedBox(
-              height: screenSize.height * 0.16,
+              height: screenSize.height * 0.19,
             ),
             Image.asset(
-              "image/home/Artboard 10.png",
+              "image/dhlez_logo.png",
               width: screenSize.width * 0.45,
             ),
             SizedBox(
               height: screenSize.height * 0.03,
             ),
-            Container(
+            SizedBox(
               width: screenSize.width * 0.71,
               child: Text(
-                "WM system that is easy to use and adapt by end users, for all that is easy to use and adapt by that is easy to use and adapt by",
-                style:
-                    TextStyle(color: Colors.black54, fontSize: 14, height: 1.3),
+                "Dhlez Warehouse Management System is a specialized system designed to simplify and improve warehouse operations and manage them efficiently"
+                    .tr,
+                style: const TextStyle(
+                    color: Colors.black54,
+                    fontSize: 14,
+                    height: 1.3,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'ar1'),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -56,18 +63,16 @@ class _FirstPageScreenState extends State<FirstPageScreen> {
               height: screenSize.height * 0.084,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(38, 50, 56, 1),
+                  backgroundColor: const Color.fromRGBO(80, 46, 144, 1.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(28),
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
+                  sharedPrefsClient.isOpen = true;
+                  Get.off(() => const LoginScreen());
                 },
-                child: Text(
+                child: const Text(
                   "GET STARTED",
                   style: TextStyle(
                     color: Colors.white,

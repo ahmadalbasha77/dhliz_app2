@@ -48,9 +48,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
 
     if (response.statusCode == 200) {
       print("POST request successful!");
-      // print("Response: ${response.body}");
 
-      // Parse the JSON response
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       print(jsonResponse);
       Get.back();
@@ -66,7 +64,19 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
         textAlignment: TextAlign.center
       );
       // Now you can use the postId variable as needed.
-    } else {
+    }
+    else {
+      QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text:
+          'The subscription space is smaller than the required space',
+          showConfirmBtn: true,
+          confirmBtnColor: Colors.white,
+          confirmBtnTextStyle: TextStyle(color: Colors.black),
+          title: 'Error!',
+          textAlignment: TextAlign.center
+      );
       print("Failed to make POST request. Status code: ${response.statusCode}");
       print("Response: ${response.body}");
     }
