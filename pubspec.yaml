@@ -42,7 +42,7 @@ dependencies:
   google_maps_flutter: ^2.5.0
   get: ^4.6.5
   get_storage: ^2.1.1
-  firebase_core: ^2.25.4
+  firebase_core:
   firebase_auth:
   flutter_screenutil: ^5.6.0
   package_info_plus:
@@ -74,9 +74,9 @@ dependencies:
   location:
   geocoding: ^2.1.1
   moyasar: ^2.0.5
-  firebase_messaging: ^14.7.16
-  http_parser: ^4.0.0
-
+  firebase_messaging:
+  flutter_local_notifications: ^17.0.0
+  flutter_app_badger: ^1.5.0
 
 
 
@@ -136,14 +136,6 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-
-  fonts:
-    - family: ar
-      fonts:
-        - asset: image/fonts/NotoSansArabic-SemiBold.ttf
-    - family: ar1
-      fonts:
-        - asset: image/fonts/GE SS Two Light.otf
   # fonts:
   #   - family: Schyler
   #     fonts:
