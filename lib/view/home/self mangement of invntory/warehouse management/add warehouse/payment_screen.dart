@@ -182,6 +182,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       metadata: {'size': '250g'},
       creditCard: CreditCardConfig(saveCard: false, manual: false),
       applePay: ApplePayConfig(
+
           merchantId: 'merchant.mysr.fghurayri',
           label: 'Blue Coffee Beans',
           manual: false),
