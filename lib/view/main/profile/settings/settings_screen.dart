@@ -189,7 +189,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 title: 'Sign Out'.tr)) {
                               sharedPrefsClient.clearProfile();
                               Get.deleteAll();
-                              Get.offAll(() => const LoginScreen());
+                              Get.offAll(() =>  LoginScreen());
                             }
                           },
                         ),

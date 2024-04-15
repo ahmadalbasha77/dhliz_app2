@@ -29,7 +29,7 @@ class SplashScreenState extends State<SplashScreen> {
         if (sharedPrefsClient.isLogin) {
           Get.offAll(() => const MainScreen());
         } else {
-          Get.offAll(() => const LoginScreen());
+          Get.offAll(() =>  LoginScreen());
         }
       }
     });

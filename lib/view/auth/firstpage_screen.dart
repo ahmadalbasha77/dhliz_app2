@@ -70,7 +70,7 @@ class _FirstPageScreenState extends State<FirstPageScreen> {
                 ),
                 onPressed: () {
                   sharedPrefsClient.isOpen = true;
-                  Get.off(() => const LoginScreen());
+                  Get.off(() =>  LoginScreen());
                 },
                 child: const Text(
                   "GET STARTED",

@@ -109,7 +109,7 @@ class HomeScreen extends StatelessWidget {
     double widthMultiplier = isTablet ? 0.04 : 0.05;
 
     return Container(
-      height: screenSize.width * (isTablet ? 0.3 : 0.3),
+      height: screenSize.width * (isTablet ? 0.28 : 0.3),
       margin: EdgeInsets.symmetric(
           horizontal: screenSize.width * widthMultiplier, vertical: 10),
       padding: EdgeInsets.all(10.w),

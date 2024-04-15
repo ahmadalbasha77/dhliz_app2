@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'enter/inventory_warehouse.dart';
@@ -85,13 +86,13 @@ class _SelfManagementOfInventoryScreenState
                                   horizontal: screenSize.width * 0.015,
                                   vertical: screenSize.height * 0.02)),
                           Container(
-                            width: 180,
+                            width: 180.w,
                             margin: EdgeInsets.symmetric(
                                 horizontal: screenSize.width * 0.015),
                             child: Text(
                               "You can add warehouse and view warehouse list".tr,
                               style: TextStyle(
-                                  fontSize: screenSize.width * 0.028,
+                                  fontSize: screenSize.width * 0.025,
                                   color: Colors.black38),
                             ),
                           ),
@@ -100,6 +101,7 @@ class _SelfManagementOfInventoryScreenState
                                 "Management Now".tr,
                                 style: TextStyle(
                                     color: Colors.black,
+                                    fontSize: screenSize.width * 0.023,
                                     fontWeight: FontWeight.bold),
                               ),
                               margin: EdgeInsets.symmetric(
@@ -157,7 +159,7 @@ class _SelfManagementOfInventoryScreenState
                                   horizontal: screenSize.width * 0.035,
                                   vertical: screenSize.height * 0.015)),
                           Container(
-                            width: 150,
+                            width: 150.w,
                             margin: EdgeInsets.symmetric(
                                 horizontal: screenSize.width * 0.035),
                             child: Text(
@@ -182,6 +184,8 @@ class _SelfManagementOfInventoryScreenState
                                     "Enter stock Now".tr,
                                     style: TextStyle(
                                         color: Colors.black,
+                                        fontSize: screenSize.width * 0.023
+                                        ,
                                         fontWeight: FontWeight.w500),
                                   )
                                 ],
@@ -226,7 +230,7 @@ class _SelfManagementOfInventoryScreenState
                                     horizontal: screenSize.width * 0.035,
                                     vertical: screenSize.height * 0.015)),
                             Container(
-                              width: 160,
+                              width: 160.w,
                               margin: EdgeInsets.symmetric(
                                   horizontal: screenSize.width * 0.035),
                               child: Text(
@@ -252,6 +256,7 @@ class _SelfManagementOfInventoryScreenState
                                       "Withdrawal Stock Now".tr,
                                       style: TextStyle(
                                           color: Colors.black,
+                                          fontSize: screenSize.width * 0.023,
                                           fontWeight: FontWeight.w500),
                                     )
                                   ],
@@ -296,7 +301,7 @@ class _SelfManagementOfInventoryScreenState
                                   horizontal: screenSize.width * 0.035,
                                   vertical: screenSize.height * 0.015)),
                           Container(
-                            width: 160,
+                            width: 160.w,
                             margin: EdgeInsets.symmetric(
                                 horizontal: screenSize.width * 0.035),
                             child: Text(
@@ -321,6 +326,7 @@ class _SelfManagementOfInventoryScreenState
                                   Text(
                                     "Transfer Stock Now".tr,
                                     style: TextStyle(
+                                      fontSize: screenSize.width * 0.023,
                                         color: Colors.black87,
                                         fontWeight: FontWeight.w500),
                                   )
