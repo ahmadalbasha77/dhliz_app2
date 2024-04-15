@@ -140,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   vertical: screenWidth * 0.015,
                                 ),
                                 child: Text(
-                                  '${'Email'.tr} : ${_controller.info!.email}',
+                                  '${'email'.tr} : ${_controller.info!.email}',
                                   style:
                                       TextStyle(fontSize: screenWidth * 0.035),
                                 ),

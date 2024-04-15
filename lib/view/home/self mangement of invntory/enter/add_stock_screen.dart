@@ -433,7 +433,7 @@ class _AddStockScreenState extends State<AddStockScreen> {
                     }
                     return null;
                   },
-                  keyboardType: TextInputType.number,
+                  // keyboardType: TextInputType.number,
                   controller: controllerUpc,
                   decoration: InputDecoration(
                     label: Text(

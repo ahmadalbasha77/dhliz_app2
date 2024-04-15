@@ -14,37 +14,40 @@ class TransactionController extends GetxController {
       PagingController(firstPageKey: 0);
 
   TransactionModel? transactionModel;
+  int currentPageSize = 0; // Initialize currentPageSize
 
   Future<void> getTransaction({required int pageKey}) async {
     try {
-      int pageSize = 10; // Assuming 10 items per page
-      final result = await RestApi.getTransaction(skip: pageKey, take: pageSize);
+      currentPageSize++; // Increase pageSize with each call
+      final result = await RestApi.getTransaction(
+          skip: currentPageSize, take: 10); // Use a constant pageKey = 10
+
       if (result != null && result.response.isNotEmpty) {
-        final List<TransactionDataModel> flatList = result.response.expand((x) => x).toList();
-        print(flatList.length);
-        final isLastPage = flatList.length < pageSize;
-        print(isLastPage);
+        final List<TransactionDataModel> flatList =
+            result.response.expand((x) => x).toList();
+        final isLastPage = flatList.length < currentPageSize;
         if (isLastPage) {
           pagingController.appendLastPage(flatList);
+          flatList.forEach((transaction) {
+            print('Action Type: ${transaction.actionType}');
+          });
         } else {
-          final nextPageKey = pageSize + flatList.length; // Adjust this line as needed
-          print(nextPageKey);
-          pagingController.appendPage(flatList, nextPageKey);
+          // Keep the nextPageKey as 10 always
+          pagingController.appendPage(
+              flatList, 10); // Use a constant pageKey = 10
         }
       } else {
-        // If no data is returned, consider appending an empty list or handling as last page
         pagingController.appendLastPage([]);
       }
+
     } catch (error) {
       pagingController.error = error;
     }
   }
 
-
-
-
   refreshPagingController() {
     pagingController = PagingController(firstPageKey: 0);
+    currentPageSize = 0; // Reset currentPageSize when refreshing the controller
     pagingController.addPageRequestListener((pageKey) {
       getTransaction(pageKey: pageKey);
     });

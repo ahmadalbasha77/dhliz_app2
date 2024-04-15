@@ -203,5 +203,14 @@ const Map<String, String> en = {
   "I've read and agree to the terms and conditions of the privacy policy":
       "I've read and agree to the terms and conditions of the privacy policy",
   'Dhlez Warehouse Management System is a specialized system designed to simplify and improve warehouse operations and manage them efficiently':
-      'Dhlez Warehouse Management System is a specialized system designed to simplify and improve warehouse operations and manage them efficiently'
+      'Dhlez Warehouse Management System is a specialized system designed to simplify and improve warehouse operations and manage them efficiently',
+  'Are you sure you want to exit the application?':
+      'Are you sure you want to exit the application?',
+  'Cancel': 'Cancel',
+  'Exit': 'Exit',
+  'Stock Temperature': 'Stock Temperature',
+  'Stock Brand': "Stock Brand",
+  'Stock Barcode': 'Stock Barcode',
+  'Stock capacity': 'Stock capacity',
+  'Upc stock':'Upc stock',
 };
