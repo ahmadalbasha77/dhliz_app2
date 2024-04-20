@@ -16,6 +16,37 @@ class Utils {
 
   static bool isEmpty(String? s) => s == null || s.isEmpty;
 
+
+static  Future<bool?> showExitConfirmationDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+          // title: Text('Confirmation'),
+          content: Text('Are you sure you want to exit the application?'.tr),
+          actions: [
+            TextButton(
+              child: Text('Cancel'.tr),
+              onPressed: () {
+                Get.back(result: false);
+              },
+            ),
+            TextButton(
+              child: Text('Exit'.tr),
+              onPressed: () {
+                Get.back(result: true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
   static showLoadingDialog([String? text]) {
     if (Get.isSnackbarOpen) {
       Get.closeAllSnackbars();
@@ -87,4 +118,7 @@ class Utils {
     }
     return [];
   }
+
+
+
 }

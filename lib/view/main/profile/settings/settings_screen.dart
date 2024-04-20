@@ -1,4 +1,5 @@
 import 'package:dhliz_app/view/main/profile/settings/terms_condition_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +26,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final _controller = ProfileController.to;
+  // final _controller = ProfileController.to;
 
   @override
   void initState() {
@@ -166,6 +167,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           },
                         ),
                         ListTile(
+                          title: Text('Delete Account'.tr),
+                          leading: const Icon(CupertinoIcons.delete_right_fill,
+                              color: Colors.black),
+                          trailing: const Icon(Icons.arrow_forward_ios,
+                              color: Colors.black),
+                          onTap: () async {
+                            await launchUrl(
+                                Uri.parse('https://deleteaccount.dhlez.sa/'));
+                          },
+                        ),
+                        ListTile(
                           title: Text('Sign Out'.tr),
                           leading: const Icon(
                               FontAwesomeIcons.arrowRightFromBracket,
@@ -177,7 +189,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 title: 'Sign Out'.tr)) {
                               sharedPrefsClient.clearProfile();
                               Get.deleteAll();
-                              Get.offAll(() => const LoginScreen());
+                              Get.offAll(() =>  LoginScreen());
                             }
                           },
                         ),

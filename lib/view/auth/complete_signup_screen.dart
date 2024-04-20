@@ -1,18 +1,21 @@
 import 'dart:convert';
 
-import 'package:dhliz_app/view/auth/login_screen.dart';
+import 'package:dhliz_app/controllers/auth/sign_up_contoller.dart';
+import 'package:dhliz_app/policy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../config/shared_prefs_client.dart';
+import '../../config/utils.dart';
 import '../main_screen.dart';
 import 'package:http/http.dart' as http;
 
 class CompleteSignupScreen extends StatefulWidget {
-  String email;
-  String password;
+  final String email;
+  final String password;
 
-  CompleteSignupScreen({Key? key, required this.email, required this.password})
+  const CompleteSignupScreen(
+      {Key? key, required this.email, required this.password})
       : super(key: key);
 
   @override
@@ -20,90 +23,119 @@ class CompleteSignupScreen extends StatefulWidget {
 }
 
 class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
+  final _controller = RegisterController.to;
   bool loading = false;
 
-  void postData() async {
-    setState(() {
-      loading = true;
-    });
+  // void postData() async {
+  //   Utils.showLoadingDialog();
+  //
+  //   // setState(() {
+  //   //   loading = true;
+  //   // });
+  //
+  //   var url = Uri.parse('https://b739-46-248-206-51.ngrok-free.app/Signup');
+  //
+  //   // Define the request body
+  //   var body = jsonEncode({
+  //     "businessName": businessName.text,
+  //     "businessCompetence": businessCompetence.text,
+  //     "info": {
+  //       "name": fullName.text,
+  //       "phone": phoneNumber.text,
+  //       "password": widget.password,
+  //       "email": widget.email,
+  //       "phone2": phoneNumber2.text,
+  //       // "documents": [
+  //       //   {
+  //       //     "id": 0,
+  //       //     "createdDate": "2024-02-20T06:08:42.624Z",
+  //       //     "name": "string",
+  //       //     "file": "string",
+  //       //     "filePath": "string"
+  //       //   }
+  //       // ],
+  //       // "address": {
+  //       //   "city": "string",
+  //       //   "state": "string",
+  //       //   "street": "string",
+  //       //   "lat": "string",
+  //       //   "lot": "string"
+  //       // }
+  //     },
+  //     // "warehouseId": 0
+  //   });
+  //
+  //   // Make the POST request
+  //   var response = await http.post(
+  //     url,
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //     },
+  //     body: body,
+  //   );
+  //   print(body);
+  //   // Handle the response
+  //   if (response.statusCode == 200) {
+  //     if (json.decode(response.body)['isSuccess'] == true) {
+  //       var responseData = json.decode(response.body)['response'][0];
+  //       String token = responseData['token'];
+  //       bool isActive = responseData['isActive'];
+  //       int userId = responseData['userId'];
+  //       String userName = responseData['username'];
+  //       int customerId = responseData['customerId'];
+  //
+  //       sharedPrefsClient.accessToken = token;
+  //       sharedPrefsClient.fullName = userName;
+  //       sharedPrefsClient.customerId = customerId;
+  //
+  //       // sharedPrefsClient.accessToken = data['response']['token'].toString();
+  //       print('***********************************');
+  //       print('Customer : ' + sharedPrefsClient.customerId.toString());
+  //
+  //       print('***********************************');
+  //       if (isActive == true) {
+  //         sharedPrefsClient.isLogin = true;
+  //         Get.offAll(() => MainScreen());
+  //         sharedPrefsClient.isLogin = true;
+  //         print('***************************');
+  //       } else {
+  //         Get.to(() => PolicyScreen(
+  //               userId: userId,
+  //             ));
+  //         print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+  //       }
+  //       setState(() {
+  //         loading = false;
+  //       });
+  //       print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+  //       print("POST request successful");
+  //       print("Response: ${response.body}");
+  //     }
+  //   } else if (response.statusCode == 400) {
+  //     Utils.showSnackbar(
+  //         'Please try again'.tr, 'The email already exists. Use another email');
+  //   } else {
+  //     Utils.showSnackbar(
+  //         'Please try again'.tr, 'Check your internet connection');
+  //     print("POST request failed with status: ${response.statusCode}");
+  //   }
+  // }
+  //
+  // TextEditingController fullName = TextEditingController();
+  // TextEditingController businessName = TextEditingController();
+  // TextEditingController businessCompetence = TextEditingController();
+  // TextEditingController phoneNumber = TextEditingController();
+  // TextEditingController phoneNumber2 = TextEditingController();
+  //
+  // GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    var url = Uri.parse('https://api.dhlez.sa/Signup');
+  @override
+  void initState() {
+    _controller.email.text = widget.email;
+    _controller.password.text = widget.password;
 
-    // Define the request body
-    var body = jsonEncode({
-      "businessName": businessName.text,
-      "businessCompetence": businessCompetence.text,
-      "info": {
-        "name": fullName.text,
-        "phone": phoneNumber.text,
-        "password": widget.password,
-        "email": widget.email,
-        "phone2": phoneNumber2.text,
-        // "documents": [
-        //   {
-        //     "id": 0,
-        //     "createdDate": "2024-02-20T06:08:42.624Z",
-        //     "name": "string",
-        //     "file": "string",
-        //     "filePath": "string"
-        //   }
-        // ],
-        // "address": {
-        //   "city": "string",
-        //   "state": "string",
-        //   "street": "string",
-        //   "lat": "string",
-        //   "lot": "string"
-        // }
-      },
-      // "warehouseId": 0
-    });
-
-    // Make the POST request
-    var response = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: body,
-    );
-
-    // Handle the response
-    if (response.statusCode == 200) {
-
-      if (json.decode(response.body)['isSuccess'] == true) {
-        setState(() {
-          loading = false;
-        });
-        var responseData = json.decode(response.body)['response'][0];
-        String token = responseData['token'];
-        String userName = responseData['username'];
-        int customerId = responseData['customerId'];
-        sharedPrefsClient.isLogin = true;
-        sharedPrefsClient.accessToken = token;
-        sharedPrefsClient.fullName = userName;
-        sharedPrefsClient.customerId = customerId;
-
-        // sharedPrefsClient.accessToken = data['response']['token'].toString();
-        print('***********************************');
-        print('Customer : ' + sharedPrefsClient.customerId.toString());
-        print('***********************************');
-        Get.offAll(() => MainScreen());
-        print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-        print("POST request successful");
-        print("Response: ${response.body}");
-      } else {
-        print("POST request failed with status: ${response.statusCode}");
-      }
-    }
+    super.initState();
   }
-  TextEditingController fullName = TextEditingController();
-  TextEditingController businessName = TextEditingController();
-  TextEditingController businessCompetence = TextEditingController();
-  TextEditingController phoneNumber = TextEditingController();
-  TextEditingController phoneNumber2 = TextEditingController();
-
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +147,7 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
     return SafeArea(
       child: Scaffold(
         body: Form(
-          key: formKey,
+          key: _controller.keyForm,
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -131,9 +163,9 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                 ),
                 Center(
                   child: Text(
-                    "Complete your information",
+                    "Complete your information".tr,
                     style: TextStyle(
-                        fontSize: screenSize.width * 0.043,
+                        fontSize: screenSize.width * 0.045,
                         color: Colors.black54),
                   ),
                 ),
@@ -145,11 +177,12 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                       horizontal: screenSize.width * .07,
                       vertical: screenSize.height * .01),
                   child: TextFormField(
-                    controller: fullName,
+                    controller: _controller.fullName,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'please enter your name';
+                        return 'please enter your name'.tr;
                       }
+                      return null;
                     },
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
@@ -164,7 +197,7 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                         ),
                         filled: true,
                         fillColor: Color.fromRGBO(243, 242, 238, 1),
-                        labelText: "Full Name",
+                        labelText: "Full Name".tr,
                         labelStyle: TextStyle(color: Colors.black45)),
                   ),
                 ),
@@ -174,11 +207,11 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                     vertical: screenSize.height * .01,
                   ),
                   child: TextFormField(
-                    controller: businessName,
+                    controller: _controller.businessName,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'please enter business name';
-                      }
+                        return 'please enter business name'.tr;
+                      } return null;
                     },
                     style: TextStyle(color: Colors.black87),
                     decoration: InputDecoration(
@@ -192,7 +225,7 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                         ),
                         filled: true,
                         fillColor: Color.fromRGBO(243, 242, 238, 1),
-                        labelText: "Business Name",
+                        labelText: "Business Name".tr,
                         labelStyle: TextStyle(color: Colors.black45)),
                   ),
                 ),
@@ -201,11 +234,11 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                       horizontal: screenSize.width * .07,
                       vertical: screenSize.height * .01),
                   child: TextFormField(
-                    controller: businessCompetence,
+                    controller: _controller.businessCompetence,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'please enter business competence';
-                      }
+                        return 'please enter business competence'.tr;
+                      } return null;
                     },
                     style: TextStyle(color: Colors.black87),
                     decoration: InputDecoration(
@@ -219,7 +252,7 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                         ),
                         filled: true,
                         fillColor: Color.fromRGBO(243, 242, 238, 1),
-                        labelText: "Business Competence",
+                        labelText: "Business Competence".tr,
                         labelStyle: TextStyle(color: Colors.black45)),
                   ),
                 ),
@@ -228,13 +261,13 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                       horizontal: screenSize.width * .07,
                       vertical: screenSize.height * .01),
                   child: TextFormField(
-                    controller: phoneNumber,
+                    controller: _controller.phoneNumber,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'please enter phone number 2';
+                        return 'please enter phone number'.tr;
                       }
                       if (value.length > 10 || value.length < 10) {
-                        return 'Enter a correct number';
+                        return 'Enter a correct number'.tr;
                       }
                       return null;
                     },
@@ -251,7 +284,7 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                         ),
                         filled: true,
                         fillColor: Color.fromRGBO(243, 242, 238, 1),
-                        labelText: "Phone Number",
+                        labelText: "Phone Number".tr,
                         labelStyle: TextStyle(color: Colors.black45)),
                   ),
                 ),
@@ -260,14 +293,14 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                       horizontal: screenSize.width * .07,
                       vertical: screenSize.height * .01),
                   child: TextFormField(
-                    controller: phoneNumber2,
+                    controller: _controller.phoneNumber2,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'please enter phone number 2';
+                        return 'please enter phone number 2'.tr;
                       }
-                      if (value!.length > 10 || value.length < 10) {
-                        return 'Enter a correct number';
-                      }
+                      if (value.length > 10 || value.length < 10) {
+                        return 'Enter a correct number'.tr;
+                      } return null;
                     },
                     keyboardType: TextInputType.number,
                     style: TextStyle(color: Colors.black87),
@@ -282,7 +315,7 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                         ),
                         filled: true,
                         fillColor: Color.fromRGBO(243, 242, 238, 1),
-                        labelText: "Phone Number 2",
+                        labelText: "Phone Number 2".tr,
                         labelStyle: TextStyle(color: Colors.black45)),
                   ),
                 ),
@@ -296,22 +329,20 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                   height: screenSize.height * 0.079,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:  Color.fromRGBO(80, 46, 144, 1.0),
+                      backgroundColor: Color.fromRGBO(80, 46, 144, 1.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),
                     ),
                     onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        postData();
-                      } else {
-                        print('Not valid');
-                      }
+                      _controller.register();
                     },
                     child: loading
-                        ? CircularProgressIndicator()
+                        ? CircularProgressIndicator(
+                            color: Colors.white,
+                          )
                         : Text(
-                            "Complete",
+                            "Complete".tr,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: screenSize.width * .05),

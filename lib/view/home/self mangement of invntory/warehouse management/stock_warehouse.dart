@@ -87,17 +87,7 @@ class _StockWarehouseState extends State<StockWarehouse> {
                   return Center(child: CircularProgressIndicator());
                 } else {
                   return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('No Data'),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Text('Check your internet connection',
-                            style: TextStyle(color: Colors.red)),
-                      ],
-                    ),
+                    child: Text('No Data'),
                   );
                 }
               },

@@ -7,12 +7,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import '../../../../config/app_color.dart';
 import '../../../../config/shared_prefs_client.dart';
+import '../../../../config/utils.dart';
 import '../../../../network/api_url.dart';
 import 'Inventory_details.dart';
 
@@ -26,6 +28,23 @@ class AddStockScreen extends StatefulWidget {
 }
 
 class _AddStockScreenState extends State<AddStockScreen> {
+  List checkListItems = [
+    {
+      "id": 1,
+      "value": false,
+      "title": "Dry".tr,
+    },
+    {
+      "id": 2,
+      "value": false,
+      "title": "Cold".tr,
+    },
+    {
+      "id": 3,
+      "value": false,
+      "title": "Freezing".tr,
+    }
+  ];
   bool isLoading = false;
 
   final keyForm = GlobalKey<FormState>();
@@ -37,25 +56,17 @@ class _AddStockScreenState extends State<AddStockScreen> {
     final String apiUrl = '${ApiUrl.API_BASE_URL}/Stock/Create';
 
     Map<String, dynamic> requestBody = {
-      "id": 0,
       "name": controllerName.text,
       "code": controllerCode.text,
       "brand": controllerBrand.text,
       "upc": controllerUpc.text,
       "photo": _image!.path.toString(),
       "description": controllerDescription.text,
-      "capacity": int.parse(controllerCapacity.text),
+      "capacity": 0,
       "temperature": {
-        "id": 0,
-        "createdDate": "2024-02-06T09:22:46.662Z",
-        "high": true,
-        "cold": true,
-        "freezing": true
-      },
-      "materialType": {
-        "id": 0,
-        "createdDate": "2024-02-06T09:22:46.662Z",
-        "name": "string"
+        "high": checkListItems[0]['value'],
+        "cold": checkListItems[1]['value'],
+        "freezing": checkListItems[2]['value']
       },
       "subscriptionId": widget.id
     };
@@ -91,6 +102,63 @@ class _AddStockScreenState extends State<AddStockScreen> {
     }
   }
 
+  Future<void> createStockWithFile() async {
+    var url = Uri.parse('${ApiUrl.API_BASE_URL}/Stock/CreateWithFile');
+    Utils.showLoadingDialog();
+    var request = http.MultipartRequest('POST', url);
+    request.headers.addAll({
+      HttpHeaders.authorizationHeader:
+          'Bearer ${sharedPrefsClient.accessToken}',
+      // Replace with your access token
+      HttpHeaders.contentTypeHeader: 'multipart/form-data',
+    });
+
+    request.fields['Stock.Name'] = controllerName.text;
+    request.fields['Stock.Code'] = controllerCode.text;
+    request.fields['Stock.Brand'] = controllerBrand.text;
+    request.fields['Stock.UPC'] = controllerUpc.text;
+    request.fields['Stock.Photo'] = '';
+    request.fields['Stock.Description'] = controllerDescription.text;
+    request.fields['Stock.Capacity'] = '0';
+    request.fields['Stock.Temperature.High'] =
+        checkListItems[0]['value'].toString();
+    request.fields['Stock.Temperature.Cold'] =
+        checkListItems[1]['value'].toString();
+    request.fields['Stock.Temperature.Freezing'] =
+        checkListItems[2]['value'].toString();
+    request.fields['Stock.Temperature.Dry'] = 'false';
+    request.fields['Stock.Temperature.Id'] = '1';
+    // request.fields['Stock.Temperature.CreatedDate'] = controllerUpc.text;
+    request.fields['Stock.MaterialType.Id'] = '1';
+    // request.fields['Stock.MaterialType.CreatedDate'] = controllerUpc.text;
+    request.fields['Stock.SubscriptionId'] = widget.id.toString();
+    // request.fields['Stock.CreatedDate'] = controllerUpc.text;
+
+    // Replace '/path/to/your/file' with the actual path of the file
+    request.files.add(await http.MultipartFile.fromPath(
+      'File',
+      _image!.path,
+    ));
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = utf8.decode(responseData);
+      Map<String, dynamic> jsonResponse = json.decode(responseString);
+      print(jsonResponse['response'][0]);
+      print('***********************************');
+
+      Get.off(() => InventoryDetailsScreen(
+            data: jsonResponse['response'][0],
+          ));
+      print('Stock created successfully');
+    } else {
+      // Handle error response
+      print('Failed to create stock. Status code: ${response.statusCode}');
+    }
+  }
+
   TextEditingController controllerName = TextEditingController();
   TextEditingController controllerCapacity = TextEditingController();
   TextEditingController controllerCode = TextEditingController();
@@ -100,7 +168,7 @@ class _AddStockScreenState extends State<AddStockScreen> {
 
   File? _image;
 
-  File? image;
+  // File? image;
 
   Future pickImage() async {
     try {
@@ -195,7 +263,8 @@ class _AddStockScreenState extends State<AddStockScreen> {
                 ),
               );
             } else {
-              postData();
+              createStockWithFile();
+              // postData();
             }
           }
         },
@@ -220,6 +289,7 @@ class _AddStockScreenState extends State<AddStockScreen> {
         child: Form(
           key: keyForm,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 children: [
@@ -230,33 +300,38 @@ class _AddStockScreenState extends State<AddStockScreen> {
                       showOptions();
                     },
                     child: _image != null
-                        ? Padding(
-                            padding: EdgeInsets.all(8.0.sp),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CircleAvatar(
-                                  backgroundImage: FileImage(_image!),
-                                  radius: 50,
-                                )
-                              ],
+                        ? Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0.sp),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage: FileImage(_image!),
+                                    radius: 50,
+                                  )
+                                ],
+                              ),
                             ),
                           )
-                        : Container(
-                            padding: EdgeInsets.all(16.sp),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(100.r)),
-                              color: AppColor.darkGray,
-                            ),
-                            child: Icon(
-                              FontAwesomeIcons.plus,
-                              size: 60.sp,
+                        : Center(
+                            child: Container(
+                              padding: EdgeInsets.all(16.sp),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(100.r)),
+                                color: AppColor.darkGray,
+                              ),
+                              child: Icon(
+                                FontAwesomeIcons.plus,
+                                size: 60.sp,
+                              ),
                             ),
                           ),
                   ),
                 ],
               ),
+
               Container(
                 margin: EdgeInsets.symmetric(
                     horizontal: screenSize.width * 0.04,
@@ -276,13 +351,71 @@ class _AddStockScreenState extends State<AddStockScreen> {
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
                       borderRadius:
                           BorderRadius.circular(screenSize.width * 0.04),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                  ),
+                ),
+              ),
+
+              // Container(
+              //   margin: EdgeInsets.symmetric(
+              //       horizontal: screenSize.width * 0.04,
+              //       vertical: screenSize.height * 0.015),
+              //   child: TextFormField(
+              //     validator: (value) {
+              //       if (value == null || value.isEmpty) {
+              //         return 'Please enter space';
+              //       }
+              //       return null;
+              //     },
+              //     keyboardType: TextInputType.number,
+              //     controller: controllerCapacity,
+              //     decoration: InputDecoration(
+              //       suffixText: 'M²'.tr,
+              //       label: Text(
+              //         'space'.tr,
+              //         style: TextStyle(color: Colors.black54),
+              //       ),
+              //       filled: true,
+              //       fillColor: Colors.white,
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(color: Colors.white),
+              //         borderRadius:
+              //             BorderRadius.circular(screenSize.width * 0.04),
+              //       ),
+              //       focusedBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(color: Colors.white),
+              //         borderRadius:
+              //             BorderRadius.circular(screenSize.width * 0.04),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: screenSize.width * 0.04,
+                    vertical: screenSize.height * 0.015),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter Brand stock';
+                    }
+                    return null;
+                  },
+                  controller: controllerBrand,
+                  decoration: InputDecoration(
+                    label: Text(
+                      'Brand stock'.tr,
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
                       borderRadius:
                           BorderRadius.circular(screenSize.width * 0.04),
                     ),
@@ -296,27 +429,21 @@ class _AddStockScreenState extends State<AddStockScreen> {
                 child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter space';
+                      return 'Please enter Upc stock';
                     }
                     return null;
                   },
-                  keyboardType: TextInputType.number,
-                  controller: controllerCapacity,
+                  // keyboardType: TextInputType.number,
+                  controller: controllerUpc,
                   decoration: InputDecoration(
-                    suffixText: 'M²'.tr,
                     label: Text(
-                      'space'.tr,
+                      'Upc stock'.tr,
                       style: TextStyle(color: Colors.black54),
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius:
-                          BorderRadius.circular(screenSize.width * 0.04),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
                       borderRadius:
                           BorderRadius.circular(screenSize.width * 0.04),
                     ),
@@ -337,7 +464,7 @@ class _AddStockScreenState extends State<AddStockScreen> {
                               await Get.to(() => SimpleBarcodeScannerPage());
                           setState(() {
                             if (res is String) {
-                              result = res;
+                              controllerCode.text = res;
                             }
                           });
                         },
@@ -349,78 +476,8 @@ class _AddStockScreenState extends State<AddStockScreen> {
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius:
-                          BorderRadius.circular(screenSize.width * 0.04),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius:
-                          BorderRadius.circular(screenSize.width * 0.04),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenSize.width * 0.04,
-                    vertical: screenSize.height * 0.015),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter Unit';
-                    }
-                    return null;
-                  },
-                  controller: controllerBrand,
-                  decoration: InputDecoration(
-                    label: Text(
-                      'Unit'.tr,
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius:
-                          BorderRadius.circular(screenSize.width * 0.04),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius:
-                          BorderRadius.circular(screenSize.width * 0.04),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenSize.width * 0.04,
-                    vertical: screenSize.height * 0.015),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter Unit';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.number,
-                  controller: controllerUpc,
-                  decoration: InputDecoration(
-                    label: Text(
-                      'The number'.tr,
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius:
-                          BorderRadius.circular(screenSize.width * 0.04),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
                       borderRadius:
                           BorderRadius.circular(screenSize.width * 0.04),
                     ),
@@ -446,17 +503,69 @@ class _AddStockScreenState extends State<AddStockScreen> {
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
                       borderRadius:
                           BorderRadius.circular(screenSize.width * 0.04),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius:
-                          BorderRadius.circular(screenSize.width * 0.04),
-                    ),
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(color: Colors.white),
+                    //   borderRadius:
+                    //       BorderRadius.circular(screenSize.width * 0.04),
+                    // ),
+                    // focusedBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(color: Colors.white),
+                    //   borderRadius:
+                    //       BorderRadius.circular(screenSize.width * 0.04),
+                    // ),
                   ),
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Container(
+                // alignment: Alignment.centerRight,
+                margin:
+                    EdgeInsets.symmetric(horizontal: screenSize.width * 0.04),
+                child: Text('Stock Temperature'.tr,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: screenSize.width * 0.04, vertical: 10.h),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04)),
+                height: 40.h,
+                child: ListView.builder(
+                  physics: ScrollPhysics(parent: ScrollPhysics()),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: checkListItems.length,
+                  itemBuilder: (context, index) => Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: screenSize.width * 0.04),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Checkbox(
+                              value: checkListItems[index]['value'],
+                              onChanged: (value) {
+                                setState(() {
+                                  checkListItems[index]['value'] = value!;
+                                });
+                              },
+                            ),
+                            Text(
+                              checkListItems[index]['title'],
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500),
+                            ),
+                          ])),
                 ),
               ),
             ],

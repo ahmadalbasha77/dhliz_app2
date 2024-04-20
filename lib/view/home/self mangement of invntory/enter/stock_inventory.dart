@@ -25,7 +25,7 @@ class _StockInventoryScreenState extends State<StockInventoryScreen> {
   Future<void> fetchData() async {
     final response = await http.get(
         Uri.parse(
-            '${ApiUrl.API_BASE_URL}/Stock/Find?SubscriptionId=${widget.id}'),
+            '${ApiUrl.API_BASE_URL}/Stock/Find?SubscriptionId=${widget.id}&PageIndex=0&PageSize=100'),
         headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
     print(response.body);
@@ -82,8 +82,8 @@ class _StockInventoryScreenState extends State<StockInventoryScreen> {
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
-                        backgroundColor:
-                            MaterialStateProperty.all( Color.fromRGBO(80, 46, 144, 1.0))),
+                        backgroundColor: MaterialStateProperty.all(
+                            Color.fromRGBO(80, 46, 144, 1.0))),
                     onPressed: () {
                       Get.off(() => AddStockScreen(
                             id: widget.id,
@@ -155,6 +155,9 @@ class _StockInventoryScreenState extends State<StockInventoryScreen> {
                                           vertical: 5, horizontal: 20),
                                       child: TextButton(
                                         onPressed: () {
+                                          print('*******************************');
+                                          print(data[index]['photo']);
+                                          print('********************************');
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                             builder: (context) =>
@@ -176,8 +179,7 @@ class _StockInventoryScreenState extends State<StockInventoryScreen> {
                               child: CircleAvatar(
                                   radius: 40,
                                   backgroundImage:
-                                      Image.file(File(data[index]['photo']))
-                                          .image),
+                                      NetworkImage(data[index]['photo'])),
                               width: 110,
                             )
                           ],

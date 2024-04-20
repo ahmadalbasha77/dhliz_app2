@@ -71,22 +71,27 @@ class _StockDetailsState extends State<StockDetails> {
                       SizedBox(
                         height: 15,
                       ),
-                      Text('${'Subscription ID'.tr}: ${widget.data['subscriptionId']}',
+                      Text(
+                          '${'Subscription ID'.tr}: ${widget.data['subscriptionId']}',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: screenWidth * 0.04)),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text('${'Barcode'.tr}: ${widget.data['code']}',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: screenWidth * 0.04)),
+                      widget.data['code'] == ''
+                          ? SizedBox()
+                          : SizedBox(
+                              height: 15,
+                            ),
+                      widget.data['code'] == ''
+                          ? SizedBox()
+                          : Text('${'Stock Barcode'.tr}: ${widget.data['code']}',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: screenWidth * 0.04)),
                       SizedBox(
                         height: 15,
                       ),
                       Container(
-                        child: Text('${'Unit'.tr} : ${widget.data['brand']}',
+                        child: Text('${'Stock Brand'.tr} : ${widget.data['brand']}',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: screenWidth * 0.04)),
@@ -95,7 +100,8 @@ class _StockDetailsState extends State<StockDetails> {
                         height: 15,
                       ),
                       Container(
-                        child: Text('${'space'.tr}: ${widget.data['capacity']} ${'M²'.tr}',
+                        child: Text(
+                            '${'Stock capacity'.tr}: ${widget.data['capacity']} ${'M²'.tr}',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: screenWidth * 0.04)),
@@ -104,15 +110,15 @@ class _StockDetailsState extends State<StockDetails> {
                         height: 15,
                       ),
                       Container(
-                        child: Text('${'The number'.tr} : ${widget.data['upc']}',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: screenWidth * 0.04,
-                            )),
+                        child:
+                            Text('${'Upc stock'.tr} : ${widget.data['upc']}',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: screenWidth * 0.04,
+                                )),
                       ),
                       SizedBox(
-                        height: 25
-                        ,
+                        height: 25,
                       ),
                       Container(
                         width: 320,

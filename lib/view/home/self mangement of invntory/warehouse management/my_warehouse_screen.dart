@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:dhliz_app/config/shared_prefs_client.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -142,7 +141,7 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                                                           15))),
                                           backgroundColor:
                                               MaterialStatePropertyAll(
-                                                Color.fromRGBO(80, 46, 144, 1.0),
+                                            Color.fromRGBO(80, 46, 144, 1.0),
                                           )),
                                       onPressed: () {
                                         Get.to(MapWarehouseScreen(
@@ -172,13 +171,23 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Text(
-                                  '${'Price'.tr} : ${data[index]['warehouse']['price']['cost']}  SAR / 1 M² per day',
+                                  '${'Price'.tr} : ${data[index]['warehouse']['price'][0]['cost'].toString()}  SAR / 1 M² per day',
                                   style: TextStyle(
                                     fontSize: 11,
                                   )),
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Text(
+                                  '${'Transportation Fees'.tr} : ${data[index]['warehouse']['price'][0]['transportationFees'].toString()}  SAR',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                  )),
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                vertical: 10,
+                              ),
                               child: Text('Temperature'.tr,
                                   style: TextStyle(
                                       fontSize: 14,
@@ -244,38 +253,39 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
                                 ]),
                               ],
                             ),
-                            Row(
-                              children: [
-                                Text('Used'.tr,
-                                    style: TextStyle(
-                                        fontSize: 14, color: Colors.black54)),
-                                LinearPercentIndicator(
-                                  barRadius: Radius.circular(15),
-                                  width: 250,
-                                  lineHeight: 14.0,
-                                  trailing: Text(
-                                    ((data[index]['warehouse']['spaceUsed'] /
-                                                    data[index]
-                                                        ['reservedSpace']) *
-                                                100)
-                                            .toStringAsFixed(2) +
-                                        '%', // Adjust the number of decimal places as needed
-                                  ),
-                                  percent: (data[index]['warehouse']
-                                              ['spaceUsed'] /
-                                          data[index]['reservedSpace']) *
-                                      100,
-                                  backgroundColor: Colors.grey,
-                                  progressColor: Colors.black54,
-                                ),
-                                // Text(
-                                //   '${data[index]['warehouse']['spaceUsed']}%',
-                                //   style: TextStyle(
-                                //       fontSize: 14,
-                                //       fontWeight: FontWeight.bold),
-                                // )
-                              ],
-                            ),
+                            Divider(height: .6, color: Colors.black),
+                            // Row(
+                            //   children: [
+                            //     Text('Used'.tr,
+                            //         style: TextStyle(
+                            //             fontSize: 14, color: Colors.black54)),
+                            //     LinearPercentIndicator(
+                            //       barRadius: Radius.circular(15),
+                            //       width: 250,
+                            //       lineHeight: 14.0,
+                            //       trailing: Text(
+                            //         ((data[index]['warehouse']['spaceUsed'] /
+                            //                         data[index]
+                            //                             ['reservedSpace']) *
+                            //                     100)
+                            //                 .toStringAsFixed(2) +
+                            //             '%', // Adjust the number of decimal places as needed
+                            //       ),
+                            //       percent: (data[index]['warehouse']
+                            //                   ['spaceUsed'] /
+                            //               data[index]['reservedSpace']) *
+                            //           100,
+                            //       backgroundColor: Colors.grey,
+                            //       progressColor: Colors.black54,
+                            //     ),
+                            //     // Text(
+                            //     //   '${data[index]['warehouse']['spaceUsed']}%',
+                            //     //   style: TextStyle(
+                            //     //       fontSize: 14,
+                            //     //       fontWeight: FontWeight.bold),
+                            //     // )
+                            //   ],
+                            // ),
                             Container(
                               margin: EdgeInsets.only(top: 25),
                               child: Text(

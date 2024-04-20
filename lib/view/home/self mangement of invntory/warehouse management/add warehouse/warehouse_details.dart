@@ -15,6 +15,7 @@ class WarehouseDetails extends StatefulWidget {
   final String warehouseCap;
   final String phone;
   final double price;
+  final double transportationFees;
   final String distance;
   final String from;
   final String to;
@@ -41,6 +42,7 @@ class WarehouseDetails extends StatefulWidget {
     required this.from,
     required this.to,
     required this.price,
+    required this.transportationFees,
     required this.distance,
     required this.warehouseLocation,
     required this.inventoryLocation,
@@ -247,6 +249,7 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                         freezing: widget.freezing,
                         from: widget.from,
                         to: widget.to,
+                        transportationFees: widget.transportationFees,
                       ),
                     ));
                   },

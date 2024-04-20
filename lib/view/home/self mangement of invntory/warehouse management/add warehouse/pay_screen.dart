@@ -20,6 +20,7 @@ class PayScreen extends StatefulWidget {
   String address;
   int capacity;
   double price;
+  double transportationFees;
   String space;
   String from;
   String to;
@@ -37,6 +38,7 @@ class PayScreen extends StatefulWidget {
     required this.expiredDate,
     required this.address,
     required this.price,
+    required this.transportationFees,
     required this.space,
     required this.from,
     required this.to,
@@ -118,8 +120,16 @@ class _PayScreenState extends State<PayScreen> {
                     )),
                 Container(
                   margin: EdgeInsets.only(top: 10),
+                  child:
+                      Text('${'Price'.tr} : ${widget.price} SAR / 1 M2 per day',
+                          style: TextStyle(
+                            fontSize: 11,
+                          )),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
                   child: Text(
-                      '${'Price'.tr} : ${widget.price} SAR / 1 M2 per month',
+                      '${'Transportation Fees'.tr} : ${widget.transportationFees} SAR ',
                       style: TextStyle(
                         fontSize: 11,
                       )),
@@ -190,24 +200,24 @@ class _PayScreenState extends State<PayScreen> {
                 SizedBox(
                   height: 40,
                 ),
-                Row(
-                  children: [
-                    Text('${'Used'.tr}',
-                        style: TextStyle(fontSize: 14, color: Colors.black54)),
-                    LinearPercentIndicator(
-                      barRadius: Radius.circular(15),
-                      width: 250,
-                      lineHeight: 14.0,
-                      percent: .0,
-                      backgroundColor: Colors.grey,
-                      progressColor: Colors.black,
-                    ),
-                    Text(
-                      '0%',
-                      style: TextStyle(fontSize: 14),
-                    )
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Text('${'Used'.tr}',
+                //         style: TextStyle(fontSize: 14, color: Colors.black54)),
+                //     LinearPercentIndicator(
+                //       barRadius: Radius.circular(15),
+                //       width: 250,
+                //       lineHeight: 14.0,
+                //       percent: .0,
+                //       backgroundColor: Colors.grey,
+                //       progressColor: Colors.black,
+                //     ),
+                //     Text(
+                //       '0%',
+                //       style: TextStyle(fontSize: 14),
+                //     )
+                //   ],
+                // ),
                 SizedBox(
                   height: 15,
                 ),
@@ -216,7 +226,7 @@ class _PayScreenState extends State<PayScreen> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
-                  height: 80,
+                  height: 30,
                 ),
                 Text('${'Total price'.tr} : ${widget.totalAmount} ${'SR'.tr}',
                     style:
@@ -244,13 +254,21 @@ class _PayScreenState extends State<PayScreen> {
               onPressed: () {
                 final totalPrice = calculateTotalPrice();
                 // postData();
+                print('888888888888888888888888888888');
+                print(sharedPrefsClient.customerId);
+                print('888888888888888888888888888888');
                 Get.off(PaymentScreen(
                   from: widget.from,
                   to: widget.to,
                   amount: widget.totalAmount,
-                  customerId: 4,
+                  customerId: sharedPrefsClient.customerId,
                   capacity: widget.capacity,
                   warehouseId: widget.warehouseId,
+                  warehouseName: widget.warehouseName,
+                  dry: widget.dry,
+                  cold: widget.cold,
+                  freezing: widget.freezing,
+                  address: widget.address,
                 ));
               },
               child: Text(

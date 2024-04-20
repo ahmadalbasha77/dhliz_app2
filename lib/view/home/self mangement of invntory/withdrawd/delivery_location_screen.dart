@@ -13,7 +13,7 @@ class DeliveryLocationScreen extends StatefulWidget {
 class _DeliveryLocationScreenState extends State<DeliveryLocationScreen> {
   late Position cl;
   CameraPosition? _kGooglePlex;
-
+   LatLng myLocation = LatLng(0.0, 0.0);
   Set<Marker> marker = {};
 
   Future<void> getPosition() async {
@@ -64,7 +64,7 @@ class _DeliveryLocationScreenState extends State<DeliveryLocationScreen> {
     super.initState();
   }
 
-  late LatLng myLocation;
+  // late LatLng myLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -81,14 +81,16 @@ class _DeliveryLocationScreenState extends State<DeliveryLocationScreen> {
                     mapType: MapType.normal,
                     initialCameraPosition: _kGooglePlex!,
                     onMapCreated: (GoogleMapController controller) {},
-                    onTap: (myLocation) {
+                    onTap: (tapLocation) {
                       marker.clear();
                       marker.add(Marker(
                           position: myLocation, markerId: MarkerId('1')));
                       setState(() {
                         print('=====================');
-                        print(myLocation.latitude);
-                        print(myLocation.longitude);
+                        print(tapLocation.latitude);
+                        print(tapLocation.longitude);
+                        myLocation = tapLocation;
+
                       });
                     },
                   ),

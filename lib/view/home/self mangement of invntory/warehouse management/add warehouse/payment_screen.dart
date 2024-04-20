@@ -10,22 +10,33 @@ import 'package:http/http.dart' as http;
 import '../../../../../config/shared_prefs_client.dart';
 import '../../../../../network/api_url.dart';
 import '../../../../../widgets/payment.dart';
+import 'invoice_screen.dart';
 
 class PaymentScreen extends StatefulWidget {
   double amount;
   int customerId;
   String warehouseId;
+  String warehouseName;
+  String address;
   int capacity;
   String to;
   String from;
+  bool dry;
+  bool cold;
+  bool freezing;
 
   PaymentScreen(
       {super.key,
       required this.amount,
       required this.customerId,
+      required this.warehouseName,
       required this.capacity,
       required this.from,
       required this.to,
+      required this.dry,
+      required this.cold,
+      required this.freezing,
+      required this.address,
       required this.warehouseId});
 
   @override
@@ -89,26 +100,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
       financialCreditor();
       print("1111111111111111111111!");
       print("Response: ${response.body}");
-      Get.off(() => MyWareHouseScreen());
-
+      // Get.off(() => MyWareHouseScreen());
+      Get.off(InvoiceScreen(
+        warehouseId: widget.warehouseId,
+        warehouseName: widget.warehouseName,
+        space: widget.capacity.toString(),
+        address: widget.address,
+        total: widget.amount,
+        fromDate: widget.from,
+        toDate: widget.to,
+        dry: widget.dry,
+        cold: widget.cold,
+        freezing: widget.freezing,
+      ));
       QuickAlert.show(
         context: context,
         type: QuickAlertType.success,
         text: 'new subscription added successfully!',
         showConfirmBtn: false,
       );
-      // Get.off(InvoiceScreen(
-      //   warehouseId: widget.warehouseId,
-      //   warehouseName: widget.warehouseName,
-      //   space: widget.space,
-      //   address: widget.address,
-      //   total: totalPrice.toDouble(),
-      //   fromDate: widget.from,
-      //   toDate: widget.to,
-      //   dry: widget.dry,
-      //   cold: widget.cold,
-      //   freezing: widget.freezing,
-      // ));
+
     } else {
       print("Failed to make POST request. Status code: ${response.statusCode}");
       print("Response: ${response.body}");
@@ -171,6 +182,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       metadata: {'size': '250g'},
       creditCard: CreditCardConfig(saveCard: false, manual: false),
       applePay: ApplePayConfig(
+
           merchantId: 'merchant.mysr.fghurayri',
           label: 'Blue Coffee Beans',
           manual: false),

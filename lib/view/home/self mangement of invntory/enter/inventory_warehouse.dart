@@ -152,7 +152,15 @@ class _InventoryWarehouseState extends State<InventoryWarehouse> {
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Text(
-                                  '${'Price'.tr} :  ${data[index]['warehouse']['price']['cost']} SAR / 1 M² per month',
+                                  '${'Price'.tr} : ${data[index]['warehouse']['price'][0]['cost'].toString()}  SAR / 1 M² per day',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                  )),
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Text(
+                                  '${'Transportation Fees'.tr} : ${data[index]['warehouse']['price'][0]['transportationFees'].toString()}  SAR',
                                   style: TextStyle(
                                     fontSize: 11,
                                   )),
@@ -224,29 +232,30 @@ class _InventoryWarehouseState extends State<InventoryWarehouse> {
                                 ]),
                               ],
                             ),
-                            Row(
-                              children: [
-                                Text('Used'.tr,
-                                    style: TextStyle(
-                                        fontSize: 14, color: Colors.black54)),
-                                LinearPercentIndicator(
-                                  barRadius: Radius.circular(15),
-                                  width: 250,
-                                  lineHeight: 14.0,
-                                  percent: data[index]['warehouse']
-                                          ['spaceUsed'] /
-                                      100,
-                                  backgroundColor: Colors.grey,
-                                  progressColor: Colors.black54,
-                                ),
-                                Text(
-                                  '${data[index]['warehouse']['spaceUsed']}%',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
+                            // Row(
+                            //   children: [
+                            //     Text('Used'.tr,
+                            //         style: TextStyle(
+                            //             fontSize: 14, color: Colors.black54)),
+                            //     LinearPercentIndicator(
+                            //       barRadius: Radius.circular(15),
+                            //       width: 250,
+                            //       lineHeight: 14.0,
+                            //       percent: data[index]['warehouse']
+                            //               ['spaceUsed'] /
+                            //           100,
+                            //       backgroundColor: Colors.grey,
+                            //       progressColor: Colors.black54,
+                            //     ),
+                            //     Text(
+                            //       '${data[index]['warehouse']['spaceUsed']}%',
+                            //       style: TextStyle(
+                            //           fontSize: 14,
+                            //           fontWeight: FontWeight.bold),
+                            //     )
+                            //   ],
+                            // ),
+                            Divider(height: .6, color: Colors.black),
                             Container(
                               margin: EdgeInsets.only(top: 25),
                               child: Text(

@@ -430,7 +430,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                       ),
                     ),
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
+                      if(_formKey.currentState!.validate()){
                         Get.off(MapScreen(
                           space: int.tryParse(capacityController.text) ?? 0,
                           dry: checkListItems[0]['value'],
@@ -440,7 +440,15 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                           to: to.text,
                           days: dateDifference,
                         ));
+                        print(checkListItems[0]['value'].toString());
+                        print(checkListItems[1]['value'].toString());
+                        print(checkListItems[2]['value'].toString());
+                        print('************************************');
+                        print(from.text);
+                        print(to.text);
                       }
+
+
                     },
                     child: Text(
                       'Continue'.tr,

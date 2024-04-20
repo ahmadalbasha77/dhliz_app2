@@ -37,7 +37,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "com.fuais.dhliz_app"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion "25.1.8937393"
 
     compileOptions {
@@ -60,8 +60,8 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 20
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 8
-        versionName "1.0.7"
+        versionCode 10
+        versionName "1.0.9"
         multiDexEnabled true
     }
 

@@ -14,6 +14,6 @@ final kStyleTextExpiration = TextStyle(color: Colors.black, wordSpacing: 2, lett
 
 const placeholder = 'assets/images/logo.png';
 const dateFormat = 'yyyy/MM/dd';
-const phoneNumber = '+96270000000';
+const phoneNumber = '0559559700';
 String version = ' ';
 String platform = ' ';
