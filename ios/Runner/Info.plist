@@ -2,19 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>This app needs access to location in the open app.</string>
-    <key>NSCameraUsageDescription</key>
-	<string>This app requires to access your photo library to show image on profile</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app requires to access your photo library to show image on profile</string>
-    <key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>sms</string>
-		<string>tel</string>
-	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -35,14 +22,36 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>Your custom message explaining why the app needs access to location when in use.</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>Your custom message explaining why the app needs always access to location.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app-1-156415235765-ios-1d800a907c4c1a1382d0fc</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>sms</string>
+		<string>tel</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires to access your photo library to show image on profile</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Dhlez needs always-on access to your location to offer continuous, location-based notifications and services, enhancing functionality even when the app is not actively running.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Dhlez requires access to your location to provide tailored services and improve your user experience while the app is in use.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires to access your photo library to show image on profile</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -67,7 +76,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
 </dict>
 </plist>
