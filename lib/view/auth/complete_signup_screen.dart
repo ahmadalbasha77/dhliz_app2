@@ -133,7 +133,11 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
   void initState() {
     _controller.email.text = widget.email;
     _controller.password.text = widget.password;
+    print('***************************');
 
+    print(widget.email);
+    print(widget.password);
+    print('***************************');
     super.initState();
   }
 

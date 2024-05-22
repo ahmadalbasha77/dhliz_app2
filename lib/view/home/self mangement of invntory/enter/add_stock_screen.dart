@@ -109,7 +109,6 @@ class _AddStockScreenState extends State<AddStockScreen> {
     request.headers.addAll({
       HttpHeaders.authorizationHeader:
           'Bearer ${sharedPrefsClient.accessToken}',
-      // Replace with your access token
       HttpHeaders.contentTypeHeader: 'multipart/form-data',
     });
 

@@ -29,11 +29,9 @@ class RegisterController extends GetxController {
   RegisterModel? registerModel;
 
   register() async {
-
     if (keyForm.currentState!.validate()) {
-      print(email.text);
-      print('8888888888888888888888888888888888');
-      print(password.text);
+      log(email.text);
+      log(password.text);
       Utils.showLoadingDialog();
       log(fullName.text);
       log(businessName.text);
@@ -50,7 +48,8 @@ class RegisterController extends GetxController {
       }));
 
       if (registerModel!.isSuccess == true) {
-        var response = registerModel!.response.first;
+        print(registerModel!.response.email);
+        var response = registerModel!.response;
         sharedPrefsClient.accessToken = response.token;
         sharedPrefsClient.fullName = response.username;
         sharedPrefsClient.customerId = response.customerId;

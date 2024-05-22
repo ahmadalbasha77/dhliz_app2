@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:dhliz_app/view/new%20home/myWarehouse/my_warehouse_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:http/http.dart' as http;
+import 'package:quickalert/quickalert.dart';
 
 import '../../../../../config/app_color.dart';
 import '../../../../../config/shared_prefs_client.dart';
@@ -16,6 +18,7 @@ class PayScreen extends StatefulWidget {
   int customerId;
   String warehouseId;
   String warehouseName;
+  String inventoryDescription;
   String expiredDate;
   String address;
   int capacity;
@@ -34,6 +37,7 @@ class PayScreen extends StatefulWidget {
     required this.customerId,
     required this.warehouseId,
     required this.warehouseName,
+    required this.inventoryDescription,
     required this.capacity,
     required this.expiredDate,
     required this.address,
@@ -65,6 +69,44 @@ class _PayScreenState extends State<PayScreen> {
     print('==============================');
   }
 
+  void postData() async {
+    final String apiUrl = '${ApiUrl.API_BASE_URL2}/api/Subscription/Create';
+
+    Map<String, dynamic> requestBody = {
+      "reservedSpace": widget.capacity.toString(),
+      "customerId": '${sharedPrefsClient.customerId}',
+      "warehouseId": widget.warehouseId,
+      'startDate': widget.from,
+      'endDate': widget.to,
+      'inventoryDescription': widget.inventoryDescription,
+    };
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Authorization': 'Bearer ${sharedPrefsClient.accessToken}',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      print("POST request successful!");
+      print("555555555555555555555555555555!");
+      Get.off(() => MyWarehousesScreen());
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        text: 'Send subscription request successfully!',
+        showConfirmBtn: false,
+      );
+    } else {
+      print("Failed to make POST request. Status code: ${response.statusCode}");
+      print("Response: ${response.body}");
+      print("Request Body: $requestBody");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +114,7 @@ class _PayScreenState extends State<PayScreen> {
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          'Warehouse Information'.tr,
+          'Subscription Details'.tr,
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -253,27 +295,27 @@ class _PayScreenState extends State<PayScreen> {
               ),
               onPressed: () {
                 final totalPrice = calculateTotalPrice();
-                // postData();
+                postData();
                 print('888888888888888888888888888888');
                 print(sharedPrefsClient.customerId);
                 print('888888888888888888888888888888');
-                Get.off(PaymentScreen(
-                  from: widget.from,
-                  to: widget.to,
-                  amount: widget.totalAmount,
-                  customerId: sharedPrefsClient.customerId,
-                  capacity: widget.capacity,
-                  warehouseId: widget.warehouseId,
-                  warehouseName: widget.warehouseName,
-                  dry: widget.dry,
-                  cold: widget.cold,
-                  freezing: widget.freezing,
-                  address: widget.address,
-                ));
+                // Get.off(PaymentScreen(
+                //   from: widget.from,
+                //   to: widget.to,
+                //   amount: widget.totalAmount,
+                //   customerId: sharedPrefsClient.customerId,
+                //   capacity: widget.capacity,
+                //   warehouseId: widget.warehouseId,
+                //   warehouseName: widget.warehouseName,
+                //   dry: widget.dry,
+                //   cold: widget.cold,
+                //   freezing: widget.freezing,
+                //   address: widget.address,
+                // ));
               },
               child: Text(
-                'Pay now'.tr,
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                'Send subscription request'.tr,
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
           )

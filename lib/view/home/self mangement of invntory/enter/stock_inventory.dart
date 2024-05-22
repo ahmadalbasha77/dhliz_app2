@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -48,6 +47,7 @@ class _StockInventoryScreenState extends State<StockInventoryScreen> {
 
   @override
   void initState() {
+    print(widget.id);
     fetchData();
     super.initState();
   }
@@ -155,9 +155,11 @@ class _StockInventoryScreenState extends State<StockInventoryScreen> {
                                           vertical: 5, horizontal: 20),
                                       child: TextButton(
                                         onPressed: () {
-                                          print('*******************************');
+                                          print(
+                                              '*******************************');
                                           print(data[index]['photo']);
-                                          print('********************************');
+                                          print(
+                                              '********************************');
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                             builder: (context) =>

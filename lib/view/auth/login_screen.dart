@@ -183,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     onPressed: () async {
-                      _controller.ssignIn();
+                      _controller.signIn();
                     },
                     child: Text(
                       "Login".tr,

@@ -20,6 +20,7 @@ class WarehouseDetails extends StatefulWidget {
   final String from;
   final String to;
   final String address;
+  final String inventoryDescription;
   final int capacity;
   final LatLng warehouseLocation;
   final LatLng inventoryLocation;
@@ -39,6 +40,7 @@ class WarehouseDetails extends StatefulWidget {
     required this.freezing,
     required this.capacity,
     required this.address,
+    required this.inventoryDescription,
     required this.from,
     required this.to,
     required this.price,
@@ -235,6 +237,7 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                     int? customerId = await getSavedIdFromSharedPreferences();
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => PayScreen(
+                        inventoryDescription: widget.inventoryDescription,
                         totalAmount: widget.totalAmount,
                         customerId: customerId ?? 0,
                         warehouseId: widget.id,

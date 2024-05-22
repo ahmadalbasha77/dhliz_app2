@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../new home/warehouses_map_screen.dart';
 import 'map_screen.dart';
 
 class AddWarehouseScreen extends StatefulWidget {
@@ -19,6 +20,8 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
   List<dynamic> data = [];
   List<String> coordinatesList = [];
   TextEditingController capacityController = TextEditingController();
+  TextEditingController inventoryDescriptionController =
+      TextEditingController();
 
   // END NEW CODE ==========================================================
 
@@ -169,13 +172,43 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none))),
               ),
+              Container(
+                // alignment: Alignment.centerRight,
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                child: Text('Description inventory '.tr,
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                // height: 80,
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the space you need'.tr;
+                    } else {}
+                  },
+                  controller: inventoryDescriptionController,
+                  decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    filled: true,
+                    fillColor: Colors.white,
+                    label: Text('description'.tr,
+                        style: TextStyle(color: Colors.black38)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none),
+                  ),
+                ),
+              ),
               // Container(
               //   margin: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
               //   child: Text('10 M²  = 12 wooden pallets'.tr,
               //       style: TextStyle(color: Colors.black38)),
               // ),
               SizedBox(
-                height: 35,
+                height: 20,
               ),
               Container(
                 // alignment: Alignment.centerRight,
@@ -311,13 +344,16 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                   ),
                 ],
               ),
-              Center(
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                  child: Text('$dateDifference days',
-                      style: TextStyle(color: Colors.black38)),
-                ),
-              ),
+              dateDifference != '0'
+                  ? Center(
+                      child: Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                        child: Text('$dateDifference days',
+                            style: TextStyle(color: Colors.black38)),
+                      ),
+                    )
+                  : Container(),
               SizedBox(
                 height: 5,
               ),
@@ -430,7 +466,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                       ),
                     ),
                     onPressed: () {
-                      if(_formKey.currentState!.validate()){
+                      if (_formKey.currentState!.validate()) {
                         Get.off(MapScreen(
                           space: int.tryParse(capacityController.text) ?? 0,
                           dry: checkListItems[0]['value'],
@@ -439,6 +475,8 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                           from: from.text,
                           to: to.text,
                           days: dateDifference,
+                          inventoryDescription:
+                              inventoryDescriptionController.text,
                         ));
                         print(checkListItems[0]['value'].toString());
                         print(checkListItems[1]['value'].toString());
@@ -447,8 +485,6 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                         print(from.text);
                         print(to.text);
                       }
-
-
                     },
                     child: Text(
                       'Continue'.tr,

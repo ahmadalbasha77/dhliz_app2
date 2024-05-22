@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:dhliz_app/view/thank_you.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -89,7 +90,62 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
     date.text = "";
     super.initState();
   }
+  final ImagePicker _imagePicker = ImagePicker();
+  XFile? _selectedImage;
+  XFile? proofImage; // Use late for late initialization
 
+
+  Future<void> _pickImageFromGallery() async {
+    final XFile? pickedImage =
+    await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _selectedImage = pickedImage;
+      });
+    }
+  }
+
+  Future<void> _takePicture() async {
+    final XFile? takenImage =
+    await _imagePicker.pickImage(source: ImageSource.camera);
+    if (takenImage != null) {
+      setState(() {
+        _selectedImage = takenImage;
+      });
+    }
+  }
+
+  void _showImageOptions() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Choose an image".tr),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                trailing: Icon(Icons.photo),
+                title: Text("From the gallery".tr),
+                onTap: () {
+                  _pickImageFromGallery();
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                trailing: Icon(Icons.camera),
+                title: Text("Take photo".tr),
+                onTap: () {
+                  _takePicture();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
   bool isSelectedOne = false;
   bool isSelectedOTwo = false;
 
@@ -257,6 +313,56 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                         borderSide: BorderSide.none),
                   )),
             ),
+            SizedBox(height: 10,),
+            Row(
+              children: [
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 25),
+                    child: Text(" ID of the inventory deliverer".tr,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ))),
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)))),
+                    onPressed: () {
+                      _showImageOptions();
+                    },
+                    child: Text(
+                      'Upload image'.tr,
+                      style: TextStyle(color: Colors.black),
+                    ))
+              ],
+            ),
+
+            SizedBox(
+              height: 15,
+            ),
+
+            Row(
+              children: [
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 25),
+                    child: Text("Attach the vehicle license".tr,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ))),
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)))),
+                    onPressed: () {
+                      _showImageOptions();
+                    },
+                    child: Text(
+                      'Upload image'.tr,
+                      style: TextStyle(color: Colors.black),
+                    ))
+              ],
+            ),
             SizedBox(
               height: 30,
             ),
@@ -348,7 +454,8 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     },
                     child: Text('Withdraw Now'.tr)),
               ),
-            )
+            ),
+            SizedBox(height: 20,)
           ],
         ),
       ),

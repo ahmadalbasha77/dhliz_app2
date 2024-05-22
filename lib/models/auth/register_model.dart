@@ -10,7 +10,7 @@ RegisterModel registerModelFromJson(String str) =>
 String registerModelToJson(RegisterModel data) => json.encode(data.toJson());
 
 class RegisterModel {
-  List<Response> response;
+  Response response;
   bool isSuccess;
 
   RegisterModel({
@@ -19,15 +19,14 @@ class RegisterModel {
   });
 
   factory RegisterModel.fromJson(Map<String, dynamic> json) => RegisterModel(
-    response: List<Response>.from(
-        json["response"].map((x) => Response.fromJson(x))),
-    isSuccess: json["isSuccess"],
-  );
+        response: Response.fromJson(json["response"]),
+        isSuccess: json["isSuccess"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "response": List<dynamic>.from(response.map((x) => x.toJson())),
-    "isSuccess": isSuccess,
-  };
+        "response": response.toJson(),
+        "isSuccess": isSuccess,
+      };
 }
 
 class Response {
@@ -54,26 +53,26 @@ class Response {
   });
 
   factory Response.fromJson(Map<String, dynamic> json) => Response(
-    username: json["username"],
-    email: json["email"],
-    phone: json["phone"],
-    userId: json["userId"],
-    warehouseId: json["warehouseId"],
-    token: json["token"],
-    userType: json["userType"],
-    customerId: json["customerId"],
-    isActive: json["isActive"],
-  );
+        username: json["username"] ?? '',
+        email: json["email"] ?? '',
+        phone: json["phone"] ?? '',
+        userId: json["userId"] ?? 0,
+        warehouseId: json["warehouseId"] ?? 0,
+        token: json["token"] ?? '',
+        userType: json["userType"] ?? 0,
+        customerId: json["customerId"] ?? 0,
+        isActive: json["isActive"] ?? false,
+      );
 
   Map<String, dynamic> toJson() => {
-    "username": username,
-    "email": email,
-    "phone": phone,
-    "userId": userId,
-    "warehouseId": warehouseId,
-    "token": token,
-    "userType": userType,
-    "customerId": customerId,
-    "isActive": isActive,
-  };
+        "username": username,
+        "email": email,
+        "phone": phone,
+        "userId": userId,
+        "warehouseId": warehouseId,
+        "token": token,
+        "userType": userType,
+        "customerId": customerId,
+        "isActive": isActive,
+      };
 }

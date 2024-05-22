@@ -54,6 +54,7 @@ class MapScreen extends StatefulWidget {
   String from;
   String to;
   String days;
+  String inventoryDescription;
 
   MapScreen(
       {Key? key,
@@ -63,7 +64,8 @@ class MapScreen extends StatefulWidget {
       required this.freezing,
       required this.from,
       required this.to,
-      required this.days})
+      required this.days,
+      required this.inventoryDescription})
       : super(key: key);
 
   @override
@@ -179,11 +181,12 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> fetchData({String? address = 'Address'}) async {
+    print(sharedPrefsClient.accessToken);
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
     };
     final Uri uri = Uri.parse(
-        '${ApiUrl.API_BASE_URL}/Warehouse/Find?PageIndex=0&PageSize=100');
+        '${ApiUrl.API_BASE_URL2}/api/Warehouse/Find?PageIndex=0&PageSize=100');
 
     // Initialize queryParameters with the 'Capacity' parameter
     final Map<String, dynamic> queryParameters =
@@ -207,7 +210,7 @@ class _MapScreenState extends State<MapScreen> {
         print('Request successful');
         Map<String, dynamic> responseData = json.decode(response.body);
         if (responseData['isSuccess']) {
-          data = responseData['response'][0];
+          data = responseData['response'];
           if (data.isNotEmpty) {
             Map<String, dynamic> firstItem = data[0];
           } else {
@@ -651,6 +654,9 @@ class _MapScreenState extends State<MapScreen> {
                                                       Navigator.pop(context);
                                                       Get.off(
                                                         () => WarehouseDetails(
+                                                          inventoryDescription:
+                                                              widget
+                                                                  .inventoryDescription,
                                                           totalAmount: selectWarehouse!
                                                                       .pricePerMeter *
                                                                   widget.space *

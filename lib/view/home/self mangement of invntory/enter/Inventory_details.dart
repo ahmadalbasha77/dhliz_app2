@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -52,31 +53,28 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       print(jsonResponse);
       Get.back();
+      Get.back();
       QuickAlert.show(
-        context: context,
-        type: QuickAlertType.success,
-        text:
-        'A new entry transaction request has been sent. Please wait for approval',
-        showConfirmBtn: true,
-        confirmBtnColor: Colors.white,
-        confirmBtnTextStyle: TextStyle(color: Colors.black),
-        title: 'Completed Successfully!',
-        textAlignment: TextAlign.center
-      );
+          context: context,
+          type: QuickAlertType.success,
+          text:
+              'A new entry transaction request has been sent. Please wait for approval',
+          showConfirmBtn: true,
+          confirmBtnColor: Colors.white,
+          confirmBtnTextStyle: TextStyle(color: Colors.black),
+          title: 'Completed Successfully!',
+          textAlignment: TextAlign.center);
       // Now you can use the postId variable as needed.
-    }
-    else {
+    } else {
       QuickAlert.show(
           context: context,
           type: QuickAlertType.error,
-          text:
-          'The subscription space is smaller than the required space',
+          text: 'The subscription space is smaller than the required space',
           showConfirmBtn: true,
           confirmBtnColor: Colors.white,
           confirmBtnTextStyle: TextStyle(color: Colors.black),
           title: 'Error!',
-          textAlignment: TextAlign.center
-      );
+          textAlignment: TextAlign.center);
       print("Failed to make POST request. Status code: ${response.statusCode}");
       print("Response: ${response.body}");
     }
@@ -93,8 +91,63 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
     super.initState();
   }
 
+  final ImagePicker _imagePicker = ImagePicker();
+  XFile? _selectedImage; // Use late for late initialization
+  XFile? proofImage; // Use late for late initialization
   bool isSelectedOne = false;
   bool isSelectedOTwo = false;
+
+  Future<void> _pickImageFromGallery() async {
+    final XFile? pickedImage =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _selectedImage = pickedImage;
+      });
+    }
+  }
+
+  Future<void> _takePicture() async {
+    final XFile? takenImage =
+        await _imagePicker.pickImage(source: ImageSource.camera);
+    if (takenImage != null) {
+      setState(() {
+        _selectedImage = takenImage;
+      });
+    }
+  }
+
+  void _showImageOptions() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Choose an image".tr),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                trailing: Icon(Icons.photo),
+                title: Text("From the gallery".tr),
+                onTap: () {
+                  _pickImageFromGallery();
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                trailing: Icon(Icons.camera),
+                title: Text("Take photo".tr),
+                onTap: () {
+                  _takePicture();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,10 +181,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                             vertical: screenWidth * 0.02,
                             horizontal: screenWidth * 0.03),
                         child: CircleAvatar(
-                            backgroundImage: Image.file(File(
-                                    widget.data['photo'] ??
-                                        widget.data['Photo']))
-                                .image,
+                            backgroundImage: NetworkImage(widget.data['photo']),
                             radius: screenWidth * 0.12),
                       )
                     ],
@@ -288,7 +338,57 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                   )),
             ),
             SizedBox(
-              height: 170,
+              height: 30,
+            ),
+            Row(
+              children: [
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 25),
+                    child: Text(" ID of the inventory deliverer".tr,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ))),
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)))),
+                    onPressed: () {
+                      _showImageOptions();
+                    },
+                    child: Text(
+                      'Upload image'.tr,
+                      style: TextStyle(color: Colors.black),
+                    ))
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 25),
+                    child: Text("Attach the vehicle license".tr,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ))),
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)))),
+                    onPressed: () {
+                      _showImageOptions();
+                    },
+                    child: Text(
+                      'Upload image'.tr,
+                      style: TextStyle(color: Colors.black),
+                    ))
+              ],
+            ),
+            SizedBox(
+              height: 30,
             ),
             // Center(
             //   child: Container(

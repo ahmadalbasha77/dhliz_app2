@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../new home/enter inventory/enter_warehouse_screen.dart';
+import '../../new home/myWarehouse/my_warehouse_screen.dart';
+import '../../new home/transfer inventory/transfer_warehouse_screen.dart';
+import '../../new home/withdrawal inventory/withdrawal_warehouse_screen.dart';
 import 'enter/inventory_warehouse.dart';
 import 'warehouse management/my_warehouse_screen.dart';
 import 'transfer/transfer_warehouse_screen.dart';
@@ -17,6 +21,8 @@ class SelfManagementOfInventoryScreen extends StatefulWidget {
 
 class _SelfManagementOfInventoryScreenState
     extends State<SelfManagementOfInventoryScreen> {
+  double? _value = 1.0;
+
   @override
   Widget build(BuildContext context) {
     // Get the screen size
@@ -60,7 +66,8 @@ class _SelfManagementOfInventoryScreenState
               Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(screenSize.width * 0.04)),
+                    borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04)),
                 padding:
                     EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
                 margin: EdgeInsets.symmetric(
@@ -68,7 +75,7 @@ class _SelfManagementOfInventoryScreenState
                     horizontal: screenSize.width * 0.06),
                 child: InkWell(
                   onTap: () {
-                    Get.to(() => const MyWareHouseScreen());
+                    Get.to(() => MyWarehousesScreen());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,8 +86,8 @@ class _SelfManagementOfInventoryScreenState
                           Container(
                               child: Text(
                                 "Warehouse Management".tr,
-                                style:
-                                    TextStyle(fontSize: screenSize.width * 0.04),
+                                style: TextStyle(
+                                    fontSize: screenSize.width * 0.04),
                               ),
                               margin: EdgeInsets.symmetric(
                                   horizontal: screenSize.width * 0.015,
@@ -90,7 +97,8 @@ class _SelfManagementOfInventoryScreenState
                             margin: EdgeInsets.symmetric(
                                 horizontal: screenSize.width * 0.015),
                             child: Text(
-                              "You can add warehouse and view warehouse list".tr,
+                              "You can add warehouse and view warehouse list"
+                                  .tr,
                               style: TextStyle(
                                   fontSize: screenSize.width * 0.025,
                                   color: Colors.black38),
@@ -135,13 +143,14 @@ class _SelfManagementOfInventoryScreenState
               Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(screenSize.width * 0.04)),
+                    borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04)),
                 margin: EdgeInsets.symmetric(
                     vertical: screenSize.height * 0.005,
                     horizontal: screenSize.width * 0.06),
                 child: InkWell(
                   onTap: () {
-                    Get.to(() => const InventoryWarehouse());
+                    Get.to(() => const EnterWarehouseScreen());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,8 +161,8 @@ class _SelfManagementOfInventoryScreenState
                           Container(
                               child: Text(
                                 "Enter Inventory".tr,
-                                style:
-                                    TextStyle(fontSize: screenSize.width * 0.036),
+                                style: TextStyle(
+                                    fontSize: screenSize.width * 0.036),
                               ),
                               margin: EdgeInsets.symmetric(
                                   horizontal: screenSize.width * 0.035,
@@ -184,8 +193,7 @@ class _SelfManagementOfInventoryScreenState
                                     "Enter stock Now".tr,
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: screenSize.width * 0.023
-                                        ,
+                                        fontSize: screenSize.width * 0.023,
                                         fontWeight: FontWeight.w500),
                                   )
                                 ],
@@ -206,13 +214,14 @@ class _SelfManagementOfInventoryScreenState
               Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(screenSize.width * 0.04)),
+                    borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04)),
                 margin: EdgeInsets.symmetric(
                     vertical: screenSize.height * 0.005,
                     horizontal: screenSize.width * 0.06),
                 child: InkWell(
                   onTap: () {
-                    Get.to(() => const WithdrawWarehouseScreen());
+                    Get.to(() => const WithdrawalWarehouseNewScreen());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,13 +286,14 @@ class _SelfManagementOfInventoryScreenState
               Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(screenSize.width * 0.04)),
+                    borderRadius:
+                        BorderRadius.circular(screenSize.width * 0.04)),
                 margin: EdgeInsets.symmetric(
                     vertical: screenSize.height * 0.005,
                     horizontal: screenSize.width * 0.06),
                 child: InkWell(
                   onTap: () {
-                    Get.to(() => const TransferWarehouseScreen());
+                    Get.to(() => const TransferWarehouseNewScreen());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -294,8 +304,8 @@ class _SelfManagementOfInventoryScreenState
                           Container(
                               child: Text(
                                 "Transfer Inventory".tr,
-                                style:
-                                    TextStyle(fontSize: screenSize.width * 0.036),
+                                style: TextStyle(
+                                    fontSize: screenSize.width * 0.036),
                               ),
                               margin: EdgeInsets.symmetric(
                                   horizontal: screenSize.width * 0.035,
@@ -326,7 +336,7 @@ class _SelfManagementOfInventoryScreenState
                                   Text(
                                     "Transfer Stock Now".tr,
                                     style: TextStyle(
-                                      fontSize: screenSize.width * 0.023,
+                                        fontSize: screenSize.width * 0.023,
                                         color: Colors.black87,
                                         fontWeight: FontWeight.w500),
                                   )

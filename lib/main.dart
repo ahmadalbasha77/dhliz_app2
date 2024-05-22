@@ -3,13 +3,13 @@ import 'package:dhliz_app/config/binding.dart';
 import 'package:dhliz_app/config/messaging_config.dart';
 import 'package:dhliz_app/controllers/app_controller.dart';
 import 'package:dhliz_app/firebase_options.dart';
+import 'package:dhliz_app/view/auth/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'config/shared_prefs_client.dart';
 import 'config/translation.dart';
-import 'view/auth/splash_screen.dart';
 
 void main() async {
   await sharedPrefsClient.init();
@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         translations: Translation(),
         locale: Locale(sharedPrefsClient.language),
         fallbackLocale: const Locale('en'),
-        home: const SplashScreen(),
+        home: SplashScreen(),
       ),
     );
   }

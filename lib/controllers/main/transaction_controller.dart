@@ -14,40 +14,62 @@ class TransactionController extends GetxController {
       PagingController(firstPageKey: 0);
 
   TransactionModel? transactionModel;
-  int currentPageSize = 0; // Initialize currentPageSize
+  int currentPageSize = 0;
+  int countWithdraw= 0 ;
+  int countEnter = 0;
+  int countTransfer = 0;
 
   Future<void> getTransaction({required int pageKey}) async {
     try {
-      currentPageSize++; // Increase pageSize with each call
-      final result = await RestApi.getTransaction(
-          skip: currentPageSize, take: 10); // Use a constant pageKey = 10
+      print('7777777777777777777777777');
+      currentPageSize++;
+      final result =
+          await RestApi.getTransaction(skip: currentPageSize, take: 10);
 
+
+      final count = await RestApi.getTransaction(skip: 0, take: 500);
+      List<TransactionDataModel> transactions = count!.response;
+
+      // Count transactions based on actionType
+      countWithdraw = transactions.where((item) => item.actionType == 0).length;
+      countEnter = transactions.where((item) => item.actionType == 1).length;
+      countTransfer = transactions.where((item) => item.actionType == 2).length;
+
+      print('************************************');
+      print(countWithdraw);
+      print(countEnter);
+      print(countTransfer);
+      print('************************************');
+      update();
       if (result != null && result.response.isNotEmpty) {
-        final List<TransactionDataModel> flatList =
-            result.response.expand((x) => x).toList();
-        final isLastPage = flatList.length < currentPageSize;
+        print('+++++++++++++++++++++++++++++++++');
+        final List<TransactionDataModel> flatList = result.response;
+        final isLastPage = flatList.length < 10;
+        print(flatList.length);
+        print(currentPageSize);
+        print('999999999999999999999999');
         if (isLastPage) {
+          print('aaaaaaaaaaaaaaaaaaa');
           pagingController.appendLastPage(flatList);
-          flatList.forEach((transaction) {
-            print('Action Type: ${transaction.actionType}');
-          });
         } else {
-          // Keep the nextPageKey as 10 always
+          print('00000000000000000000000000');
           pagingController.appendPage(
               flatList, 10); // Use a constant pageKey = 10
         }
       } else {
+        print('22222222222222222222222222222');
         pagingController.appendLastPage([]);
       }
-
     } catch (error) {
+      print('555555555555555555555555555');
       pagingController.error = error;
     }
+
   }
 
   refreshPagingController() {
     pagingController = PagingController(firstPageKey: 0);
-    currentPageSize = 0; // Reset currentPageSize when refreshing the controller
+    currentPageSize = 0;
     pagingController.addPageRequestListener((pageKey) {
       getTransaction(pageKey: pageKey);
     });

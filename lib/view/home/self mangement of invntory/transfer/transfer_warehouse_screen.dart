@@ -1,15 +1,14 @@
 import 'dart:convert';
 
+import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/transfer/transfer_inventory_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../config/shared_prefs_client.dart';
 import '../../../../network/api_url.dart';
 import '../warehouse management/map_warehouse.dart';
-import 'transfer_inventory_screen.dart';
 
 class TransferWarehouseScreen extends StatefulWidget {
   const TransferWarehouseScreen({super.key});

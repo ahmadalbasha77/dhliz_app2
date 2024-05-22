@@ -1,13 +1,22 @@
+import 'package:dhliz_app/controllers/home/warehouses_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../config/utils.dart';
+import '../../controllers/home/subscriptions_controllerl.dart';
 import '../home/account_monitoring_screen.dart';
 import '../home/self mangement of invntory/self_management_of_inventory_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  // final _warehouseController = WarehousesController.to;
 
   _callNumber() async {
     var number = '0559559700';
@@ -57,14 +66,17 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               _buildInventoryCard(
-                  context,
-                  screenSize,
-                  "SELF.png",
-                  "Self management of inventory".tr,
-                  "you can enter, withdraw, and transfer the inventory alone"
-                      .tr,
-                  Icons.apps_rounded,
-                  "control panel".tr),
+                context,
+                screenSize,
+                "SELF.png",
+                "Self management of inventory".tr,
+                "you can enter, withdraw, and transfer the inventory alone".tr,
+                Icons.apps_rounded,
+                "control panel".tr,
+                () => Get.to(
+                  () => const SelfManagementOfInventoryScreen(),
+                ),
+              ),
               _buildInventoryCard(
                   context,
                   screenSize,
@@ -72,7 +84,8 @@ class HomeScreen extends StatelessWidget {
                   "call customer care".tr,
                   "you can add your inventory by customer care".tr,
                   Icons.call,
-                  "call now".tr),
+                  "call now".tr,
+                  _callNumber),
               Padding(
                 padding: EdgeInsets.all(basePadding),
                 child: Text(
@@ -104,7 +117,8 @@ class HomeScreen extends StatelessWidget {
       String title,
       String subtitle,
       IconData icon,
-      String iconText) {
+      String iconText,
+      Function()? onTap) {
     bool isTablet = screenSize.width > 600;
     double widthMultiplier = isTablet ? 0.04 : 0.05;
 
@@ -118,7 +132,7 @@ class HomeScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: InkWell(
-        onTap: () => Get.to(() => const SelfManagementOfInventoryScreen()),
+        onTap: onTap,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
