@@ -1,5 +1,6 @@
 import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/warehouse%20management/my_warehouse_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -36,6 +37,15 @@ class InvoiceScreen extends StatefulWidget {
   State<InvoiceScreen> createState() => _InvoiceScreenState();
 }
 
+
+
+
+
+pw.Font? _arabicFont;
+Future<void> _loadFont() async {
+  final fontData = await rootBundle.load('image/fonts/Amiri-Regular.ttf');
+  _arabicFont = pw.Font.ttf(fontData);
+}
 class _InvoiceScreenState extends State<InvoiceScreen> {
   Future<pw.ImageProvider> loadImage() async {
     return await imageFromAssetBundle(
@@ -48,6 +58,15 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     return prefs.getInt('postId');
   }
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadFont();
+
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +75,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         centerTitle: true,
         title: Text(
           'invoice'.tr,
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black ,  ),
         ),
         actions: [
           TextButton(
@@ -92,8 +111,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                     pw.SizedBox(height: 20),
                     pw.Center(
                       child: pw.Text(
-                        'INVOICE',
-                        style: pw.TextStyle(fontSize: 16),
+                        'مرحبا',
+                        style: pw.TextStyle(fontSize: 16 , font: _arabicFont),
                       ),
                     ),
                     pw.Divider(),

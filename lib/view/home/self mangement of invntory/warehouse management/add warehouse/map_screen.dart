@@ -47,6 +47,11 @@ class RouteInfo {
 }
 
 class MapScreen extends StatefulWidget {
+
+
+
+
+
   int space;
   bool dry;
   bool cold;
@@ -72,7 +77,11 @@ class MapScreen extends StatefulWidget {
   _MapScreenState createState() => _MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class _MapScreenState extends State<MapScreen>
+
+{
+
+
   LatLng _pickedLocation = LatLng(0, 0);
   MarkerInfo? selectWarehouse;
   final LatLng _center = const LatLng(31.959414984821176, 35.85732029979889);
@@ -319,6 +328,9 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void updateCameraPosition() {
+
+
+
     if (markers.isNotEmpty && mapController != null) {
       LatLngBounds bounds = boundsFromLatLngList(
           markers.map((marker) => marker.position).toList());
@@ -327,54 +339,99 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _showStoreDetailsDialog(MarkerInfo info) {
+    List<String> list = <String>['One', 'Two', 'Three', 'Four'];
+
+    String dropdownValue = list.first;
+
+
+
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('${info.nameWarehouse} ', style: TextStyle(fontSize: 26)),
-          content: SizedBox(
-            height: 200,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('${'capacity'.tr} : ${info.capacity}'),
-                  SizedBox(
-                    height: 10.h,
+        return Dialog(
+          insetPadding: EdgeInsets.zero,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                AppBar(
+                  title: Text('${info.nameWarehouse}', style: TextStyle(fontSize: 26)),
+                  automaticallyImplyLeading: false,
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+
+                        ListTile(
+                          title: Text('${'capacity'.tr} : ${info.capacity}')  ,
+                          leading: Icon(Icons.space_dashboard, color: AppColor.buttonColor,),
+                          trailing: Text('M2'),
+                        ),
+                        ListTile(
+                          title:  Text("${'phone'.tr} : ${info.phone}")  ,
+                          leading: Icon(Icons.phone, color: AppColor.buttonColor,),
+                          trailing: Text('+966'),
+                        ),
+                        ListTile(
+                          title: Text("${'price Per Meter'.tr} : ${info.pricePerMeter}") ,
+                          leading: Icon(Icons.straighten, color: AppColor.buttonColor,),
+                          trailing: Text('SAR'),
+                        ),
+                        ListTile(
+                          title:  Text("${'Transportation Fees'.tr} : ${info.transportationFees}")  ,
+                          leading: Icon(Icons.airport_shuttle, color: AppColor.buttonColor,),
+                          trailing: Text('SAR'),
+                        ),
+
+                        ListTile(
+                          title:  Text("${'Total price'.tr} : ${info.pricePerMeter * widget.space * int.parse(widget.days) + info.transportationFees}" , style: TextStyle(fontWeight: FontWeight.bold),),
+                          leading: Icon(Icons.account_balance_wallet, color: AppColor.buttonColor,),
+                          trailing: Text('SAR' , style: TextStyle(fontWeight: FontWeight.bold),),
+                        ),
+                       Padding(
+                         padding: const EdgeInsets.all(8.0),
+                         child: Text(
+                           'View All Supported Categoreis ',
+                               style: TextStyle(
+                                 fontWeight: FontWeight.bold ,
+                                 fontSize: 18
+                               )
+                         ),
+                       ),
+                       Container(
+                         height: 350,
+                         child: ListView.builder(
+                           itemCount: 10,
+                           itemBuilder: (context, index) => ListTile(
+                           title: Text('Cateory 1'),
+                         ),),
+                       )
+
+                      ],
+                    ),
                   ),
-                  Text("${'phone'.tr} : ${info.phone}"),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text("${'price Per Meter'.tr} : ${info.pricePerMeter}"),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text(
-                      "${'Transportation Fees'.tr} : ${info.transportationFees} "),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text(
-                      "${'Total price'.tr} : ${info.pricePerMeter * widget.space * int.parse(widget.days) + info.transportationFees} "),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-          actions: [
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStatePropertyAll(Color.fromRGBO(38, 50, 56, 1))),
-              child: Text('cancel'.tr),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
         );
       },
     );
+
   }
 
   LatLngBounds boundsFromLatLngList(List<LatLng> list) {
