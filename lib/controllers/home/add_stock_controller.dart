@@ -67,21 +67,25 @@ class AddStockController extends GetxController {
       'Stock.SubscriptionId': subscriptionId.toString(),
     };
 
-    AddStockModel? addStockModel = await RestApi.addStock(
-      fields: fields,
-      filePath: image!.path,
-    );
+    try {
+      AddStockModel? addStockModel = await RestApi.addStock(
+        fields: fields,
+        filePath: image?.path ?? '', // Ensure image path is not null
+      );
 
-    // StockDataModel stockDataModel = stockModel!.result.response.first;
-    print('**********888888888888888888888888');
-    AddStockDataModel addStockDataModel = addStockModel!.response;
-    print(addStockModel.response);
-    print('**********888888888888888888888888');
-    print('**********888888888888888888888888');
-    print('**********888888888888888888888888');
-    print(addStockDataModel);
-
-    Get.off(() => AddEnterInventoryScreen(data: addStockDataModel));
-    print('Stock created successfully');
+      if (addStockModel != null) {
+        AddStockDataModel addStockDataModel = addStockModel.response;
+        print(addStockModel.response);
+        Get.off(() => AddEnterInventoryScreen(data: addStockDataModel));
+        print('Stock created successfully');
+      } else {
+        print('Failed to create stock: response is null');
+      }
+    } catch (e) {
+      // Handle exceptions
+      print('Error creating stock: $e');
+    } finally {
+      Utils.hideLoadingDialog();
+    }
   }
 }

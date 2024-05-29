@@ -65,7 +65,7 @@ class RestApi {
   static Future<TransactionModel?> getTransaction(
       {required int skip, required int take}) async {
     String url =
-        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetTransaction}?PageIndex=$skip&PageSize=$take';
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetTransaction}?CustomerName=${sharedPrefsClient.fullName}&PageIndex=$skip&PageSize=$take';
     Uri uri = Uri.parse(url);
 
     print(url);
@@ -240,6 +240,10 @@ class RestApi {
 
     var response = await request.send();
 
+    print('*******************');
+    print(response.statusCode);
+    print(response.statusCode);
+    print('*****************');
     if (response.statusCode == 200) {
       final responseData = await response.stream.toBytes();
       final responseString = utf8.decode(responseData);

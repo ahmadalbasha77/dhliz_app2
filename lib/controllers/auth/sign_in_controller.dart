@@ -116,6 +116,9 @@ class LoginController extends GetxController {
         sharedPrefsClient.accessToken = response.token;
         sharedPrefsClient.fullName = response.username;
         sharedPrefsClient.customerId = response.customerId;
+        print(response.userId);
+        print(response.isActive);
+        print('*************************');
         if (response.isActive == true) {
           Get.offAll(() => const MainScreen());
           sharedPrefsClient.isLogin = true;

@@ -1,10 +1,11 @@
 import 'package:dhliz_app/models/main/transaction_model.dart';
+import 'package:dhliz_app/view/main/transaction/ststus_storck_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../controllers/main/transaction_controller.dart';
+import '../../../controllers/main/transaction_controller.dart';
 
 class TransactionPage extends StatefulWidget {
   const TransactionPage({super.key});
@@ -263,13 +264,17 @@ class _TransactionPageState extends State<TransactionPage> {
                                                 ? 'Under Review'.tr
                                                 : item.status == 1
                                                     ? 'Accepted'.tr
-                                                    : 'Rejected'.tr,
+                                                    : item.status == 2
+                                                        ? 'Rejected'.tr
+                                                        : 'Preliminary Approval',
                                             style: TextStyle(
                                                 color: item.status == 0
                                                     ? Colors.amber
                                                     : item.status == 1
                                                         ? Colors.green
-                                                        : Colors.red,
+                                                        : item.status == 2
+                                                            ? Colors.red
+                                                            : Colors.green,
                                                 fontSize: 13)),
                                         SizedBox(
                                           width: 5,
@@ -279,12 +284,16 @@ class _TransactionPageState extends State<TransactionPage> {
                                               ? Icons.pending
                                               : item.status == 1
                                                   ? Icons.check_circle_outline
-                                                  : Icons.cancel_outlined,
+                                                  : item.status == 2
+                                                      ? Icons.cancel_outlined
+                                                      : Icons.pending,
                                           color: item.status == 0
                                               ? Colors.amber
                                               : item.status == 1
                                                   ? Colors.green
-                                                  : Colors.red,
+                                                  : item.status == 2
+                                                      ? Colors.red
+                                                      : Colors.green,
                                           size: 20,
                                         ),
                                       ],
@@ -292,24 +301,58 @@ class _TransactionPageState extends State<TransactionPage> {
                                   ),
                                 ],
                               ),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: screenSize.width * .05),
-                                child: TextButton.icon(
-                                    onPressed: () {
-                                      Share.share(
-                                        'Transactions Details  \n\nName Item : ${item.stockName}   \n\n Transactions Id :${item.transactionId}  \n\n '
-                                        'quantity : ${item.quantity} \n\n status :  ${item.status == 0 ? 'Under Review'.tr : item.status == 1 ? 'Accepted'.tr : 'Rejected'.tr}'
-                                        '  ',
-                                      );
-                                    },
-                                    icon:
-                                        Icon(Icons.share, color: Colors.black),
-                                    label: Text(
-                                      'Share'.tr,
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 16),
-                                    )),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: screenSize.width * .05),
+                                    child: TextButton.icon(
+                                        onPressed: () {
+                                          Share.share(
+                                            'Transactions Details  \n\nName Item : ${item.stockName}   \n\n Transactions Id :${item.transactionId}  \n\n '
+                                            'quantity : ${item.quantity} \n\n status :  ${item.status == 0 ? 'Under Review'.tr : item.status == 1 ? 'Accepted'.tr : 'Rejected'.tr}'
+                                            '  ',
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.share,
+                                          color: Colors.black,
+                                          size: 20,
+                                        ),
+                                        label: Text(
+                                          'Share'.tr,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14),
+                                        )),
+                                  ),
+                                  item.status == 1 || item.status == 3
+                                      ? Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  screenSize.width * .05),
+                                          child: TextButton.icon(
+                                              onPressed: () {
+                                                Get.to(() => StatusStockScreen(
+                                                    stockId: item.fromStockId,
+                                                    transactionId:
+                                                        item.transactionId));
+                                              },
+                                              icon: Icon(
+                                                  Icons.view_agenda_outlined,
+                                                  color: Colors.black,
+                                                  size: 20),
+                                              label: Text(
+                                                'Status Stock'.tr,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14),
+                                              )),
+                                        )
+                                      : SizedBox(),
+                                ],
                               ),
                             ],
                           ),
@@ -322,7 +365,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                       : item.actionType == 1
                                           ? Icon(Icons.call_made_outlined,
                                               color: Colors.green)
-                                          :  Icon(Icons.moving,
+                                          : Icon(Icons.moving,
                                               color: Colors.green)),
                               Container(
                                   margin: EdgeInsets.symmetric(horizontal: 10),

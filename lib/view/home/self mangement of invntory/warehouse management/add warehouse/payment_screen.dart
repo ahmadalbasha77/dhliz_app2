@@ -25,19 +25,18 @@ class PaymentScreen extends StatefulWidget {
   bool cold;
   bool freezing;
 
-  PaymentScreen(
-      {super.key,
-      required this.amount,
-      required this.customerId,
-      required this.warehouseName,
-      required this.capacity,
-      required this.from,
-      required this.to,
-      required this.dry,
-      required this.cold,
-      required this.freezing,
-      required this.address,
-      required this.warehouseId});
+  PaymentScreen({super.key,
+    required this.amount,
+    required this.customerId,
+    required this.warehouseName,
+    required this.capacity,
+    required this.from,
+    required this.to,
+    required this.dry,
+    required this.cold,
+    required this.freezing,
+    required this.address,
+    required this.warehouseId});
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -49,7 +48,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void financialCreditor() async {
     final String apiUrl =
-        '${ApiUrl.API_BASE_URL}/Finantial/Creditor?id=${widget.warehouseId}&balance=${widget.amount}';
+        '${ApiUrl.API_BASE_URL}/Finantial/Creditor?id=${widget
+        .warehouseId}&balance=${widget.amount}';
 
     try {
       final response = await http.post(
@@ -66,7 +66,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
         print(
             "Failed to make POST request. Status code: ${response.statusCode}");
         print("Response: ${response.body}");
-
       }
     } catch (e) {
       print("Error making POST request: $e");
@@ -119,7 +118,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
         text: 'new subscription added successfully!',
         showConfirmBtn: false,
       );
-
     } else {
       print("Failed to make POST request. Status code: ${response.statusCode}");
       print("Response: ${response.body}");
@@ -149,10 +147,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
           // handle success.
           break;
         case PaymentStatus.failed:
-          // handle failure.
+        // handle failure.
           break;
         case PaymentStatus.authorized:
-          // handle authorized.
+        // handle authorized.
           break;
         default:
       }
@@ -196,7 +194,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
         resizeToAvoidBottomInset: true,
         body: Center(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.9,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.9,
             child: ListView(
               children: [
                 Padding(
