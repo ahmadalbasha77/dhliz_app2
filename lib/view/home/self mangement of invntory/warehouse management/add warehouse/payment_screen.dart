@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/warehouse%20management/my_warehouse_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:moyasar/moyasar.dart';
@@ -8,35 +5,23 @@ import 'package:quickalert/quickalert.dart';
 
 import 'package:http/http.dart' as http;
 import '../../../../../config/shared_prefs_client.dart';
+import '../../../../../models/home/subscriptions_model.dart';
 import '../../../../../network/api_url.dart';
 import '../../../../../widgets/payment.dart';
 import 'invoice_screen.dart';
 
 class PaymentScreen extends StatefulWidget {
-  double amount;
-  int customerId;
-  String warehouseId;
-  String warehouseName;
-  String address;
-  int capacity;
-  String to;
-  String from;
-  bool dry;
-  bool cold;
-  bool freezing;
+  int totalAmount;
+  final SubscriptionsDataModel? subscriptionsDataModel;
+  final Warehouse? warehouse;
+  final Address? address;
 
-  PaymentScreen({super.key,
-    required this.amount,
-    required this.customerId,
-    required this.warehouseName,
-    required this.capacity,
-    required this.from,
-    required this.to,
-    required this.dry,
-    required this.cold,
-    required this.freezing,
-    required this.address,
-    required this.warehouseId});
+  PaymentScreen(
+      {super.key,
+      required this.totalAmount,
+      required this.subscriptionsDataModel,
+      required this.warehouse,
+      required this.address});
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -48,8 +33,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void financialCreditor() async {
     final String apiUrl =
-        '${ApiUrl.API_BASE_URL}/Finantial/Creditor?id=${widget
-        .warehouseId}&balance=${widget.amount}';
+        '${ApiUrl.API_BASE_URL2}/api/Finantial/Creditor?id=${widget.warehouse!.id}&balance=${widget.totalAmount}';
 
     try {
       final response = await http.post(
@@ -73,23 +57,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void postData() async {
-    final String apiUrl = '${ApiUrl.API_BASE_URL}/Subscription/Create';
+    final String apiUrl =
+        '${ApiUrl.API_BASE_URL2}/api/Subscription/Pay?subscriptionId=${widget.subscriptionsDataModel!.id}';
 
-    Map<String, dynamic> requestBody = {
-      "ReservedSpace": widget.capacity.toString(),
-      "CustomerId": '${sharedPrefsClient.customerId}',
-      "WarehouseId": widget.warehouseId,
-      'startDate': widget.from,
-      'endDate': widget.to,
-    };
-
-    final response = await http.post(
+    final response = await http.get(
       Uri.parse(apiUrl),
       headers: {
         'Authorization': 'Bearer ${sharedPrefsClient.accessToken}',
         'Content-Type': 'application/json',
       },
-      body: jsonEncode(requestBody),
     );
 
     if (response.statusCode == 200) {
@@ -101,27 +77,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
       print("Response: ${response.body}");
       // Get.off(() => MyWareHouseScreen());
       Get.off(InvoiceScreen(
-        warehouseId: widget.warehouseId,
-        warehouseName: widget.warehouseName,
-        space: widget.capacity.toString(),
+        totalAmount: widget.totalAmount,
+        warehouse: widget.warehouse,
+        subscriptionsDataModel: widget.subscriptionsDataModel,
         address: widget.address,
-        total: widget.amount,
-        fromDate: widget.from,
-        toDate: widget.to,
-        dry: widget.dry,
-        cold: widget.cold,
-        freezing: widget.freezing,
       ));
       QuickAlert.show(
         context: context,
         type: QuickAlertType.success,
-        text: 'new subscription added successfully!',
+        text: 'Payment completed!',
         showConfirmBtn: false,
       );
     } else {
+      Get.back();
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        text: 'Payment error!',
+        showConfirmBtn: false,
+      );
       print("Failed to make POST request. Status code: ${response.statusCode}");
       print("Response: ${response.body}");
-      print("Request Body: $requestBody");
     }
   }
 
@@ -147,10 +123,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
           // handle success.
           break;
         case PaymentStatus.failed:
-        // handle failure.
+          // handle failure.
           break;
         case PaymentStatus.authorized:
-        // handle authorized.
+          // handle authorized.
           break;
         default:
       }
@@ -170,7 +146,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   void initState() {
-    int parsedAmount = double.parse(widget.amount.toString()).toInt();
+    int parsedAmount = double.parse(widget.totalAmount.toString()).toInt();
     int finalAmount = parsedAmount * 100;
     super.initState();
     paymentConfig = PaymentConfig(
@@ -180,7 +156,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       metadata: {'size': '250g'},
       creditCard: CreditCardConfig(saveCard: false, manual: false),
       applePay: ApplePayConfig(
-
           merchantId: 'merchant.mysr.fghurayri',
           label: 'Blue Coffee Beans',
           manual: false),
@@ -194,10 +169,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         resizeToAvoidBottomInset: true,
         body: Center(
           child: SizedBox(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width * 0.9,
+            width: MediaQuery.of(context).size.width * 0.9,
             child: ListView(
               children: [
                 Padding(

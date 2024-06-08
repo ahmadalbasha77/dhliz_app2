@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         translations: Translation(),
         locale: Locale(sharedPrefsClient.language),
         fallbackLocale: const Locale('en'),
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

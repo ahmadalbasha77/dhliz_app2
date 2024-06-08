@@ -1,9 +1,13 @@
 import 'package:dhliz_app/config/shared_prefs_client.dart';
+import 'package:dhliz_app/network/api_url.dart';
 import 'package:dhliz_app/view/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+
+import 'config/app_color.dart';
+import 'config/utils.dart';
 
 class PolicyScreen extends StatefulWidget {
   final int userId;
@@ -16,7 +20,8 @@ class PolicyScreen extends StatefulWidget {
 
 class _PolicyScreenState extends State<PolicyScreen> {
   void activeUser() async {
-    String url = 'https://api.dhlez.sa/VerifyAccount?id=${widget.userId}';
+    Utils.showLoadingDialog();
+    String url = '${ApiUrl.API_BASE_URL2}/VerifyAccount?id=${widget.userId}';
     http.Response response = await http.post(Uri.parse(url));
     print(response.statusCode);
     print(response.body);
@@ -24,8 +29,16 @@ class _PolicyScreenState extends State<PolicyScreen> {
       Get.offAll(() => MainScreen());
       sharedPrefsClient.isLogin = true;
     } else {
+      Get.snackbar(
+        'please try again',
+        'An unexpected error occurred',
+        duration: const Duration(seconds: 4),
+        backgroundColor: AppColor.gray.withOpacity(0.5),
+        margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
+      );
       print('aaaaaaaaaaaaaa');
     }
+    Utils.hideLoadingDialog();
   }
 
   bool checkedValue = false;

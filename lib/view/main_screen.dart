@@ -60,6 +60,9 @@ class _MainScreenState extends State<MainScreen> {
                   icon: Icons.compare_arrows,
                 ),
                 // GButton(
+                //   icon: Icons.verified,
+                // ),
+                // GButton(
                 //   icon: Icons.notifications,
                 // ),
                 GButton(

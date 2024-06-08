@@ -24,6 +24,7 @@ class MarkerInfo {
   final String phone;
   final String address;
   final double transportationFees;
+  List categories;
 
   MarkerInfo({
     required this.id,
@@ -35,6 +36,7 @@ class MarkerInfo {
     required this.phone,
     required this.address,
     required this.transportationFees,
+    required this.categories,
   });
 }
 
@@ -47,11 +49,6 @@ class RouteInfo {
 }
 
 class MapScreen extends StatefulWidget {
-
-
-
-
-
   int space;
   bool dry;
   bool cold;
@@ -77,11 +74,7 @@ class MapScreen extends StatefulWidget {
   _MapScreenState createState() => _MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen>
-
-{
-
-
+class _MapScreenState extends State<MapScreen> {
   LatLng _pickedLocation = LatLng(0, 0);
   MarkerInfo? selectWarehouse;
   final LatLng _center = const LatLng(31.959414984821176, 35.85732029979889);
@@ -194,8 +187,7 @@ class _MapScreenState extends State<MapScreen>
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
     };
-    final Uri uri = Uri.parse(
-        '${ApiUrl.API_BASE_URL2}/api/Warehouse/Find?PageIndex=0&PageSize=100');
+    final Uri uri = Uri.parse('${ApiUrl.API_BASE_URL2}/api/Warehouse/Find');
 
     // Initialize queryParameters with the 'Capacity' parameter
     final Map<String, dynamic> queryParameters =
@@ -206,7 +198,7 @@ class _MapScreenState extends State<MapScreen>
     queryParameters['Dry'] = widget.dry ? 'true' : '';
     queryParameters['Cold'] = widget.cold ? 'true' : '';
     queryParameters['PageIndex'] = '0';
-    queryParameters['PageSize'] = '200';
+    queryParameters['PageSize'] = '50';
 
     final Uri filteredUri = uri.replace(queryParameters: queryParameters);
 
@@ -225,9 +217,6 @@ class _MapScreenState extends State<MapScreen>
           } else {
             print('Response array is empty');
           }
-
-          // Clear the markers list before adding new markers
-
           markers.clear();
 
           // Extract and store coordinates from the 'address' part
@@ -235,6 +224,9 @@ class _MapScreenState extends State<MapScreen>
             if (item['address'] != null &&
                 item['address'] is Map<String, dynamic>) {
               Map<String, dynamic> address = item['address']!;
+              print('**********************************');
+              print(address);
+              print('***********************************');
 
               double? lat =
                   address['lat'] != null ? double.parse(address['lat']) : null;
@@ -262,6 +254,7 @@ class _MapScreenState extends State<MapScreen>
                           phone: item['phone'] ?? '',
                           transportationFees:
                               item['transportationFees']?.toDouble() ?? 0.0,
+                          categories: item['categories'] ?? [],
                         ));
                       },
                       title: item['name'],
@@ -279,8 +272,10 @@ class _MapScreenState extends State<MapScreen>
                             pricePerMeter: item['cost']?.toDouble() ?? 0.0,
                             numberOfMeter: 5,
                             phone: item['phone'] ?? '',
+                            categories: item['categories'] ?? [],
                             transportationFees:
                                 item['transportationFees']?.toDouble() ?? 0.0);
+
                         _drawRoute();
                       });
                     },
@@ -328,9 +323,6 @@ class _MapScreenState extends State<MapScreen>
   }
 
   void updateCameraPosition() {
-
-
-
     if (markers.isNotEmpty && mapController != null) {
       LatLngBounds bounds = boundsFromLatLngList(
           markers.map((marker) => marker.position).toList());
@@ -343,9 +335,6 @@ class _MapScreenState extends State<MapScreen>
 
     String dropdownValue = list.first;
 
-
-
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -357,7 +346,8 @@ class _MapScreenState extends State<MapScreen>
             child: Column(
               children: [
                 AppBar(
-                  title: Text('${info.nameWarehouse}', style: TextStyle(fontSize: 26)),
+                  title: Text('${info.nameWarehouse}',
+                      style: TextStyle(fontSize: 26)),
                   automaticallyImplyLeading: false,
                   actions: [
                     IconButton(
@@ -375,52 +365,73 @@ class _MapScreenState extends State<MapScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-
                         ListTile(
-                          title: Text('${'capacity'.tr} : ${info.capacity}')  ,
-                          leading: Icon(Icons.space_dashboard, color: AppColor.buttonColor,),
+                          title: Text('${'capacity'.tr} : ${info.capacity}'),
+                          leading: Icon(
+                            Icons.space_dashboard,
+                            color: AppColor.buttonColor,
+                          ),
                           trailing: Text('M2'),
                         ),
                         ListTile(
-                          title:  Text("${'phone'.tr} : ${info.phone}")  ,
-                          leading: Icon(Icons.phone, color: AppColor.buttonColor,),
+                          title: Text("${'phone'.tr} : ${info.phone}"),
+                          leading: Icon(
+                            Icons.phone,
+                            color: AppColor.buttonColor,
+                          ),
                           trailing: Text('+966'),
                         ),
                         ListTile(
-                          title: Text("${'price Per Meter'.tr} : ${info.pricePerMeter}") ,
-                          leading: Icon(Icons.straighten, color: AppColor.buttonColor,),
+                          title: Text(
+                              "${'price Per Meter'.tr} : ${info.pricePerMeter}"),
+                          leading: Icon(
+                            Icons.straighten,
+                            color: AppColor.buttonColor,
+                          ),
                           trailing: Text('SAR'),
                         ),
                         ListTile(
-                          title:  Text("${'Transportation Fees'.tr} : ${info.transportationFees}")  ,
-                          leading: Icon(Icons.airport_shuttle, color: AppColor.buttonColor,),
+                          title: Text(
+                              "${'Transportation Fees'.tr} : ${info.transportationFees}"),
+                          leading: Icon(
+                            Icons.airport_shuttle,
+                            color: AppColor.buttonColor,
+                          ),
                           trailing: Text('SAR'),
                         ),
-
                         ListTile(
-                          title:  Text("${'Total price'.tr} : ${info.pricePerMeter * widget.space * int.parse(widget.days) + info.transportationFees}" , style: TextStyle(fontWeight: FontWeight.bold),),
-                          leading: Icon(Icons.account_balance_wallet, color: AppColor.buttonColor,),
-                          trailing: Text('SAR' , style: TextStyle(fontWeight: FontWeight.bold),),
+                          title: Text(
+                            "${'Total price'.tr} : ${info.pricePerMeter * widget.space * int.parse(widget.days) + info.transportationFees}",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          leading: Icon(
+                            Icons.account_balance_wallet,
+                            color: AppColor.buttonColor,
+                          ),
+                          trailing: Text(
+                            'SAR',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
-                       Padding(
-                         padding: const EdgeInsets.all(8.0),
-                         child: Text(
-                           'View All Supported Categoreis ',
-                               style: TextStyle(
-                                 fontWeight: FontWeight.bold ,
-                                 fontSize: 18
-                               )
-                         ),
-                       ),
-                       Container(
-                         height: 350,
-                         child: ListView.builder(
-                           itemCount: 10,
-                           itemBuilder: (context, index) => ListTile(
-                           title: Text('Cateory 1'),
-                         ),),
-                       )
-
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('View All Supported Categoreis ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18)),
+                        ),
+                        Container(
+                          height: 350,
+                          child: ListView.builder(
+                            itemCount: info.categories.length,
+                            itemBuilder: (context, index) {
+                              var category = info.categories[index];
+                              return ListTile(
+                                title: Text(category['name'],
+                                    style: TextStyle(fontSize: 16)),
+                              );
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -431,7 +442,6 @@ class _MapScreenState extends State<MapScreen>
         );
       },
     );
-
   }
 
   LatLngBounds boundsFromLatLngList(List<LatLng> list) {

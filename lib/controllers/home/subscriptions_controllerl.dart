@@ -19,11 +19,11 @@ class SubscriptionsController extends GetxController {
   Temperature? temperature;
   bool isNotVisible = true;
 
-  @override
-  void onInit() {
-    super.onInit();
-    getSubscriptions();
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   getSubscriptions();
+  // }
 
   Future<void> getSubscriptions() async {
     try {

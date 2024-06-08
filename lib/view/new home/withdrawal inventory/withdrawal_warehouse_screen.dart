@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../../home/self mangement of invntory/warehouse management/map_warehouse.dart';
+import '../myWarehouse/add new warehouse/pay_now.dart';
 
 class WithdrawalWarehouseNewScreen extends StatefulWidget {
   const WithdrawalWarehouseNewScreen({super.key});
@@ -17,6 +18,12 @@ class WithdrawalWarehouseNewScreen extends StatefulWidget {
 class _WithdrawalWarehouseNewScreenState
     extends State<WithdrawalWarehouseNewScreen> {
   final _controller = SubscriptionsController.to;
+
+  @override
+  void initState() {
+    _controller.getSubscriptions();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +61,6 @@ class _WithdrawalWarehouseNewScreenState
                         horizontal: 12, vertical: 15),
                     child: InkWell(
                       onTap: () {
-                        print(
-                            _controller.subscriptionsModel!.response[index].id);
                         _controller.subscriptionsModel!.response[index]
                                     .status ==
                                 0
@@ -142,11 +147,42 @@ class _WithdrawalWarehouseNewScreenState
                           Container(
                             margin: const EdgeInsets.symmetric(vertical: 5),
                             child: Text(
-                                '${'Subscription status'.tr} : ${_controller.subscriptionsDataModel!.status == 0 ? 'Under Review' : 'Active'} ',
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                )),
+                                '${'Subscription status'.tr} : ${_controller.subscriptionsDataModel!.status == 0 ? 'Under Review' : _controller.subscriptionsDataModel!.status == 1 ? 'Accepted' : _controller.subscriptionsDataModel!.status == 2 ? 'Rejected' : _controller.subscriptionsDataModel!.status == 3 ? 'PreliminaryApproval' : 'Error'} ',
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    color: _controller.subscriptionsDataModel!
+                                                .status ==
+                                            0
+                                        ? Colors.orange
+                                        : _controller.subscriptionsDataModel!
+                                                    .status ==
+                                                2
+                                            ? Colors.red
+                                            : Colors.green)),
                           ),
+
+                          if (_controller.subscriptionsDataModel!.status == 1 ||
+                              _controller.subscriptionsDataModel!.status == 3)
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: _controller.subscriptionsDataModel!
+                                                  .status ==
+                                              0
+                                          ? Colors.red
+                                          : Colors.green)),
+                              child: Text(
+                                  '${'Payment status'.tr} : ${_controller.subscriptionsDataModel!.status == 1 ? 'Paid' : 'UnPaid'} ',
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      color: _controller.subscriptionsDataModel!
+                                                  .status ==
+                                              0
+                                          ? Colors.red
+                                          : Colors.green)),
+                            ),
+
                           Container(
                             margin: const EdgeInsets.symmetric(
                               vertical: 10,
@@ -246,18 +282,23 @@ class _WithdrawalWarehouseNewScreenState
                           // ),
                           Container(
                             margin: const EdgeInsets.only(top: 25),
-                            child: Text(
-                              '${'Reserved Space'.tr}: ${_controller.subscriptionsDataModel!.reservedSpace} ${'M²'.tr}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 35, 37, 56),
-                              ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  '${'Reserved Space'.tr}: ${_controller.subscriptionsDataModel!.reservedSpace} ${'M²'.tr}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Color.fromARGB(255, 35, 37, 56),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(
                             height: 20,
                           ),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -266,6 +307,43 @@ class _WithdrawalWarehouseNewScreenState
                                 style: const TextStyle(
                                     fontSize: 13, color: Colors.black54),
                               ),
+                              _controller.subscriptionsDataModel!.status == 3
+                                  ? Container(
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStatePropertyAll(
+                                                  Colors.green[600]),
+                                        ),
+                                        onPressed: () {
+                                          Get.to(() => PayNowScreen(
+                                                subscriptionsDataModel:
+                                                    _controller
+                                                        .subscriptionsModel!
+                                                        .response[index],
+                                                price: _controller
+                                                    .subscriptionsModel!
+                                                    .response[index]
+                                                    .warehouse
+                                                    .price
+                                                    .first,
+                                                address: _controller
+                                                    .subscriptionsModel!
+                                                    .response[index]
+                                                    .warehouse
+                                                    .address,
+                                                warehouse: _controller
+                                                    .subscriptionsModel!
+                                                    .response[index]
+                                                    .warehouse,
+                                              ));
+                                        },
+                                        child: Text('Pay Now'.tr),
+                                      ),
+                                    )
+                                  : Container()
                               // SizedBox(
                               //   height: 30,
                               //   child: ElevatedButton(

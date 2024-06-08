@@ -4,10 +4,11 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../models/home/stock_model.dart';
 
-class StockController extends GetxController {
-  static StockController get to => Get.isRegistered<StockController>()
-      ? Get.find<StockController>()
-      : Get.put(StockController());
+class StockByStatusController extends GetxController {
+  static StockByStatusController get to =>
+      Get.isRegistered<StockByStatusController>()
+          ? Get.find<StockByStatusController>()
+          : Get.put(StockByStatusController());
 
   bool isNotVisible = true;
   PagingController<int, StockDataModel> pagingController =
@@ -15,25 +16,20 @@ class StockController extends GetxController {
 
   String? id;
   StockModel? stockModel;
-  int currentPageSize = 0; // Initialize currentPageSize
+  int currentPageSize = 0;
 
   Future<void> getStock({required int pageKey}) async {
     try {
-      currentPageSize++; // Increase pageSize with each call
+      currentPageSize++;
       final result =
-          await RestApi.getStock(id: id!, skip: currentPageSize, take: 10);
+          await RestApi.getStockByStatus(skip: currentPageSize, take: 10);
 
       if (result != null && result.response.isNotEmpty) {
         final List<StockDataModel> flatList = result.response;
         final isLastPage = flatList.length < 10;
-        print(flatList.length);
-        print(currentPageSize);
-        print('********************************');
         if (isLastPage) {
-          print('aaaaaaaaaaaaaaaaaaa');
           pagingController.appendLastPage(flatList);
         } else {
-          print('00000000000000000000000000');
           pagingController.appendPage(
               flatList, 10); // Use a constant pageKey = 10
         }

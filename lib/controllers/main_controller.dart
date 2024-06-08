@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
+import '../view/main/entry requests/entry_requests_screen.dart';
 import '../view/main/home_screen.dart';
 import '../view/main/profile/profile_screen.dart';
 import '../view/main/transaction/tansaction_page.dart';
@@ -15,7 +14,8 @@ class MainController extends GetxController {
 
   final tabs = [
     const HomeScreen(),
-     TransactionPage(),
+    const TransactionPage(),
+    // const EntryRequestsScreen(),
     // const NotificationScreen(),
     const ProfileScreen(),
   ];

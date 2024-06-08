@@ -5,6 +5,8 @@ import 'package:dhliz_app/controllers/main/profile_controller.dart';
 import 'package:dhliz_app/view/main/profile/settings/settings_screen.dart';
 import '../../../config/app_color.dart';
 import '../../../config/shared_prefs_client.dart';
+import '../../../config/utils.dart';
+import '../../auth/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -27,6 +29,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Color.fromARGB(255, 231, 231, 231),
+          actions: [
+            Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: IconButton(
+                  onPressed: () async {
+                    if (await Utils.showAreYouSureDialog(
+                        title: 'Sign Out'.tr)) {
+                      sharedPrefsClient.clearProfile();
+                      Get.deleteAll();
+                      Get.offAll(() => LoginScreen());
+                    }
+                  },
+                  icon: Icon(Icons.logout),
+                  color: Colors.black,
+                ))
+          ],
+        ),
         backgroundColor: const Color.fromARGB(255, 231, 231, 231),
         body: GetBuilder<ProfileController>(
           builder: (controller) => _controller.profileData == null

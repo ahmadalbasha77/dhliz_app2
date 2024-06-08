@@ -8,44 +8,33 @@ import 'package:printing/printing.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class InvoiceScreen extends StatefulWidget {
-  String warehouseId;
-  String warehouseName;
-  String address;
-  String fromDate;
-  String toDate;
-  String space;
-  double total;
-  bool dry;
-  bool cold;
-  bool freezing;
+import '../../../../../models/home/subscriptions_model.dart';
 
-  InvoiceScreen(
-      {super.key,
-      required this.warehouseId,
-      required this.warehouseName,
-      required this.address,
-      required this.space,
-      required this.fromDate,
-      required this.toDate,
-      required this.dry,
-      required this.cold,
-      required this.freezing,
-      required this.total});
+class InvoiceScreen extends StatefulWidget {
+  int totalAmount;
+  final SubscriptionsDataModel? subscriptionsDataModel;
+  final Warehouse? warehouse;
+  final Address? address;
+
+  InvoiceScreen({
+    super.key,
+    required this.totalAmount,
+    required this.subscriptionsDataModel,
+    required this.warehouse,
+    required this.address,
+  });
 
   @override
   State<InvoiceScreen> createState() => _InvoiceScreenState();
 }
 
-
-
-
-
 pw.Font? _arabicFont;
+
 Future<void> _loadFont() async {
   final fontData = await rootBundle.load('image/fonts/Amiri-Regular.ttf');
   _arabicFont = pw.Font.ttf(fontData);
 }
+
 class _InvoiceScreenState extends State<InvoiceScreen> {
   Future<pw.ImageProvider> loadImage() async {
     return await imageFromAssetBundle(
@@ -58,15 +47,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     return prefs.getInt('postId');
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _loadFont();
-
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,12 +62,14 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         centerTitle: true,
         title: Text(
           'invoice'.tr,
-          style: TextStyle(color: Colors.black ,  ),
+          style: TextStyle(
+            color: Colors.black,
+          ),
         ),
         actions: [
           TextButton(
               onPressed: () {
-                Get.off(() => MyWareHouseScreen());
+                Get.back();
               },
               child: Text(
                 'done'.tr,
@@ -111,8 +100,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                     pw.SizedBox(height: 20),
                     pw.Center(
                       child: pw.Text(
-                        'مرحبا',
-                        style: pw.TextStyle(fontSize: 16 , font: _arabicFont),
+                        'Invoice'.toLowerCase(),
+                        style: pw.TextStyle(fontSize: 16, font: _arabicFont),
                       ),
                     ),
                     pw.Divider(),
@@ -153,7 +142,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               fontSize: 16, fontWeight: pw.FontWeight.bold),
                         ),
                         pw.Text(
-                          ' ${widget.warehouseName}',
+                          ' ${widget.warehouse!.name}',
                           style: pw.TextStyle(fontSize: 16),
                         ),
                       ]),
@@ -162,42 +151,42 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                     pw.Text('${'Warehouse Features'}',
                         style: pw.TextStyle(
                             fontSize: 18, fontWeight: pw.FontWeight.bold)),
-                    pw.Container(
-                      margin:
-                          pw.EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                      child: pw.Text(
-                        'Temperature',
-                        style: pw.TextStyle(fontSize: 17),
-                      ),
-                    ),
-                    pw.Container(
-                      margin:
-                          pw.EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: pw.Row(
-                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                          children: [
-                            widget.dry == true
-                                ? pw.Text(
-                                    '- Dry : ',
-                                    style: pw.TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  )
-                                : pw.Container(),
-                            widget.cold == true
-                                ? pw.Text(
-                                    '- Cold',
-                                    style: pw.TextStyle(fontSize: 16),
-                                  )
-                                : pw.Container(),
-                            widget.freezing == true
-                                ? pw.Text(
-                                    '- Freezing',
-                                    style: pw.TextStyle(fontSize: 16),
-                                  )
-                                : pw.Container(),
-                          ]),
-                    ),
+                    // pw.Container(
+                    //   margin:
+                    //       pw.EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                    //   child: pw.Text(
+                    //     'Temperature',
+                    //     style: pw.TextStyle(fontSize: 17),
+                    //   ),
+                    // ),
+                    // pw.Container(
+                    //   margin:
+                    //       pw.EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    //   child: pw.Row(
+                    //       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    //       children: [
+                    //         widget.dry == true
+                    //             ? pw.Text(
+                    //                 '- Dry : ',
+                    //                 style: pw.TextStyle(
+                    //                   fontSize: 16,
+                    //                 ),
+                    //               )
+                    //             : pw.Container(),
+                    //         widget.cold == true
+                    //             ? pw.Text(
+                    //                 '- Cold',
+                    //                 style: pw.TextStyle(fontSize: 16),
+                    //               )
+                    //             : pw.Container(),
+                    //         widget.freezing == true
+                    //             ? pw.Text(
+                    //                 '- Freezing',
+                    //                 style: pw.TextStyle(fontSize: 16),
+                    //               )
+                    //             : pw.Container(),
+                    //       ]),
+                    // ),
                     pw.Container(
                       margin:
                           pw.EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -208,7 +197,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               fontSize: 16, fontWeight: pw.FontWeight.bold),
                         ),
                         pw.Text(
-                          '${widget.space} M²',
+                          '${widget.subscriptionsDataModel!.reservedSpace} M²',
                           style: pw.TextStyle(fontSize: 16),
                         ),
                       ]),
@@ -229,7 +218,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               ),
                             ),
                             pw.Text(
-                              widget.fromDate,
+                              widget.subscriptionsDataModel!.startDate,
                               style: pw.TextStyle(fontSize: 16),
                             ),
                           ]),
@@ -247,7 +236,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               ),
                             ),
                             pw.Text(
-                              widget.toDate,
+                              widget.subscriptionsDataModel!.endDate,
                               style: pw.TextStyle(fontSize: 16),
                             ),
                           ]),
@@ -283,7 +272,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                   fontSize: 24, fontWeight: pw.FontWeight.bold),
                             ),
                             pw.Text(
-                              '${widget.total} ${'SAR'.tr}',
+                              '${widget.totalAmount} ${'SAR'.tr}',
                               style: pw.TextStyle(
                                   fontSize: 24, fontWeight: pw.FontWeight.bold),
                             ),

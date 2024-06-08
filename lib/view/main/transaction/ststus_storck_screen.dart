@@ -10,6 +10,8 @@ import '../../../config/shared_prefs_client.dart';
 import '../../../network/api_url.dart';
 import 'package:photo_view/photo_view.dart';
 
+import '../../view_images.dart';
+
 class StatusStockScreen extends StatefulWidget {
   final int stockId;
   final int transactionId;
@@ -54,6 +56,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
       ..headers['Authorization'] =
           'Bearer ${sharedPrefsClient.accessToken}' // Replace with your actual token
       ..fields['StockId'] = widget.stockId.toString()
+      ..fields['TransactionId'] = widget.transactionId.toString()
       ..fields['Status'] = status;
 
     try {
@@ -84,6 +87,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
   @override
   void initState() {
     print(widget.stockId);
+    print(widget.transactionId);
     fetchData().then((result) {
       setState(() {
         data = result;
@@ -322,7 +326,37 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                       SizedBox(
                         height: 5,
                       ),
-
+                      Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 5),
+                            child: Text(
+                              '- هوية مسلم المخزون:',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll(Colors.white),
+                                  shape: MaterialStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)))),
+                              onPressed: () {
+                                data["documentsStatus"][0]['filePath'];
+                              },
+                              child: Text(
+                                'اظهار الصروة'.tr,
+                                style: TextStyle(color: Colors.black),
+                              ))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         children: [
                           Container(
@@ -383,155 +417,165 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                       SizedBox(
                         height: 60,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            height: 65,
-                            width: 170,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  shape: MaterialStatePropertyAll(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20))),
-                                  backgroundColor: MaterialStatePropertyAll(
-                                      Colors.green[400])),
-                              onPressed: () {
-                                // Get.to(() => ProductMatchesScreen());
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      elevation: 10,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      content: Text(
-                                        'Are you sure the approve entry?',
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: Colors.black,
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium,
-                                          ),
-                                          child: Text('Cancel'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            // You can add your disable logic here
-                                          },
+                      data["status"] == 2
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  height: 65,
+                                  width: 170,
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20))),
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(
+                                                Colors.green[400])),
+                                    onPressed: () {
+                                      // Get.to(() => ProductMatchesScreen());
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            content: Text(
+                                              'Are you sure the approve entry?',
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.black,
+                                                  textStyle: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium,
+                                                ),
+                                                child: Text('Cancel'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  // You can add your disable logic here
+                                                },
+                                              ),
+                                              TextButton(
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.black,
+                                                  textStyle: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium,
+                                                ),
+                                                child: Text('confirm'),
+                                                onPressed: () {
+                                                  updateStockStatus('3');
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.check_circle_outline_rounded,
+                                          color: Colors.white,
                                         ),
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: Colors.black,
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium,
-                                          ),
-                                          child: Text('confirm'),
-                                          onPressed: () {},
+                                        Text(
+                                          textAlign: TextAlign.center,
+                                          'Accept'.tr,
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.white),
                                         ),
                                       ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.check_circle_outline_rounded,
-                                    color: Colors.white,
+                                    ),
                                   ),
-                                  Text(
-                                    textAlign: TextAlign.center,
-                                    'Accept'.tr,
-                                    style: TextStyle(
-                                        fontSize: 10, color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            height: 65,
-                            width: 170,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  shape: MaterialStatePropertyAll(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20))),
-                                  backgroundColor: MaterialStatePropertyAll(
-                                      Colors.red[400])),
-                              onPressed: () {
-                                // Get.to(() => ProductNotMatchesScreen());
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  height: 65,
+                                  width: 170,
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20))),
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(
+                                                Colors.red[400])),
+                                    onPressed: () {
+                                      // Get.to(() => ProductNotMatchesScreen());
 
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      elevation: 10,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      content: Text(
-                                        'Are you sure the reject entry?',
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: Colors.black,
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium,
-                                          ),
-                                          child: Text('Cancel'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            // You can add your disable logic here
-                                          },
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            content: Text(
+                                              'Are you sure the reject entry?',
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.black,
+                                                  textStyle: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium,
+                                                ),
+                                                child: Text('Cancel'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  // You can add your disable logic here
+                                                },
+                                              ),
+                                              TextButton(
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.black,
+                                                  textStyle: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium,
+                                                ),
+                                                child: Text('confirm'),
+                                                onPressed: () {
+                                                  updateStockStatus('4');
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.cancel_outlined,
+                                          color: Colors.white,
                                         ),
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: Colors.black,
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium,
-                                          ),
-                                          child: Text('confirm'),
-                                          onPressed: () {
-                                            updateStockStatus('2');
-                                          },
+                                        Text(
+                                          textAlign: TextAlign.center,
+                                          'reject',
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.white),
                                         ),
                                       ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.cancel_outlined,
-                                    color: Colors.white,
+                                    ),
                                   ),
-                                  Text(
-                                    textAlign: TextAlign.center,
-                                    'reject',
-                                    style: TextStyle(
-                                        fontSize: 10, color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
+                                ),
+                              ],
+                            )
+                          : SizedBox()
                     ]),
               ),
       ),

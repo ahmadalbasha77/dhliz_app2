@@ -87,7 +87,7 @@ class RestApi {
 
   static Future<ProfileModel?> getProfile() async {
     String url =
-        'https://api.dhlez.sa/api/Customer/GetById?id=${sharedPrefsClient.customerId}';
+        '${ApiUrl.API_BASE_URL2}/api/Customer/GetById?id=${sharedPrefsClient.customerId}';
     Uri uri = Uri.parse(url);
 
     var headers = {
@@ -134,6 +134,27 @@ class RestApi {
         '${ApiUrl.API_BASE_URL2}${ApiUrl.GetStock}?SubscriptionId=$id&PageIndex=$skip&PageSize=$take';
     Uri uri = Uri.parse(url);
 
+    var headers = {
+      'accept': '*/*',
+      'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
+    };
+
+    http.Response response = await http.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      log(response.body);
+      StockModel stockModel = StockModel.fromJson(jsonDecode(response.body));
+
+      return stockModel;
+    } else {
+      throw Exception('Failed to load Stock data');
+    }
+  }
+
+  static Future<StockModel?> getStockByStatus(
+      {required int skip, required int take}) async {
+    String url =
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetStock}?CustomerName=${sharedPrefsClient.fullName}&Status=0&PageIndex=$skip&PageSize=$take';
+    Uri uri = Uri.parse(url);
     var headers = {
       'accept': '*/*',
       'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
@@ -241,13 +262,22 @@ class RestApi {
     var response = await request.send();
 
     print('*******************');
-    print(response.statusCode);
+    print(response.request);
     print(response.statusCode);
     print('*****************');
     if (response.statusCode == 200) {
       final responseData = await response.stream.toBytes();
+      print('3333333333333333333');
+
+      print(responseData);
+      print('3333333333333333333');
+
       final responseString = utf8.decode(responseData);
       Map<String, dynamic> jsonResponse = json.decode(responseString);
+      print('555555555555555555555555');
+
+      print(json.decode(responseString));
+      print('555555555555555555555555');
       AddStockModel addStockModel =
           AddStockModel.fromJson(jsonDecode(responseString));
       return addStockModel;

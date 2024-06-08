@@ -51,20 +51,20 @@ class AddStockController extends GetxController {
     Utils.showLoadingDialog();
 
     Map<String, String> fields = {
-      'Stock.Name': controllerName.text,
-      'Stock.Code': controllerCode.text,
-      'Stock.Brand': controllerBrand.text,
-      'Stock.UPC': controllerUpc.text,
-      'Stock.Description': controllerDescription.text,
-      'Stock.Photo': ' ',
-      'Stock.Capacity': '0',
-      'Stock.Temperature.High': checkListItems[0]['value'].toString(),
-      'Stock.Temperature.Cold': checkListItems[1]['value'].toString(),
-      'Stock.Temperature.Freezing': checkListItems[2]['value'].toString(),
-      'Stock.Temperature.Dry': 'false',
-      'Stock.Temperature.Id': '1',
-      'Stock.MaterialType.Id': '1',
-      'Stock.SubscriptionId': subscriptionId.toString(),
+      'Name': controllerName.text,
+      'Code': controllerCode.text,
+      'Brand': controllerBrand.text,
+      'UPC': controllerUpc.text,
+      'Description': controllerDescription.text,
+      'Photo': ' ',
+      'Capacity': '0',
+      // 'Stock.Temperature.High': checkListItems[0]['value'].toString(),
+      // 'Stock.Temperature.Cold': checkListItems[1]['value'].toString(),
+      // 'Stock.Temperature.Freezing': checkListItems[2]['value'].toString(),
+      // 'Stock.Temperature.Dry': 'false',
+      // 'Stock.Temperature.Id': '1',
+      // 'Stock.MaterialType.Id': '1',
+      'SubscriptionId': subscriptionId.toString(),
     };
 
     try {
@@ -73,14 +73,10 @@ class AddStockController extends GetxController {
         filePath: image?.path ?? '', // Ensure image path is not null
       );
 
-      if (addStockModel != null) {
-        AddStockDataModel addStockDataModel = addStockModel.response;
-        print(addStockModel.response);
-        Get.off(() => AddEnterInventoryScreen(data: addStockDataModel));
-        print('Stock created successfully');
-      } else {
-        print('Failed to create stock: response is null');
-      }
+      AddStockDataModel addStockDataModel = addStockModel!.response;
+      print(addStockModel.response);
+      Get.off(() => AddEnterInventoryScreen(data: addStockDataModel));
+      print('Stock created successfully');
     } catch (e) {
       // Handle exceptions
       print('Error creating stock: $e');

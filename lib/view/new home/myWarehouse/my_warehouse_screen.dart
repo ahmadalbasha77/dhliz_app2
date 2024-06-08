@@ -1,11 +1,11 @@
 import 'package:dhliz_app/controllers/home/subscriptions_controllerl.dart';
+import 'package:dhliz_app/view/new%20home/myWarehouse/add%20new%20warehouse/pay_now.dart';
 import 'package:dhliz_app/view/new%20home/myWarehouse/stock_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../home/self mangement of invntory/warehouse management/add warehouse/add_warehouse_screen.dart';
-import '../../home/self mangement of invntory/warehouse management/add warehouse/invoice_screen.dart';
 import '../../home/self mangement of invntory/warehouse management/map_warehouse.dart';
 
 class MyWarehousesScreen extends StatefulWidget {
@@ -17,6 +17,14 @@ class MyWarehousesScreen extends StatefulWidget {
 
 class _MyWarehousesScreenState extends State<MyWarehousesScreen> {
   final _controller = SubscriptionsController.to;
+
+  @override
+  void initState() {
+    _controller.getSubscriptions();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -175,39 +183,49 @@ class _MyWarehousesScreenState extends State<MyWarehousesScreen> {
                                   margin:
                                       const EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
-                                      '${'Subscription status'.tr} : ${_controller.subscriptionsDataModel!.status == 0 ? 'Under Review'
-                                          : _controller.subscriptionsDataModel!.status == 1 ? 'Accepted'
-                                          : _controller.subscriptionsDataModel!.status == 2 ? 'Rejected'
-                                          : _controller.subscriptionsDataModel!.status == 3 ? 'PreliminaryApproval' :'Error' } ',
-                                      style: TextStyle(
-                                          fontSize: 11,
-                                          color: _controller.subscriptionsDataModel!.status ==0 ? Colors.orange
-                                                :_controller.subscriptionsDataModel!.status == 2 ? Colors.red
-                                                : Colors.green)),
-                                ),
-
-                                  if(_controller.subscriptionsDataModel!.status == 1 || _controller.subscriptionsDataModel!.status == 3 )
-                                  Container(
-                                  padding:EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-
-                                    border: Border.all(
-                                      color: _controller.subscriptionsDataModel!.status == 0 ? Colors.red : Colors.green
-                                    )
-                                  ),
-
-
-                                  child:  Text(
-                                      '${'Payment status'.tr} : ${_controller.subscriptionsDataModel!.status == 1 ? 'Paid' : 'UnPaid'} ',
+                                      '${'Subscription status'.tr} : ${_controller.subscriptionsDataModel!.status == 0 ? 'Under Review' : _controller.subscriptionsDataModel!.status == 1 ? 'Accepted' : _controller.subscriptionsDataModel!.status == 2 ? 'Rejected' : _controller.subscriptionsDataModel!.status == 3 ? 'PreliminaryApproval' : 'Error'} ',
                                       style: TextStyle(
                                           fontSize: 11,
                                           color: _controller
-                                              .subscriptionsDataModel!
-                                              .status ==
-                                              0
-                                              ? Colors.red
-                                              : Colors.green)),
-                                ) ,
+                                                      .subscriptionsDataModel!
+                                                      .status ==
+                                                  0
+                                              ? Colors.orange
+                                              : _controller
+                                                          .subscriptionsDataModel!
+                                                          .status ==
+                                                      2
+                                                  ? Colors.red
+                                                  : Colors.green)),
+                                ),
+
+                                if (_controller
+                                            .subscriptionsDataModel!.status ==
+                                        1 ||
+                                    _controller
+                                            .subscriptionsDataModel!.status ==
+                                        3)
+                                  Container(
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: _controller
+                                                        .subscriptionsDataModel!
+                                                        .status ==
+                                                    1
+                                                ? Colors.green
+                                                : Colors.red)),
+                                    child: Text(
+                                        '${'Payment status'.tr} : ${_controller.subscriptionsDataModel!.status == 1 ? 'Paid' : 'UnPaid'} ',
+                                        style: TextStyle(
+                                            fontSize: 11,
+                                            color: _controller
+                                                        .subscriptionsDataModel!
+                                                        .status ==
+                                                    1
+                                                ? Colors.green
+                                                : Colors.red)),
+                                  ),
 
                                 Container(
                                   margin: const EdgeInsets.symmetric(
@@ -321,13 +339,9 @@ class _MyWarehousesScreenState extends State<MyWarehousesScreen> {
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
-                                          color: Color.fromARGB(255, 35, 37, 56),
+                                          color:
+                                              Color.fromARGB(255, 35, 37, 56),
                                         ),
-                                      ),
-                                      Text(
-                                        '${'Expired WH'.tr}: ${_controller.subscriptionsDataModel!.endDate}',
-                                        style: const TextStyle(
-                                            fontSize: 13, color: Colors.black54),
                                       ),
                                     ],
                                   ),
@@ -335,21 +349,55 @@ class _MyWarehousesScreenState extends State<MyWarehousesScreen> {
                                 const SizedBox(
                                   height: 20,
                                 ),
+
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-
-                                    _controller.subscriptionsDataModel!.status == 3 ?
-                                    ElevatedButton(
-
-                                      style: ButtonStyle(
-                                        backgroundColor: MaterialStatePropertyAll(_controller.subscriptionsDataModel!.status == 3 ? Colors.green : Colors.grey.withOpacity(0.1)),
-                                      ),
-                                      onPressed: (){
-                                        Get.to(InvoiceScreen(warehouseId: '1', warehouseName: 'warehouseName', address: 'address', space: 'space', fromDate: 'fromDate', toDate: 'toDate', dry: false, cold: false, freezing: true, total: 500)); ;
-
-                                      }, child: Text('${_controller.subscriptionsDataModel!.status == 3 ? 'Pay Now'.tr : 'Paid'.tr}'),) : Container(),
+                                    Text(
+                                      '${'Expired WH'.tr}: ${_controller.subscriptionsDataModel!.endDate}',
+                                      style: const TextStyle(
+                                          fontSize: 13, color: Colors.black54),
+                                    ),
+                                    _controller.subscriptionsDataModel!
+                                                .status ==
+                                            3
+                                        ? Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStatePropertyAll(
+                                                        Colors.green[600]),
+                                              ),
+                                              onPressed: () {
+                                                Get.to(() => PayNowScreen(
+                                                      subscriptionsDataModel:
+                                                          _controller
+                                                              .subscriptionsModel!
+                                                              .response[index],
+                                                      price: _controller
+                                                          .subscriptionsModel!
+                                                          .response[index]
+                                                          .warehouse
+                                                          .price
+                                                          .first,
+                                                      address: _controller
+                                                          .subscriptionsModel!
+                                                          .response[index]
+                                                          .warehouse
+                                                          .address,
+                                                      warehouse: _controller
+                                                          .subscriptionsModel!
+                                                          .response[index]
+                                                          .warehouse,
+                                                    ));
+                                              },
+                                              child: Text('Pay Now'.tr),
+                                            ),
+                                          )
+                                        : Container()
                                     // SizedBox(
                                     //   height: 30,
                                     //   child: ElevatedButton(

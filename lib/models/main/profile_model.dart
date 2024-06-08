@@ -9,27 +9,38 @@ ProfileModel profileModelFromJson(String str) => ProfileModel.fromJson(json.deco
 String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
 
 class ProfileModel {
-  List<ProfileDataModel> response;
+  ProfileDataModel response;
   List<String> error;
+  dynamic validatorError;
   bool isSuccess;
-
+  int count;
+  dynamic param;
 
   ProfileModel({
     required this.response,
     required this.error,
+    required this.validatorError,
     required this.isSuccess,
+    required this.count,
+    required this.param,
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
-    response: List<ProfileDataModel>.from(json["response"].map((x) => ProfileDataModel.fromJson(x))),
+    response: ProfileDataModel.fromJson(json["response"]),
     error: List<String>.from(json["error"].map((x) => x)),
+    validatorError: json["validatorError"],
     isSuccess: json["isSuccess"],
+    count: json["count"],
+    param: json["param"],
   );
 
   Map<String, dynamic> toJson() => {
-    "response": List<dynamic>.from(response.map((x) => x.toJson())),
+    "response": response.toJson(),
     "error": List<dynamic>.from(error.map((x) => x)),
+    "validatorError": validatorError,
     "isSuccess": isSuccess,
+    "count": count,
+    "param": param,
   };
 }
 
@@ -37,46 +48,56 @@ class ProfileDataModel {
   String businessName;
   String businessCompetence;
   InfoModel info;
+  dynamic warehouseId;
   bool accountDhlizApp;
   int id;
+  DateTime createdDate;
 
   ProfileDataModel({
     required this.businessName,
     required this.businessCompetence,
     required this.info,
+    required this.warehouseId,
     required this.accountDhlizApp,
     required this.id,
+    required this.createdDate,
   });
 
   factory ProfileDataModel.fromJson(Map<String, dynamic> json) => ProfileDataModel(
-    businessName: json["businessName"]??'',
-    businessCompetence: json["businessCompetence"]??'',
+    businessName: json["businessName"],
+    businessCompetence: json["businessCompetence"],
     info: InfoModel.fromJson(json["info"]),
-    accountDhlizApp: json["accountDhlizApp"]??false,
-    id: json["id"]??'',
+    warehouseId: json["warehouseId"],
+    accountDhlizApp: json["accountDhlizApp"],
+    id: json["id"],
+    createdDate: DateTime.parse(json["createdDate"]),
   );
 
   Map<String, dynamic> toJson() => {
     "businessName": businessName,
     "businessCompetence": businessCompetence,
     "info": info.toJson(),
+    "warehouseId": warehouseId,
     "accountDhlizApp": accountDhlizApp,
     "id": id,
+    "createdDate": createdDate.toIso8601String(),
   };
 }
 
 class InfoModel {
   int id;
+  DateTime createdDate;
   String name;
   String phone;
   String password;
   String email;
   String phone2;
   List<dynamic> documents;
-  AddressModel? address;
+  dynamic address;
 
   InfoModel({
     required this.id,
+    required this.createdDate,
     required this.name,
     required this.phone,
     required this.password,
@@ -87,60 +108,26 @@ class InfoModel {
   });
 
   factory InfoModel.fromJson(Map<String, dynamic> json) => InfoModel(
-    id: json["id"]??'',
-    name: json["name"]??'',
-    phone: json["phone"]??'',
-    password: json["password"]??'',
-    email: json["email"]??'',
-    phone2: json["phone2"]??'',
+    id: json["id"],
+    createdDate: DateTime.parse(json["createdDate"]),
+    name: json["name"],
+    phone: json["phone"],
+    password: json["password"],
+    email: json["email"],
+    phone2: json["phone2"],
     documents: List<dynamic>.from(json["documents"].map((x) => x)),
-    address: json["address"] == null ? null : AddressModel.fromJson(json["address"]),
+    address: json["address"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "createdDate": createdDate.toIso8601String(),
     "name": name,
     "phone": phone,
     "password": password,
     "email": email,
     "phone2": phone2,
     "documents": List<dynamic>.from(documents.map((x) => x)),
-    "address": address!.toJson(),
-  };
-}
-
-class AddressModel {
-  String city;
-  String state;
-  String street;
-  dynamic lat;
-  dynamic lot;
-  int id;
-
-  AddressModel({
-    required this.city,
-    required this.state,
-    required this.street,
-    required this.lat,
-    required this.lot,
-    required this.id,
-  });
-
-  factory AddressModel.fromJson(Map<String, dynamic> json) => AddressModel(
-    city: json["city"]??'',
-    state: json["state"]??'',
-    street: json["street"]??'',
-    lat: json["lat"]??'',
-    lot: json["lot"]??'',
-    id: json["id"]??'',
-  );
-
-  Map<String, dynamic> toJson() => {
-    "city": city,
-    "state": state,
-    "street": street,
-    "lat": lat,
-    "lot": lot,
-    "id": id,
+    "address": address,
   };
 }

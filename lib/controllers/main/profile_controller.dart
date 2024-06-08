@@ -16,14 +16,14 @@ class ProfileController extends GetxController {
   ProfileModel? profileModel;
   ProfileDataModel? profileData;
   InfoModel? info;
-  AddressModel? address;
+  // AddressModel? address;
 
   Future<void> getProfile() async {
     final result = await RestApi.getProfile();
     if (result!.isSuccess == true) {
-      profileData = result.response.first;
+      profileData = result.response;
       info = profileData!.info;
-      address = info!.address;
+      // address = info!.address;
 
     } else {
       print('error');
