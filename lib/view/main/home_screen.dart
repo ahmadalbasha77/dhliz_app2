@@ -1,10 +1,8 @@
-import 'package:dhliz_app/controllers/home/warehouses_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../config/utils.dart';
-import '../../controllers/home/subscriptions_controllerl.dart';
 import '../home/account_monitoring_screen.dart';
 import '../home/self mangement of invntory/self_management_of_inventory_screen.dart';
 

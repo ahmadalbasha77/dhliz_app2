@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dhliz_app/config/app_color.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:dhliz_app/view/thank_you.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +11,6 @@ import 'package:quickalert/quickalert.dart';
 
 import '../../../../config/shared_prefs_client.dart';
 import '../../../../network/api_url.dart';
-import '../warehouse management/my_warehouse_screen.dart';
 import 'delivery_location_screen.dart';
 
 class ViewDetailsWithdrawScreen extends StatefulWidget {

@@ -1,9 +1,8 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../new home/warehouses_map_screen.dart';
 import 'map_screen.dart';
 
 class AddWarehouseScreen extends StatefulWidget {
@@ -29,17 +28,17 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
   List checkListItems = [
     {
       "id": 1,
-      "value": false,
+      "value": 1,
       "title": "Dry".tr,
     },
     {
       "id": 2,
-      "value": false,
+      "value": 2,
       "title": "Cold".tr,
     },
     {
       "id": 3,
-      "value": false,
+      "value": 3,
       "title": "Freezing".tr,
     }
   ];
@@ -60,6 +59,8 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
       dateDifference = "";
     }
   }
+
+  int? selectedValue;
 
   @override
   Widget build(BuildContext context) {
@@ -109,24 +110,28 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                   scrollDirection: Axis.horizontal,
                   itemCount: checkListItems.length,
                   itemBuilder: (context, index) => Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Checkbox(
-                              value: checkListItems[index]['value'],
-                              onChanged: (value) {
-                                setState(() {
-                                  checkListItems[index]['value'] = value!;
-                                });
-                              },
-                            ),
-                            Text(
-                              checkListItems[index]['title'],
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
-                            ),
-                          ])),
+                    margin: EdgeInsets.symmetric(horizontal: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Radio<int>(
+                          value: index,
+                          groupValue: selectedValue,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValue = value;
+                              print(checkListItems[selectedValue!]['value']);
+                            });
+                          },
+                        ),
+                        Text(
+                          checkListItems[index]['title'],
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
               Container(
@@ -143,7 +148,12 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter the space you need'.tr;
-                      } else {}
+                      }
+                      final number = int.tryParse(value);
+                      if (number == null || number < 1) {
+                        return 'The value must be a number and at least 1'.tr;
+                      }
+                      return null;
                     },
                     keyboardType: TextInputType.number,
                     controller: capacityController,
@@ -185,7 +195,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                 child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the space you need'.tr;
+                      return 'Please enter the description inventory'.tr;
                     } else {}
                   },
                   controller: inventoryDescriptionController,
@@ -226,7 +236,8 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter the date'.tr;
-                        } else {}
+                        }
+                        return null;
                       },
                       readOnly: true,
                       controller: from,
@@ -236,10 +247,10 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                           initialDate: from.text.isNotEmpty
                               ? DateFormat('yyyy-MM-dd').parse(from.text)
                               : DateTime.now(),
-                          firstDate: from.text.isNotEmpty
-                              ? DateFormat('yyyy-MM-dd').parse(from.text)
-                              : DateTime(2000),
-                          lastDate: DateTime(2101),
+                          firstDate: DateTime.now(),
+                          lastDate: to.text.isNotEmpty
+                              ? DateFormat('yyyy-MM-dd').parse(to.text)
+                              : DateTime(2101),
                         );
 
                         if (pickedDate != null) {
@@ -288,30 +299,37 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter the date'.tr;
                         } else {}
+                        return null;
                       },
                       readOnly: true,
                       controller: to,
                       onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: from.text.isNotEmpty
-                              ? DateFormat('yyyy-MM-dd').parse(from.text)
-                              : DateTime.now(),
-                          firstDate: from.text.isNotEmpty
-                              ? DateFormat('yyyy-MM-dd').parse(from.text)
-                              : DateTime(2000),
-                          lastDate: DateTime(2101),
-                        );
-
-                        if (pickedDate != null) {
-                          String formattedDate =
-                              DateFormat('yyyy-MM-dd').format(pickedDate);
-                          setState(() {
-                            to.text = formattedDate;
-                            updateDateDifference();
-                          });
+                        if (from.text.isEmpty) {
+                          Fluttertoast.showToast(
+                              fontSize: 16,
+                              msg: 'Enter the from date first'.tr);
                         } else {
-                          print("Date is not selected");
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: from.text.isNotEmpty
+                                ? DateFormat('yyyy-MM-dd').parse(from.text)
+                                : DateTime.now(),
+                            firstDate: from.text.isNotEmpty
+                                ? DateFormat('yyyy-MM-dd').parse(from.text)
+                                : DateTime(2000),
+                            lastDate: DateTime(2101),
+                          );
+
+                          if (pickedDate != null) {
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
+                            setState(() {
+                              to.text = formattedDate;
+                              updateDateDifference();
+                            });
+                          } else {
+                            print("Date is not selected");
+                          }
                         }
                       },
                       decoration: InputDecoration(
@@ -467,23 +485,24 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        Get.off(MapScreen(
-                          space: int.tryParse(capacityController.text) ?? 0,
-                          dry: checkListItems[0]['value'],
-                          cold: checkListItems[1]['value'],
-                          freezing: checkListItems[2]['value'],
-                          from: from.text,
-                          to: to.text,
-                          days: dateDifference,
-                          inventoryDescription:
-                              inventoryDescriptionController.text,
-                        ));
-                        print(checkListItems[0]['value'].toString());
-                        print(checkListItems[1]['value'].toString());
-                        print(checkListItems[2]['value'].toString());
-                        print('************************************');
-                        print(from.text);
-                        print(to.text);
+                        if (selectedValue == null) {
+                          Fluttertoast.showToast(
+                              fontSize: 16,
+                              msg: 'Please select temperature'.tr);
+                        }
+                        else{
+                          Get.off(MapScreen(
+                            space: int.tryParse(capacityController.text) ?? 1,
+                            temperatureType: checkListItems[selectedValue!]
+                            ['value'],
+                            from: from.text,
+                            to: to.text,
+                            days: dateDifference,
+                            inventoryDescription:
+                            inventoryDescriptionController.text,
+                          ));
+                        }
+
                       }
                     },
                     child: Text(

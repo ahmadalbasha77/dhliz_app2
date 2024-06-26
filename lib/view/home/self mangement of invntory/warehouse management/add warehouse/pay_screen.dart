@@ -3,52 +3,36 @@ import 'dart:convert';
 import 'package:dhliz_app/view/new%20home/myWarehouse/my_warehouse_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:quickalert/quickalert.dart';
 
 import '../../../../../config/app_color.dart';
 import '../../../../../config/shared_prefs_client.dart';
 import '../../../../../network/api_url.dart';
-import 'payment_screen.dart';
-import 'invoice_screen.dart';
+import 'map_screen.dart';
 
 class PayScreen extends StatefulWidget {
-  double totalAmount;
-  int customerId;
-  String warehouseId;
-  String warehouseName;
-  String inventoryDescription;
-  String expiredDate;
-  String address;
-  int capacity;
-  double price;
-  double transportationFees;
-  String space;
-  String from;
-  String to;
-  bool dry;
-  bool cold;
-  bool freezing;
+  final MarkerInfo info;
+  final double totalAmount;
+  final double cost;
+  final String inventoryDescription;
+  final int capacity;
+  final String temp;
+  final int tempId;
+  final String from;
+  final String to;
 
-  PayScreen({
+  const PayScreen({
     super.key,
     required this.totalAmount,
-    required this.customerId,
-    required this.warehouseId,
-    required this.warehouseName,
+    required this.cost,
     required this.inventoryDescription,
     required this.capacity,
-    required this.expiredDate,
-    required this.address,
-    required this.price,
-    required this.transportationFees,
-    required this.space,
     required this.from,
+    required this.temp,
+    required this.tempId,
     required this.to,
-    required this.dry,
-    required this.cold,
-    required this.freezing,
+    required this.info,
   });
 
   @override
@@ -56,29 +40,30 @@ class PayScreen extends StatefulWidget {
 }
 
 class _PayScreenState extends State<PayScreen> {
-  int calculateTotalPrice() {
-    return int.parse(((widget.price * widget.capacity).round()).toString());
-  }
+  // int calculateTotalPrice() {
+  //   return int.parse(((widget.price * widget.capacity).round()).toString());
+  // }
 
   @override
   void initState() {
     super.initState();
-    print(widget.customerId);
-    print(widget.space);
-    print(widget.warehouseId);
+    print(widget.capacity);
+    print(widget.info.id);
     print('==============================');
   }
 
   void postData() async {
-    final String apiUrl = '${ApiUrl.API_BASE_URL2}/api/Subscription/Create';
+    final String apiUrl =
+        '${ApiUrl.API_BASE_URL2}/api/Subscription/Create/CreateAsync';
 
     Map<String, dynamic> requestBody = {
       "reservedSpace": widget.capacity.toString(),
-      "customerId": '${sharedPrefsClient.customerId}',
-      "warehouseId": widget.warehouseId,
+      "customerId": sharedPrefsClient.customerId,
+      "warehouseId": widget.info.id,
       'startDate': widget.from,
       'endDate': widget.to,
       'inventoryDescription': widget.inventoryDescription,
+      'supTemperatureId': widget.tempId,
     };
 
     final response = await http.post(
@@ -89,18 +74,33 @@ class _PayScreenState extends State<PayScreen> {
       },
       body: jsonEncode(requestBody),
     );
-
+    var result = jsonDecode(response.body);
+    print(result);
+    print(result['isSuccess']);
     if (response.statusCode == 200) {
-      print("POST request successful!");
-      print("555555555555555555555555555555!");
-      Get.off(() => MyWarehousesScreen());
+      if (result['isSuccess'] == true) {
+        Get.off(() => MyWarehousesScreen());
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          text: 'Send subscription request successfully!',
+          showConfirmBtn: false,
+        );
+      } else {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: 'Error Send subscription request!',
+          showConfirmBtn: false,
+        );
+      }
+    } else {
       QuickAlert.show(
         context: context,
-        type: QuickAlertType.success,
-        text: 'Send subscription request successfully!',
+        type: QuickAlertType.error,
+        text: 'Error Send subscription request!',
         showConfirmBtn: false,
       );
-    } else {
       print("Failed to make POST request. Status code: ${response.statusCode}");
       print("Response: ${response.body}");
       print("Request Body: $requestBody");
@@ -112,6 +112,7 @@ class _PayScreenState extends State<PayScreen> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 231, 231, 231),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
         title: Text(
           'Subscription Details'.tr,
@@ -146,7 +147,7 @@ class _PayScreenState extends State<PayScreen> {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: Text(
-                        widget.warehouseName,
+                        widget.info.nameWarehouse,
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.w500),
                       ),
@@ -156,24 +157,32 @@ class _PayScreenState extends State<PayScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                Text('${'Address'.tr} : ${widget.address}',
+                Text('${'Address'.tr} : ${widget.info.address}',
                     style: TextStyle(
-                      fontSize: 11,
+                      fontSize: 12,
                     )),
                 Container(
                   margin: EdgeInsets.only(top: 10),
                   child:
-                      Text('${'Price'.tr} : ${widget.price} SAR / 1 M2 per day',
+                      Text('${'Price'.tr} : ${widget.cost}  SAR / M² per day',
                           style: TextStyle(
-                            fontSize: 11,
+                            fontSize: 12,
                           )),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10),
                   child: Text(
-                      '${'Transportation Fees'.tr} : ${widget.transportationFees} SAR ',
+                      '${'Transportation Fees'.tr} : ${widget.info.transportationFees} SAR ',
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 12,
+                      )),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Text(
+                      '${'Inventory Description'.tr} : ${widget.inventoryDescription} SAR ',
+                      style: TextStyle(
+                        fontSize: 12,
                       )),
                 ),
                 SizedBox(
@@ -181,64 +190,64 @@ class _PayScreenState extends State<PayScreen> {
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${"Temperature".tr}',
+                  child: Text('${"Temperature".tr} : ${widget.temp} °C',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                        child: Row(children: [
-                      AbsorbPointer(
-                        absorbing: true,
-                        child: Checkbox(
-                          fillColor: MaterialStatePropertyAll(Colors.black),
-                          value: widget.dry,
-                          onChanged: (value) {},
-                        ),
-                      ),
-                      Text(
-                        'Dry'.tr,
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ])),
-                    Row(children: [
-                      AbsorbPointer(
-                        absorbing: true,
-                        child: Checkbox(
-                          fillColor: MaterialStatePropertyAll(Colors.black),
-                          value: widget.cold,
-                          onChanged: (bool? value) {},
-                        ),
-                      ),
-                      Text(
-                        'Cold'.tr,
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ]),
-                    Row(children: [
-                      AbsorbPointer(
-                        absorbing: true,
-                        child: Checkbox(
-                          fillColor: MaterialStatePropertyAll(Colors.black),
-                          value: widget.freezing,
-                          onChanged: (bool? value) {},
-                        ),
-                      ),
-                      Text(
-                        'Freezing'.tr,
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ]),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Container(
+                //         child: Row(children: [
+                //       AbsorbPointer(
+                //         absorbing: true,
+                //         child: Checkbox(
+                //           fillColor: MaterialStatePropertyAll(Colors.black),
+                //           value: widget.dry,
+                //           onChanged: (value) {},
+                //         ),
+                //       ),
+                //       Text(
+                //         'Dry'.tr,
+                //         style: TextStyle(
+                //           fontSize: 12,
+                //         ),
+                //       ),
+                //     ])),
+                //     Row(children: [
+                //       AbsorbPointer(
+                //         absorbing: true,
+                //         child: Checkbox(
+                //           fillColor: MaterialStatePropertyAll(Colors.black),
+                //           value: widget.cold,
+                //           onChanged: (bool? value) {},
+                //         ),
+                //       ),
+                //       Text(
+                //         'Cold'.tr,
+                //         style: TextStyle(
+                //           fontSize: 12,
+                //         ),
+                //       ),
+                //     ]),
+                //     Row(children: [
+                //       AbsorbPointer(
+                //         absorbing: true,
+                //         child: Checkbox(
+                //           fillColor: MaterialStatePropertyAll(Colors.black),
+                //           value: widget.freezing,
+                //           onChanged: (bool? value) {},
+                //         ),
+                //       ),
+                //       Text(
+                //         'Freezing'.tr,
+                //         style: TextStyle(
+                //           fontSize: 12,
+                //         ),
+                //       ),
+                //     ]),
+                //   ],
+                // ),
                 SizedBox(
                   height: 40,
                 ),
@@ -264,13 +273,13 @@ class _PayScreenState extends State<PayScreen> {
                   height: 15,
                 ),
                 Text(
-                  '${'space'.tr} :${widget.space} ${'M²'.tr}',
+                  '${'space'.tr} :${widget.capacity} ${'M²'.tr}',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
-                Text('${'Total price'.tr} : ${widget.totalAmount} ${'SR'.tr}',
+                Text('${'Total price'.tr} : ${widget.totalAmount} ${'SAR'.tr}',
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
               ],
@@ -294,7 +303,7 @@ class _PayScreenState extends State<PayScreen> {
                 ),
               ),
               onPressed: () {
-                final totalPrice = calculateTotalPrice();
+                // final totalPrice = calculateTotalPrice();
                 postData();
                 print('888888888888888888888888888888');
                 print(sharedPrefsClient.customerId);

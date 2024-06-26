@@ -109,10 +109,10 @@ class _TestMapState extends State<TestMap> {
     double? x0, x1, y0, y1;
 
     for (LatLng latLng in list) {
-      if (x0 == null || latLng.latitude < x0!) x0 = latLng.latitude;
-      if (x1 == null || latLng.latitude > x1!) x1 = latLng.latitude;
-      if (y0 == null || latLng.longitude < y0!) y0 = latLng.longitude;
-      if (y1 == null || latLng.longitude > y1!) y1 = latLng.longitude;
+      if (x0 == null || latLng.latitude < x0) x0 = latLng.latitude;
+      if (x1 == null || latLng.latitude > x1) x1 = latLng.latitude;
+      if (y0 == null || latLng.longitude < y0) y0 = latLng.longitude;
+      if (y1 == null || latLng.longitude > y1) y1 = latLng.longitude;
     }
 
     return LatLngBounds(

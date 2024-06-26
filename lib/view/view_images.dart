@@ -18,12 +18,11 @@ class _PhotoGalleryState extends State<PhotoGallery> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Photo Gallery'),
-      ),
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           PhotoViewGallery.builder(
+
             pageController: _pageController,
             itemCount: widget.imageUrls.length,
             builder: (context, index) {
@@ -35,7 +34,7 @@ class _PhotoGalleryState extends State<PhotoGallery> {
             },
             scrollPhysics: BouncingScrollPhysics(),
             backgroundDecoration: BoxDecoration(
-              color: Colors.black,
+              color: Colors.white,
             ),
             onPageChanged: (index) {
               setState(() {
@@ -47,14 +46,14 @@ class _PhotoGalleryState extends State<PhotoGallery> {
             left: 10,
             top: MediaQuery.of(context).size.height / 2 - 30,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+              icon: Icon(Icons.arrow_back_ios, color: Colors.black),
               onPressed: _currentIndex > 0
                   ? () {
-                _pageController.previousPage(
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              }
+                      _pageController.previousPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    }
                   : null,
             ),
           ),
@@ -62,14 +61,14 @@ class _PhotoGalleryState extends State<PhotoGallery> {
             right: 10,
             top: MediaQuery.of(context).size.height / 2 - 30,
             child: IconButton(
-              icon: Icon(Icons.arrow_forward_ios, color: Colors.white),
+              icon: Icon(Icons.arrow_forward_ios, color: Colors.black),
               onPressed: _currentIndex < widget.imageUrls.length - 1
                   ? () {
-                _pageController.nextPage(
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              }
+                      _pageController.nextPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    }
                   : null,
             ),
           ),

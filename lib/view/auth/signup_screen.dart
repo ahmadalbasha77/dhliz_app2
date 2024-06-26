@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'complete_signup_screen.dart';
-import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -115,7 +114,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     controller: password,
                     obscureText: isNotVisible,
                     decoration: InputDecoration(
-
                         suffixIcon: IconButton(
                           style: ButtonStyle(
                               shadowColor:
@@ -162,12 +160,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
-                        );
+                        Get.back();
                       },
                       child: Text(
                         'Login'.tr,

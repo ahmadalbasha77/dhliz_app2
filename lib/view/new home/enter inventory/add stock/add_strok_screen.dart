@@ -387,51 +387,51 @@ class _AddStockNewScreenState extends State<AddStockNewScreen> {
               SizedBox(
                 height: 10.h,
               ),
-              Container(
-                // alignment: Alignment.centerRight,
-                margin:
-                    EdgeInsets.symmetric(horizontal: screenSize.width * 0.04),
-                child: Text('Stock Temperature'.tr,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    )),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenSize.width * 0.04, vertical: 10.h),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.circular(screenSize.width * 0.04)),
-                height: 40.h,
-                child: ListView.builder(
-                  physics: ScrollPhysics(parent: ScrollPhysics()),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _controller.checkListItems.length,
-                  itemBuilder: (context, index) => Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: screenSize.width * 0.04),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Checkbox(
-                              value: _controller.checkListItems[index]['value'],
-                              onChanged: (value) {
-                                setState(() {
-                                  _controller.checkListItems[index]['value'] =
-                                      value!;
-                                });
-                              },
-                            ),
-                            Text(
-                              _controller.checkListItems[index]['title'],
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
-                            ),
-                          ])),
-                ),
-              ),
+              // Container(
+              //   // alignment: Alignment.centerRight,
+              //   margin:
+              //       EdgeInsets.symmetric(horizontal: screenSize.width * 0.04),
+              //   child: Text('Stock Temperature'.tr,
+              //       style: TextStyle(
+              //         fontSize: 16,
+              //         fontWeight: FontWeight.bold,
+              //       )),
+              // ),
+              // Container(
+              //   margin: EdgeInsets.symmetric(
+              //       horizontal: screenSize.width * 0.04, vertical: 10.h),
+              //   decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       borderRadius:
+              //           BorderRadius.circular(screenSize.width * 0.04)),
+              //   height: 40.h,
+              //   child: ListView.builder(
+              //     physics: ScrollPhysics(parent: ScrollPhysics()),
+              //     scrollDirection: Axis.horizontal,
+              //     itemCount: _controller.checkListItems.length,
+              //     itemBuilder: (context, index) => Container(
+              //         margin: EdgeInsets.symmetric(
+              //             horizontal: screenSize.width * 0.04),
+              //         child: Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: [
+              //               Checkbox(
+              //                 value: _controller.checkListItems[index]['value'],
+              //                 onChanged: (value) {
+              //                   setState(() {
+              //                     _controller.checkListItems[index]['value'] =
+              //                         value!;
+              //                   });
+              //                 },
+              //               ),
+              //               Text(
+              //                 _controller.checkListItems[index]['title'],
+              //                 style: TextStyle(
+              //                     fontSize: 14, fontWeight: FontWeight.w500),
+              //               ),
+              //             ])),
+              //   ),
+              // ),
             ],
           ),
         ),

@@ -11,17 +11,14 @@ import '../../../../../widgets/payment.dart';
 import 'invoice_screen.dart';
 
 class PaymentScreen extends StatefulWidget {
-  int totalAmount;
-  final SubscriptionsDataModel? subscriptionsDataModel;
-  final Warehouse? warehouse;
-  final Address? address;
+  final int totalAmount;
+  final SubscriptionDataModel? data;
 
-  PaymentScreen(
-      {super.key,
-      required this.totalAmount,
-      required this.subscriptionsDataModel,
-      required this.warehouse,
-      required this.address});
+  const PaymentScreen({
+    super.key,
+    required this.totalAmount,
+    required this.data,
+  });
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -33,7 +30,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void financialCreditor() async {
     final String apiUrl =
-        '${ApiUrl.API_BASE_URL2}/api/Finantial/Creditor?id=${widget.warehouse!.id}&balance=${widget.totalAmount}';
+        '${ApiUrl.API_BASE_URL2}/api/Finantial/Creditor?id=${widget.data!.warehouse.id}&balance=${widget.totalAmount}';
 
     try {
       final response = await http.post(
@@ -58,7 +55,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void postData() async {
     final String apiUrl =
-        '${ApiUrl.API_BASE_URL2}/api/Subscription/Pay?subscriptionId=${widget.subscriptionsDataModel!.id}';
+        '${ApiUrl.API_BASE_URL2}/api/Subscription/Pay?subscriptionId=${widget.data!.id}';
 
     final response = await http.get(
       Uri.parse(apiUrl),
@@ -78,9 +75,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       // Get.off(() => MyWareHouseScreen());
       Get.off(InvoiceScreen(
         totalAmount: widget.totalAmount,
-        warehouse: widget.warehouse,
-        subscriptionsDataModel: widget.subscriptionsDataModel,
-        address: widget.address,
+        data: widget.data,
       ));
       QuickAlert.show(
         context: context,

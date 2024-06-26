@@ -76,6 +76,7 @@ class RestApi {
 
     http.Response response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {
+      log(response.body);
       TransactionModel transactionModel =
           TransactionModel.fromJson(jsonDecode(response.body));
 
@@ -106,11 +107,13 @@ class RestApi {
     }
   }
 
-  static Future<SubscriptionsModel?> getSubscriptions() async {
+  static Future<SubscriptionsModel?> getSubscriptions(
+      {required int skip, required int take}) async {
     String url =
-        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetSubscriptions}?id=${sharedPrefsClient.customerId}';
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetSubscriptions}?CustomerId=${sharedPrefsClient.customerId}&PageIndex=$skip&PageSize=$take';
     Uri uri = Uri.parse(url);
     print(sharedPrefsClient.accessToken);
+    print(url);
     var headers = {
       'accept': '*/*',
       'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
@@ -118,10 +121,9 @@ class RestApi {
 
     http.Response response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {
-      log(response.body);
+      log('response body : ${response.body}');
       SubscriptionsModel subscriptionsModel =
           SubscriptionsModel.fromJson(jsonDecode(response.body));
-
       return subscriptionsModel;
     } else {
       throw Exception('Failed to load subscriptions data');
@@ -283,6 +285,8 @@ class RestApi {
       return addStockModel;
     } else {
       print('Failed to create stock. Status code: ${response.statusCode}');
+      Utils.hideLoadingDialog();
+      Utils.showSnackbar('title', 'message');
       return null;
     }
   }

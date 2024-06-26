@@ -181,7 +181,6 @@ class _EnterInventoryScreenState extends State<EnterInventoryScreen> {
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime.now(),
-                        // لا تسمح باختيار تواريخ قبل اليوم
                         lastDate: DateTime(2101));
 
                     if (pickedDate != null) {
@@ -272,7 +271,7 @@ class _EnterInventoryScreenState extends State<EnterInventoryScreen> {
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     onPressed: () {
-                      _controller.enterStock(context);
+                      _controller.enterStock(context,actionType: '1');
                       // postData();
                     },
                     child: Text('Enter Now'.tr)),

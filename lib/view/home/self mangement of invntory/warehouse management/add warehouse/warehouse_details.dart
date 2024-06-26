@@ -1,53 +1,38 @@
 import 'package:dhliz_app/config/app_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geocoding/geocoding.dart';
 
+import 'map_screen.dart';
 import 'pay_screen.dart';
 
 class WarehouseDetails extends StatefulWidget {
-  double totalAmount;
-  final String id;
-  final String warehouseName;
-  final String warehouseCap;
-  final String phone;
-  final double price;
-  final double transportationFees;
-  final String distance;
+  final double totalAmount;
+  final double cost;
   final String from;
   final String to;
-  final String address;
   final String inventoryDescription;
   final int capacity;
-  final LatLng warehouseLocation;
   final LatLng inventoryLocation;
-  bool dry;
-  bool cold;
-  bool freezing;
+  String temp;
+  int tempId;
+  MarkerInfo info;
 
   WarehouseDetails({
     super.key,
     required this.totalAmount,
-    required this.id,
-    required this.warehouseName,
-    required this.warehouseCap,
-    required this.phone,
-    required this.dry,
-    required this.cold,
-    required this.freezing,
+    required this.cost,
+    required this.temp,
     required this.capacity,
-    required this.address,
     required this.inventoryDescription,
     required this.from,
     required this.to,
-    required this.price,
-    required this.transportationFees,
-    required this.distance,
-    required this.warehouseLocation,
     required this.inventoryLocation,
+    required this.tempId,
+    required this.info,
   });
 
   @override
@@ -90,8 +75,8 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
       // Replace with your Google Maps API key
       PointLatLng(widget.inventoryLocation.latitude,
           widget.inventoryLocation.longitude),
-      PointLatLng(widget.warehouseLocation.latitude,
-          widget.warehouseLocation.longitude),
+      PointLatLng(
+          widget.info.position.latitude, widget.info.position.longitude),
       travelMode: TravelMode.driving,
     );
 
@@ -114,7 +99,7 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
         widget.inventoryLocation.longitude,
       );
 
-      if (placemarks != null && placemarks.isNotEmpty) {
+      if (placemarks.isNotEmpty) {
         Placemark placemark = placemarks[0];
         setState(() {
           address =
@@ -142,135 +127,151 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
         backgroundColor: AppColor.buttonColor,
         title: Text('Warehouse details'.tr),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${'Warehouse name'.tr}: ${widget.warehouseName}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              '${'phone'.tr}: ${widget.phone} ',
-              style: TextStyle(fontSize: 16),
-            ),
-            Text(
-              '${'the cost'.tr}: ${widget.price} ${'SR'.tr}',
-              style: TextStyle(fontSize: 16),
-            ),
-            Text(
-              '${'capacity'.tr}: ${widget.capacity} ',
-              style: TextStyle(fontSize: 16),
-            ),
-            Text(
-              '${'distance'.tr}: ${widget.distance} ${'km'.tr}',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
-            Text(
-              '${'Inventory location'.tr}:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              '${'Address'.tr} :  ',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              address,
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 40),
-            Container(
-              height: 350,
-              child: GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: widget.warehouseLocation,
-                  zoom: 13,
-                ),
-                markers: {
-                  if (customIcon1 != null)
-                    Marker(
-                      markerId: MarkerId('warehouseLocation'),
-                      position: widget.warehouseLocation,
-                      icon: customIcon1!,
-                    ),
-                  if (customIconPickedLocation != null)
-                    Marker(
-                      markerId: MarkerId('inventoryLocation'),
-                      position: widget.inventoryLocation,
-                      icon: customIconPickedLocation!,
-                    ),
-                },
-                polylines: {
-                  if (polylineCoordinates.isNotEmpty)
-                    Polyline(
-                      polylineId: PolylineId('route'),
-                      color: Colors.blue,
-                      points: polylineCoordinates,
-                      width: 5,
-                    ),
-                },
-                onMapCreated: (controller) {
-                  if (controller != null) {
-                    mapController = controller;
-                  }
-                },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${'Warehouse Name'.tr}: ${widget.info.nameWarehouse}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-            Center(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                width: 250,
-                height: 55,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    elevation: MaterialStatePropertyAll(0),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    )),
-                    backgroundColor: MaterialStateProperty.all(
-                      AppColor.buttonColor,
-                    ),
+              SizedBox(
+                height: 6.h,
+              ),
+              Text(
+                '${'Phone'.tr}: ${widget.info.phone} ',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(
+                height: 6.h,
+              ),
+              Text(
+                '${'The cost'.tr}: ${widget.cost} ${'SR / M²'.tr}',
+                style: TextStyle(fontSize: 16),
+              ),
+              // SizedBox(
+              //   height: 6.h,
+              // ),
+              // Text(
+              //   '${'Capacity'.tr}: ${widget.capacity} M²',
+              //   style: TextStyle(fontSize: 16),
+              // ),
+              SizedBox(
+                height: 6.h,
+              ),
+              Text(
+                '${'Transportation Fees'.tr}: ${widget.info.transportationFees} SR',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(
+                height: 7.h,
+              ),
+              Text(
+                '${'Temperatures'.tr}: ${widget.temp} °C',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(
+                height: 7.h,
+              ),
+              Text(
+                '${'warehouse location'.tr}:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 7.h,
+              ),
+              Text(
+                '${'Address'.tr} :  ',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              Text(
+                widget.info.address,
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 40),
+              Container(
+                height: 350,
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: widget.info.position,
+                    zoom: 13,
                   ),
-                  onPressed: () async {
-                    int? customerId = await getSavedIdFromSharedPreferences();
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => PayScreen(
-                        inventoryDescription: widget.inventoryDescription,
-                        totalAmount: widget.totalAmount,
-                        customerId: customerId ?? 0,
-                        warehouseId: widget.id,
-                        capacity: widget.capacity,
-                        warehouseName: widget.warehouseName,
-                        address: widget.address,
-                        price: widget.price,
-                        expiredDate: widget.to,
-                        space: widget.capacity.toString(),
-                        dry: widget.dry,
-                        cold: widget.cold,
-                        freezing: widget.freezing,
-                        from: widget.from,
-                        to: widget.to,
-                        transportationFees: widget.transportationFees,
+                  markers: {
+                    if (customIcon1 != null)
+                      Marker(
+                        markerId: MarkerId('warehouseLocation'),
+                        position: widget.info.position,
+                        icon: customIcon1!,
                       ),
-                    ));
+                    if (customIconPickedLocation != null)
+                      Marker(
+                        markerId: MarkerId('inventoryLocation'),
+                        position: widget.inventoryLocation,
+                        icon: customIconPickedLocation!,
+                      ),
                   },
-                  child: Text(
-                    'Continue'.tr,
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
+                  polylines: {
+                    if (polylineCoordinates.isNotEmpty)
+                      Polyline(
+                        polylineId: PolylineId('route'),
+                        color: Colors.blue,
+                        points: polylineCoordinates,
+                        width: 5,
+                      ),
+                  },
+                  onMapCreated: (controller) {
+                    if (controller != null) {
+                      mapController = controller;
+                    }
+                  },
                 ),
               ),
-            )
-          ],
+              Center(
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  width: 250.w,
+                  height: 45.h,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      elevation: MaterialStatePropertyAll(0),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      )),
+                      backgroundColor: MaterialStateProperty.all(
+                        AppColor.buttonColor,
+                      ),
+                    ),
+                    onPressed: () async {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => PayScreen(
+                          info: widget.info,
+                          cost: widget.cost,
+                          inventoryDescription: widget.inventoryDescription,
+                          totalAmount: widget.totalAmount,
+                          capacity: widget.capacity,
+                          temp: widget.temp,
+                          tempId: widget.tempId,
+                          from: widget.from,
+                          to: widget.to,
+                        ),
+                      ));
+                    },
+                    child: Text(
+                      'Continue'.tr,
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  Future<int?> getSavedIdFromSharedPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('postId');
   }
 }

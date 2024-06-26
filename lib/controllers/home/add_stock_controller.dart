@@ -1,16 +1,12 @@
 import 'dart:io';
 
-import 'package:dhliz_app/models/home/stock_model.dart';
 import 'package:dhliz_app/network/reset_api.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../config/shared_prefs_client.dart';
 import '../../config/utils.dart';
 import '../../models/home/add_stock_model.dart';
-import '../../view/home/self mangement of invntory/enter/Inventory_details.dart';
 import '../../view/new home/enter inventory/add stock/add_enter_stcok_screen.dart';
-import '../../view/new home/enter inventory/enter_inventory_screen.dart';
 
 class AddStockController extends GetxController {
   static AddStockController get to => Get.isRegistered<AddStockController>()

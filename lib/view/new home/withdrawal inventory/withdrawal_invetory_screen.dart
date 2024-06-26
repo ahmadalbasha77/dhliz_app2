@@ -1,6 +1,6 @@
 import 'package:dhliz_app/controllers/home/stock_controller.dart';
 import 'package:dhliz_app/models/home/stock_model.dart';
-import 'package:dhliz_app/view/new%20home/enter%20inventory/enter_inventory_screen.dart';
+import 'package:dhliz_app/view/new%20home/withdrawal%20inventory/withdrawal_stock_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -98,7 +98,7 @@ class _withdrawalInventoryNewScreenState extends State<withdrawalInventoryNewScr
                                           child: TextButton(
                                             onPressed: () {
                                               Get.to(() =>
-                                                  EnterInventoryScreen(data: item));
+                                                  WithdrawStockScreen(data: item));
                                             },
                                             child: Text('Withdrawal Stock'.tr,
                                                 style: const TextStyle(

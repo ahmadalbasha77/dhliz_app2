@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dhliz_app/config/shared_prefs_client.dart';
-import 'package:dhliz_app/models/home/stock_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 

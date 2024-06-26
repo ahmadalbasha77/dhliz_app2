@@ -1,11 +1,9 @@
 import 'package:dhliz_app/config/app_color.dart';
 import 'package:dhliz_app/controllers/home/withdrawal_stock_controller.dart';
 import 'package:dhliz_app/models/home/stock_model.dart';
-import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/withdrawd/delivery_location_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class WithdrawStockScreen extends StatefulWidget {
@@ -29,61 +27,6 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
     super.initState();
   }
 
-  final ImagePicker _imagePicker = ImagePicker();
-  XFile? _selectedImage;
-  XFile? proofImage; // Use late for late initialization
-
-  Future<void> _pickImageFromGallery() async {
-    final XFile? pickedImage =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        _selectedImage = pickedImage;
-      });
-    }
-  }
-
-  Future<void> _takePicture() async {
-    final XFile? takenImage =
-        await _imagePicker.pickImage(source: ImageSource.camera);
-    if (takenImage != null) {
-      setState(() {
-        _selectedImage = takenImage;
-      });
-    }
-  }
-
-  void _showImageOptions() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Choose an image".tr),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                trailing: Icon(Icons.photo),
-                title: Text("From the gallery".tr),
-                onTap: () {
-                  _pickImageFromGallery();
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                trailing: Icon(Icons.camera),
-                title: Text("Take photo".tr),
-                onTap: () {
-                  _takePicture();
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
   bool isSelectedOne = false;
   bool isSelectedOTwo = false;
@@ -251,7 +194,7 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                   )),
             ),
             SizedBox(
-              height: 10,
+              height: 50,
             ),
             Row(
               children: [
@@ -267,7 +210,7 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     onPressed: () {
-                      _showImageOptions();
+                      _controller.showImageOptions(context);
                     },
                     child: Text(
                       'Upload image'.tr,
@@ -275,103 +218,103 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                     ))
               ],
             ),
+            // SizedBox(
+            //   height: 15,
+            // ),
+            // Row(
+            //   children: [
+            //     Container(
+            //         margin: EdgeInsets.symmetric(horizontal: 25),
+            //         child: Text("Attach the vehicle license".tr,
+            //             style: TextStyle(
+            //               fontSize: 16,
+            //             ))),
+            //     ElevatedButton(
+            //         style: ButtonStyle(
+            //             backgroundColor: MaterialStatePropertyAll(Colors.white),
+            //             shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.circular(10)))),
+            //         onPressed: () {
+            //           _showImageOptions();
+            //         },
+            //         child: Text(
+            //           'Upload image'.tr,
+            //           style: TextStyle(color: Colors.black),
+            //         ))
+            //   ],
+            // ),
             SizedBox(
-              height: 15,
+              height: 60,
             ),
-            Row(
-              children: [
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 25),
-                    child: Text("Attach the vehicle license".tr,
-                        style: TextStyle(
-                          fontSize: 16,
-                        ))),
-                ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)))),
-                    onPressed: () {
-                      _showImageOptions();
-                    },
-                    child: Text(
-                      'Upload image'.tr,
-                      style: TextStyle(color: Colors.black),
-                    ))
-              ],
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  'Default: Receive from warehouse'.tr,
-                  style: TextStyle(fontSize: 16, color: Colors.black38),
-                )),
-            Container(
-                margin: EdgeInsets.only(
-                    top: screenWidth * 0.05,
-                    left: screenWidth * 0.05,
-                    right: screenWidth * 0.05),
-                child: Text(
-                  'Other services'.tr + ' :',
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Color.fromARGB(255, 38, 50, 56),
-                      fontWeight: FontWeight.w500),
-                )),
-            Container(
-                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                child: Row(children: [
-                  Checkbox(
-                    value: isSelectedOne,
-                    onChanged: (value) {
-                      setState(() {
-                        isSelectedOne = !isSelectedOne;
-                      });
-                    },
-                  ),
-                  Text(
-                    'With delivery to a new location'.tr,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                ])),
-            if (isSelectedOne == true)
-              Container(
-                alignment: Alignment.center,
-                height: 35,
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                        backgroundColor: MaterialStatePropertyAll(
-                          Color.fromARGB(255, 38, 50, 56),
-                        )),
-                    onPressed: () {
-                      Get.to(() => DeliveryLocationScreen());
-                    },
-                    child: Text(
-                      'Select a delivery location'.tr,
-                      style: TextStyle(fontSize: 12),
-                    )),
-              ),
-            Container(
-                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                child: Row(children: [
-                  Checkbox(
-                    value: isSelectedOTwo,
-                    onChanged: (value) {
-                      setState(() {
-                        isSelectedOTwo = !isSelectedOTwo;
-                      });
-                    },
-                  ),
-                  Text(
-                    'With packaging'.tr,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                ])),
+            // Container(
+            //     alignment: Alignment.topCenter,
+            //     child: Text(
+            //       'Default: Receive from warehouse'.tr,
+            //       style: TextStyle(fontSize: 16, color: Colors.black38),
+            //     )),
+            // Container(
+            //     margin: EdgeInsets.only(
+            //         top: screenWidth * 0.05,
+            //         left: screenWidth * 0.05,
+            //         right: screenWidth * 0.05),
+            //     child: Text(
+            //       'Other services'.tr + ' :',
+            //       style: TextStyle(
+            //           fontSize: 16,
+            //           color: Color.fromARGB(255, 38, 50, 56),
+            //           fontWeight: FontWeight.w500),
+            //     )),
+            // Container(
+            //     margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+            //     child: Row(children: [
+            //       Checkbox(
+            //         value: isSelectedOne,
+            //         onChanged: (value) {
+            //           setState(() {
+            //             isSelectedOne = !isSelectedOne;
+            //           });
+            //         },
+            //       ),
+            //       Text(
+            //         'With delivery to a new location'.tr,
+            //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            //       ),
+            //     ])),
+            // if (isSelectedOne == true)
+            //   Container(
+            //     alignment: Alignment.center,
+            //     height: 35,
+            //     child: ElevatedButton(
+            //         style: ButtonStyle(
+            //             shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.circular(10))),
+            //             backgroundColor: MaterialStatePropertyAll(
+            //               Color.fromARGB(255, 38, 50, 56),
+            //             )),
+            //         onPressed: () {
+            //           Get.to(() => DeliveryLocationScreen());
+            //         },
+            //         child: Text(
+            //           'Select a delivery location'.tr,
+            //           style: TextStyle(fontSize: 12),
+            //         )),
+            //   ),
+            // Container(
+            //     margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+            //     child: Row(children: [
+            //       Checkbox(
+            //         value: isSelectedOTwo,
+            //         onChanged: (value) {
+            //           setState(() {
+            //             isSelectedOTwo = !isSelectedOTwo;
+            //           });
+            //         },
+            //       ),
+            //       Text(
+            //         'With packaging'.tr,
+            //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            //       ),
+            //     ])),
             SizedBox(
               height: isSelectedOne ? 0 : 35,
             ),
@@ -387,7 +330,7 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     onPressed: () {
-                      _controller.withdrawalStock(context);
+                      _controller.withdrawalStock(context, actionType: '0');
                     },
                     child: Text('Withdraw Now'.tr)),
               ),

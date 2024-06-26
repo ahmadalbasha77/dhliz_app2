@@ -1,10 +1,8 @@
 import 'package:dhliz_app/view/main/profile/settings/terms_condition_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -12,11 +10,9 @@ import 'package:url_launcher/url_launcher_string.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/shared_prefs_client.dart';
 import '../../../../config/utils.dart';
-import '../../../../controllers/main/profile_controller.dart';
 import '../../../../widgets/src/custom_single_child_scroll_view.dart';
 import '../../../../widgets/src/custom_widget.dart';
 import '../../../auth/login_screen.dart';
-import 'edit_profile.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);

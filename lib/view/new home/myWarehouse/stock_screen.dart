@@ -1,4 +1,3 @@
-
 import 'package:dhliz_app/view/new%20home/myWarehouse/stock_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../controllers/home/stock_controller.dart';
 import '../../../models/home/stock_model.dart';
+import '../../../widgets/src/pagination_exception.dart';
 
 class StockNewScreen extends StatefulWidget {
   final String id;
@@ -22,6 +22,7 @@ class _StockNewScreenState extends State<StockNewScreen> {
   @override
   void initState() {
     _controller.id = widget.id;
+    print(widget.id);
     super.initState();
     _controller.pagingController.addPageRequestListener((pageKey) {
       _controller.getStock(pageKey: pageKey);
@@ -45,7 +46,14 @@ class _StockNewScreenState extends State<StockNewScreen> {
         body: PagedListView<int, StockDataModel>(
             pagingController: _controller.pagingController,
             builderDelegate: PagedChildBuilderDelegate<StockDataModel>(
+                noItemsFoundIndicatorBuilder: (context) => PaginationException(
+                  title: 'No items found'.tr,
+                  message: 'The list is currently empty.'.tr,
+                ),
                 itemBuilder: (context, item, index) {
+              print('555555555555555555555555555');
+              print(item);
+              print('555555555555555555555555555');
               return Container(
                   margin:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 25),

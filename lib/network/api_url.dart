@@ -2,7 +2,7 @@ class ApiUrl {
   // ignore: non_constant_identifier_names
   static String API_BASE_URL = "https://api.dhlez.sa/api";
 
-  static String API_BASE_URL2= "https://8fdb-176-29-253-212.ngrok-free.app";
+  static String API_BASE_URL2= "https://866a-46-248-202-18.ngrok-free.app";
 
   // static String API_BASE_URL = "https://api.dhlez.sa/api";
 
@@ -19,7 +19,7 @@ class ApiUrl {
   static String GetTransaction = "/api/Transaction/GetAllTransaction";
 
   // ignore: non_constant_identifier_names
-  static String GetSubscriptions = "/api/Customer/GetSupscriptionByCustomerId";
+  static String GetSubscriptions = "/api/Subscription/Find";
 
   // ignore: non_constant_identifier_names
   static String GetStock = "/api/Stock/Find";

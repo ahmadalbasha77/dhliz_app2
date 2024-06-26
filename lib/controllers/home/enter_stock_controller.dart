@@ -17,11 +17,12 @@ class EnterStockController extends GetxController {
   TextEditingController stockId = TextEditingController();
   TextEditingController date = TextEditingController();
 
-  final ImagePicker _imagePicker = ImagePicker();
-  XFile? selectedImage; // Use late for late initialization
+
   bool isSelectedOne = false;
   bool isSelectedOTwo = false;
 
+  final ImagePicker _imagePicker = ImagePicker();
+  XFile? selectedImage; // Use late for late initialization
   Future<void> _pickImageFromGallery() async {
     final XFile? pickedImage =
         await _imagePicker.pickImage(source: ImageSource.gallery);
@@ -74,13 +75,13 @@ class EnterStockController extends GetxController {
     );
   }
 
-  Future<void> enterStock(BuildContext context) async {
+  Future<void> enterStock(BuildContext context,{required String actionType}) async {
     print(stockId.text);
     var uri = Uri.parse('${ApiUrl.API_BASE_URL2}/api/Transaction/Create');
     var request = http.MultipartRequest('POST', uri)
       ..headers['Authorization'] = 'Bearer ${sharedPrefsClient.accessToken}'
       ..fields['Quantity'] = space.text
-      ..fields['ActionType'] = '1'
+      ..fields['ActionType'] = actionType
       ..fields['Status'] = '0'
       ..fields['FromStockId'] = stockId.text
       ..fields['ToStockId'] = stockId.text

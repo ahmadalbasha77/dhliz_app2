@@ -32,7 +32,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
   Future<Map<String, dynamic>> fetchData() async {
     final response = await http.get(
       Uri.parse(
-          '${ApiUrl.API_BASE_URL2}/api/Stock/GetById?id=${widget.stockId}'),
+          '${ApiUrl.API_BASE_URL2}/api/Stock/GetDtoById?id=${widget.stockId}'),
       headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'},
     );
 
@@ -332,9 +332,9 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                             margin: EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 5),
                             child: Text(
-                              '- هوية مسلم المخزون:',
+                              'Matching images ',
                               style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                                  fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
                           ElevatedButton(
@@ -346,10 +346,21 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                           borderRadius:
                                               BorderRadius.circular(10)))),
                               onPressed: () {
-                                data["documentsStatus"][0]['filePath'];
+                                List<String> imageUrls = data['documentsStatus']
+                                    .map<String>(
+                                        (doc) => doc['filePath'] as String)
+                                    .toList();
+
+                                // Debugging output to check the extracted URLs
+                                print(imageUrls);
+
+                                // Assuming PhotoGallery accepts a list of strings for image URLs
+                                Get.to(
+                                  () => PhotoGallery(imageUrls: imageUrls),
+                                );
                               },
                               child: Text(
-                                'اظهار الصروة'.tr,
+                                'View '.tr,
                                 style: TextStyle(color: Colors.black),
                               ))
                         ],
@@ -357,63 +368,63 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                       SizedBox(
                         height: 10,
                       ),
-                      Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 5),
-                            child: Text(
-                              '- هوية مسلم المخزون:',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(Colors.white),
-                                  shape: MaterialStatePropertyAll(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)))),
-                              onPressed: () {},
-                              child: Text(
-                                'اظهار الصروة'.tr,
-                                style: TextStyle(color: Colors.black),
-                              ))
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 5),
-                            child: Text(
-                              '- رخصة المركبة :',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(Colors.white),
-                                  shape: MaterialStatePropertyAll(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)))),
-                              onPressed: () {
-                                print(data["status"]);
-                              },
-                              child: Text(
-                                'اظهار الصروة'.tr,
-                                style: TextStyle(color: Colors.black),
-                              ))
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     Container(
+                      //       margin: EdgeInsets.symmetric(
+                      //           horizontal: 15, vertical: 5),
+                      //       child: Text(
+                      //         '- هوية مسلم المخزون:',
+                      //         style: TextStyle(
+                      //             fontSize: 20, fontWeight: FontWeight.bold),
+                      //       ),
+                      //     ),
+                      //     ElevatedButton(
+                      //         style: ButtonStyle(
+                      //             backgroundColor:
+                      //                 MaterialStatePropertyAll(Colors.white),
+                      //             shape: MaterialStatePropertyAll(
+                      //                 RoundedRectangleBorder(
+                      //                     borderRadius:
+                      //                         BorderRadius.circular(10)))),
+                      //         onPressed: () {},
+                      //         child: Text(
+                      //           'اظهار الصروة'.tr,
+                      //           style: TextStyle(color: Colors.black),
+                      //         ))
+                      //   ],
+                      // ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Row(
+                      //   children: [
+                      //     Container(
+                      //       margin: EdgeInsets.symmetric(
+                      //           horizontal: 15, vertical: 5),
+                      //       child: Text(
+                      //         '- رخصة المركبة :',
+                      //         style: TextStyle(
+                      //             fontSize: 20, fontWeight: FontWeight.bold),
+                      //       ),
+                      //     ),
+                      //     ElevatedButton(
+                      //         style: ButtonStyle(
+                      //             backgroundColor:
+                      //                 MaterialStatePropertyAll(Colors.white),
+                      //             shape: MaterialStatePropertyAll(
+                      //                 RoundedRectangleBorder(
+                      //                     borderRadius:
+                      //                         BorderRadius.circular(10)))),
+                      //         onPressed: () {
+                      //           print(data["status"]);
+                      //         },
+                      //         child: Text(
+                      //           'اظهار الصروة'.tr,
+                      //           style: TextStyle(color: Colors.black),
+                      //         ))
+                      //   ],
+                      // ),
                       SizedBox(
                         height: 60,
                       ),

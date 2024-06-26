@@ -1,14 +1,8 @@
-import 'dart:convert';
 
 import 'package:dhliz_app/controllers/auth/sign_up_contoller.dart';
-import 'package:dhliz_app/policy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../config/shared_prefs_client.dart';
-import '../../config/utils.dart';
-import '../main_screen.dart';
-import 'package:http/http.dart' as http;
 
 class CompleteSignupScreen extends StatefulWidget {
   final String email;

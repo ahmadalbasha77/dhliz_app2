@@ -54,9 +54,11 @@ class RegisterController extends GetxController {
         sharedPrefsClient.fullName = response.username;
         sharedPrefsClient.customerId = response.customerId;
         if (response.isActive == true) {
+          Utils.hideLoadingDialog();
           Get.offAll(() => const MainScreen());
           sharedPrefsClient.isLogin = true;
         } else {
+          Utils.hideLoadingDialog();
           Get.to(() => PolicyScreen(
                 userId: response.userId,
               ));

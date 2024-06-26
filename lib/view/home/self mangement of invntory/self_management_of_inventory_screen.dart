@@ -6,10 +6,6 @@ import '../../new home/enter inventory/enter_warehouse_screen.dart';
 import '../../new home/myWarehouse/my_warehouse_screen.dart';
 import '../../new home/transfer inventory/transfer_warehouse_screen.dart';
 import '../../new home/withdrawal inventory/withdrawal_warehouse_screen.dart';
-import 'enter/inventory_warehouse.dart';
-import 'warehouse management/my_warehouse_screen.dart';
-import 'transfer/transfer_warehouse_screen.dart';
-import 'withdrawd/withdraw_warehouse_screen.dart';
 
 class SelfManagementOfInventoryScreen extends StatefulWidget {
   const SelfManagementOfInventoryScreen({Key? key}) : super(key: key);

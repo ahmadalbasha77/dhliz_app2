@@ -7,17 +7,11 @@ import '../../../../../config/app_color.dart';
 import '../../../../models/home/subscriptions_model.dart';
 
 class PayNowScreen extends StatefulWidget {
-  final SubscriptionsDataModel? subscriptionsDataModel;
-  final Warehouse? warehouse;
-  final Address? address;
-  final Price? price;
+  final SubscriptionDataModel? data;
 
   const PayNowScreen({
     super.key,
-    required this.subscriptionsDataModel,
-    required this.warehouse,
-    required this.address,
-    required this.price,
+    required this.data,
   });
 
   @override
@@ -27,9 +21,7 @@ class PayNowScreen extends StatefulWidget {
 class _PayNowScreenState extends State<PayNowScreen> {
   int calculateTotalPrice() {
     return int.parse(
-        (((widget.price!.cost * widget.subscriptionsDataModel!.reservedSpace) +
-                    widget.price!.transportationFees)
-                .round())
+        ((widget.data!.temperature.cost * widget.data!.reservedSpace).round())
             .toString());
   }
 
@@ -71,8 +63,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
               children: [
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                      '${'Expired WH'.tr} : ${widget.subscriptionsDataModel!.endDate} ',
+                  child: Text('${'Expired WH'.tr} : ${widget.data!.endDate} ',
                       style: TextStyle(color: Colors.black54, fontSize: 12)),
                 ),
                 Row(
@@ -81,7 +72,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: Text(
-                        widget.warehouse!.name,
+                        widget.data!.warehouse!.name,
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.w500),
                       ),
@@ -91,89 +82,37 @@ class _PayNowScreenState extends State<PayNowScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                Text('${'Address'.tr} : ${widget.address!.city}',
+                Text('${'Address'.tr} : ${widget.data!.address!.city}',
                     style: TextStyle(
                       fontSize: 11,
                     )),
                 Container(
                   margin: EdgeInsets.only(top: 10),
                   child: Text(
-                      '${'Price'.tr} : ${widget.price!.cost} SAR / 1 M2 per day',
+                      '${'Price'.tr} : ${widget.data!.temperature.cost} SAR / 1 M2 per day',
                       style: TextStyle(
                         fontSize: 11,
                       )),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  child: Text(
-                      '${'Transportation Fees'.tr} : ${widget.price!.transportationFees} SAR ',
-                      style: TextStyle(
-                        fontSize: 11,
-                      )),
-                ),
+                // Container(
+                //   margin: EdgeInsets.only(top: 10),
+                //   child: Text(
+                //       '${'Transportation Fees'.tr} : ${widget.price!.transportationFees} SAR ',
+                //       style: TextStyle(
+                //         fontSize: 11,
+                //       )),
+                // ),
                 SizedBox(
                   height: 10,
                 ),
-                // Container(
-                //   margin: EdgeInsets.symmetric(vertical: 5),
-                //   child: Text('${"Temperature".tr}',
-                //       style:
-                //           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Container(
-                //         child: Row(children: [
-                //       AbsorbPointer(
-                //         absorbing: true,
-                //         child: Checkbox(
-                //           fillColor: MaterialStatePropertyAll(Colors.black),
-                //           value: widget.dry,
-                //           onChanged: (value) {},
-                //         ),
-                //       ),
-                //       Text(
-                //         'Dry'.tr,
-                //         style: TextStyle(
-                //           fontSize: 12,
-                //         ),
-                //       ),
-                //     ])),
-                //     Row(children: [
-                //       AbsorbPointer(
-                //         absorbing: true,
-                //         child: Checkbox(
-                //           fillColor: MaterialStatePropertyAll(Colors.black),
-                //           value: widget.cold,
-                //           onChanged: (bool? value) {},
-                //         ),
-                //       ),
-                //       Text(
-                //         'Cold'.tr,
-                //         style: TextStyle(
-                //           fontSize: 12,
-                //         ),
-                //       ),
-                //     ]),
-                //     Row(children: [
-                //       AbsorbPointer(
-                //         absorbing: true,
-                //         child: Checkbox(
-                //           fillColor: MaterialStatePropertyAll(Colors.black),
-                //           value: widget.freezing,
-                //           onChanged: (bool? value) {},
-                //         ),
-                //       ),
-                //       Text(
-                //         'Freezing'.tr,
-                //         style: TextStyle(
-                //           fontSize: 12,
-                //         ),
-                //       ),
-                //     ]),
-                //   ],
-                // ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: Text(
+                      '${"Temperature ${widget.data!.temperature.fromTemperature} - ${widget.data!.temperature.toTemperature} C".tr}',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                ),
+
                 SizedBox(
                   height: 20,
                 ),
@@ -199,7 +138,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                   height: 15,
                 ),
                 Text(
-                  '${'space'.tr} :${widget.subscriptionsDataModel!.reservedSpace} ${'M²'.tr}',
+                  '${'space'.tr} :${widget.data!.reservedSpace} ${'M²'.tr}',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
@@ -231,9 +170,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
               onPressed: () {
                 Get.off(() => PaymentScreen(
                       totalAmount: totalPrice,
-                      subscriptionsDataModel: widget.subscriptionsDataModel,
-                      address: widget.address,
-                      warehouse: widget.warehouse,
+                      data: widget.data,
                     ));
               },
               child: Text(

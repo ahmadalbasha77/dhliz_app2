@@ -11,17 +11,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../models/home/subscriptions_model.dart';
 
 class InvoiceScreen extends StatefulWidget {
-  int totalAmount;
-  final SubscriptionsDataModel? subscriptionsDataModel;
-  final Warehouse? warehouse;
-  final Address? address;
+  final int totalAmount;
+  final SubscriptionDataModel? data;
 
-  InvoiceScreen({
+  const InvoiceScreen({
     super.key,
     required this.totalAmount,
-    required this.subscriptionsDataModel,
-    required this.warehouse,
-    required this.address,
+    required this.data,
   });
 
   @override
@@ -69,7 +65,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         actions: [
           TextButton(
               onPressed: () {
-                Get.back();
+                Get.off(() => MyWareHouseScreen());
               },
               child: Text(
                 'done'.tr,
@@ -128,7 +124,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       margin:
                           pw.EdgeInsets.symmetric(horizontal: 20, vertical: 7),
                       child: pw.Text(
-                        'Address : ${widget.address} , jabal alhusan , Yafa 33',
+                        'Address : ${widget.data!.address.city} , jabal alhusan , Yafa 33',
                         style: pw.TextStyle(fontSize: 16),
                       ),
                     ),
@@ -142,7 +138,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               fontSize: 16, fontWeight: pw.FontWeight.bold),
                         ),
                         pw.Text(
-                          ' ${widget.warehouse!.name}',
+                          ' ${widget.data!.warehouse.name}',
                           style: pw.TextStyle(fontSize: 16),
                         ),
                       ]),
@@ -197,7 +193,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               fontSize: 16, fontWeight: pw.FontWeight.bold),
                         ),
                         pw.Text(
-                          '${widget.subscriptionsDataModel!.reservedSpace} M²',
+                          '${widget.data!.reservedSpace} M²',
                           style: pw.TextStyle(fontSize: 16),
                         ),
                       ]),
@@ -217,10 +213,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 fontSize: 16,
                               ),
                             ),
-                            pw.Text(
-                              widget.subscriptionsDataModel!.startDate,
-                              style: pw.TextStyle(fontSize: 16),
-                            ),
+                            // pw.Text(
+                            //   widget.subscriptionsDataModel!.startDate,
+                            //   style: pw.TextStyle(fontSize: 16),
+                            // ),
                           ]),
                     ),
                     pw.Container(
@@ -235,10 +231,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 fontSize: 16,
                               ),
                             ),
-                            pw.Text(
-                              widget.subscriptionsDataModel!.endDate,
-                              style: pw.TextStyle(fontSize: 16),
-                            ),
+                            // pw.Text(
+                            //   widget.subscriptionsDataModel!.endDate,
+                            //   style: pw.TextStyle(fontSize: 16),
+                            // ),
                           ]),
                     ),
                     pw.Divider(),

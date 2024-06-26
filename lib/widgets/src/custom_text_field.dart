@@ -99,7 +99,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           label: widget.label,
           helperText: widget.helperText,
           contentPadding: widget.contentPadding ?? (widget.icon != null ? EdgeInsets.zero : EdgeInsetsDirectional.only(start: 8.w, end: 20.w)),
-          hintStyle: Theme.of(context).textTheme.bodyText2!.copyWith(color: widget.textColor),
+          hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: widget.textColor),
           prefixIcon:  widget.icon,
           suffixIcon: widget.suffixIcon ??
               (widget.isPass

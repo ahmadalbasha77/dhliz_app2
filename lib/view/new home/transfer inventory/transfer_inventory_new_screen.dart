@@ -1,6 +1,5 @@
 import 'package:dhliz_app/controllers/home/stock_controller.dart';
 import 'package:dhliz_app/models/home/stock_model.dart';
-import 'package:dhliz_app/view/new%20home/enter%20inventory/enter_inventory_screen.dart';
 import 'package:dhliz_app/view/new%20home/transfer%20inventory/transfer_stock_screen.dart';
 
 import 'package:flutter/material.dart';

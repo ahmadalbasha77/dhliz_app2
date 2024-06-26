@@ -11,30 +11,22 @@ String stockModelToJson(StockModel data) => json.encode(data.toJson());
 
 class StockModel {
   List<StockDataModel> response;
-  List<String> error;
   bool isSuccess;
-  int count;
 
   StockModel({
     required this.response,
-    required this.error,
     required this.isSuccess,
-    required this.count,
   });
 
   factory StockModel.fromJson(Map<String, dynamic> json) => StockModel(
         response: List<StockDataModel>.from(
             json["response"].map((x) => StockDataModel.fromJson(x))),
-        error: List<String>.from(json["error"].map((x) => x)),
         isSuccess: json["isSuccess"],
-        count: json["count"],
       );
 
   Map<String, dynamic> toJson() => {
         "response": List<dynamic>.from(response.map((x) => x.toJson())),
-        "error": List<dynamic>.from(error.map((x) => x)),
         "isSuccess": isSuccess,
-        "count": count,
       };
 }
 
@@ -44,9 +36,10 @@ class StockDataModel {
   String upc;
   String photo;
   int subscriptionId;
-  String? rejectReason;
+  String rejectReason;
   int status;
   List<DocumentsStatus> documentsStatus;
+  String descriptionStatus;
   String name;
   int capacity;
   String description;
@@ -61,6 +54,7 @@ class StockDataModel {
     required this.rejectReason,
     required this.status,
     required this.documentsStatus,
+    required this.descriptionStatus,
     required this.name,
     required this.capacity,
     required this.description,
@@ -77,6 +71,7 @@ class StockDataModel {
         status: json["status"] ?? 0,
         documentsStatus: List<DocumentsStatus>.from(
             json["documentsStatus"].map((x) => DocumentsStatus.fromJson(x))),
+        descriptionStatus: json["descriptionStatus"] ?? '',
         name: json["name"] ?? '',
         capacity: json["capacity"] ?? 0,
         description: json["description"] ?? '',
@@ -93,6 +88,7 @@ class StockDataModel {
         "status": status,
         "documentsStatus":
             List<dynamic>.from(documentsStatus.map((x) => x.toJson())),
+        "descriptionStatus": descriptionStatus,
         "name": name,
         "capacity": capacity,
         "description": description,
@@ -114,7 +110,7 @@ class DocumentsStatus {
   factory DocumentsStatus.fromJson(Map<String, dynamic> json) =>
       DocumentsStatus(
         name: json["name"] ?? '',
-        filePath: json["filePath"] ?? "",
+        filePath: json["filePath"] ?? '',
         id: json["id"] ?? 0,
       );
 

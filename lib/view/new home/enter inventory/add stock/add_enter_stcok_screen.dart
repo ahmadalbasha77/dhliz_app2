@@ -2,9 +2,7 @@ import 'package:dhliz_app/controllers/home/enter_stock_controller.dart';
 import 'package:dhliz_app/models/home/add_stock_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import '../../../../models/home/stock_model.dart';
 
 class AddEnterInventoryScreen extends StatefulWidget {
   final AddStockDataModel data;
@@ -23,81 +21,20 @@ class _AddEnterInventoryScreenState extends State<AddEnterInventoryScreen> {
 
   String? x;
   var selected;
-  TextEditingController date = TextEditingController();
 
+  @override
   void initState() {
     print(widget.data.id);
     print(widget.data.name);
-    date.text = "";
+    _controller.date.text = "";
     _controller.stockId.text = widget.data.id.toString();
     print(widget.data);
     super.initState();
   }
 
-  final ImagePicker _imagePicker = ImagePicker();
-  XFile? _selectedImage; // Use late for late initialization
-  XFile? proofImage; // Use late for late initialization
-  bool isSelectedOne = false;
-  bool isSelectedOTwo = false;
-
-  Future<void> _pickImageFromGallery() async {
-    final XFile? pickedImage =
-    await _imagePicker.pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        _selectedImage = pickedImage;
-      });
-    }
-  }
-
-  Future<void> _takePicture() async {
-    final XFile? takenImage =
-    await _imagePicker.pickImage(source: ImageSource.camera);
-    if (takenImage != null) {
-      setState(() {
-        _selectedImage = takenImage;
-      });
-    }
-  }
-
-  void _showImageOptions() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Choose an image".tr),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                trailing: Icon(Icons.photo),
-                title: Text("From the gallery".tr),
-                onTap: () {
-                  _pickImageFromGallery();
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                trailing: Icon(Icons.camera),
-                title: Text("Take photo".tr),
-                onTap: () {
-                  _takePicture();
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 231, 231, 231),
@@ -238,27 +175,25 @@ class _AddEnterInventoryScreenState extends State<AddEnterInventoryScreen> {
               ),
               child: TextField(
                   readOnly: true,
-                  controller: date,
+                  controller: _controller.date,
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        //DateTime.now() - not to allow to choose before today.
+                        firstDate: DateTime.now(),
+                        // لا تسمح باختيار تواريخ قبل اليوم
                         lastDate: DateTime(2101));
 
                     if (pickedDate != null) {
                       print(
-                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                          pickedDate); // output format => 2021-03-10 00:00:00.000
                       String formattedDate =
                       DateFormat('yyyy-MM-dd').format(pickedDate);
-                      print(
-                          formattedDate); //formatted date output using intl package =>  2021-03-16
-                      //you can implement different kind of Date Format here according to your requirement
+                      print(formattedDate); // formatted date => 2021-03-16
 
                       setState(() {
-                        date.text =
-                            formattedDate; //set output date to TextField value.
+                        _controller.date.text =
+                            formattedDate; // set output date to TextField value.
                       });
                     } else {
                       print("Date is not selected");
@@ -289,47 +224,27 @@ class _AddEnterInventoryScreenState extends State<AddEnterInventoryScreen> {
                         style: TextStyle(
                           fontSize: 16,
                         ))),
-                ElevatedButton(
+                _controller.selectedImage == null
+                    ? ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)))),
+                        backgroundColor:
+                        MaterialStatePropertyAll(Colors.white),
+                        shape: MaterialStatePropertyAll(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)))),
                     onPressed: () {
-                      _showImageOptions();
+                      _controller.showImageOptions(context);
+                      setState(() {});
                     },
                     child: Text(
                       'Upload image'.tr,
                       style: TextStyle(color: Colors.black),
                     ))
+                    : Text('تم التحميل')
               ],
             ),
             SizedBox(
               height: 20,
-            ),
-            Row(
-              children: [
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 25),
-                    child: Text("Attach the vehicle license".tr,
-                        style: TextStyle(
-                          fontSize: 16,
-                        ))),
-                ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)))),
-                    onPressed: () {
-                      _showImageOptions();
-                    },
-                    child: Text(
-                      'Upload image'.tr,
-                      style: TextStyle(color: Colors.black),
-                    ))
-              ],
-            ),
-            SizedBox(
-              height: 30,
             ),
             // Center(
             //   child: Container(
@@ -357,7 +272,7 @@ class _AddEnterInventoryScreenState extends State<AddEnterInventoryScreen> {
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     onPressed: () {
-                      _controller.enterStock(context);
+                      _controller.enterStock(context,actionType: '1');
                       // postData();
                     },
                     child: Text('Enter Now'.tr)),

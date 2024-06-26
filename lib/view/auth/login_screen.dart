@@ -73,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter Your Username'.tr;
                       }
+                      return null;
                     },
                     controller: _controller.controllerUsername,
                     decoration: InputDecoration(
@@ -102,6 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password'.tr;
                       }
+                      return null;
                     },
                     style: TextStyle(color: Colors.black87),
                     controller: _controller.controllerPassword,
@@ -155,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.to(SignUpScreen());
+                        Get.to(()=> SignUpScreen());
                       },
                       child: Text(
                         'Sign Up'.tr,
