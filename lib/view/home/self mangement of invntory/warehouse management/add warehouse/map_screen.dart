@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:dhliz_app/config/app_color.dart';
+import 'package:dhliz_app/config/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -444,6 +446,12 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _loadCustomIcons() async {
+    if(Platform.isIOS){
+      customIcon1 = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'image/ios/warehoues.png',
+      );
+    }
     customIcon1 = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(devicePixelRatio: 2.5),
       'image/map/warehoues.png',
