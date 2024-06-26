@@ -185,9 +185,11 @@ class _MapScreenState extends State<MapScreen> {
       // markers.clear();
       markers.add(
         Marker(
-          icon: await BitmapDescriptor.fromAssetImage(
+          icon:
+
+          await BitmapDescriptor.fromAssetImage(
             ImageConfiguration(devicePixelRatio: 1.5),
-            'image/map/user.png',
+              Platform.isIOS? 'image/ios/user.png':'image/map/user.png',
           ),
           markerId: MarkerId('selectedLocation'),
           position: LatLng(position.latitude, position.longitude),
@@ -450,6 +452,10 @@ class _MapScreenState extends State<MapScreen> {
       customIcon1 = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'image/ios/warehoues.png',
+      );
+      customIconPickedLocation = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'image/ios/inventory.png',
       );
     }
     customIcon1 = await BitmapDescriptor.fromAssetImage(
