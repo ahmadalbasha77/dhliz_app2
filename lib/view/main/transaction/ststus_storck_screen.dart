@@ -7,6 +7,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../config/shared_prefs_client.dart';
+import '../../../models/main/transaction_model.dart';
 import '../../../network/api_url.dart';
 import 'package:photo_view/photo_view.dart';
 
@@ -15,11 +16,13 @@ import '../../view_images.dart';
 class StatusStockScreen extends StatefulWidget {
   final int stockId;
   final int transactionId;
+  final TransactionDataModel data;
 
   const StatusStockScreen({
     super.key,
     required this.stockId,
     required this.transactionId,
+    required this.data,
   });
 
   @override
@@ -51,7 +54,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
   }
 
   Future<void> updateStockStatus(String status) async {
-    var uri = Uri.parse('${ApiUrl.API_BASE_URL2}/api/Stock/UpdateStatus');
+    var uri = Uri.parse('${ApiUrl.API_BASE_URL2}/api/Transaction/UpdateStatus');
     var request = http.MultipartRequest('PUT', uri)
       ..headers['Authorization'] =
           'Bearer ${sharedPrefsClient.accessToken}' // Replace with your actual token
@@ -254,7 +257,8 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                       SizedBox(
                         height: 5,
                       ),
-                      if (data["status"] == 5 && data["status"] == 6)
+                      if (widget.data.matchingStatus == 5 &&
+                          widget.data.matchingStatus == 6)
                         Column(
                           children: [
                             Container(
@@ -308,16 +312,16 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                         child: Row(
                           children: [
                             Text(
-                              '${data["status"] == 0 ? 'Under review'.tr : data["status"] == 1 ? 'stock accepted and entered'.tr : data["status"] == 2 ? 'stock mismatch pending review' : data["status"] == 3 ? 'stock not match, but entry approved' : data["status"] == 4 ? 'stock not match. Entry rejected' : data["status"] == 5 ? 'Entry rejected' : 'Entry rejected'} ',
+                              '${widget.data.matchingStatus == 0 ? 'Under review'.tr : widget.data.matchingStatus == 1 ? 'stock accepted and entered'.tr : widget.data.matchingStatus == 2 ? 'stock mismatch pending review' : widget.data.matchingStatus == 3 ? 'stock not match, but entry approved' : widget.data.matchingStatus == 4 ? 'stock not match. Entry rejected' : widget.data.matchingStatus == 5 ? 'Entry rejected' : 'Entry rejected'} ',
                               style: TextStyle(
                                   fontSize: 18,
-                                  color:
-                                      data["status"] == 0 || data["status"] == 2
-                                          ? Colors.orange[300]
-                                          : data["status"] == 1 ||
-                                                  data["status"] == 3
-                                              ? Colors.green
-                                              : Colors.red,
+                                  color: widget.data.matchingStatus == 0 ||
+                                          widget.data.matchingStatus == 2
+                                      ? Colors.orange[300]
+                                      : widget.data.matchingStatus == 1 ||
+                                              widget.data.matchingStatus == 3
+                                          ? Colors.green
+                                          : Colors.red,
                                   fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -346,9 +350,9 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                           borderRadius:
                                               BorderRadius.circular(10)))),
                               onPressed: () {
-                                List<String> imageUrls = data['documentsStatus']
-                                    .map<String>(
-                                        (doc) => doc['filePath'] as String)
+                                List<String> imageUrls = widget
+                                    .data.documentsStatus
+                                    .map<String>((doc) => doc.filePath)
                                     .toList();
 
                                 // Debugging output to check the extracted URLs
@@ -428,7 +432,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                       SizedBox(
                         height: 60,
                       ),
-                      data["status"] == 2
+                      widget.data.matchingStatus == 2
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [

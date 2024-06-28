@@ -47,7 +47,11 @@ class TransactionDataModel {
   String customerName;
   String phone;
   String stockName;
+  String descriptionStatus;
   int quantity;
+  List<DocumentsStatus> documentsStatus;
+
+  int matchingStatus;
   String fromWarehouse;
   int fromSubscriptionId;
   int toSubscriptionId;
@@ -64,6 +68,9 @@ class TransactionDataModel {
     required this.customerName,
     required this.phone,
     required this.stockName,
+    required this.documentsStatus,
+    required this.matchingStatus,
+    required this.descriptionStatus,
     required this.quantity,
     required this.fromWarehouse,
     required this.fromSubscriptionId,
@@ -82,6 +89,12 @@ class TransactionDataModel {
         toStockId: json["toStockId"] ?? 0,
         customerName: json["customerName"] ?? '',
         phone: json["phone"] ?? '',
+        documentsStatus: json["documentsReadStatus"] == null
+            ? []
+            : List<DocumentsStatus>.from(json["documentsReadStatus"]
+                .map((x) => DocumentsStatus.fromJson(x))),
+        descriptionStatus: json["descriptionStatus"] ?? '',
+        matchingStatus: json["matchingStatus"] ?? 0,
         stockName: json["stockName"] ?? '',
         quantity: json["quantity"] ?? 0,
         fromWarehouse: json["fromWarehouse"] ?? '',
@@ -100,6 +113,8 @@ class TransactionDataModel {
         "toStockId": toStockId,
         "customerName": customerName,
         "phone": phone,
+        "documentsReadStatus":
+            List<dynamic>.from(documentsStatus.map((x) => x.toJson())),
         "stockName": stockName,
         "quantity": quantity,
         "fromWarehouse": fromWarehouse,
@@ -110,5 +125,30 @@ class TransactionDataModel {
         "toWarehouseId": toWarehouseId,
         "actionType": actionType,
         "status": status,
+      };
+}
+
+class DocumentsStatus {
+  String name;
+  String filePath;
+  int id;
+
+  DocumentsStatus({
+    required this.name,
+    required this.filePath,
+    required this.id,
+  });
+
+  factory DocumentsStatus.fromJson(Map<String, dynamic> json) =>
+      DocumentsStatus(
+        name: json["name"],
+        filePath: json["filePath"],
+        id: json["id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "filePath": filePath,
+        "id": id,
       };
 }

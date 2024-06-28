@@ -1,51 +1,74 @@
-import 'package:dhliz_app/network/reset_api.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../models/home/stock_model.dart';
+import '../../models/main/transaction_model.dart';
+import '../../network/reset_api.dart';
 
-class StockByStatusController extends GetxController {
-  static StockByStatusController get to =>
-      Get.isRegistered<StockByStatusController>()
-          ? Get.find<StockByStatusController>()
-          : Get.put(StockByStatusController());
+class MatchingController extends GetxController {
+  static MatchingController get to => Get.isRegistered<MatchingController>()
+      ? Get.find<MatchingController>()
+      : Get.put(MatchingController());
 
   bool isNotVisible = true;
-  PagingController<int, StockDataModel> pagingController =
-      PagingController(firstPageKey: 0);
+  PagingController<int, TransactionDataModel> pagingController =
+  PagingController(firstPageKey: 0);
 
-  String? id;
-  StockModel? stockModel;
+  TransactionModel? transactionModel;
   int currentPageSize = 0;
+  String customerNameFilter = '';
 
-  Future<void> getStock({required int pageKey}) async {
+  void updateFilter(String newFilter) {
+    customerNameFilter = newFilter;
+    currentPageSize = 0;
+    print('*$customerNameFilter*');
+    // refreshTransactions();
+  }
+
+  void refreshTransactions() {
+    currentPageSize = 0;
+    pagingController.refresh();
+  }
+
+  Future<void> getTransaction({
+    required int pageKey,
+  }) async {
     try {
+      print('Fetching transactions for page: $pageKey');
+      print('Using customer name filter: $customerNameFilter');
+
       currentPageSize++;
-      final result =
-          await RestApi.getStockByStatus(skip: currentPageSize, take: 10);
+      print(currentPageSize);
+      final result = await RestApi.getTransactionForMatching(
+        skip: currentPageSize,
+        take: 10,
+        status: 2,
+       // Use the class variable directly
+      );
 
       if (result != null && result.response.isNotEmpty) {
-        final List<StockDataModel> flatList = result.response;
+        final List<TransactionDataModel> flatList = result.response;
         final isLastPage = flatList.length < 10;
         if (isLastPage) {
           pagingController.appendLastPage(flatList);
         } else {
-          pagingController.appendPage(
-              flatList, 10); // Use a constant pageKey = 10
+          pagingController.appendPage(flatList, currentPageSize + 10);
         }
       } else {
         pagingController.appendLastPage([]);
       }
     } catch (error) {
+      print('Error fetching transactions: $error');
       pagingController.error = error;
     }
   }
 
-  refreshPagingController() {
+  void refreshPagingController() {
     pagingController = PagingController(firstPageKey: 0);
-    currentPageSize = 0; // Reset currentPageSize when refreshing the controller
+    currentPageSize = 0;
     pagingController.addPageRequestListener((pageKey) {
-      getStock(pageKey: pageKey);
+      getTransaction(
+        pageKey: pageKey,
+      );
     });
   }
 }

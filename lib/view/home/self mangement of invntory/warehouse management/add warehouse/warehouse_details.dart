@@ -162,7 +162,7 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                 height: 6.h,
               ),
               Text(
-                '${'Transportation Fees'.tr}: ${widget.info.transportationFees} SR',
+                '${'Transportation Fees'.tr}: ${0} SR',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(

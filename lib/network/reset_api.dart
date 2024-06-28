@@ -195,6 +195,31 @@ class RestApi {
     }
   }
 
+  static Future<List<StockDataModel>> getAllStockByCustomer() async {
+    String url = '${ApiUrl.API_BASE_URL2}${ApiUrl.GetStock}?CustomerName=${sharedPrefsClient.fullName}&PageIndex=0&PageSize=1000';
+    Uri uri = Uri.parse(url);
+
+    var headers = {
+      'accept': '*/*',
+      'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
+    };
+
+    http.Response response = await http.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      // Parse the response using StockModel
+      StockModel stockModel = stockModelFromJson(response.body);
+      // Check if the response was successful before returning the data
+      if (stockModel.isSuccess) {
+        return stockModel.response;
+      } else {
+        throw Exception('Failed to load Stock data with success=false');
+      }
+    } else {
+      throw Exception('Failed to load Stock data with status code ${response.statusCode}');
+    }
+  }
+
+
   static Future<WarehousesModel?> getWarehouse() async {
     String url =
         '${ApiUrl.API_BASE_URL2}${ApiUrl.getWarehouses}?PageIndex=0&PageSize=1000';
@@ -236,6 +261,33 @@ class RestApi {
       return true;
     } else {
       return false;
+    }
+  }
+
+  static Future<TransactionModel?> getTransactionForMatching({
+    required int skip,
+    required int take,
+    required int status,
+  }) async {
+    String url =
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetTransaction}?MatchingStatus=$status&PageIndex=$skip&PageSize=$take';
+    Uri uri = Uri.parse(url);
+
+    var headers = {
+      'accept': '*/*',
+      'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
+    };
+
+    http.Response response = await http.get(uri, headers: headers);
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      TransactionModel transactionModel =
+          TransactionModel.fromJson(jsonDecode(response.body));
+
+      return transactionModel;
+    } else {
+      throw Exception('Failed to load transaction data');
     }
   }
 

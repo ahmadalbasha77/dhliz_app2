@@ -32,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
       child: GetBuilder<MainController>(
         builder: (controller) => CustomWidget(
           bottomNavigationBar: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColor.darkGray,
               boxShadow: [
                 BoxShadow(
@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
               backgroundColor: AppColor.darkGray,
               color: Colors.black26,
               activeColor: AppColor.buttonColor,
-              tabs: [
+              tabs: const [
                 GButton(
                   icon: Icons.home_filled,
                 ),
@@ -60,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
                   icon: Icons.compare_arrows,
                 ),
                 // GButton(
-                //   icon: Icons.verified,
+                //   icon: Icons.verified_outlined,
                 // ),
                 // GButton(
                 //   icon: Icons.notifications,

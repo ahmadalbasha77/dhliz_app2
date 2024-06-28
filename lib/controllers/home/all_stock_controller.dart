@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:dhliz_app/config/shared_prefs_client.dart';
+import 'package:dhliz_app/models/home/stock_model.dart';
+import 'package:dhliz_app/network/reset_api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,35 +13,24 @@ class AllStockController extends GetxController {
       ? Get.find<AllStockController>()
       : Get.put(AllStockController());
 
-  @override
-  void onInit() {
-    getAllStock();
-    super.onInit();
+  String? selectedStockId;
+
+  // Method to update the selected stock ID
+  void setSelectedStockId(String? id) {
+    selectedStockId = id;
+    update(); // Notify listeners about the change
   }
 
-  List<Map<String, dynamic>> dataAllStock = [];
+  List<StockDataModel> allStocks = [];
 
-  Future<void> getAllStock() async {
-    final response = await http.get(
-        Uri.parse(
-            '${ApiUrl.API_BASE_URL}/Stock/Find?CustomerName=${sharedPrefsClient.fullName}&PageIndex=0&PageSize=100'),
-        headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
+  @override
+  void onInit() {
+    super.onInit();
+    getAllStockByCustomer();
+  }
 
-    print(response.body);
-    if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body);
-      final responseData = jsonResponse['result']['response'][0];
-
-      if (responseData != null) {
-
-
-            dataAllStock = List<Map<String, dynamic>>.from(responseData);
-        update();
-      } else {
-        print('Invalid response structure');
-      }
-    } else {
-      throw Exception('Failed to load data');
-    }
+  void getAllStockByCustomer() async {
+    allStocks = await RestApi.getAllStockByCustomer();
+    update(); // This will trigger UI updates
   }
 }

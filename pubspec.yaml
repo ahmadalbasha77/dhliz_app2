@@ -90,7 +90,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 dependency_overrides:
   http: ^1.1.0
-#  pdf_widget_wrapper: ^1.0.4
+  pdf_widget_wrapper: ^1.0.4
 
 dev_dependencies:
   flutter_test:

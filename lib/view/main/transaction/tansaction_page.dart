@@ -264,48 +264,53 @@ class _TransactionPageState extends State<TransactionPage> {
                                         margin: EdgeInsets.symmetric(
                                             horizontal: screenSize.width * .05,
                                             vertical: screenSize.width * .03),
-                                        child: Row(
-                                          children: [
-                                            Text(
+                                        child: Expanded(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                  item.status == 0
+                                                      ? 'Under Review'.tr
+                                                      : item.status == 1
+                                                          ? 'Accepted'.tr
+                                                          : item.status == 2
+                                                              ? 'Rejected'.tr
+                                                              : item.matchingStatus ==
+                                                                      2
+                                                                  ? 'Waiting for your review '
+                                                                  : 'Preliminary Approval',
+                                                  style: TextStyle(
+                                                      color: item.status == 0
+                                                          ? Colors.amber
+                                                          : item.status == 1
+                                                              ? Colors.green
+                                                              : item.status == 2
+                                                                  ? Colors.red
+                                                                  : Colors.green,
+                                                      fontSize: 12)),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Icon(
                                                 item.status == 0
-                                                    ? 'Under Review'.tr
+                                                    ? Icons.pending
                                                     : item.status == 1
-                                                        ? 'Accepted'.tr
+                                                        ? Icons
+                                                            .check_circle_outline
                                                         : item.status == 2
-                                                            ? 'Rejected'.tr
-                                                            : 'Preliminary Approval',
-                                                style: TextStyle(
-                                                    color: item.status == 0
-                                                        ? Colors.amber
-                                                        : item.status == 1
-                                                            ? Colors.green
-                                                            : item.status == 2
-                                                                ? Colors.red
-                                                                : Colors.green,
-                                                    fontSize: 12)),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Icon(
-                                              item.status == 0
-                                                  ? Icons.pending
-                                                  : item.status == 1
-                                                      ? Icons
-                                                          .check_circle_outline
-                                                      : item.status == 2
-                                                          ? Icons
-                                                              .cancel_outlined
-                                                          : Icons.pending,
-                                              color: item.status == 0
-                                                  ? Colors.amber
-                                                  : item.status == 1
-                                                      ? Colors.green
-                                                      : item.status == 2
-                                                          ? Colors.red
-                                                          : Colors.green,
-                                              size: 20,
-                                            ),
-                                          ],
+                                                            ? Icons
+                                                                .cancel_outlined
+                                                            : Icons.pending,
+                                                color: item.status == 0
+                                                    ? Colors.amber
+                                                    : item.status == 1
+                                                        ? Colors.green
+                                                        : item.status == 2
+                                                            ? Colors.red
+                                                            : Colors.green,
+                                                size: 20,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -346,6 +351,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                                   onPressed: () {
                                                     Get.to(() =>
                                                         StatusStockScreen(
+                                                            data: item,
                                                             stockId: item
                                                                 .fromStockId,
                                                             transactionId: item

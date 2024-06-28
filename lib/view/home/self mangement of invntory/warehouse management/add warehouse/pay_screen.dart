@@ -52,7 +52,12 @@ class _PayScreenState extends State<PayScreen> {
     print('==============================');
   }
 
+  bool isLoading = false;
+
   void postData() async {
+    setState(() {
+      isLoading = true;
+    });
     final String apiUrl =
         '${ApiUrl.API_BASE_URL2}/api/Subscription/Create/CreateAsync';
 
@@ -83,14 +88,14 @@ class _PayScreenState extends State<PayScreen> {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
-          text: 'Send subscription request successfully!',
+          text: 'Send subscription request successfully !'.tr,
           showConfirmBtn: false,
         );
       } else {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.error,
-          text: 'Error Send subscription request!',
+          text: 'Error Send subscription request!'.tr,
           showConfirmBtn: false,
         );
       }
@@ -105,6 +110,9 @@ class _PayScreenState extends State<PayScreen> {
       print("Response: ${response.body}");
       print("Request Body: $requestBody");
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -171,8 +179,7 @@ class _PayScreenState extends State<PayScreen> {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10),
-                  child: Text(
-                      '${'Transportation Fees'.tr} : ${widget.info.transportationFees} SAR ',
+                  child: Text('${'Transportation Fees'.tr} : ${0} SAR ',
                       style: TextStyle(
                         fontSize: 12,
                       )),
@@ -302,30 +309,34 @@ class _PayScreenState extends State<PayScreen> {
                   AppColor.buttonColor,
                 ),
               ),
-              onPressed: () {
-                // final totalPrice = calculateTotalPrice();
-                postData();
-                print('888888888888888888888888888888');
-                print(sharedPrefsClient.customerId);
-                print('888888888888888888888888888888');
-                // Get.off(PaymentScreen(
-                //   from: widget.from,
-                //   to: widget.to,
-                //   amount: widget.totalAmount,
-                //   customerId: sharedPrefsClient.customerId,
-                //   capacity: widget.capacity,
-                //   warehouseId: widget.warehouseId,
-                //   warehouseName: widget.warehouseName,
-                //   dry: widget.dry,
-                //   cold: widget.cold,
-                //   freezing: widget.freezing,
-                //   address: widget.address,
-                // ));
-              },
-              child: Text(
-                'Send subscription request'.tr,
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      // final totalPrice = calculateTotalPrice();
+                      postData();
+                      print('888888888888888888888888888888');
+                      print(sharedPrefsClient.customerId);
+                      print('888888888888888888888888888888');
+                      // Get.off(PaymentScreen(
+                      //   from: widget.from,
+                      //   to: widget.to,
+                      //   amount: widget.totalAmount,
+                      //   customerId: sharedPrefsClient.customerId,
+                      //   capacity: widget.capacity,
+                      //   warehouseId: widget.warehouseId,
+                      //   warehouseName: widget.warehouseName,
+                      //   dry: widget.dry,
+                      //   cold: widget.cold,
+                      //   freezing: widget.freezing,
+                      //   address: widget.address,
+                      // ));
+                    },
+              child: isLoading
+                  ? CircularProgressIndicator(color: Colors.white,)
+                  : Text(
+                      'Send subscription request'.tr,
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
             ),
           )
         ],

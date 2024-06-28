@@ -207,6 +207,9 @@ class _SelfManagementOfInventoryScreenState
                   ),
                 ),
               ),
+              // SizedBox(
+              //   height: 15,
+              // ),
               Container(
                 decoration: BoxDecoration(
                     color: Colors.white,

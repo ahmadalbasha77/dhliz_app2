@@ -41,7 +41,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
   Future<void> fetchData() async {
     final response = await http.get(
         Uri.parse(
-            '${ApiUrl.API_BASE_URL}/Stock/Find?CustomerName=${sharedPrefsClient.fullName}&PageIndex=0&PageSize=100'),
+            '${ApiUrl.API_BASE_URL2}/api/Stock/Find?CustomerName=${sharedPrefsClient.fullName}&PageIndex=0&PageSize=100'),
         headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
     print(response.body);
@@ -63,7 +63,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
   }
 
   void postData(int toId) async {
-    final String apiUrl = '${ApiUrl.API_BASE_URL}/Transaction/Create';
+    final String apiUrl = '${ApiUrl.API_BASE_URL2}/api/Transaction/Create';
 
     Map<String, dynamic> requestBody = {
       "id": 0,

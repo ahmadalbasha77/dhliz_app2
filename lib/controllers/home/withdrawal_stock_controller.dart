@@ -107,7 +107,7 @@ class WithdrawalStockController extends GetxController {
             context: context,
             type: QuickAlertType.success,
             text:
-            'A new withdrawal transaction request has been sent. Please wait for approval',
+            'A new withdrawal transaction request has been sent. Please wait for approval'.tr,
             showConfirmBtn: true,
             confirmBtnColor: Colors.white,
             confirmBtnTextStyle: const TextStyle(color: Colors.black),

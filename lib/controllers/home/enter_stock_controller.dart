@@ -17,7 +17,6 @@ class EnterStockController extends GetxController {
   TextEditingController stockId = TextEditingController();
   TextEditingController date = TextEditingController();
 
-
   bool isSelectedOne = false;
   bool isSelectedOTwo = false;
 
@@ -75,7 +74,8 @@ class EnterStockController extends GetxController {
     );
   }
 
-  Future<void> enterStock(BuildContext context,{required String actionType}) async {
+  Future<void> enterStock(BuildContext context,
+      {required String actionType}) async {
     print(stockId.text);
     var uri = Uri.parse('${ApiUrl.API_BASE_URL2}/api/Transaction/Create');
     var request = http.MultipartRequest('POST', uri)
@@ -108,7 +108,7 @@ class EnterStockController extends GetxController {
             context: context,
             type: QuickAlertType.success,
             text:
-                'A new entry transaction request has been sent. Please wait for approval',
+                'A new entry transaction request has been sent. Please wait for approval'.tr,
             showConfirmBtn: true,
             confirmBtnColor: Colors.white,
             confirmBtnTextStyle: const TextStyle(color: Colors.black),

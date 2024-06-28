@@ -26,8 +26,8 @@ class MarkerInfo {
   // final int numberOfMeter;
   final String phone;
   final String address;
-  final double transportationFees;
   List categories;
+  List transportationService;
   List temperatures;
   List<Map<String, dynamic>> dryTemperatures;
   List<Map<String, dynamic>> coldTemperatures;
@@ -42,8 +42,8 @@ class MarkerInfo {
     // required this.numberOfMeter,
     required this.phone,
     required this.address,
-    required this.transportationFees,
     required this.categories,
+    required this.transportationService,
     required this.temperatures,
     required this.dryTemperatures,
     required this.coldTemperatures,
@@ -96,6 +96,8 @@ class _MapScreenState extends State<MapScreen> {
   List<LatLng> polylineCoordinates = [];
   late PolylinePoints polylinePoints;
   RouteInfo routeInfo = RouteInfo(0, 0, 0);
+  bool isVisibleCategory = false;
+  bool isVisibleTransportation = false;
   int? selectedRadio = 0;
   List checkListItems = [
     {
@@ -118,10 +120,13 @@ class _MapScreenState extends State<MapScreen> {
   int? selectedDryIndex;
   int? selectedColdIndex;
   int? selectedFreezingIndex;
+  int? selectedServiceIndex;
   bool selectedDry = false;
   bool selectedCold = false;
   bool selectedFreezing = false;
+  bool selectedService = false;
   double totalPrice = 0.0;
+  double costService = 0.0;
   double cost = 0.0;
   String temp = '';
   int tempId = 0;
@@ -183,13 +188,12 @@ class _MapScreenState extends State<MapScreen> {
 
       // قم بتحديث الماركر
       // markers.clear();
+
       markers.add(
         Marker(
-          icon:
-
-          await BitmapDescriptor.fromAssetImage(
+          icon: await BitmapDescriptor.fromAssetImage(
             ImageConfiguration(devicePixelRatio: 1.5),
-              Platform.isIOS? 'image/ios/user.png':'image/map/user.png',
+            Platform.isIOS ? 'image/ios/user.png' : 'image/map/user.png',
           ),
           markerId: MarkerId('selectedLocation'),
           position: LatLng(position.latitude, position.longitude),
@@ -240,7 +244,7 @@ class _MapScreenState extends State<MapScreen> {
         widget.space != null ? {'Capacity': widget.space.toString()} : {};
 
     // Add 'include' parameter to queryParameters if address is provided
-    queryParameters['include'] = address;
+    queryParameters['include'] = ['TransportationFees', address];
     queryParameters['TemperatureType'] = widget.temperatureType.toString();
     queryParameters['PageIndex'] = '0';
     queryParameters['PageSize'] = '60';
@@ -300,10 +304,11 @@ class _MapScreenState extends State<MapScreen> {
                           pricePerMeter: item['cost']?.toDouble() ?? 0.0,
                           // numberOfMeter: 5,
                           phone: item['phone'] ?? '',
-                          transportationFees:
-                              item['transportationFees']?.toDouble() ?? 0.0,
+
                           categories: item['categories'] ?? [],
                           temperatures: item['temperatures'] ?? [],
+                          transportationService:
+                              item['transportationFees'] ?? [],
                           dryTemperatures: (item['temperatures']
                                   as List<dynamic>)
                               .where((temperature) =>
@@ -376,6 +381,8 @@ class _MapScreenState extends State<MapScreen> {
                             // numberOfMeter: 5,
                             phone: item['phone'] ?? '',
                             categories: item['categories'] ?? [],
+                            transportationService:
+                                item['transportationFees'] ?? [],
                             temperatures: item['temperatures'] ?? [],
                             dryTemperatures: (item['temperatures']
                                     as List<dynamic>)
@@ -385,13 +392,12 @@ class _MapScreenState extends State<MapScreen> {
                                     temperature.containsKey('supTemperature') &&
                                     temperature['supTemperature']
                                         is List<dynamic>)
-                                .map((temperature) =>
-                                    (temperature['supTemperature'] as List)
-                                        .where((supTemp) =>
-                                            supTemp is Map<String, dynamic>)
-                                        .map((supTemp) =>
-                                            supTemp as Map<String, dynamic>)
-                                        .toList())
+                                .map((temperature) => (temperature['supTemperature'] as List)
+                                    .where((supTemp) =>
+                                        supTemp is Map<String, dynamic>)
+                                    .map((supTemp) =>
+                                        supTemp as Map<String, dynamic>)
+                                    .toList())
                                 .expand((x) =>
                                     x) // Flatten the List<List<Map>> to List<Map>
                                 .toList(),
@@ -409,9 +415,7 @@ class _MapScreenState extends State<MapScreen> {
                                 .where((temperature) => temperature is Map<String, dynamic> && temperature['temperatureType'] == 3 && temperature.containsKey('supTemperature') && temperature['supTemperature'] is List<dynamic>)
                                 .map((temperature) => (temperature['supTemperature'] as List).where((supTemp) => supTemp is Map<String, dynamic>).map((supTemp) => supTemp as Map<String, dynamic>).toList())
                                 .expand((x) => x) // Flatten the List<List<Map>> to List<Map>
-                                .toList(),
-                            transportationFees: item['transportationFees']?.toDouble() ?? 0.0);
-
+                                .toList());
                         _drawRoute();
                       });
                     },
@@ -448,7 +452,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _loadCustomIcons() async {
-    if(Platform.isIOS){
+    if (Platform.isIOS) {
       customIcon1 = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'image/ios/warehoues.png',
@@ -480,6 +484,18 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _showStoreDetailsDialog(MarkerInfo info) {
+    selectedDryIndex = -1;
+    selectedColdIndex = -1;
+    selectedFreezingIndex = -1;
+    selectedServiceIndex = -1;
+    selectedDry = false;
+    selectedCold = false;
+    selectedFreezing = false;
+    totalPrice = 0;
+    selectedRadio = 0;
+    bool isVisibleCategory = false;
+    bool isVisibleTransportation = false;
+
     List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 
     String dropdownValue = list.first;
@@ -501,10 +517,12 @@ class _MapScreenState extends State<MapScreen> {
                       selectedDryIndex = -1;
                       selectedColdIndex = -1;
                       selectedFreezingIndex = -1;
+                      selectedServiceIndex = -1;
                       selectedDry = false;
                       selectedCold = false;
                       selectedFreezing = false;
                       totalPrice = 0;
+                      costService = 0;
                       selectedRadio = 0;
                       Navigator.of(context).pop();
                     },
@@ -591,7 +609,6 @@ class _MapScreenState extends State<MapScreen> {
               body: SingleChildScrollView(
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
                   child: Column(
                     children: [
                       Padding(
@@ -645,15 +662,15 @@ class _MapScreenState extends State<MapScreen> {
                               //   ),
                               //   trailing: Text('SAR'),
                               // ),
-                              ListTile(
-                                title: Text(
-                                    "${'Transportation Fees'.tr} : ${info.transportationFees}"),
-                                leading: Icon(
-                                  Icons.airport_shuttle,
-                                  color: AppColor.buttonColor,
-                                ),
-                                trailing: Text('SAR'),
-                              ),
+                              // ListTile(
+                              //   title: Text(
+                              //       "${'Transportation Fees'.tr} : ${info.transportationFees}"),
+                              //   leading: Icon(
+                              //     Icons.airport_shuttle,
+                              //     color: AppColor.buttonColor,
+                              //   ),
+                              //   trailing: Text('SAR'),
+                              // ),
                               ListTile(
                                 title: Text(
                                   "${'Total price'.tr} : ${totalPrice} ",
@@ -670,7 +687,7 @@ class _MapScreenState extends State<MapScreen> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text('temperatures ',
+                                child: Text('select temperatures ',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18)),
@@ -758,7 +775,7 @@ class _MapScreenState extends State<MapScreen> {
                                                                 widget.space *
                                                                 int.parse(widget
                                                                     .days) +
-                                                            info.transportationFees;
+                                                            costService;
                                                   });
 
                                                   print(index);
@@ -835,13 +852,16 @@ class _MapScreenState extends State<MapScreen> {
                                                         selectedCold = true;
                                                         selectedColdIndex =
                                                             index;
-                                                        totalPrice = info.coldTemperatures[
-                                                                        index]
-                                                                    ['cost'] *
-                                                                widget.space *
-                                                                int.parse(widget
-                                                                    .days) +
-                                                            info.transportationFees;
+                                                        totalPrice =
+                                                            info.coldTemperatures[
+                                                                            index]
+                                                                        [
+                                                                        'cost'] *
+                                                                    widget
+                                                                        .space *
+                                                                    int.parse(widget
+                                                                        .days) +
+                                                                costService;
                                                         print(index);
                                                       });
                                                     },
@@ -920,13 +940,16 @@ class _MapScreenState extends State<MapScreen> {
                                                         selectedFreezing = true;
                                                         selectedFreezingIndex =
                                                             index;
-                                                        totalPrice = info.freezingTemperatures[
-                                                                        index]
-                                                                    ['cost'] *
-                                                                widget.space *
-                                                                int.parse(widget
-                                                                    .days) +
-                                                            info.transportationFees;
+                                                        totalPrice =
+                                                            info.freezingTemperatures[
+                                                                            index]
+                                                                        [
+                                                                        'cost'] *
+                                                                    widget
+                                                                        .space *
+                                                                    int.parse(widget
+                                                                        .days) +
+                                                                costService;
                                                         print(index);
                                                       });
                                                     },
@@ -955,36 +978,164 @@ class _MapScreenState extends State<MapScreen> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text('View All Supported Categories ',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text('show transportation services ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16)),
+                                        // Text('(optional)  ',
+                                        //     style: TextStyle(
+                                        //         fontSize: 14,
+                                        //         color: Colors.black54)),
+                                      ],
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            isVisibleTransportation =
+                                                !isVisibleTransportation;
+                                          });
+                                        },
+                                        icon: Icon(isVisibleTransportation
+                                            ? Icons.arrow_drop_up
+                                            : Icons.arrow_drop_down))
+                                  ],
+                                ),
                               ),
 
-                              Container(
-                                child: info.categories.isEmpty
-                                    ? Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 30),
-                                        child:
-                                            Center(child: Text('No Category')))
-                                    : ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: ScrollPhysics(
-                                            parent:
-                                                NeverScrollableScrollPhysics()),
-                                        itemCount: info.categories.length,
-                                        itemBuilder: (context, index) {
-                                          var category = info.categories[index];
-                                          return ListTile(
-                                            title: Text(category['name'],
-                                                style: TextStyle(fontSize: 16)),
-                                            leading: Icon(
-                                                Icons.category_outlined,
-                                                color: AppColor.buttonColor),
-                                          );
+                              Visibility(
+                                visible: isVisibleTransportation,
+                                child: Container(
+                                  child: info.transportationService.isEmpty
+                                      ? Container(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 15),
+                                          child: Center(
+                                              child: Text(
+                                                  'No transportation services')))
+                                      : ListView.builder(
+                                          shrinkWrap: true,
+                                          physics: ScrollPhysics(
+                                              parent:
+                                                  NeverScrollableScrollPhysics()),
+                                          itemCount:
+                                              info.transportationService.length,
+                                          itemBuilder: (context, index) {
+                                            var transportationService = info
+                                                .transportationService[index];
+                                            return Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 5, vertical: 5),
+                                              color:
+                                                  selectedServiceIndex == index
+                                                      ? Colors.blue[100]
+                                                      : Colors.grey[100],
+                                              child: ListTile(
+                                                // onTap: () {
+                                                //   setState(() {
+                                                //     if (selectedService ==
+                                                //         true) {
+                                                //       totalPrice = totalPrice -
+                                                //           costService;
+                                                //     }
+                                                //     selectedService = true;
+                                                //     selectedServiceIndex =
+                                                //         index;
+                                                //     costService = 0.0;
+                                                //     costService =
+                                                //         transportationService[
+                                                //             'price'];
+                                                //
+                                                //     totalPrice = totalPrice +
+                                                //         costService;
+                                                //   });
+                                                // },
+                                                title: Text(
+                                                    transportationService[
+                                                        'name'],
+                                                    style: TextStyle(
+                                                        fontSize: 16)),
+                                                subtitle: Text(
+                                                  transportationService[
+                                                      'description'],
+                                                ),
+                                                leading: Icon(
+                                                    Icons.airport_shuttle,
+                                                    color:
+                                                        AppColor.buttonColor),
+                                                trailing: Text(
+                                                  '${transportationService['price'].toString()} SAR',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('View All Supported Categories ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16)),
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            isVisibleCategory =
+                                                !isVisibleCategory;
+                                          });
                                         },
-                                      ),
+                                        icon: Icon(isVisibleCategory
+                                            ? Icons.arrow_drop_up
+                                            : Icons.arrow_drop_down))
+                                  ],
+                                ),
+                              ),
+
+                              Visibility(
+                                visible: isVisibleCategory,
+                                child: Container(
+                                  child: info.categories.isEmpty
+                                      ? Container(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 15),
+                                          child: Center(
+                                              child: Text('No Category')))
+                                      : ListView.builder(
+                                          shrinkWrap: true,
+                                          physics: ScrollPhysics(
+                                              parent:
+                                                  NeverScrollableScrollPhysics()),
+                                          itemCount: info.categories.length,
+                                          itemBuilder: (context, index) {
+                                            var category =
+                                                info.categories[index];
+                                            return ListTile(
+                                              title: Text(category['name'],
+                                                  style:
+                                                      TextStyle(fontSize: 16)),
+                                              leading: Icon(
+                                                  Icons.category_outlined,
+                                                  color: AppColor.buttonColor),
+                                            );
+                                          },
+                                        ),
+                                ),
                               ),
                             ],
                           ),

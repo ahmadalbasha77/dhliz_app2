@@ -213,4 +213,9 @@ const Map<String, String> en = {
   'Stock Barcode': 'Stock Barcode',
   'Stock capacity': 'Stock capacity',
   'Upc stock':'Upc stock',
+  'Send subscription request successfully !':'Send subscription request successfully !',
+  'Error Send subscription request!':'Error Send subscription request!',
+  'A new entry transaction request has been sent. Please wait for approval':'A new entry transaction request has been sent. Please wait for approval',
+  'A new transfer transaction request has been sent. Please wait for approval':'A new transfer transaction request has been sent. Please wait for approval',
+  'A new withdrawal transaction request has been sent. Please wait for approval':'A new withdrawal transaction request has been sent. Please wait for approval',
 };

@@ -1,5 +1,6 @@
 import 'package:dhliz_app/controllers/home/subscriptions_controllerl.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -260,7 +261,7 @@ class _EnterWarehouseScreenState extends State<EnterWarehouseScreen> {
                                   color: Colors.black54)),
                           LinearPercentIndicator(
                             barRadius: Radius.circular(15),
-                            width: 250,
+                            width: 190.w,
                             lineHeight: 14.0,
                             trailing: Text(
                               ((item.spaceUsed / item.reservedSpace) *
