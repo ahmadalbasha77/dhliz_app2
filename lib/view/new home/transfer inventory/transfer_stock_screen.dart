@@ -305,7 +305,7 @@ class _TransferStockScreenState extends State<TransferStockScreen> {
                   children: [
                     Container(
                         margin: EdgeInsets.symmetric(horizontal: 25),
-                        child: Text("ID of the inventory deliverer".tr,
+                        child: Text("Inventory recipient ID".tr,
                             style: TextStyle(
                               fontSize: 16,
                             ))),

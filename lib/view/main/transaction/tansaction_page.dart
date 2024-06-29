@@ -6,6 +6,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../controllers/main/transaction_controller.dart';
+import '../../../widgets/src/pagination_exception.dart';
 
 class TransactionPage extends StatefulWidget {
   const TransactionPage({super.key});
@@ -179,8 +180,14 @@ class _TransactionPageState extends State<TransactionPage> {
             Expanded(
               child: PagedListView<int, TransactionDataModel>(
                   pagingController: _controller.pagingController,
+
                   builderDelegate:
                       PagedChildBuilderDelegate<TransactionDataModel>(
+                          noItemsFoundIndicatorBuilder: (context) =>
+                              PaginationException(
+                                title: 'No items found'.tr,
+                                message: 'The list is currently empty'.tr,
+                              ),
                           itemBuilder: (context, item, index) {
                     return Column(
                       children: [
@@ -264,53 +271,53 @@ class _TransactionPageState extends State<TransactionPage> {
                                         margin: EdgeInsets.symmetric(
                                             horizontal: screenSize.width * .05,
                                             vertical: screenSize.width * .03),
-                                        child: Expanded(
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                  item.status == 0
-                                                      ? 'Under Review'.tr
-                                                      : item.status == 1
-                                                          ? 'Accepted'.tr
-                                                          : item.status == 2
-                                                              ? 'Rejected'.tr
-                                                              : item.matchingStatus ==
-                                                                      2
-                                                                  ? 'Waiting for your review '
-                                                                  : 'Preliminary Approval',
-                                                  style: TextStyle(
-                                                      color: item.status == 0
-                                                          ? Colors.amber
-                                                          : item.status == 1
-                                                              ? Colors.green
-                                                              : item.status == 2
-                                                                  ? Colors.red
-                                                                  : Colors.green,
-                                                      fontSize: 12)),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Icon(
+                                        child: Row(
+                                          children: [
+                                            Text(
                                                 item.status == 0
-                                                    ? Icons.pending
+                                                    ? 'Under Review'.tr
                                                     : item.status == 1
-                                                        ? Icons
-                                                            .check_circle_outline
+                                                        ? 'Accepted'.tr
                                                         : item.status == 2
-                                                            ? Icons
-                                                                .cancel_outlined
-                                                            : Icons.pending,
-                                                color: item.status == 0
-                                                    ? Colors.amber
-                                                    : item.status == 1
-                                                        ? Colors.green
-                                                        : item.status == 2
-                                                            ? Colors.red
-                                                            : Colors.green,
-                                                size: 20,
-                                              ),
-                                            ],
-                                          ),
+                                                            ? 'Rejected'.tr
+                                                            : item.matchingStatus ==
+                                                                    2
+                                                                ? 'Waiting for your review'
+                                                                    .tr
+                                                                : 'Preliminary Approval'
+                                                                    .tr,
+                                                style: TextStyle(
+                                                    color: item.status == 0
+                                                        ? Colors.amber
+                                                        : item.status == 1
+                                                            ? Colors.green
+                                                            : item.status == 2
+                                                                ? Colors.red
+                                                                : Colors.green,
+                                                    fontSize: 10)),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Icon(
+                                              item.status == 0
+                                                  ? Icons.pending
+                                                  : item.status == 1
+                                                      ? Icons
+                                                          .check_circle_outline
+                                                      : item.status == 2
+                                                          ? Icons
+                                                              .cancel_outlined
+                                                          : Icons.pending,
+                                              color: item.status == 0
+                                                  ? Colors.amber
+                                                  : item.status == 1
+                                                      ? Colors.green
+                                                      : item.status == 2
+                                                          ? Colors.red
+                                                          : Colors.green,
+                                              size: 20,
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -390,10 +397,10 @@ class _TransactionPageState extends State<TransactionPage> {
                                           EdgeInsets.symmetric(horizontal: 10),
                                       child: Text(
                                         item.actionType == 0
-                                            ? 'Withdrawal'.tr
+                                            ? 'withdrawal'.tr
                                             : item.actionType == 1
-                                                ? 'Enter'.tr
-                                                : 'Transfer'.tr,
+                                                ? 'enter'.tr
+                                                : 'transfer'.tr,
                                         style: TextStyle(color: Colors.black54),
                                       ))
                                 ],

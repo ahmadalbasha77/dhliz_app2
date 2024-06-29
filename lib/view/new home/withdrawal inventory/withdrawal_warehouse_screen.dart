@@ -52,7 +52,7 @@ class _WithdrawalWarehouseNewScreenState
             builderDelegate: PagedChildBuilderDelegate<SubscriptionDataModel>(
               noItemsFoundIndicatorBuilder: (context) => PaginationException(
                 title: 'No items found'.tr,
-                message: 'The list is currently empty.'.tr,
+                message: 'The list is currently empty'.tr,
               ),
               itemBuilder: (context, item, index) => Container(
                 margin:
@@ -116,35 +116,19 @@ class _WithdrawalWarehouseNewScreenState
                           style: const TextStyle(
                             fontSize: 11,
                           )),
-                      // Container(
-                      //   margin:
-                      //       const EdgeInsets.symmetric(vertical: 5),
-                      //   child: Text(
-                      //       '${'Price'.tr} :  ${item.warehouse.price.first.cost} SAR / 1 M² per day',
-                      //       style: const TextStyle(
-                      //         fontSize: 11,
-                      //       )),
-                      // ),
-                      // Container(
-                      //   margin:
-                      //       const EdgeInsets.symmetric(vertical: 5),
-                      //   child: Text(
-                      //       '${'Transportation Fees'.tr} : ${item.warehouse.price.first.transportationFees} SAR',
-                      //       style: const TextStyle(
-                      //         fontSize: 11,
-                      //       )),
-                      // ),
+
                       Container(
-                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        margin:
+                        const EdgeInsets.symmetric(vertical: 5),
                         child: Text(
-                            '${'Subscription status'.tr} : ${item.status == 0 ? 'Under Review' : item.status == 1 ? 'Accepted' : item.status == 2 ? 'Rejected' : item.status == 3 ? 'PreliminaryApproval' : 'Error'} ',
+                            '${'Subscription status'.tr} : ${item.status == 0 ? 'Under Review'.tr : item.status == 1 ? 'Accepted'.tr : item.status == 2 ? 'Rejected'.tr : item.status == 3 ? 'PreliminaryApproval'.tr : 'Error'.tr} ',
                             style: TextStyle(
                                 fontSize: 11,
                                 color: item.status == 0
                                     ? Colors.orange
                                     : item.status == 2
-                                        ? Colors.red
-                                        : Colors.green)),
+                                    ? Colors.red
+                                    : Colors.green)),
                       ),
                       const SizedBox(
                         height: 5,
@@ -158,7 +142,7 @@ class _WithdrawalWarehouseNewScreenState
                                       ? Colors.green
                                       : Colors.red)),
                           child: Text(
-                              '${'Payment status'.tr} : ${item.status == 1 ? 'Paid' : 'UnPaid'} ',
+                              '${'Payment status'.tr} : ${item.status == 1 ? 'Paid'.tr : 'UnPaid'.tr} ',
                               style: TextStyle(
                                   fontSize: 11,
                                   color: item.status == 1
@@ -169,16 +153,19 @@ class _WithdrawalWarehouseNewScreenState
                         height: 15,
                       ),
                       Text(
-                          'Temperature : ${item.temperature.fromTemperature} - ${item.temperature.toTemperature} °C'
+                          '${'Temperature'.tr} : ${item.temperature.fromTemperature} - ${item.temperature.toTemperature} ${'°C'.tr}'
                               .tr,
                           style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold)),
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold)),
                       const SizedBox(
                         height: 10,
                       ),
-                      Text('Cost : ${item.temperature.cost}  SAR/M2'.tr,
+                      Text(
+                          '${'Cost'.tr} : ${item.temperature.cost}  ${'SAR/M2'.tr}',
                           style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold)),
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold)),
                       // Row(
                       //   mainAxisAlignment:
                       //       MainAxisAlignment.spaceBetween,

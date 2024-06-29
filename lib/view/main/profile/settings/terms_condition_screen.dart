@@ -20,7 +20,7 @@ class _TermsConditionScreenState extends State<TermsConditionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Terms & Condition Agreement'),
+        title: Text('Terms & Condition Agreement'.tr),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

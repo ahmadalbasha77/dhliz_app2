@@ -48,12 +48,12 @@ class _EnterInventoryNewScreenState extends State<EnterInventoryNewScreen> {
         body: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  margin: EdgeInsets.all(25),
-                  child: Icon(Icons.filter_list, size: 30),
-                ),
+                // Container(
+                //   margin: EdgeInsets.all(25),
+                //   child: Icon(Icons.filter_list, size: 30),
+                // ),
                 Container(
                   margin: EdgeInsets.all(25),
                   height: 60,

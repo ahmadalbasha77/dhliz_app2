@@ -141,14 +141,14 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                 height: 6.h,
               ),
               Text(
-                '${'Phone'.tr}: ${widget.info.phone} ',
+                '${'phone'.tr}: ${widget.info.phone} ',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(
                 height: 6.h,
               ),
               Text(
-                '${'The cost'.tr}: ${widget.cost} ${'SR / M²'.tr}',
+                '${'The cost'.tr}: ${widget.cost} ${'SAR/M²'.tr}',
                 style: TextStyle(fontSize: 16),
               ),
               // SizedBox(
@@ -161,15 +161,15 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
               SizedBox(
                 height: 6.h,
               ),
-              Text(
-                '${'Transportation Fees'.tr}: ${0} SR',
-                style: TextStyle(fontSize: 16),
-              ),
+              // Text(
+              //   '${'Transportation Fees'.tr}: ${0} SR',
+              //   style: TextStyle(fontSize: 16),
+              // ),
               SizedBox(
                 height: 7.h,
               ),
               Text(
-                '${'Temperatures'.tr}: ${widget.temp} °C',
+                '${'Temperature'.tr}: ${widget.temp} ${'°C'.tr}',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(

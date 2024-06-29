@@ -558,9 +558,9 @@ class _MapScreenState extends State<MapScreen> {
                       if (selectedDry == false &&
                           selectedCold == false &&
                           selectedFreezing == false) {
-                        Get.snackbar('warning', '',
-                            messageText:
-                                Text('Please enter the required temperature'));
+                        Get.snackbar('warning'.tr, '',
+                            messageText: Text(
+                                'Please enter the required temperature'.tr));
                       } else {
                         showDialog(
                           context: context,
@@ -625,7 +625,7 @@ class _MapScreenState extends State<MapScreen> {
                                   Icons.space_dashboard,
                                   color: AppColor.buttonColor,
                                 ),
-                                trailing: Text('M²'),
+                                trailing: Text('M²'.tr),
                               ),
                               ListTile(
                                 title: Text(
@@ -634,7 +634,7 @@ class _MapScreenState extends State<MapScreen> {
                                   Icons.splitscreen,
                                   color: AppColor.buttonColor,
                                 ),
-                                trailing: Text('M²'),
+                                trailing: Text('M²'.tr),
                               ),
                               ListTile(
                                 title: Text(
@@ -643,7 +643,7 @@ class _MapScreenState extends State<MapScreen> {
                                   Icons.date_range_rounded,
                                   color: AppColor.buttonColor,
                                 ),
-                                trailing: Text('days'),
+                                trailing: Text('days'.tr),
                               ),
                               ListTile(
                                 title: Text("${'phone'.tr} : ${info.phone}"),
@@ -681,16 +681,23 @@ class _MapScreenState extends State<MapScreen> {
                                   color: AppColor.buttonColor,
                                 ),
                                 trailing: Text(
-                                  'SAR',
+                                  'SR'.tr,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text('select temperatures ',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18)),
+                                child: Row(
+                                  children: [
+                                    Text(' * ',
+                                        style: TextStyle(
+                                            color: AppColor.red, fontSize: 20)),
+                                    Text('select temperatures'.tr,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                  ],
+                                ),
                               ),
                               Container(
                                 height: 50,
@@ -734,7 +741,8 @@ class _MapScreenState extends State<MapScreen> {
                                           margin: EdgeInsets.symmetric(
                                               vertical: 20),
                                           child: Center(
-                                            child: Text('No dry Temperatures'),
+                                            child:
+                                                Text('No dry Temperatures'.tr),
                                           ),
                                         )
                                       : ListView.builder(
@@ -781,7 +789,7 @@ class _MapScreenState extends State<MapScreen> {
                                                   print(index);
                                                 },
                                                 title: Text(
-                                                    '${info.dryTemperatures[index]['fromTemperature']} - ${info.dryTemperatures[index]['toTemperature']} °C',
+                                                    '${info.dryTemperatures[index]['fromTemperature']} - ${info.dryTemperatures[index]['toTemperature']} ${'°C'.tr}',
                                                     style: TextStyle(
                                                         fontSize: 16)),
                                                 leading: Icon(
@@ -789,7 +797,7 @@ class _MapScreenState extends State<MapScreen> {
                                                     color:
                                                         AppColor.buttonColor),
                                                 trailing: Text(
-                                                    '${info.dryTemperatures[index]['cost']}  SAR/M²',
+                                                    '${info.dryTemperatures[index]['cost']}   ${'SAR/M²'.tr}',
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold)),
@@ -804,7 +812,8 @@ class _MapScreenState extends State<MapScreen> {
                                           margin: EdgeInsets.symmetric(
                                               vertical: 20),
                                           child: Center(
-                                            child: Text('No cold Temperatures'),
+                                            child:
+                                                Text('No cold Temperatures'.tr),
                                           ),
                                         )
                                       : ListView.builder(
@@ -866,7 +875,7 @@ class _MapScreenState extends State<MapScreen> {
                                                       });
                                                     },
                                                     title: Text(
-                                                      '${info.coldTemperatures[index]['fromTemperature']} - ${info.coldTemperatures[index]['toTemperature']} °C',
+                                                      '${info.coldTemperatures[index]['fromTemperature']} - ${info.coldTemperatures[index]['toTemperature']} ${'°C'.tr}',
                                                       style: TextStyle(
                                                           fontSize: 16),
                                                     ),
@@ -875,7 +884,7 @@ class _MapScreenState extends State<MapScreen> {
                                                         color: AppColor
                                                             .buttonColor),
                                                     trailing: Text(
-                                                      '${info.coldTemperatures[index]['cost']}  SAR/M²',
+                                                      '${info.coldTemperatures[index]['cost']}  ${'SAR/M²'.tr}',
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -892,7 +901,7 @@ class _MapScreenState extends State<MapScreen> {
                                               vertical: 20),
                                           child: Center(
                                             child: Text(
-                                                'No Freezing Temperatures'),
+                                                'No Freezing Temperatures'.tr),
                                           ),
                                         )
                                       : ListView.builder(
@@ -954,7 +963,7 @@ class _MapScreenState extends State<MapScreen> {
                                                       });
                                                     },
                                                     title: Text(
-                                                      '${info.freezingTemperatures[index]['fromTemperature']} - ${info.freezingTemperatures[index]['toTemperature']} °C',
+                                                      '${info.freezingTemperatures[index]['fromTemperature']} - ${info.freezingTemperatures[index]['toTemperature']} ${'°C'.tr}',
                                                       style: TextStyle(
                                                           fontSize: 16),
                                                     ),
@@ -963,7 +972,7 @@ class _MapScreenState extends State<MapScreen> {
                                                         color: AppColor
                                                             .buttonColor),
                                                     trailing: Text(
-                                                      '${info.freezingTemperatures[index]['cost']}  SAR',
+                                                      '${info.freezingTemperatures[index]['cost']}   ${'SAR/M²'.tr}',
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -984,7 +993,7 @@ class _MapScreenState extends State<MapScreen> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text('show transportation services ',
+                                        Text('show transportation services'.tr,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16)),
@@ -1017,7 +1026,9 @@ class _MapScreenState extends State<MapScreen> {
                                               vertical: 15),
                                           child: Center(
                                               child: Text(
-                                                  'No transportation services')))
+                                                  'No transportation services'
+                                                      .tr
+                                                      .tr)))
                                       : ListView.builder(
                                           shrinkWrap: true,
                                           physics: ScrollPhysics(
@@ -1069,7 +1080,7 @@ class _MapScreenState extends State<MapScreen> {
                                                     color:
                                                         AppColor.buttonColor),
                                                 trailing: Text(
-                                                  '${transportationService['price'].toString()} SAR',
+                                                  '${transportationService['price'].toString()} ${'SR'.tr}',
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),
@@ -1089,7 +1100,7 @@ class _MapScreenState extends State<MapScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('View All Supported Categories ',
+                                    Text('View All Supported Categories'.tr,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16)),
@@ -1115,7 +1126,7 @@ class _MapScreenState extends State<MapScreen> {
                                           margin: EdgeInsets.symmetric(
                                               vertical: 15),
                                           child: Center(
-                                              child: Text('No Category')))
+                                              child: Text('No Category'.tr)))
                                       : ListView.builder(
                                           shrinkWrap: true,
                                           physics: ScrollPhysics(
@@ -1372,7 +1383,7 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                         selectWarehouse != null
                             ? SizedBox()
-                            : Text('please select warehouse'),
+                            : Text('please select warehouse'.tr),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -1398,9 +1409,9 @@ class _MapScreenState extends State<MapScreen> {
                                             : Color.fromRGBO(38, 50, 56, 0.2))),
                                 onPressed: () {
                                   selectWarehouse == null
-                                      ? Get.snackbar('warning', '',
-                                          messageText:
-                                              Text('please select warehouse'))
+                                      ? Get.snackbar('warning'.tr, '',
+                                          messageText: Text(
+                                              'please select warehouse'.tr))
                                       : _showStoreDetailsDialog(
                                           selectWarehouse!);
                                 },

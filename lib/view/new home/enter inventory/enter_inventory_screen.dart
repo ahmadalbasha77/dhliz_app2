@@ -48,7 +48,7 @@ class _EnterInventoryScreenState extends State<EnterInventoryScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
         backgroundColor: Colors.white,
-        title: Text('Enter Stock', style: TextStyle(color: Colors.black)),
+        title: Text(widget.data.name, style: TextStyle(color: Colors.black)),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -239,7 +239,7 @@ class _EnterInventoryScreenState extends State<EnterInventoryScreen> {
                 children: [
                   Container(
                       margin: EdgeInsets.symmetric(horizontal: 25),
-                      child: Text(" ID of the inventory deliverer".tr,
+                      child: Text("ID of the inventory deliverer".tr,
                           style: TextStyle(
                             fontSize: 16,
                           ))),
@@ -295,7 +295,7 @@ class _EnterInventoryScreenState extends State<EnterInventoryScreen> {
                       onPressed: () {
                         if (_key.currentState!.validate()) {
                           if (_controller.selectedImage == null) {
-                            Utils.showSnackbar('warning', 'please upload image');
+                            Utils.showSnackbar('warning'.tr, 'please upload image');
                           } else {
                             _controller.enterStock(context, actionType: '1');
                           }

@@ -72,11 +72,11 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
         QuickAlert.show(
             context: context,
             type: QuickAlertType.success,
-            text: 'transaction accepted done',
+            text: 'transaction accepted done'.tr,
             showConfirmBtn: true,
             confirmBtnColor: Colors.white,
             confirmBtnTextStyle: TextStyle(color: Colors.black),
-            title: 'Completed Successfully!',
+            title: 'Completed Successfully !',
             textAlignment: TextAlign.center);
       } else {
         print(
@@ -110,7 +110,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
           backgroundColor: Color.fromARGB(255, 231, 231, 231),
           centerTitle: true,
           title:
-              Text('Product Details'.tr, style: TextStyle(color: Colors.black)),
+              Text('Stock Details'.tr, style: TextStyle(color: Colors.black)),
         ),
         body: data.isEmpty
             ? Center(child: CircularProgressIndicator())
@@ -312,7 +312,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                         child: Row(
                           children: [
                             Text(
-                              '${widget.data.matchingStatus == 0 ? 'Under review'.tr : widget.data.matchingStatus == 1 ? 'stock accepted and entered'.tr : widget.data.matchingStatus == 2 ? 'stock mismatch pending review' : widget.data.matchingStatus == 3 ? 'stock not match, but entry approved' : widget.data.matchingStatus == 4 ? 'stock not match. Entry rejected' : widget.data.matchingStatus == 5 ? 'Entry rejected' : 'Entry rejected'} ',
+                              '${widget.data.matchingStatus == 0 ? 'Under review'.tr : widget.data.matchingStatus == 1 ? 'stock accepted and entered'.tr : widget.data.matchingStatus == 2 ? 'Stock not match. Pending your review'.tr : widget.data.matchingStatus == 3 ? 'stock not match, but entry approved'.tr : widget.data.matchingStatus == 4 ? 'stock not match. Entry rejected'.tr : widget.data.matchingStatus == 5 ? 'Entry rejected'.tr : 'Entry rejected'.tr} ',
                               style: TextStyle(
                                   fontSize: 18,
                                   color: widget.data.matchingStatus == 0 ||
@@ -336,7 +336,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                             margin: EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 5),
                             child: Text(
-                              'Matching images ',
+                              'Matching images'.tr,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
@@ -364,7 +364,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                 );
                               },
                               child: Text(
-                                'View '.tr,
+                                'view'.tr,
                                 style: TextStyle(color: Colors.black),
                               ))
                         ],
@@ -459,7 +459,8 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                                 borderRadius:
                                                     BorderRadius.circular(20)),
                                             content: Text(
-                                              'Are you sure the approve entry?',
+                                              'Are you sure the approve entry?'
+                                                  .tr,
                                             ),
                                             actions: <Widget>[
                                               TextButton(
@@ -469,7 +470,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                                       .textTheme
                                                       .titleMedium,
                                                 ),
-                                                child: Text('Cancel'),
+                                                child: Text('Cancel'.tr),
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                   // You can add your disable logic here
@@ -482,7 +483,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                                       .textTheme
                                                       .titleMedium,
                                                 ),
-                                                child: Text('confirm'),
+                                                child: Text('confirm'.tr),
                                                 onPressed: () {
                                                   updateStockStatus('3');
                                                 },
@@ -536,7 +537,8 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                                 borderRadius:
                                                     BorderRadius.circular(20)),
                                             content: Text(
-                                              'Are you sure the reject entry?',
+                                              'Are you sure the reject entry?'
+                                                  .tr,
                                             ),
                                             actions: <Widget>[
                                               TextButton(
@@ -546,7 +548,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                                       .textTheme
                                                       .titleMedium,
                                                 ),
-                                                child: Text('Cancel'),
+                                                child: Text('Cancel'.tr),
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                   // You can add your disable logic here
@@ -559,7 +561,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                                       .textTheme
                                                       .titleMedium,
                                                 ),
-                                                child: Text('confirm'),
+                                                child: Text('confirm'.tr),
                                                 onPressed: () {
                                                   updateStockStatus('4');
                                                 },
@@ -579,7 +581,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                         ),
                                         Text(
                                           textAlign: TextAlign.center,
-                                          'reject',
+                                          'reject'.tr,
                                           style: TextStyle(
                                               fontSize: 10,
                                               color: Colors.white),

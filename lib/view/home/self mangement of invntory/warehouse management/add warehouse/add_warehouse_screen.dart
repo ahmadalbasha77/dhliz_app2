@@ -185,7 +185,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
               Container(
                 // alignment: Alignment.centerRight,
                 margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                child: Text('Description inventory '.tr,
+                child: Text('Description inventory'.tr,
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
@@ -204,7 +204,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                         EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                     filled: true,
                     fillColor: Colors.white,
-                    label: Text('description'.tr,
+                    label: Text('Description'.tr,
                         style: TextStyle(color: Colors.black38)),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),

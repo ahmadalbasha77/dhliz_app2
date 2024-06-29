@@ -237,7 +237,7 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                 children: [
                   Container(
                       margin: EdgeInsets.symmetric(horizontal: 25),
-                      child: Text(" ID of the inventory deliverer".tr,
+                      child: Text("Inventory recipient ID".tr,
                           style: TextStyle(
                             fontSize: 16,
                           ))),
@@ -373,7 +373,7 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                         if (_key.currentState!.validate()) {
                           if (_controller.selectedImage == null) {
                             Utils.showSnackbar(
-                                'warning', 'please upload image');
+                                'warning'.tr, 'please upload image'.tr);
                           } else {
                             _controller.withdrawalStock(context,
                                 actionType: '0');

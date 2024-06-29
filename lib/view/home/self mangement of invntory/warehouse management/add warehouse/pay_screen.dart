@@ -172,22 +172,22 @@ class _PayScreenState extends State<PayScreen> {
                 Container(
                   margin: EdgeInsets.only(top: 10),
                   child:
-                      Text('${'Price'.tr} : ${widget.cost}  SAR / M² per day',
+                      Text('${'Price'.tr} : ${widget.cost}  ${'SAR/M²'.tr} ${'per day'.tr}',
                           style: TextStyle(
                             fontSize: 12,
                           )),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  child: Text('${'Transportation Fees'.tr} : ${0} SAR ',
-                      style: TextStyle(
-                        fontSize: 12,
-                      )),
-                ),
+                // Container(
+                //   margin: EdgeInsets.only(top: 10),
+                //   child: Text('${'Transportation Fees'.tr} : ${0} SAR ',
+                //       style: TextStyle(
+                //         fontSize: 12,
+                //       )),
+                // ),
                 Container(
                   margin: EdgeInsets.only(top: 10),
                   child: Text(
-                      '${'Inventory Description'.tr} : ${widget.inventoryDescription} SAR ',
+                      '${'Description inventory'.tr} : ${widget.inventoryDescription}  ',
                       style: TextStyle(
                         fontSize: 12,
                       )),
@@ -197,7 +197,7 @@ class _PayScreenState extends State<PayScreen> {
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Text('${"Temperature".tr} : ${widget.temp} °C',
+                  child: Text('${"Temperature".tr} : ${widget.temp} ${'°C'.tr}',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
@@ -286,7 +286,7 @@ class _PayScreenState extends State<PayScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                Text('${'Total price'.tr} : ${widget.totalAmount} ${'SAR'.tr}',
+                Text('${'Total price'.tr} : ${widget.totalAmount} ${'SR'.tr}',
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
               ],

@@ -101,7 +101,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       ),
                     ),
                     pw.Divider(),
-                    pw.Text('Invoice info',
+                    pw.Text('Invoice info'.tr,
                         style: pw.TextStyle(
                             fontSize: 18, fontWeight: pw.FontWeight.bold)),
                     pw.Container(
@@ -124,7 +124,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       margin:
                           pw.EdgeInsets.symmetric(horizontal: 20, vertical: 7),
                       child: pw.Text(
-                        'Address : ${widget.data!.address.city} , jabal alhusan , Yafa 33',
+                        'Address : ${widget.data!.address.city} ',
                         style: pw.TextStyle(fontSize: 16),
                       ),
                     ),

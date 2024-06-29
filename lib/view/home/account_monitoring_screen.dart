@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:pie_chart/pie_chart.dart';
 
@@ -19,8 +20,8 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 0,
           backgroundColor: Colors.white,
-          title:
-              Text('Account Monitoring', style: TextStyle(color: Colors.black)),
+          title: Text('Account Monitoring'.tr,
+              style: TextStyle(color: Colors.black)),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -36,9 +37,9 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
               ),
               PieChart(
                 dataMap: {
-                  'Enter': 0,
-                  'Transfer': 0,
-                  'Withdrawal': 0,
+                  'Enter'.tr: 0,
+                  'Transfer'.tr: 0,
+                  'Withdrawal'.tr: 0,
                 },
                 animationDuration: Duration(milliseconds: 800),
                 chartLegendSpacing: 32,
@@ -84,7 +85,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('Enter Inventory',
+                        Text('Enter Inventory'.tr,
                             style: TextStyle(
                                 color: Colors.orange[800], fontSize: 12)),
                         Container(
@@ -117,7 +118,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('Transfer Inventory',
+                        Text('Transfer Inventory'.tr,
                             style: TextStyle(
                                 color: Colors.blue[800], fontSize: 12)),
                         Container(
@@ -150,7 +151,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('Withdrawal of Inventory',
+                        Text('Withdrawal of Inventory'.tr,
                             style:
                                 TextStyle(color: Colors.purple, fontSize: 12)),
                         Container(
@@ -183,7 +184,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('Earnings (Annual)',
+                        Text('Earnings (Annual)'.tr,
                             style:
                                 TextStyle(color: Colors.green, fontSize: 12)),
                         Container(
@@ -216,7 +217,7 @@ class _StockMonitoringScreenState extends State<StockMonitoringScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('Amounts due',
+                        Text('Amounts due'.tr,
                             style: TextStyle(color: Colors.red, fontSize: 12)),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10),
