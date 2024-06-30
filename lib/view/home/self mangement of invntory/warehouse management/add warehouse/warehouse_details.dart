@@ -58,12 +58,12 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
   void _loadCustomIcons() async {
     customIcon1 = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(devicePixelRatio: 2.5),
-      'image/map/warehoues.png',
+      'image/ios/warehoues.png',
     );
 
     customIconPickedLocation = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(devicePixelRatio: 2.5),
-      'image/map/inventory.png',
+      'image/ios/inventory.png',
     );
 
     setState(() {});
