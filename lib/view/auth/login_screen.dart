@@ -1,3 +1,4 @@
+import 'package:dhliz_app/config/shared_prefs_client.dart';
 import 'package:dhliz_app/view/auth/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,14 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _controller = LoginController.to;
+
+  @override
+  void initState() {
+    if (sharedPrefsClient.isLogin) {
+      _controller.controllerUsername.text = sharedPrefsClient.email;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +120,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                         suffixIcon: IconButton(
                           style: ButtonStyle(
-                            
                               shadowColor:
                                   MaterialStatePropertyAll(Colors.white)),
                           onPressed: () {
@@ -157,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.to(()=> SignUpScreen());
+                        Get.to(() => SignUpScreen());
                       },
                       child: Text(
                         'Sign Up'.tr,
@@ -179,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: screenSize.height * 0.079,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:  Color.fromRGBO(80, 46, 144, 1.0),
+                      backgroundColor: Color.fromRGBO(80, 46, 144, 1.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),
