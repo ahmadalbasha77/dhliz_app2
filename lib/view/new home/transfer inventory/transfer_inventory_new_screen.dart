@@ -22,7 +22,6 @@ class _TransferInventoryNewScreenState extends State<TransferInventoryNewScreen>
   @override
   void initState() {
 
-    print('EnterStockScreen initiated with ID: ${widget.id}');
     _controller.id = widget.id;
     super.initState();
     _controller.pagingController.addPageRequestListener((pageKey) {

@@ -20,31 +20,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Use MediaQuery to adapt to screen size
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final bool isTablet = screenWidth >= 600; // Arbitrary breakpoint for tablet
-
-    double textScaleFactor = isTablet ? 1.2 : 1.2; // Scale text up for tablets
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Color.fromARGB(255, 231, 231, 231),
+          backgroundColor: const Color.fromARGB(255, 231, 231, 231),
           actions: [
             Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
+                margin: const EdgeInsets.symmetric(horizontal: 5),
                 child: IconButton(
                   onPressed: () async {
                     if (await Utils.showAreYouSureDialog(
                         title: 'Sign Out'.tr)) {
                       sharedPrefsClient.clearProfile();
                       Get.deleteAll();
-                      Get.offAll(() => LoginScreen());
+                      Get.offAll(() => const LoginScreen());
                     }
                   },
-                  icon: Icon(Icons.logout),
+                  icon: const Icon(Icons.logout),
                   color: Colors.black,
                 ))
           ],
@@ -54,11 +47,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (controller) => _controller.profileData == null
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _buildProfileHeader(screenWidth, textScaleFactor),
-                      _buildProfileInformation(screenWidth, textScaleFactor),
-                    ],
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.w),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        _buildProfileHeader(),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        _buildProfileInformation(),
+                      ],
+                    ),
                   ),
                 ),
         ),
@@ -66,46 +68,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildProfileHeader(double screenWidth, double textScaleFactor) {
+  Widget _buildProfileHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Column(
           children: [
-            Container(
-              margin: EdgeInsets.symmetric(
-                vertical: screenWidth * 0.1,
-                horizontal: screenWidth * 0.05,
-              ),
-              child: Text(
-                "Profile".tr,
-                style: TextStyle(
-                  fontSize: screenWidth * 0.06 * textScaleFactor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            CircleAvatar(
-              backgroundColor: Colors.grey,
-              backgroundImage: const AssetImage('image/home/profile.png'),
-              radius: screenWidth * 0.13,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.05,
-                vertical: screenWidth * 0.025,
-              ),
-              child: Text(
-                sharedPrefsClient.fullName,
-                style: TextStyle(
-                  fontSize: screenWidth * 0.06 * textScaleFactor,
-                  fontWeight: FontWeight.w600,
-                ),
+            Text(
+              "Profile".tr,
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w500,
               ),
             ),
             SizedBox(
-              width: screenWidth * 0.35,
-              height: screenWidth * 0.08,
+              height: 10.h,
+            ),
+            const CircleAvatar(
+              backgroundColor: Colors.grey,
+              backgroundImage: AssetImage('image/home/profile.png'),
+              radius: 60,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              sharedPrefsClient.fullName,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(
+              height: 5.h,
+            ),
+            SizedBox(
               child: ElevatedButton(
                 style: ButtonStyle(
                   shape: MaterialStatePropertyAll(RoundedRectangleBorder(
@@ -118,8 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
                 child: Text(
                   'Settings'.tr,
-                  style: TextStyle(
-                      fontSize: screenWidth * 0.038 * textScaleFactor),
+                  style: const TextStyle(fontSize: 14),
                 ),
               ),
             ),
@@ -129,50 +125,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildProfileInformation(double screenWidth, double textScaleFactor) {
+  Widget _buildProfileInformation() {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(screenWidth * 0.04),
+        borderRadius: BorderRadius.circular(15),
       ),
-      width: screenWidth * 0.9,
-      margin: EdgeInsets.symmetric(
-        vertical: screenWidth * 0.04,
-        horizontal: screenWidth * 0.05,
-      ),
-      padding: EdgeInsets.symmetric(vertical: screenWidth * 0.03),
+      padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 15.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Container(
-              margin: EdgeInsets.only(
-                top: screenWidth * 0.025,
-                bottom: screenWidth * 0.04,
-              ),
-              child: Text(
-                'Personal Information'.tr,
-                style:
-                    TextStyle(fontSize: screenWidth * 0.04 * textScaleFactor),
-              ),
+            child: Text(
+              'Personal Information'.tr,
+              style: TextStyle(fontSize: 15.sp),
             ),
           ),
-          _buildInfoText('Username'.tr, _controller.info!.name, screenWidth,
-              textScaleFactor),
-          _buildInfoText('email'.tr, _controller.info!.email, screenWidth,
-              textScaleFactor),
-          _buildInfoText('phone'.tr, _controller.info!.phone, screenWidth,
-              textScaleFactor),
+          SizedBox(
+            height: 20.h,
+          ),
+          _buildInfoText('Username'.tr, _controller.info!.name),
+
+          SizedBox(
+            height: 7.h,
+          ),
+          _buildInfoText('email'.tr, _controller.info!.email),
+          SizedBox(
+            height: 7.h,
+          ),
+          _buildInfoText('phone'.tr, _controller.info!.phone),
+          SizedBox(
+            height: 7.h,
+          ),
           _buildInfoText(
-              'Business Name'.tr,
-              _controller.profileData!.businessName,
-              screenWidth,
-              textScaleFactor),
-          _buildInfoText(
-              'Business Competence'.tr,
-              _controller.profileData!.businessCompetence,
-              screenWidth,
-              textScaleFactor),
+              'Business Name'.tr, _controller.profileData!.businessName),
+          SizedBox(
+            height: 7.h,
+          ),
+          _buildInfoText('Business Competence'.tr,
+              _controller.profileData!.businessCompetence),
           // More text fields can be added similarly
         ],
       ),
@@ -180,16 +171,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildInfoText(
-      String label, String value, double screenWidth, double textScaleFactor) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.05,
-        vertical: screenWidth * 0.015,
-      ),
-      child: Text(
-        '$label : $value',
-        style: TextStyle(fontSize: screenWidth * 0.030 * textScaleFactor),
-      ),
+    String label,
+    String value,
+  ) {
+    return Text(
+      '$label : $value',
+      style: TextStyle(fontSize: 12.sp),
     );
   }
 }

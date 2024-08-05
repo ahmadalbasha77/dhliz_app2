@@ -44,7 +44,8 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
         backgroundColor: Colors.white,
-        title: Text(widget.data.name, style: TextStyle(color: Colors.black)),
+        title:
+            Text(widget.data.name, style: const TextStyle(color: Colors.black)),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -99,14 +100,14 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                               left: screenWidth * 0.008,
                               bottom: screenWidth * 0.015),
                           child: Text(widget.data.name,
-                              style: TextStyle(color: Colors.black54)),
+                              style: const TextStyle(color: Colors.black54)),
                         ),
                       ],
                     )
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -115,13 +116,13 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                       horizontal: screenWidth * 0.05),
                   child: Text(
                     'The space to be withdrawn'.tr,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         color: Color.fromARGB(255, 38, 50, 56),
                         fontWeight: FontWeight.w500),
                   )),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 25),
+                margin: const EdgeInsets.symmetric(horizontal: 25),
                 child: TextFormField(
                     validator: (value) {
                       // Check if the capacity is zero
@@ -148,16 +149,15 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                       // All checks passed
                       return null;
                     },
-
                     controller: _controller.space,
                     decoration: InputDecoration(
                         suffixText: 'M²'.tr,
-                        suffixStyle:
-                            TextStyle(fontSize: 16, color: Colors.black54),
+                        suffixStyle: const TextStyle(
+                            fontSize: 16, color: Colors.black54),
                         filled: true,
                         fillColor: Colors.white,
                         label: Text('space'.tr,
-                            style: TextStyle(color: Colors.black54)),
+                            style: const TextStyle(color: Colors.black54)),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none),
@@ -165,7 +165,7 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none))),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
@@ -174,21 +174,22 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                       horizontal: screenWidth * 0.05),
                   child: Text(
                     'Withdrawal date'.tr,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         color: Color.fromARGB(255, 38, 50, 56),
                         fontWeight: FontWeight.w500),
                   )),
               Container(
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                   horizontal: 25,
                 ),
                 child: TextFormField(
-                  validator: (value) {
-                    if(value!.isEmpty){
-                      return 'please enter withdrawal date ';
-                    };
-                  },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'please enter withdrawal date ';
+                      }
+                      return null;
+                    },
                     readOnly: true,
                     controller: _controller.date,
                     onTap: () async {
@@ -200,12 +201,10 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                           lastDate: DateTime(2101));
 
                       if (pickedDate != null) {
-                        print(
-                            pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                        //pickedDate output format => 2021-03-10 00:00:00.000
                         String formattedDate =
                             DateFormat('yyyy-MM-dd').format(pickedDate);
-                        print(
-                            formattedDate); //formatted date output using intl package =>  2021-03-16
+                        //formatted date output using intl package =>  2021-03-16
                         //you can implement different kind of Date Format here according to your requirement
 
                         setState(() {
@@ -213,15 +212,14 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                               formattedDate; //set output date to TextField value.
                         });
                       } else {
-                        print("Date is not selected");
                       }
                     },
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.calendar_month_sharp),
+                      prefixIcon: const Icon(Icons.calendar_month_sharp),
                       filled: true,
                       fillColor: Colors.white,
                       label: Text('date'.tr,
-                          style: TextStyle(color: Colors.black54)),
+                          style: const TextStyle(color: Colors.black54)),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide.none),
@@ -230,21 +228,21 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                           borderSide: BorderSide.none),
                     )),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Row(
                 children: [
                   Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25),
+                      margin: const EdgeInsets.symmetric(horizontal: 25),
                       child: Text("Inventory recipient ID".tr,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                           ))),
                   ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor:
-                              MaterialStatePropertyAll(Colors.white),
+                              const MaterialStatePropertyAll(Colors.white),
                           shape: MaterialStatePropertyAll(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)))),
@@ -253,7 +251,7 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                       },
                       child: Text(
                         'Upload image'.tr,
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       ))
                 ],
               ),
@@ -282,7 +280,7 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
               //         ))
               //   ],
               // ),
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
               // Container(
@@ -361,7 +359,7 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                 child: Container(
                   width: 270,
                   height: 60,
-                  margin: EdgeInsets.only(top: 25),
+                  margin: const EdgeInsets.only(top: 25),
                   child: ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor: const MaterialStatePropertyAll(
@@ -383,7 +381,7 @@ class _WithdrawStockScreenState extends State<WithdrawStockScreen> {
                       child: Text('Withdraw Now'.tr)),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               )
             ],

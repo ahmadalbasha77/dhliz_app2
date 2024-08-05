@@ -1,12 +1,6 @@
-import 'dart:convert';
-
-import 'package:dhliz_app/config/shared_prefs_client.dart';
 import 'package:dhliz_app/models/home/stock_model.dart';
 import 'package:dhliz_app/network/reset_api.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-
-import '../../network/api_url.dart';
 
 class AllStockController extends GetxController {
   static AllStockController get to => Get.isRegistered<AllStockController>()

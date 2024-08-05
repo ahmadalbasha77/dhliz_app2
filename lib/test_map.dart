@@ -42,7 +42,6 @@ class _TestMapState extends State<TestMap> {
       final response = await http.get(filteredUri, headers: headers);
 
       if (response.statusCode == 200) {
-        print('Request successful');
         Map<String, dynamic> responseData = json.decode(response.body);
         if (responseData['isSuccess']) {
           data = responseData['response'][0];
@@ -74,11 +73,8 @@ class _TestMapState extends State<TestMap> {
                   ),
                 );
               } else {
-                print('Latitude or longitude is null for item: $item');
               }
             } else {
-              print(
-                  'Address is null or not in the expected format for item: $item');
             }
           }
 
@@ -93,14 +89,10 @@ class _TestMapState extends State<TestMap> {
           // Trigger a rebuild to display the updated data
           setState(() {});
         } else {
-          print('API returned an error: ${responseData['error']}');
         }
       } else {
-        print('Request failed');
-        print('Failed to load data: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error during HTTP request: $error');
       // Handle errors here
     }
   }
@@ -145,7 +137,6 @@ class _TestMapState extends State<TestMap> {
                 if (capacity != null) {
                   fetchData(capacity: capacity);
                 } else {
-                  print('Invalid capacity value');
                 }
               },
               child: Text('Fetch Data'),

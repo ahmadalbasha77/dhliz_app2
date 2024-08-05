@@ -3,6 +3,7 @@ import 'package:dhliz_app/models/home/stock_model.dart';
 import 'package:dhliz_app/view/new%20home/enter%20inventory/enter_inventory_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -14,7 +15,8 @@ class EnterInventoryNewScreen extends StatefulWidget {
   const EnterInventoryNewScreen({super.key, required this.id});
 
   @override
-  State<EnterInventoryNewScreen> createState() => _EnterInventoryNewScreenState();
+  State<EnterInventoryNewScreen> createState() =>
+      _EnterInventoryNewScreenState();
 }
 
 class _EnterInventoryNewScreenState extends State<EnterInventoryNewScreen> {
@@ -22,8 +24,6 @@ class _EnterInventoryNewScreenState extends State<EnterInventoryNewScreen> {
 
   @override
   void initState() {
-
-    print('EnterStockScreen initiated with ID: ${widget.id}');
     _controller.id = widget.id;
     super.initState();
     _controller.pagingController.addPageRequestListener((pageKey) {
@@ -33,7 +33,6 @@ class _EnterInventoryNewScreenState extends State<EnterInventoryNewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 231, 231, 231),
         appBar: AppBar(
@@ -45,108 +44,117 @@ class _EnterInventoryNewScreenState extends State<EnterInventoryNewScreen> {
           ),
           centerTitle: true,
         ),
-        body: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                // Container(
-                //   margin: EdgeInsets.all(25),
-                //   child: Icon(Icons.filter_list, size: 30),
-                // ),
-                Container(
-                  margin: EdgeInsets.all(25),
-                  height: 60,
-                  width: 160,
-                  child: ElevatedButton(
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.w,
+          ),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
                       style: ButtonStyle(
+                          padding: MaterialStatePropertyAll(
+                              EdgeInsets.symmetric(
+                                  horizontal: 35.w, vertical: 10.h)),
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20))),
+                                  borderRadius: BorderRadius.circular(15))),
                           backgroundColor: MaterialStateProperty.all(
-                              Color.fromRGBO(80, 46, 144, 1.0))),
+                              const Color.fromRGBO(80, 46, 144, 1.0))),
                       onPressed: () {
                         Get.off(() => AddStockNewScreen(
                               id: _controller.id.toString(),
                             ));
                       },
-                      child: Text("Add Item".tr)),
-                )
-              ],
-            ),
-            Expanded(
-              child: PagedListView<int, StockDataModel>(
-                  pagingController: _controller.pagingController,
-                  builderDelegate: PagedChildBuilderDelegate<StockDataModel>(
-                      itemBuilder: (context, item, index) {
-                    return Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 25),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.white),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 15),
-                                  child: Text(item.name,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500)),
-                                ),
-                                Row(
+                      child: Text("Add Item".tr))
+                ],
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              Expanded(
+                child: PagedListView<int, StockDataModel>(
+                    pagingController: _controller.pagingController,
+                    builderDelegate: PagedChildBuilderDelegate<StockDataModel>(
+                        itemBuilder: (context, item, index) {
+                      return Container(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 10,
+                          ),
+                          padding: const EdgeInsets.only(
+                              left: 15, right: 15, top: 10,bottom: 5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.white),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 5, horizontal: 20),
-                                        child: Text(
-                                          '${'space'.tr} : ${item.capacity} ',
-                                          style: const TextStyle(
-                                              color: Colors.black54,
-                                              fontSize: 13),
-                                        )),
-                                    Text(
-                                      '${'Stock ID'.tr} : ${item.id}',
-                                      style: const TextStyle(
-                                          color: Colors.black54, fontSize: 13),
+                                    Text(item.name,
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500)),
+                                    SizedBox(
+                                      height: 10.h,
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 20),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          Get.to(() =>
-                                              EnterInventoryScreen(data: item));
-                                        },
-                                        child: Text('Enter Stock'.tr,
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            '${'Stock ID'.tr} : ${item.id}',
                                             style: const TextStyle(
-                                                color: Colors.black)),
-                                      ),
+                                                color: Colors.black54,
+                                                fontSize: 13),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            '${'space'.tr} : ${item.capacity}',
+                                            style: const TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 13),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    TextButton(
+                                      style: const ButtonStyle(
+                                          padding: MaterialStatePropertyAll(
+                                              EdgeInsets.all(0))),
+                                      onPressed: () {
+                                        Get.to(() =>
+                                            EnterInventoryScreen(data: item));
+                                      },
+                                      child: Text('Enter Stock'.tr,
+                                          style: const TextStyle(
+                                              color: Colors.black)),
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 110,
-                              child: CircleAvatar(
-                                  radius: 40,
-                                  backgroundImage: NetworkImage(item.photo)),
-                            )
-                          ],
-                        ));
-                  })),
-            ),
-          ],
+                              ),
+                              CircleAvatar(
+                                  radius: 45,
+                                  backgroundImage: NetworkImage(item.photo))
+                            ],
+                          ));
+                    })),
+              ),
+            ],
+          ),
         ));
   }
 }

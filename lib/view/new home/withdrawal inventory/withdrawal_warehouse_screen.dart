@@ -118,8 +118,7 @@ class _WithdrawalWarehouseNewScreenState
                           )),
 
                       Container(
-                        margin:
-                        const EdgeInsets.symmetric(vertical: 5),
+                        margin: const EdgeInsets.symmetric(vertical: 5),
                         child: Text(
                             '${'Subscription status'.tr} : ${item.status == 0 ? 'Under Review'.tr : item.status == 1 ? 'Accepted'.tr : item.status == 2 ? 'Rejected'.tr : item.status == 3 ? 'PreliminaryApproval'.tr : 'Error'.tr} ',
                             style: TextStyle(
@@ -127,15 +126,15 @@ class _WithdrawalWarehouseNewScreenState
                                 color: item.status == 0
                                     ? Colors.orange
                                     : item.status == 2
-                                    ? Colors.red
-                                    : Colors.green)),
+                                        ? Colors.red
+                                        : Colors.green)),
                       ),
                       const SizedBox(
                         height: 5,
                       ),
                       if (item.status == 1 || item.status == 3)
                         Container(
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: item.status == 1
@@ -156,93 +155,29 @@ class _WithdrawalWarehouseNewScreenState
                           '${'Temperature'.tr} : ${item.temperature.fromTemperature} - ${item.temperature.toTemperature} ${'°C'.tr}'
                               .tr,
                           style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold)),
+                              fontSize: 14, fontWeight: FontWeight.bold)),
                       const SizedBox(
                         height: 10,
                       ),
                       Text(
                           '${'Cost'.tr} : ${item.temperature.cost}  ${'SAR/M2'.tr}',
                           style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold)),
-                      // Row(
-                      //   mainAxisAlignment:
-                      //       MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Row(children: [
-                      //       AbsorbPointer(
-                      //         absorbing: true,
-                      //         child: Checkbox(
-                      //           fillColor:
-                      //               const MaterialStatePropertyAll(
-                      //                   Colors.black),
-                      //           value: _controller.temperature!.dry,
-                      //           onChanged: (value) {},
-                      //         ),
-                      //       ),
-                      //       Text(
-                      //         'Dry'.tr,
-                      //         style: const TextStyle(
-                      //           fontSize: 12,
-                      //         ),
-                      //       ),
-                      //     ]),
-                      //     Row(children: [
-                      //       AbsorbPointer(
-                      //         absorbing: true,
-                      //         child: Checkbox(
-                      //           fillColor:
-                      //               const MaterialStatePropertyAll(
-                      //                   Colors.black),
-                      //           value: _controller.temperature!.cold,
-                      //           onChanged: (bool? value) {},
-                      //         ),
-                      //       ),
-                      //       Text(
-                      //         'Cold'.tr,
-                      //         style: const TextStyle(
-                      //           fontSize: 12,
-                      //         ),
-                      //       ),
-                      //     ]),
-                      //     Row(children: [
-                      //       AbsorbPointer(
-                      //         absorbing: true,
-                      //         child: Checkbox(
-                      //           fillColor:
-                      //               const MaterialStatePropertyAll(
-                      //                   Colors.black),
-                      //           value:
-                      //               _controller.temperature!.freezing,
-                      //           onChanged: (bool? value) {},
-                      //         ),
-                      //       ),
-                      //       Text(
-                      //         'Freezing'.tr,
-                      //         style: const TextStyle(
-                      //           fontSize: 12,
-                      //         ),
-                      //       ),
-                      //     ]),
-                      //   ],
-                      // ),
-                      SizedBox(
+                              fontSize: 14, fontWeight: FontWeight.bold)),
+
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
                         children: [
                           Text('Used'.tr,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14, color: Colors.black54)),
                           LinearPercentIndicator(
-                            barRadius: Radius.circular(15),
+                            barRadius: const Radius.circular(15),
                             width: 190.w,
                             lineHeight: 14.0,
                             trailing: Text(
-                              ((item.spaceUsed / item.reservedSpace) * 100)
-                                      .toStringAsFixed(1) +
-                                  '%', // Adjust the number of decimal places as needed
+                              '${((item.spaceUsed / item.reservedSpace) * 100).toStringAsFixed(1)}%', // Adjust the number of decimal places as needed
                             ),
                             // percent:
                             //     (item.spaceUsed / item.reservedSpace) * 100,
@@ -281,14 +216,17 @@ class _WithdrawalWarehouseNewScreenState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '${'Expired WH'.tr}: ${item.endDate}',
-                            style: const TextStyle(
-                                fontSize: 13, color: Colors.black54),
+                          Expanded(
+                            child: Text(
+                              '${'Expired WH'.tr}: ${item.endDate}',
+                              style: const TextStyle(
+                                  fontSize: 13, color: Colors.black54),
+                            ),
                           ),
                           item.status == 3
                               ? Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: ElevatedButton(
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStatePropertyAll(
@@ -303,27 +241,6 @@ class _WithdrawalWarehouseNewScreenState
                                   ),
                                 )
                               : Container()
-                          // SizedBox(
-                          //   height: 30,
-                          //   child: ElevatedButton(
-                          //       style: ButtonStyle(
-                          //           shape: MaterialStatePropertyAll(
-                          //               RoundedRectangleBorder(
-                          //                   borderRadius:
-                          //                       BorderRadius.circular(
-                          //                           10))),
-                          //           backgroundColor:
-                          //               MaterialStatePropertyAll(
-                          //             Color.fromARGB(255, 253, 191, 8),
-                          //           )),
-                          //       onPressed: () {
-                          //         Get.off(ThankYouScreen());
-                          //       },
-                          //       child: Text(
-                          //         'Upgrade Space'.tr,
-                          //         style: TextStyle(fontSize: 10),
-                          //       )),
-                          // )
                         ],
                       ),
                     ],

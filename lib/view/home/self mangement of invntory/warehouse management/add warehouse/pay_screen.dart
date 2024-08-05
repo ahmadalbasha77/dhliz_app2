@@ -47,9 +47,6 @@ class _PayScreenState extends State<PayScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.capacity);
-    print(widget.info.id);
-    print('==============================');
   }
 
   bool isLoading = false;
@@ -80,8 +77,6 @@ class _PayScreenState extends State<PayScreen> {
       body: jsonEncode(requestBody),
     );
     var result = jsonDecode(response.body);
-    print(result);
-    print(result['isSuccess']);
     if (response.statusCode == 200) {
       if (result['isSuccess'] == true) {
         Get.off(() => MyWarehousesScreen());
@@ -106,9 +101,6 @@ class _PayScreenState extends State<PayScreen> {
         text: 'Error Send subscription request!',
         showConfirmBtn: false,
       );
-      print("Failed to make POST request. Status code: ${response.statusCode}");
-      print("Response: ${response.body}");
-      print("Request Body: $requestBody");
     }
     setState(() {
       isLoading = false;
@@ -314,9 +306,6 @@ class _PayScreenState extends State<PayScreen> {
                   : () {
                       // final totalPrice = calculateTotalPrice();
                       postData();
-                      print('888888888888888888888888888888');
-                      print(sharedPrefsClient.customerId);
-                      print('888888888888888888888888888888');
                       // Get.off(PaymentScreen(
                       //   from: widget.from,
                       //   to: widget.to,

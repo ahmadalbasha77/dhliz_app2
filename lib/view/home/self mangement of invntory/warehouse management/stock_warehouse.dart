@@ -28,7 +28,6 @@ class _StockWarehouseState extends State<StockWarehouse> {
             '${ApiUrl.API_BASE_URL}/Stock/Find?SubscriptionId=${widget.id}&PageIndex=0&PageSize=100'),
         headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
-    print(response.body);
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
@@ -39,7 +38,6 @@ class _StockWarehouseState extends State<StockWarehouse> {
           data = List<Map<String, dynamic>>.from(responseData);
         });
       } else {
-        print('Invalid response structure');
       }
     } else {
       throw Exception('Failed to load data');

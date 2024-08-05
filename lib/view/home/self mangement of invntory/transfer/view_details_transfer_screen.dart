@@ -44,7 +44,6 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
             '${ApiUrl.API_BASE_URL2}/api/Stock/Find?CustomerName=${sharedPrefsClient.fullName}&PageIndex=0&PageSize=100'),
         headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
-    print(response.body);
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
@@ -55,7 +54,6 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
           dataAllStock = List<Map<String, dynamic>>.from(responseData);
         });
       } else {
-        print('Invalid response structure');
       }
     } else {
       throw Exception('Failed to load data');
@@ -85,13 +83,9 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
     );
 
     if (response.statusCode == 200) {
-      print(requestBody);
-      print("POST request successful!");
-      print("Response: ${response.body}");
 
       // Parse the JSON response
       Map<String, dynamic> jsonResponse = json.decode(response.body);
-      print(jsonResponse);
       Get.back();
       QuickAlert.show(
         context: context,
@@ -105,8 +99,6 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
       );
       // Now you can use the postId variable as needed.
     } else {
-      print("Failed to make POST request. Status code: ${response.statusCode}");
-      print("Response: ${response.body}");
     }
   }
 
@@ -117,10 +109,7 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
 
   @override
   void initState() {
-    print('+++++++++++++++++++');
     data = widget.dataStock;
-    print(widget.dataStock);
-    print('________________________________*******************');
     fetchData();
     super.initState();
   }
@@ -318,7 +307,6 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
                 onChanged: (val) {
                   setState(() {
                     selected = val;
-                    print(selected);
                   });
                 },
                 items: dataAllStock.map((item) {
@@ -364,12 +352,10 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
                         lastDate: DateTime(2101));
 
                     if (pickedDate != null) {
-                      print(
-                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                      //pickedDate output format => 2021-03-10 00:00:00.000
                       String formattedDate =
                           DateFormat('yyyy-MM-dd').format(pickedDate);
-                      print(
-                          formattedDate); //formatted date output using intl package =>  2021-03-16
+                      //formatted date output using intl package =>  2021-03-16
                       //you can implement different kind of Date Format here according to your requirement
 
                       setState(() {
@@ -377,7 +363,6 @@ class _ViewDetailsTransferScreenState extends State<ViewDetailsTransferScreen> {
                             formattedDate; //set output date to TextField value.
                       });
                     } else {
-                      print("Date is not selected");
                     }
                   },
                   decoration: InputDecoration(

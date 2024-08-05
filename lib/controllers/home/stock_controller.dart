@@ -26,14 +26,9 @@ class StockController extends GetxController {
       if (result != null && result.response.isNotEmpty) {
         final List<StockDataModel> flatList = result.response;
         final isLastPage = flatList.length < 10;
-        print(flatList.length);
-        print(currentPageSize);
-        print('********************************');
         if (isLastPage) {
-          print('aaaaaaaaaaaaaaaaaaa');
           pagingController.appendLastPage(flatList);
         } else {
-          print('00000000000000000000000000');
           pagingController.appendPage(
               flatList, 10); // Use a constant pageKey = 10
         }

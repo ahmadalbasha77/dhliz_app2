@@ -36,7 +36,6 @@ class _DeliveryLocationScreenState extends State<DeliveryLocationScreen> {
         );
       }
     } catch (e) {
-      print("Error checking or requesting permission: $e");
     }
 
     if (service && per == LocationPermission.whileInUse) {
@@ -86,9 +85,6 @@ class _DeliveryLocationScreenState extends State<DeliveryLocationScreen> {
                       marker.add(Marker(
                           position: myLocation, markerId: MarkerId('1')));
                       setState(() {
-                        print('=====================');
-                        print(tapLocation.latitude);
-                        print(tapLocation.longitude);
                         myLocation = tapLocation;
 
                       });
@@ -104,9 +100,6 @@ class _DeliveryLocationScreenState extends State<DeliveryLocationScreen> {
                           Color.fromARGB(255, 35, 37, 56),
                         )),
                         onPressed: () {
-                          print(myLocation.latitude);
-                          print(myLocation.longitude);
-                          print('Button Pressed!');
                           Get.back();
                         },
                         child: Text('Confirm location'.tr),

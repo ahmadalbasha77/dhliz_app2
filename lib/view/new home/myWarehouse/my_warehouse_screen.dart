@@ -83,8 +83,8 @@ class _MyWarehousesScreenState extends State<MyWarehousesScreen> {
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.white,
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 15),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15.w, vertical: 12.h),
                           child: InkWell(
                             onTap: () {
                               item.status == 1
@@ -101,45 +101,42 @@ class _MyWarehousesScreenState extends State<MyWarehousesScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      item.warehouse.name,
-                                      style: const TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w500),
+                                    Expanded(
+                                      child: Text(
+                                        item.warehouse.name,
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500),
+                                      ),
                                     ),
-                                    SizedBox(
-                                      height: 35,
-                                      child: ElevatedButton(
-                                          style: ButtonStyle(
-                                              shape: MaterialStatePropertyAll(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15))),
-                                              backgroundColor:
-                                                  const MaterialStatePropertyAll(
-                                                Color.fromRGBO(
-                                                    80, 46, 144, 1.0),
-                                              )),
-                                          onPressed: () {
-                                            Get.to(MapWarehouseScreen(
-                                              nameWh: item.warehouse.name,
-                                              lat: double.parse(
-                                                  item.address.lat),
-                                              lon: double.parse(
-                                                  item.address.lot),
-                                            ));
-                                          },
-                                          child: Text(
-                                            'View map'.tr,
-                                            style:
-                                                const TextStyle(fontSize: 12),
-                                          )),
-                                    )
+                                    ElevatedButton(
+                                        style: ButtonStyle(
+                                            shape: MaterialStatePropertyAll(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15))),
+                                            backgroundColor:
+                                                const MaterialStatePropertyAll(
+                                              Color.fromRGBO(80, 46, 144, 1.0),
+                                            )),
+                                        onPressed: () {
+                                          Get.to(() => MapWarehouseScreen(
+                                                nameWh: item.warehouse.name,
+                                                lat: double.parse(
+                                                    item.address.lat),
+                                                lon: double.parse(
+                                                    item.address.lot),
+                                              ));
+                                        },
+                                        child: Text(
+                                          'View map'.tr,
+                                          style: const TextStyle(fontSize: 12),
+                                        ))
                                   ],
                                 ),
-                                const SizedBox(
-                                  height: 10,
+                                SizedBox(
+                                  height: 10.h,
                                 ),
                                 Text(
                                     '${'Address'.tr} : ${item.address.city} , ${item.address.state} ,${item.address.street}',
@@ -165,7 +162,7 @@ class _MyWarehousesScreenState extends State<MyWarehousesScreen> {
                                 ),
                                 if (item.status == 1 || item.status == 3)
                                   Container(
-                                    padding: EdgeInsets.all(5),
+                                    padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
                                         border: Border.all(
                                             color: item.status == 1
@@ -196,85 +193,22 @@ class _MyWarehousesScreenState extends State<MyWarehousesScreen> {
                                     style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold)),
-                                // Row(
-                                //   mainAxisAlignment:
-                                //       MainAxisAlignment.spaceBetween,
-                                //   children: [
-                                //     Row(children: [
-                                //       AbsorbPointer(
-                                //         absorbing: true,
-                                //         child: Checkbox(
-                                //           fillColor:
-                                //               const MaterialStatePropertyAll(
-                                //                   Colors.black),
-                                //           value: _controller.temperature!.dry,
-                                //           onChanged: (value) {},
-                                //         ),
-                                //       ),
-                                //       Text(
-                                //         'Dry'.tr,
-                                //         style: const TextStyle(
-                                //           fontSize: 12,
-                                //         ),
-                                //       ),
-                                //     ]),
-                                //     Row(children: [
-                                //       AbsorbPointer(
-                                //         absorbing: true,
-                                //         child: Checkbox(
-                                //           fillColor:
-                                //               const MaterialStatePropertyAll(
-                                //                   Colors.black),
-                                //           value: _controller.temperature!.cold,
-                                //           onChanged: (bool? value) {},
-                                //         ),
-                                //       ),
-                                //       Text(
-                                //         'Cold'.tr,
-                                //         style: const TextStyle(
-                                //           fontSize: 12,
-                                //         ),
-                                //       ),
-                                //     ]),
-                                //     Row(children: [
-                                //       AbsorbPointer(
-                                //         absorbing: true,
-                                //         child: Checkbox(
-                                //           fillColor:
-                                //               const MaterialStatePropertyAll(
-                                //                   Colors.black),
-                                //           value:
-                                //               _controller.temperature!.freezing,
-                                //           onChanged: (bool? value) {},
-                                //         ),
-                                //       ),
-                                //       Text(
-                                //         'Freezing'.tr,
-                                //         style: const TextStyle(
-                                //           fontSize: 12,
-                                //         ),
-                                //       ),
-                                //     ]),
-                                //   ],
-                                // ),
-                                SizedBox(
+
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 Row(
                                   children: [
                                     Text('Used'.tr,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.black54)),
                                     LinearPercentIndicator(
-                                      barRadius: Radius.circular(15),
+                                      barRadius: const Radius.circular(15),
                                       width: 190.w,
                                       lineHeight: 14.0,
                                       trailing: Text(
-                                        ((item.spaceUsed / item.reservedSpace) *
-                                                    100)
-                                                .toStringAsFixed(1) +
-                                            '%', // Adjust the number of decimal places as needed
+                                        '${((item.spaceUsed / item.reservedSpace) * 100).toStringAsFixed(1)}%', // Adjust the number of decimal places as needed
                                       ),
                                       // percent: (item.spaceUsed /
                                       //     item.reservedSpace) *
@@ -316,14 +250,17 @@ class _MyWarehousesScreenState extends State<MyWarehousesScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      '${'Expired WH'.tr}: ${item.endDate}',
-                                      style: const TextStyle(
-                                          fontSize: 13, color: Colors.black54),
+                                    Expanded(
+                                      child: Text(
+                                        '${'Expired WH'.tr}: ${item.endDate}',
+                                        style: const TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.black54),
+                                      ),
                                     ),
                                     item.status == 3
                                         ? Container(
-                                            margin: EdgeInsets.symmetric(
+                                            margin: const EdgeInsets.symmetric(
                                                 horizontal: 10),
                                             child: ElevatedButton(
                                               style: ButtonStyle(
@@ -339,28 +276,7 @@ class _MyWarehousesScreenState extends State<MyWarehousesScreen> {
                                               child: Text('Pay Now'.tr),
                                             ),
                                           )
-                                        : Container()
-                                    // SizedBox(
-                                    //   height: 30,
-                                    //   child: ElevatedButton(
-                                    //       style: ButtonStyle(
-                                    //           shape: MaterialStatePropertyAll(
-                                    //               RoundedRectangleBorder(
-                                    //                   borderRadius:
-                                    //                       BorderRadius.circular(
-                                    //                           10))),
-                                    //           backgroundColor:
-                                    //               MaterialStatePropertyAll(
-                                    //             Color.fromARGB(255, 253, 191, 8),
-                                    //           )),
-                                    //       onPressed: () {
-                                    //         Get.off(ThankYouScreen());
-                                    //       },
-                                    //       child: Text(
-                                    //         'Upgrade Space'.tr,
-                                    //         style: TextStyle(fontSize: 10),
-                                    //       )),
-                                    // )
+                                        : const SizedBox.shrink()
                                   ],
                                 ),
                               ],

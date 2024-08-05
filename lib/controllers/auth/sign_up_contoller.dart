@@ -48,7 +48,6 @@ class RegisterController extends GetxController {
       }));
 
       if (registerModel!.isSuccess == true) {
-        print(registerModel!.response.email);
         var response = registerModel!.response;
         sharedPrefsClient.accessToken = response.token;
         sharedPrefsClient.fullName = response.username;

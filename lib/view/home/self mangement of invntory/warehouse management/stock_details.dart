@@ -99,13 +99,11 @@ class _StockDetailsState extends State<StockDetails> {
                       SizedBox(
                         height: 15,
                       ),
-                      Container(
-                        child: Text(
-                            '${'Stock capacity'.tr}: ${widget.data['capacity']} ${'M²'.tr}',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: screenWidth * 0.04)),
-                      ),
+                      Text(
+                          '${'Stock capacity'.tr}: ${widget.data['capacity']} ${'M²'.tr}',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.04)),
                       SizedBox(
                         height: 15,
                       ),

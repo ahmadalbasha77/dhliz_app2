@@ -26,7 +26,6 @@ class ProfileController extends GetxController {
       // address = info!.address;
 
     } else {
-      print('error');
     }
     update();
   }

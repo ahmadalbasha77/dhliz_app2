@@ -281,7 +281,6 @@ class _TransferStockScreenState extends State<TransferStockScreen> {
                                 formattedDate; //set output date to TextField value.
                           });
                         } else {
-                          print("Date is not selected");
                         }
                       },
                       decoration: InputDecoration(
@@ -347,14 +346,12 @@ class _TransferStockScreenState extends State<TransferStockScreen> {
                         onPressed: () {
                           if (_key.currentState!.validate()) {
                             if (_controller.selectedImage != null) {
-                              print('Form validated');
                               _controller.transferStock(context, actionType: '2');
                             } else {
                               Utils.showSnackbar(
                                   'warning', 'please upload image'.tr);
                             }
                           } else {
-                            print('Form validation failed');
                             if (_controller.selectedImage == null) {
                               Utils.showSnackbar(
                                   'warning', 'please upload image'.tr);

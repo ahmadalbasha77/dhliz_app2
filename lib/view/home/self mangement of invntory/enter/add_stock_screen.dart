@@ -80,13 +80,9 @@ class _AddStockScreenState extends State<AddStockScreen> {
     );
 
     if (response.statusCode == 200) {
-      print("POST request successful!");
-      print("Response: ${response.body}");
 
       // Parse the JSON response
       Map<String, dynamic> jsonResponse = json.decode(response.body);
-      print(jsonResponse['response'][0]);
-      print('***********************************');
 
       Get.off(() => InventoryDetailsScreen(
             data: jsonResponse['response'][0],
@@ -96,8 +92,6 @@ class _AddStockScreenState extends State<AddStockScreen> {
       });
       // Now you can use the postId variable as needed.
     } else {
-      print("Failed to make POST request. Status code: ${response.statusCode}");
-      print("Response: ${response.body}");
     }
   }
 
@@ -144,16 +138,12 @@ class _AddStockScreenState extends State<AddStockScreen> {
       final responseData = await response.stream.toBytes();
       final responseString = utf8.decode(responseData);
       Map<String, dynamic> jsonResponse = json.decode(responseString);
-      print(jsonResponse['response'][0]);
-      print('***********************************');
 
       Get.off(() => InventoryDetailsScreen(
             data: jsonResponse['response'][0],
           ));
-      print('Stock created successfully');
     } else {
       // Handle error response
-      print('Failed to create stock. Status code: ${response.statusCode}');
     }
   }
 
@@ -175,7 +165,6 @@ class _AddStockScreenState extends State<AddStockScreen> {
       final imageTemp = File(image.path);
       setState(() => this._image = imageTemp);
     } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
     }
   }
 
@@ -186,10 +175,7 @@ class _AddStockScreenState extends State<AddStockScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        print(_image!.path);
-        print('=====================');
       } else {
-        print('No image selected.');
       }
     });
   }
@@ -238,7 +224,6 @@ class _AddStockScreenState extends State<AddStockScreen> {
 
   @override
   void initState() {
-    print(widget.id);
     super.initState();
   }
 

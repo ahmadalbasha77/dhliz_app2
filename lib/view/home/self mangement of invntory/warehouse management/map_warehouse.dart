@@ -24,7 +24,6 @@ class _MapWarehouseScreenState extends State<MapWarehouseScreen> {
         'image/map/warehoues.png',
       );
     } catch (e) {
-      print('Error loading custom icon: $e');
     }
   }
 

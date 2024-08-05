@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:dhliz_app/config/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -56,7 +59,7 @@ class EnterStockController extends GetxController {
                 title: Text("From the gallery".tr),
                 onTap: () {
                   _pickImageFromGallery();
-                  Navigator.of(context).pop();
+                  Get.back();
                 },
               ),
               ListTile(
@@ -64,7 +67,7 @@ class EnterStockController extends GetxController {
                 title: Text("Take photo".tr),
                 onTap: () {
                   _takePicture();
-                  Navigator.of(context).pop();
+                  Get.back();
                 },
               ),
             ],
@@ -76,7 +79,7 @@ class EnterStockController extends GetxController {
 
   Future<void> enterStock(BuildContext context,
       {required String actionType}) async {
-    print(stockId.text);
+    Utils.showLoadingDialog();
     var uri = Uri.parse('${ApiUrl.API_BASE_URL2}/api/Transaction/Create');
     var request = http.MultipartRequest('POST', uri)
       ..headers['Authorization'] = 'Bearer ${sharedPrefsClient.accessToken}'
@@ -94,13 +97,8 @@ class EnterStockController extends GetxController {
     try {
       var response = await request.send();
 
-      print('*****************************');
-      print(response.request);
-      print(response.statusCode);
-      print('88888888888888888888888888888');
-      print(request.fields);
       if (response.statusCode == 200) {
-        print('Stock status updated successfully.');
+        Utils.hideLoadingDialog();
 
         Get.back();
         Get.back();
@@ -108,13 +106,15 @@ class EnterStockController extends GetxController {
             context: context,
             type: QuickAlertType.success,
             text:
-                'A new entry transaction request has been sent. Please wait for approval'.tr,
+                'A new entry transaction request has been sent. Please wait for approval'
+                    .tr,
             showConfirmBtn: true,
             confirmBtnColor: Colors.white,
             confirmBtnTextStyle: const TextStyle(color: Colors.black),
             title: 'Completed Successfully!',
             textAlignment: TextAlign.center);
       } else {
+        Utils.hideLoadingDialog();
         QuickAlert.show(
             context: context,
             type: QuickAlertType.error,
@@ -124,11 +124,12 @@ class EnterStockController extends GetxController {
             confirmBtnTextStyle: const TextStyle(color: Colors.black),
             title: 'Error!',
             textAlignment: TextAlign.center);
-        print(
-            'Failed to update stock status. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error occurred: $e');
+      log('$e');
+    }finally{
+      Utils.hideLoadingDialog();
+      update();
     }
   }
 // Future<void> enterStock(BuildContext context) async {

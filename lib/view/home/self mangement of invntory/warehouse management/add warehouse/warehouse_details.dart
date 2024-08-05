@@ -17,11 +17,11 @@ class WarehouseDetails extends StatefulWidget {
   final String inventoryDescription;
   final int capacity;
   final LatLng inventoryLocation;
-  String temp;
-  int tempId;
-  MarkerInfo info;
+  final String temp;
+  final int tempId;
+  final MarkerInfo info;
 
-  WarehouseDetails({
+  const WarehouseDetails({
     super.key,
     required this.totalAmount,
     required this.cost,
@@ -36,10 +36,10 @@ class WarehouseDetails extends StatefulWidget {
   });
 
   @override
-  _WarehouseDetailsState createState() => _WarehouseDetailsState();
+  WarehouseDetailsState createState() => WarehouseDetailsState();
 }
 
-class _WarehouseDetailsState extends State<WarehouseDetails> {
+class WarehouseDetailsState extends State<WarehouseDetails> {
   BitmapDescriptor? customIcon1;
   BitmapDescriptor? customIconPickedLocation;
 
@@ -57,12 +57,12 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
 
   void _loadCustomIcons() async {
     customIcon1 = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
+      const ImageConfiguration(devicePixelRatio: 2.5),
       'image/ios/warehoues.png',
     );
 
     customIconPickedLocation = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
+      const ImageConfiguration(devicePixelRatio: 2.5),
       'image/ios/inventory.png',
     );
 
@@ -104,7 +104,6 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
         setState(() {
           address =
               '${placemark.locality} , ${placemark.administrativeArea}, ${placemark.street},';
-          print(address);
         });
       } else {
         setState(() {
@@ -112,10 +111,8 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
         });
       }
     } catch (e) {
-      print(e);
       setState(() {
         address = 'Error occurred while fetching the address $e';
-        print(address);
       });
     }
   }
@@ -129,27 +126,27 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 '${'Warehouse Name'.tr}: ${widget.info.nameWarehouse}',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 6.h,
               ),
               Text(
                 '${'phone'.tr}: ${widget.info.phone} ',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               SizedBox(
                 height: 6.h,
               ),
               Text(
                 '${'The cost'.tr}: ${widget.cost} ${'SAR/M²'.tr}',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               // SizedBox(
               //   height: 6.h,
@@ -170,31 +167,31 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
               ),
               Text(
                 '${'Temperature'.tr}: ${widget.temp} ${'°C'.tr}',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               SizedBox(
                 height: 7.h,
               ),
               Text(
                 '${'warehouse location'.tr}:',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 7.h,
               ),
               Text(
                 '${'Address'.tr} :  ',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               SizedBox(
                 height: 5.h,
               ),
               Text(
                 widget.info.address,
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 40),
-              Container(
+              const SizedBox(height: 40),
+              SizedBox(
                 height: 350,
                 child: GoogleMap(
                   initialCameraPosition: CameraPosition(
@@ -204,13 +201,13 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                   markers: {
                     if (customIcon1 != null)
                       Marker(
-                        markerId: MarkerId('warehouseLocation'),
+                        markerId: const MarkerId('warehouseLocation'),
                         position: widget.info.position,
                         icon: customIcon1!,
                       ),
                     if (customIconPickedLocation != null)
                       Marker(
-                        markerId: MarkerId('inventoryLocation'),
+                        markerId: const MarkerId('inventoryLocation'),
                         position: widget.inventoryLocation,
                         icon: customIconPickedLocation!,
                       ),
@@ -218,27 +215,25 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                   polylines: {
                     if (polylineCoordinates.isNotEmpty)
                       Polyline(
-                        polylineId: PolylineId('route'),
+                        polylineId: const PolylineId('route'),
                         color: Colors.blue,
                         points: polylineCoordinates,
                         width: 5,
                       ),
                   },
                   onMapCreated: (controller) {
-                    if (controller != null) {
-                      mapController = controller;
-                    }
-                  },
+                    mapController = controller;
+                                    },
                 ),
               ),
               Center(
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                   width: 250.w,
                   height: 45.h,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      elevation: MaterialStatePropertyAll(0),
+                      elevation: const MaterialStatePropertyAll(0),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       )),
@@ -263,7 +258,7 @@ class _WarehouseDetailsState extends State<WarehouseDetails> {
                     },
                     child: Text(
                       'Continue'.tr,
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ),
                 ),

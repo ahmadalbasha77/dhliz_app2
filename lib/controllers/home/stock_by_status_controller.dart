@@ -20,7 +20,6 @@ class MatchingController extends GetxController {
   void updateFilter(String newFilter) {
     customerNameFilter = newFilter;
     currentPageSize = 0;
-    print('*$customerNameFilter*');
     // refreshTransactions();
   }
 
@@ -33,11 +32,8 @@ class MatchingController extends GetxController {
     required int pageKey,
   }) async {
     try {
-      print('Fetching transactions for page: $pageKey');
-      print('Using customer name filter: $customerNameFilter');
 
       currentPageSize++;
-      print(currentPageSize);
       final result = await RestApi.getTransactionForMatching(
         skip: currentPageSize,
         take: 10,
@@ -57,7 +53,6 @@ class MatchingController extends GetxController {
         pagingController.appendLastPage([]);
       }
     } catch (error) {
-      print('Error fetching transactions: $error');
       pagingController.error = error;
     }
   }

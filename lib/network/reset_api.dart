@@ -24,7 +24,6 @@ class RestApi {
       'Content-Type': 'application/json',
     };
     http.Response response = await http.post(uri, headers: headers, body: body);
-    print(response.statusCode);
     if (response.statusCode == 200) {
       log(response.body);
       UserResponse userResponse =
@@ -70,7 +69,6 @@ class RestApi {
         .fullName}&PageIndex=$skip&PageSize=$take';
     Uri uri = Uri.parse(url);
 
-    print(url);
     var headers = {
       'accept': '*/*',
       'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
@@ -100,7 +98,6 @@ class RestApi {
     };
 
     http.Response response = await http.get(uri, headers: headers);
-    print(response.body);
     if (response.statusCode == 200) {
       ProfileModel profileModel =
       ProfileModel.fromJson(jsonDecode(response.body));
@@ -117,8 +114,6 @@ class RestApi {
         .GetSubscriptions}?CustomerId=${sharedPrefsClient
         .customerId}&PageIndex=$skip&PageSize=$take';
     Uri uri = Uri.parse(url);
-    print(sharedPrefsClient.accessToken);
-    print(url);
     var headers = {
       'accept': '*/*',
       'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
@@ -266,9 +261,7 @@ class RestApi {
     };
 
     http.Response response = await http.post(uri, body: body, headers: headers);
-    print(body);
 
-    print(response.body);
     if (response.statusCode == 200) {
       log(response.body);
 
@@ -294,8 +287,6 @@ class RestApi {
     };
 
     http.Response response = await http.get(uri, headers: headers);
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       TransactionModel transactionModel =
       TransactionModel.fromJson(jsonDecode(response.body));
@@ -322,7 +313,6 @@ class RestApi {
       request.fields[key] = value;
     });
 
-    print(fields);
     request.files.add(await http.MultipartFile.fromPath(
       'File',
       filePath,
@@ -330,28 +320,17 @@ class RestApi {
 
     var response = await request.send();
 
-    print('*******************');
-    print(response.request);
-    print(response.statusCode);
-    print('*****************');
     if (response.statusCode == 200) {
       final responseData = await response.stream.toBytes();
-      print('3333333333333333333');
 
-      print(responseData);
-      print('3333333333333333333');
 
       final responseString = utf8.decode(responseData);
       Map<String, dynamic> jsonResponse = json.decode(responseString);
-      print('555555555555555555555555');
 
-      print(json.decode(responseString));
-      print('555555555555555555555555');
       AddStockModel addStockModel =
       AddStockModel.fromJson(jsonDecode(responseString));
       return addStockModel;
     } else {
-      print('Failed to create stock. Status code: ${response.statusCode}');
       Utils.hideLoadingDialog();
       Utils.showSnackbar('title', 'message');
       return null;

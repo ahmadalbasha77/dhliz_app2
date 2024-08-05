@@ -31,7 +31,6 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
       setState(() {
         data = List<Map<String, dynamic>>.from(
             json.decode(response.body)['response'][0]);
-        print(response.body);
       });
     } else {
       throw Exception('Failed to load data');
@@ -41,12 +40,8 @@ class _MyWareHouseScreenState extends State<MyWareHouseScreen> {
   @override
   void initState() {
     fetchData();
-    print('*****************************');
-    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 
-    print(sharedPrefsClient.customerId);
 
-    print('******************************');
     super.initState();
   }
 

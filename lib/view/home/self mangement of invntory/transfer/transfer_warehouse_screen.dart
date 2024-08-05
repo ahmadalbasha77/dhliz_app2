@@ -24,7 +24,6 @@ class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
   Future<void> fetchData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? id = prefs.getInt('postId');
-    print(id);
 
     final response = await http.get(
         Uri.parse(
@@ -36,7 +35,6 @@ class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
         data = List<Map<String, dynamic>>.from(
             json.decode(response.body)['response'][0]);
       });
-      print(response.body);
     } else {
       throw Exception('Failed to load data');
     }

@@ -24,11 +24,8 @@ class _AddEnterInventoryScreenState extends State<AddEnterInventoryScreen> {
 
   @override
   void initState() {
-    print(widget.data.id);
-    print(widget.data.name);
     _controller.date.text = "";
     _controller.stockId.text = widget.data.id.toString();
-    print(widget.data);
     super.initState();
   }
 
@@ -185,18 +182,16 @@ class _AddEnterInventoryScreenState extends State<AddEnterInventoryScreen> {
                         lastDate: DateTime(2101));
 
                     if (pickedDate != null) {
-                      print(
-                          pickedDate); // output format => 2021-03-10 00:00:00.000
+                      // output format => 2021-03-10 00:00:00.000
                       String formattedDate =
                       DateFormat('yyyy-MM-dd').format(pickedDate);
-                      print(formattedDate); // formatted date => 2021-03-16
+                      // formatted date => 2021-03-16
 
                       setState(() {
                         _controller.date.text =
                             formattedDate; // set output date to TextField value.
                       });
                     } else {
-                      print("Date is not selected");
                     }
                   },
                   decoration: InputDecoration(

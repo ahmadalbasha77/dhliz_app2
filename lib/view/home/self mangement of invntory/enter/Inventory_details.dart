@@ -35,7 +35,6 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
       "toStockId": widget.data['id'],
       "rejectReason": "string"
     };
-    print(requestBody);
 
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -47,10 +46,8 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
     );
 
     if (response.statusCode == 200) {
-      print("POST request successful!");
 
       Map<String, dynamic> jsonResponse = json.decode(response.body);
-      print(jsonResponse);
       Get.back();
       Get.back();
       QuickAlert.show(
@@ -74,8 +71,6 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
           confirmBtnTextStyle: TextStyle(color: Colors.black),
           title: 'Error!',
           textAlignment: TextAlign.center);
-      print("Failed to make POST request. Status code: ${response.statusCode}");
-      print("Response: ${response.body}");
     }
   }
 
@@ -86,7 +81,6 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
 
   void initState() {
     date.text = "";
-    print(widget.data);
     super.initState();
   }
 
@@ -306,12 +300,10 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                         lastDate: DateTime(2101));
 
                     if (pickedDate != null) {
-                      print(
-                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                      //pickedDate output format => 2021-03-10 00:00:00.000
                       String formattedDate =
                           DateFormat('yyyy-MM-dd').format(pickedDate);
-                      print(
-                          formattedDate); //formatted date output using intl package =>  2021-03-16
+                      //formatted date output using intl package =>  2021-03-16
                       //you can implement different kind of Date Format here according to your requirement
 
                       setState(() {
@@ -319,7 +311,6 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                             formattedDate; //set output date to TextField value.
                       });
                     } else {
-                      print("Date is not selected");
                     }
                   },
                   decoration: InputDecoration(

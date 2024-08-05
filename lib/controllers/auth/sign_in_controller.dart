@@ -40,9 +40,6 @@ class LoginController extends GetxController {
         sharedPrefsClient.email = controllerUsername.text;
         sharedPrefsClient.fullName = response.username;
         sharedPrefsClient.customerId = response.customerId;
-        print(response.userId);
-        print(response.isActive);
-        print('*************************');
         if (response.isActive == true) {
           Utils.hideLoadingDialog();
           Get.offAll(() => const MainScreen());

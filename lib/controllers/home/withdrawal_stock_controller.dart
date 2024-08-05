@@ -75,7 +75,6 @@ class WithdrawalStockController extends GetxController {
   }
 
   Future<void> withdrawalStock(BuildContext context,{required String actionType}) async {
-    print(stockId.text);
     var uri = Uri.parse('${ApiUrl.API_BASE_URL2}/api/Transaction/Create');
     var request = http.MultipartRequest('POST', uri)
       ..headers['Authorization'] = 'Bearer ${sharedPrefsClient.accessToken}'
@@ -93,13 +92,7 @@ class WithdrawalStockController extends GetxController {
     try {
       var response = await request.send();
 
-      print('*****************************');
-      print(response.request);
-      print(response.statusCode);
-      print('88888888888888888888888888888');
-      print(request.fields);
       if (response.statusCode == 200) {
-        print('Stock status updated successfully.');
 
         Get.back();
         Get.back();
@@ -123,11 +116,8 @@ class WithdrawalStockController extends GetxController {
             confirmBtnTextStyle: const TextStyle(color: Colors.black),
             title: 'Error!',
             textAlignment: TextAlign.center);
-        print(
-            'Failed to update stock status. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error occurred: $e');
     }
   }
 // Future<void> enterStock(BuildContext context) async {

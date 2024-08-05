@@ -76,11 +76,13 @@ class _EnterWarehouseScreenState extends State<EnterWarehouseScreen> {
                         mainAxisAlignment:
                         MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            item.warehouse.name,
-                            style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w500),
+                          Expanded(
+                            child: Text(
+                              item.warehouse.name,
+                              style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w500),
+                            ),
                           ),
                           SizedBox(
                             height: 35,
@@ -140,7 +142,7 @@ class _EnterWarehouseScreenState extends State<EnterWarehouseScreen> {
                       ),
                       if (item.status == 1 || item.status == 3)
                         Container(
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: item.status == 1
@@ -232,24 +234,23 @@ class _EnterWarehouseScreenState extends State<EnterWarehouseScreen> {
                       //     ]),
                       //   ],
                       // ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
                         children: [
                           Text('Used'.tr,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.black54)),
                           LinearPercentIndicator(
-                            barRadius: Radius.circular(15),
+                            barRadius: const Radius.circular(15),
                             width: 190.w,
                             lineHeight: 14.0,
                             trailing: Text(
-                              ((item.spaceUsed / item.reservedSpace) *
+                              '${((item.spaceUsed / item.reservedSpace) *
                                   100)
-                                  .toStringAsFixed(1) +
-                                  '%', // Adjust the number of decimal places as needed
+                                  .toStringAsFixed(1)}%', // Adjust the number of decimal places as needed
                             ),
                             // percent: (item.spaceUsed /
                             //     item.reservedSpace) *
@@ -291,14 +292,16 @@ class _EnterWarehouseScreenState extends State<EnterWarehouseScreen> {
                         mainAxisAlignment:
                         MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '${'Expired WH'.tr}: ${item.endDate}',
-                            style: const TextStyle(
-                                fontSize: 13, color: Colors.black54),
+                          Expanded(
+                            child: Text(
+                              '${'Expired WH'.tr}: ${item.endDate}',
+                              style: const TextStyle(
+                                  fontSize: 13, color: Colors.black54),
+                            ),
                           ),
                           item.status == 3
                               ? Container(
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 10),
                             child: ElevatedButton(
                               style: ButtonStyle(
@@ -315,27 +318,7 @@ class _EnterWarehouseScreenState extends State<EnterWarehouseScreen> {
                             ),
                           )
                               : Container()
-                          // SizedBox(
-                          //   height: 30,
-                          //   child: ElevatedButton(
-                          //       style: ButtonStyle(
-                          //           shape: MaterialStatePropertyAll(
-                          //               RoundedRectangleBorder(
-                          //                   borderRadius:
-                          //                       BorderRadius.circular(
-                          //                           10))),
-                          //           backgroundColor:
-                          //               MaterialStatePropertyAll(
-                          //             Color.fromARGB(255, 253, 191, 8),
-                          //           )),
-                          //       onPressed: () {
-                          //         Get.off(ThankYouScreen());
-                          //       },
-                          //       child: Text(
-                          //         'Upgrade Space'.tr,
-                          //         style: TextStyle(fontSize: 10),
-                          //       )),
-                          // )
+                          
                         ],
                       ),
                     ],

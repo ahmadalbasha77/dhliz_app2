@@ -30,7 +30,6 @@ class _TransferInventoryScreenState extends State<TransferInventoryScreen> {
             '${ApiUrl.API_BASE_URL}/Stock/Find?SubscriptionId=${widget.id}'),
         headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
 
-    print(response.body);
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
@@ -41,7 +40,6 @@ class _TransferInventoryScreenState extends State<TransferInventoryScreen> {
           data = List<Map<String, dynamic>>.from(responseData);
         });
       } else {
-        print('Invalid response structure');
       }
     } else {
       throw Exception('Failed to load data');
@@ -52,7 +50,6 @@ class _TransferInventoryScreenState extends State<TransferInventoryScreen> {
   void initState() {
     fetchData();
 
-    print('=======================');
     super.initState();
   }
 

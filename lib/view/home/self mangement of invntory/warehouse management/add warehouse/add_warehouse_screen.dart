@@ -64,17 +64,16 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 241, 241, 241),
+      backgroundColor: const Color.fromARGB(255, 241, 241, 241),
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         elevation: 0,
         title:
-            Text('Add New Warehouse'.tr, style: TextStyle(color: Colors.black)),
+            Text('Add New Warehouse'.tr, style: const TextStyle(color: Colors.black)),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 241, 241, 241),
+        backgroundColor: const Color.fromARGB(255, 241, 241, 241),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -88,29 +87,29 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                   child: Text(
                     'Properties of the warehouse to be added to the warehouse list'
                         .tr,
-                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                    style: const TextStyle(fontSize: 14, color: Colors.black54),
                     textAlign: TextAlign.center,
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Container(
                 // alignment: Alignment.centerRight,
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text('Temperature'.tr,
                     style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
-              Container(
+              SizedBox(
                 height: 50,
                 child: ListView.builder(
-                  physics: ScrollPhysics(parent: ScrollPhysics()),
+                  physics: const ScrollPhysics(parent: ScrollPhysics()),
                   scrollDirection: Axis.horizontal,
                   itemCount: checkListItems.length,
                   itemBuilder: (context, index) => Container(
-                    margin: EdgeInsets.symmetric(horizontal: 25),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -120,13 +119,12 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                           onChanged: (value) {
                             setState(() {
                               selectedValue = value;
-                              print(checkListItems[selectedValue!]['value']);
                             });
                           },
                         ),
                         Text(
                           checkListItems[index]['title'],
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -136,14 +134,14 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
               ),
               Container(
                 // alignment: Alignment.centerRight,
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 child: Text('Space Needed'.tr,
                     style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
               Container(
                 // height: 80,
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -159,14 +157,14 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                     controller: capacityController,
                     decoration: InputDecoration(
                         contentPadding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                            const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                         suffixText: 'M²'.tr,
                         suffixStyle:
-                            TextStyle(fontSize: 16, color: Colors.black54),
+                            const TextStyle(fontSize: 16, color: Colors.black54),
                         filled: true,
                         fillColor: Colors.white,
                         label: Text('space'.tr,
-                            style: TextStyle(color: Colors.black38)),
+                            style: const TextStyle(color: Colors.black38)),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none),
@@ -184,28 +182,29 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
               ),
               Container(
                 // alignment: Alignment.centerRight,
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 child: Text('Description inventory'.tr,
                     style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
               Container(
                 // height: 80,
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the description inventory'.tr;
                     } else {}
+                    return null;
                   },
                   controller: inventoryDescriptionController,
                   decoration: InputDecoration(
                     contentPadding:
-                        EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                        const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                     filled: true,
                     fillColor: Colors.white,
                     label: Text('Description'.tr,
-                        style: TextStyle(color: Colors.black38)),
+                        style: const TextStyle(color: Colors.black38)),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide.none),
@@ -217,20 +216,20 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
               //   child: Text('10 M²  = 12 wooden pallets'.tr,
               //       style: TextStyle(color: Colors.black38)),
               // ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
                 // alignment: Alignment.centerRight,
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 child: Text('Booking Date'.tr,
                     style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 165,
                     child: TextFormField(
                       validator: (value) {
@@ -261,15 +260,14 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                             updateDateDifference();
                           });
                         } else {
-                          print("Date is not selected");
                         }
                       },
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.calendar_month_sharp),
+                        prefixIcon: const Icon(Icons.calendar_month_sharp),
                         filled: true,
                         fillColor: Colors.white,
                         label: Text('From'.tr,
-                            style: TextStyle(color: Colors.black38)),
+                            style: const TextStyle(color: Colors.black38)),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide.none,
@@ -286,13 +284,13 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide.none,
                         ),
-                        contentPadding: EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                           vertical: 13,
                         ),
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: 165,
                     child: TextFormField(
                       validator: (value) {
@@ -328,16 +326,15 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                               updateDateDifference();
                             });
                           } else {
-                            print("Date is not selected");
                           }
                         }
                       },
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.calendar_month_sharp),
+                        prefixIcon: const Icon(Icons.calendar_month_sharp),
                         filled: true,
                         fillColor: Colors.white,
                         label: Text('To'.tr,
-                            style: TextStyle(color: Colors.black38)),
+                            style: const TextStyle(color: Colors.black38)),
                         errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide.none,
@@ -354,7 +351,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide.none,
                         ),
-                        contentPadding: EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                           vertical: 15,
                         ),
                       ),
@@ -366,13 +363,13 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                   ? Center(
                       child: Container(
                         margin:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                            const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                         child: Text('$dateDifference days',
-                            style: TextStyle(color: Colors.black38)),
+                            style: const TextStyle(color: Colors.black38)),
                       ),
                     )
                   : Container(),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               // Container(
@@ -463,12 +460,12 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
               //   height: selected == 'other' ? 2 : 40,
               // ),
 
-              SizedBox(
+              const SizedBox(
                 height: 100,
               ),
               Center(
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 20),
+                  margin: const EdgeInsets.symmetric(vertical: 20),
                   width: 300,
                   height: 65,
                   child: ElevatedButton(
@@ -480,7 +477,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                         ),
                       ),
                       backgroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(80, 46, 144, 1.0),
+                        const Color.fromRGBO(80, 46, 144, 1.0),
                       ),
                     ),
                     onPressed: () {
@@ -507,7 +504,7 @@ class _AddWarehouseScreenState extends State<AddWarehouseScreen> {
                     },
                     child: Text(
                       'Continue'.tr,
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: const TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
                 ),

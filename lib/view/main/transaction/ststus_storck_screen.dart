@@ -44,11 +44,9 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
       if (jsonResponse['response'] != null) {
         return Map<String, dynamic>.from(jsonResponse['response']);
       } else {
-        print('Response does not contain the expected data');
         throw Exception('Missing data in response');
       }
     } else {
-      print('Failed to load data with status code: ${response.statusCode}');
       throw Exception('Failed to load data');
     }
   }
@@ -65,7 +63,6 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
     try {
       var response = await request.send();
       if (response.statusCode == 200) {
-        print('Stock status updated successfully.');
 
         Get.back();
         Get.back();
@@ -79,18 +76,13 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
             title: 'Completed Successfully !',
             textAlignment: TextAlign.center);
       } else {
-        print(
-            'Failed to update stock status. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error occurred: $e');
     }
   }
 
   @override
   void initState() {
-    print(widget.stockId);
-    print(widget.transactionId);
     fetchData().then((result) {
       setState(() {
         data = result;
@@ -356,7 +348,6 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                     .toList();
 
                                 // Debugging output to check the extracted URLs
-                                print(imageUrls);
 
                                 // Assuming PhotoGallery accepts a list of strings for image URLs
                                 Get.to(

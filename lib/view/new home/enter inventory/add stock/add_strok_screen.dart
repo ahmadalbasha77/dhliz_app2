@@ -39,7 +39,6 @@ class _AddStockNewScreenState extends State<AddStockNewScreen> {
       final imageTemp = File(image.path);
       setState(() => this._controller.image = imageTemp);
     } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
     }
   }
 
@@ -50,10 +49,7 @@ class _AddStockNewScreenState extends State<AddStockNewScreen> {
     setState(() {
       if (pickedFile != null) {
         _controller.image = File(pickedFile.path);
-        print(_controller.image!.path);
-        print('=====================');
       } else {
-        print('No image selected.');
       }
     });
   }

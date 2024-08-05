@@ -17,101 +17,88 @@ class SelfManagementOfInventoryScreen extends StatefulWidget {
 
 class _SelfManagementOfInventoryScreenState
     extends State<SelfManagementOfInventoryScreen> {
-  double? _value = 1.0;
-
   @override
   Widget build(BuildContext context) {
     // Get the screen size
     final screenSize = MediaQuery.of(context).size;
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 231, 231, 231),
-        appBar: AppBar(
-          centerTitle: true,
-          iconTheme: IconThemeData(color: Colors.black),
-          elevation: 0,
-          backgroundColor: Colors.white,
-          title: Text(
-            'Self management of inventory'.tr,
-            style: TextStyle(
-              color: Colors.black,
-            ),
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 231, 231, 231),
+      appBar: AppBar(
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.black),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Text(
+          'Self management of inventory'.tr,
+          style: const TextStyle(
+            color: Colors.black,
           ),
         ),
-        body: SingleChildScrollView(
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenSize.width * 0.05,
-                    vertical: screenSize.height * 0.01),
-                child: Text(
-                  "Start Adding Warehouse".tr,
-                  style: TextStyle(
-                      fontSize: screenSize.width * 0.045,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                ),
+              Text(
+                "Start Adding Warehouse".tr,
+                style: TextStyle(
+                    fontSize: 15.w,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: 5.h,
               ),
               Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius:
                         BorderRadius.circular(screenSize.width * 0.04)),
-                padding:
-                    EdgeInsets.symmetric(horizontal: screenSize.width * 0.02),
-                margin: EdgeInsets.symmetric(
-                    vertical: screenSize.height * 0.003,
-                    horizontal: screenSize.width * 0.06),
+                padding: EdgeInsets.only(
+                    left: 14.w, right: 14.w, top: 15.h, bottom: 10.h),
                 child: InkWell(
                   onTap: () {
-                    Get.to(() => MyWarehousesScreen());
+                    Get.to(() => const MyWarehousesScreen());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              child: Text(
-                                "Warehouse Management".tr,
-                                style: TextStyle(
-                                    fontSize: screenSize.width * 0.04),
-                              ),
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: screenSize.width * 0.015,
-                                  vertical: screenSize.height * 0.02)),
-                          Container(
-                            width: 180.w,
-                            margin: EdgeInsets.symmetric(
-                                horizontal: screenSize.width * 0.015),
-                            child: Text(
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Warehouse Management".tr,
+                              style:
+                                  TextStyle(fontSize: screenSize.width * 0.04),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Text(
                               "You can add warehouse and view warehouse list"
                                   .tr,
-                              style: TextStyle(
-                                  fontSize: screenSize.width * 0.025,
-                                  color: Colors.black38),
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.black38),
                             ),
-                          ),
-                          Container(
-                              child: Text(
-                                "Management Now".tr,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: screenSize.width * 0.023,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              margin: EdgeInsets.symmetric(
-                                  vertical: screenSize.height * 0.016,
-                                  horizontal: screenSize.width * 0.035)),
-                        ],
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Text(
+                              "Management Now".tr,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: screenSize.width * 0.027,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                       Image.asset(
                         'image/home/warehouse ManagementManagement.png',
@@ -122,28 +109,26 @@ class _SelfManagementOfInventoryScreenState
                 ),
               ),
               SizedBox(
-                height: 5,
+                height: 10.h,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenSize.width * 0.05,
-                    vertical: screenSize.height * 0.008),
-                child: Text(
-                  "operations".tr,
-                  style: TextStyle(
-                      fontSize: screenSize.width * 0.05,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                ),
+              Text(
+                "operations".tr,
+                style: TextStyle(
+                    fontSize: 15.w,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: 5.h,
               ),
               Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius:
                         BorderRadius.circular(screenSize.width * 0.04)),
-                margin: EdgeInsets.symmetric(
-                    vertical: screenSize.height * 0.005,
-                    horizontal: screenSize.width * 0.06),
+                // margin: EdgeInsets.symmetric(
+                //     vertical: screenSize.height * 0.005,
+                //     horizontal: screenSize.width * 0.06),
                 child: InkWell(
                   onTap: () {
                     Get.to(() => const EnterWarehouseScreen());
@@ -155,14 +140,14 @@ class _SelfManagementOfInventoryScreenState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: screenSize.width * 0.035,
+                                  vertical: screenSize.height * 0.015),
                               child: Text(
                                 "Enter Inventory".tr,
                                 style: TextStyle(
                                     fontSize: screenSize.width * 0.036),
-                              ),
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: screenSize.width * 0.035,
-                                  vertical: screenSize.height * 0.015)),
+                              )),
                           Container(
                             width: 150.w,
                             margin: EdgeInsets.symmetric(
@@ -175,6 +160,9 @@ class _SelfManagementOfInventoryScreenState
                             ),
                           ),
                           Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: screenSize.height * 0.015,
+                                  horizontal: screenSize.width * 0.035),
                               child: Row(
                                 children: [
                                   Icon(
@@ -182,7 +170,7 @@ class _SelfManagementOfInventoryScreenState
                                     color: Colors.green,
                                     size: screenSize.width * 0.045,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 5,
                                   ),
                                   Text(
@@ -193,16 +181,11 @@ class _SelfManagementOfInventoryScreenState
                                         fontWeight: FontWeight.w500),
                                   )
                                 ],
-                              ),
-                              margin: EdgeInsets.symmetric(
-                                  vertical: screenSize.height * 0.015,
-                                  horizontal: screenSize.width * 0.035)),
+                              )),
                         ],
                       ),
-                      Container(
-                        child: Image.asset('image/home/Artboard 2.png',
-                            width: screenSize.width * 0.3),
-                      )
+                      Image.asset('image/home/Artboard 2.png',
+                          width: screenSize.width * 0.3)
                     ],
                   ),
                 ),
@@ -210,14 +193,14 @@ class _SelfManagementOfInventoryScreenState
               // SizedBox(
               //   height: 15,
               // ),
+              SizedBox(
+                height: 10.h,
+              ),
               Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius:
                         BorderRadius.circular(screenSize.width * 0.04)),
-                margin: EdgeInsets.symmetric(
-                    vertical: screenSize.height * 0.005,
-                    horizontal: screenSize.width * 0.06),
                 child: InkWell(
                   onTap: () {
                     Get.to(() => const WithdrawalWarehouseNewScreen());
@@ -229,14 +212,14 @@ class _SelfManagementOfInventoryScreenState
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: screenSize.width * 0.035,
+                                    vertical: screenSize.height * 0.015),
                                 child: Text(
                                   "Withdrawal of inventory".tr,
                                   style: TextStyle(
                                       fontSize: screenSize.width * 0.036),
-                                ),
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: screenSize.width * 0.035,
-                                    vertical: screenSize.height * 0.015)),
+                                )),
                             Container(
                               width: 160.w,
                               margin: EdgeInsets.symmetric(
@@ -250,6 +233,9 @@ class _SelfManagementOfInventoryScreenState
                               ),
                             ),
                             Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: screenSize.height * 0.015,
+                                    horizontal: screenSize.width * 0.035),
                                 child: Row(
                                   children: [
                                     Icon(
@@ -257,7 +243,7 @@ class _SelfManagementOfInventoryScreenState
                                       color: Colors.red,
                                       size: screenSize.width * 0.045,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     Text(
@@ -268,28 +254,26 @@ class _SelfManagementOfInventoryScreenState
                                           fontWeight: FontWeight.w500),
                                     )
                                   ],
-                                ),
-                                margin: EdgeInsets.symmetric(
-                                    vertical: screenSize.height * 0.015,
-                                    horizontal: screenSize.width * 0.035)),
+                                )),
                           ]),
-                      Container(
-                        child: Image.asset(
-                            'image/home/Withdrawal of inventoryWithdrawal of inventory.png',
-                            width: screenSize.width * 0.3),
-                      )
+                      Image.asset(
+                          'image/home/Withdrawal of inventoryWithdrawal of inventory.png',
+                          width: screenSize.width * 0.3)
                     ],
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 10.h,
               ),
               Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius:
                         BorderRadius.circular(screenSize.width * 0.04)),
-                margin: EdgeInsets.symmetric(
-                    vertical: screenSize.height * 0.005,
-                    horizontal: screenSize.width * 0.06),
+                // margin: EdgeInsets.symmetric(
+                //     vertical: screenSize.height * 0.005,
+                //     horizontal: screenSize.width * 0.06),
                 child: InkWell(
                   onTap: () {
                     Get.to(() => const TransferWarehouseNewScreen());
@@ -301,14 +285,14 @@ class _SelfManagementOfInventoryScreenState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: screenSize.width * 0.035,
+                                  vertical: screenSize.height * 0.015),
                               child: Text(
                                 "Transfer Inventory".tr,
                                 style: TextStyle(
                                     fontSize: screenSize.width * 0.036),
-                              ),
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: screenSize.width * 0.035,
-                                  vertical: screenSize.height * 0.015)),
+                              )),
                           Container(
                             width: 160.w,
                             margin: EdgeInsets.symmetric(
@@ -322,6 +306,9 @@ class _SelfManagementOfInventoryScreenState
                             ),
                           ),
                           Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: screenSize.height * 0.015,
+                                  horizontal: screenSize.width * 0.035),
                               child: Row(
                                 children: [
                                   Icon(
@@ -329,7 +316,7 @@ class _SelfManagementOfInventoryScreenState
                                     color: Colors.green,
                                     size: screenSize.width * 0.045,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 5,
                                   ),
                                   Text(
@@ -340,17 +327,12 @@ class _SelfManagementOfInventoryScreenState
                                         fontWeight: FontWeight.w500),
                                   )
                                 ],
-                              ),
-                              margin: EdgeInsets.symmetric(
-                                  vertical: screenSize.height * 0.015,
-                                  horizontal: screenSize.width * 0.035)),
+                              )),
                         ],
                       ),
-                      Container(
-                        child: Image.asset('image/home/moving inventory.png',
-                            width: screenSize.width * 0.3,
-                            alignment: Alignment.topRight),
-                      )
+                      Image.asset('image/home/moving inventory.png',
+                          width: screenSize.width * 0.3,
+                          alignment: Alignment.topRight)
                     ],
                   ),
                 ),

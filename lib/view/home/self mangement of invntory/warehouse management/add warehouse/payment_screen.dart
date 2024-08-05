@@ -41,15 +41,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
       );
 
       if (response.statusCode == 200) {
-        print("POST request successful!");
-        print("Response: ${response.body}");
       } else {
-        print(
-            "Failed to make POST request. Status code: ${response.statusCode}");
-        print("Response: ${response.body}");
       }
     } catch (e) {
-      print("Error making POST request: $e");
     }
   }
 
@@ -66,12 +60,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
 
     if (response.statusCode == 200) {
-      print("POST request successful!");
-      print("555555555555555555555555555555!");
 
       financialCreditor();
-      print("1111111111111111111111!");
-      print("Response: ${response.body}");
       // Get.off(() => MyWareHouseScreen());
       Get.off(InvoiceScreen(
         totalAmount: widget.totalAmount,
@@ -91,8 +81,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
         text: 'Payment error!',
         showConfirmBtn: false,
       );
-      print("Failed to make POST request. Status code: ${response.statusCode}");
-      print("Response: ${response.body}");
     }
   }
 

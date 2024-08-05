@@ -19,36 +19,25 @@ class SubscriptionController extends GetxController {
 
   Future<void> getSubscription({required int pageKey}) async {
     try {
-      print('7777777777777777777777777');
       currentPageSize++;
       final result =
       await RestApi.getSubscriptions(skip: currentPageSize, take: 10);
 
       update();
       if (result != null && result.response.isNotEmpty) {
-        print('+++++++++++++++++++++++++++++++++');
         final List<SubscriptionDataModel> flatList = result.response;
         final isLastPage = flatList.length < 10;
-        print(flatList.length);
-        print(currentPageSize);
-        print('999999999999999999999999');
         if (isLastPage) {
-          print('aaaaaaaaaaaaaaaaaaa');
           pagingController.appendLastPage(flatList);
         } else {
-          print('00000000000000000000000000');
           pagingController.appendPage(
               flatList, 10); // Use a constant pageKey = 10
         }
       } else {
-        print('22222222222222222222222222222');
         pagingController.appendLastPage([]);
       }
     } catch (error) {
-      print('555555555555555555555555555');
       pagingController.error = error;
-      print(pagingController.error);
-      print('555555555555555555555555555');
     }
 
   }

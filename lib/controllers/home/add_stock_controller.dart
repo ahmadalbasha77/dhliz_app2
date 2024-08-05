@@ -43,7 +43,6 @@ class AddStockController extends GetxController {
   bool isLoading = false;
 
   Future<void> addStock() async {
-    print(subscriptionId.toString());
     Utils.showLoadingDialog();
 
     Map<String, String> fields = {
@@ -70,12 +69,9 @@ class AddStockController extends GetxController {
       );
 
       AddStockDataModel addStockDataModel = addStockModel!.response;
-      print(addStockModel.response);
       Get.off(() => AddEnterInventoryScreen(data: addStockDataModel));
-      print('Stock created successfully');
     } catch (e) {
       // Handle exceptions
-      print('Error creating stock: $e');
     } finally {
       Utils.hideLoadingDialog();
     }

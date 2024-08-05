@@ -23,8 +23,6 @@ class _PolicyScreenState extends State<PolicyScreen> {
     Utils.showLoadingDialog();
     String url = '${ApiUrl.API_BASE_URL2}/VerifyAccount?id=${widget.userId}';
     http.Response response = await http.post(Uri.parse(url));
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       Get.offAll(() => MainScreen());
       sharedPrefsClient.isLogin = true;
@@ -36,7 +34,6 @@ class _PolicyScreenState extends State<PolicyScreen> {
         backgroundColor: AppColor.gray.withOpacity(0.5),
         margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
       );
-      print('aaaaaaaaaaaaaa');
     }
     Utils.hideLoadingDialog();
   }

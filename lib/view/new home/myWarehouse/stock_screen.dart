@@ -22,7 +22,6 @@ class _StockNewScreenState extends State<StockNewScreen> {
   @override
   void initState() {
     _controller.id = widget.id;
-    print(widget.id);
     super.initState();
     _controller.pagingController.addPageRequestListener((pageKey) {
       _controller.getStock(pageKey: pageKey);
@@ -31,7 +30,6 @@ class _StockNewScreenState extends State<StockNewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 231, 231, 231),
         appBar: AppBar(
@@ -47,76 +45,81 @@ class _StockNewScreenState extends State<StockNewScreen> {
             pagingController: _controller.pagingController,
             builderDelegate: PagedChildBuilderDelegate<StockDataModel>(
                 noItemsFoundIndicatorBuilder: (context) => PaginationException(
-                  title: 'No items found'.tr,
-                  message: 'The list is currently empty.'.tr,
-                ),
+                      title: 'No items found'.tr,
+                      message: 'The list is currently empty.'.tr,
+                    ),
                 itemBuilder: (context, item, index) {
-              print('555555555555555555555555555');
-              print(item);
-              print('555555555555555555555555555');
-              return Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  return Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 25),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 15),
-                            child: Text(item.name,
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w500)),
-                          ),
-                          Row(
-                            children: [
-                              Container(
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
                                   margin: const EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 20),
-                                  child: Text(
-                                    '${'space'.tr} : ${item.capacity} ',
-                                    style: const TextStyle(
-                                        color: Colors.black54, fontSize: 13),
-                                  )),
-                              Text(
-                                '${'Stock ID'.tr} : ${item.id}',
-                                style: const TextStyle(
-                                    color: Colors.black54, fontSize: 13),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 20),
-                                child: TextButton(
-                                  onPressed: () {
-                                    Get.to(
-                                        () => StockDetailsScreen(data: item));
-                                  },
-                                  child: Text('view details'.tr,
-                                      style:
-                                          const TextStyle(color: Colors.black)),
+                                      vertical: 10, horizontal: 15),
+                                  child: Text(item.name,
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500)),
                                 ),
-                              ),
-                            ],
+                                Row(
+                                  children: [
+                                    Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 20),
+                                        child: Expanded(
+                                          child: Text(
+                                            '${'space'.tr} : ${item.capacity} ',
+                                            style: const TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 13),
+                                          ),
+                                        )),
+                                    Expanded(
+                                      child: Text(
+                                        '${'Stock ID'.tr} : ${item.id}',
+                                        style: const TextStyle(
+                                            color: Colors.black54, fontSize: 13),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 20),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          Get.to(() =>
+                                              StockDetailsScreen(data: item));
+                                        },
+                                        child: Text('view details'.tr,
+                                            style: const TextStyle(
+                                                color: Colors.black)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
+                          SizedBox(
+                            width: 110,
+                            child: CircleAvatar(
+                                radius: 40,
+                                backgroundImage: NetworkImage(item.photo)),
+                          )
                         ],
-                      ),
-                      SizedBox(
-                        width: 110,
-                        child: CircleAvatar(
-                            radius: 40,
-                            backgroundImage: NetworkImage(item.photo)),
-                      )
-                    ],
-                  ));
-            })));
+                      ));
+                })));
   }
 }

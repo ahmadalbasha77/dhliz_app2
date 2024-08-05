@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:dhliz_app/config/app_color.dart';
-import 'package:dhliz_app/config/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -60,14 +58,14 @@ class RouteInfo {
 }
 
 class MapScreen extends StatefulWidget {
-  int space;
-  int temperatureType;
-  String from;
-  String to;
-  String days;
-  String inventoryDescription;
+  final int space;
+  final int temperatureType;
+  final String from;
+  final String to;
+  final String days;
+  final String inventoryDescription;
 
-  MapScreen(
+  const MapScreen(
       {Key? key,
       required this.space,
       required this.temperatureType,
@@ -82,7 +80,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  LatLng _pickedLocation = LatLng(0, 0);
+  LatLng _pickedLocation = const LatLng(0, 0);
   MarkerInfo? selectWarehouse;
   final LatLng _center = const LatLng(31.959414984821176, 35.85732029979889);
   List<dynamic> data = [];
@@ -133,15 +131,11 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
-    print('*****************************');
-    print(widget.temperatureType);
-    print('*****************************');
     super.initState();
     _determinePosition();
     _loadCustomIcons();
     fetchData();
 
-    print(widget.from);
     polylinePoints = PolylinePoints();
   }
 
@@ -192,10 +186,10 @@ class _MapScreenState extends State<MapScreen> {
       markers.add(
         Marker(
           icon: await BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(devicePixelRatio: 1.5),
+            const ImageConfiguration(devicePixelRatio: 1.5),
             Platform.isIOS ? 'image/ios/user.png' : 'image/map/user.png',
           ),
-          markerId: MarkerId('selectedLocation'),
+          markerId: const MarkerId('selectedLocation'),
           position: LatLng(position.latitude, position.longitude),
           onTap: () {
             // Handle marker tap
@@ -206,7 +200,7 @@ class _MapScreenState extends State<MapScreen> {
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('Selected Location'),
+                  title: const Text('Selected Location'),
                   content: Text('Latitude: $lat\nLongitude: $lng'),
                   actions: [
                     TextButton(
@@ -223,7 +217,6 @@ class _MapScreenState extends State<MapScreen> {
         ),
       );
     } catch (e) {
-      print('Error getting location : $e');
     }
   }
 
@@ -233,7 +226,6 @@ class _MapScreenState extends State<MapScreen> {
     setState(() {
       isLoading = true;
     });
-    print(sharedPrefsClient.accessToken);
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'
     };
@@ -250,24 +242,16 @@ class _MapScreenState extends State<MapScreen> {
     queryParameters['PageSize'] = '60';
 
     final Uri filteredUri = uri.replace(queryParameters: queryParameters);
-    print('******** URL *******************');
-    print(uri);
-    print(queryParameters);
-    print('*********************************');
     try {
       final response = await http.get(filteredUri, headers: headers);
 
       if (response.statusCode == 200) {
-        print(filteredUri);
-        print(queryParameters);
-        print('Request successful');
         Map<String, dynamic> responseData = json.decode(response.body);
         if (responseData['isSuccess']) {
           data = responseData['response'];
           if (data.isNotEmpty) {
             Map<String, dynamic> firstItem = data[0];
           } else {
-            print('Response array is empty');
           }
           markers.clear();
 
@@ -276,9 +260,6 @@ class _MapScreenState extends State<MapScreen> {
             if (item['address'] != null &&
                 item['address'] is Map<String, dynamic>) {
               Map<String, dynamic> address = item['address']!;
-              print('**********************************');
-              print(address);
-              print('***********************************');
 
               double? lat =
                   address['lat'] != null ? double.parse(address['lat']) : null;
@@ -425,11 +406,8 @@ class _MapScreenState extends State<MapScreen> {
                   isLoading = false;
                 });
               } else {
-                print('Latitude or longitude is null for item: $item');
               }
             } else {
-              print(
-                  'Address is null or not in the expected format for item: $item');
             }
           }
 
@@ -439,14 +417,10 @@ class _MapScreenState extends State<MapScreen> {
           // Trigger a rebuild to display the updated data
           setState(() {});
         } else {
-          print('API returned an error: ${responseData['error']}');
         }
       } else {
-        print('Request failed');
-        print('Failed to load data: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error during HTTP request: $error');
       // Handle errors here
     }
   }
@@ -454,21 +428,21 @@ class _MapScreenState extends State<MapScreen> {
   void _loadCustomIcons() async {
     if (Platform.isIOS) {
       customIcon1 = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
+        const ImageConfiguration(devicePixelRatio: 2.5),
         'image/ios/warehoues.png',
       );
       customIconPickedLocation = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
+        const ImageConfiguration(devicePixelRatio: 2.5),
         'image/ios/inventory.png',
       );
     }
     customIcon1 = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
+      const ImageConfiguration(devicePixelRatio: 2.5),
       'image/map/warehoues.png',
     );
 
     customIconPickedLocation = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
+      const ImageConfiguration(devicePixelRatio: 2.5),
       'image/map/inventory.png',
     );
 
@@ -508,11 +482,11 @@ class _MapScreenState extends State<MapScreen> {
           child: StatefulBuilder(
             builder: (context, setState) => Scaffold(
               appBar: AppBar(
-                title: Text(info.nameWarehouse, style: TextStyle(fontSize: 22)),
+                title: Text(info.nameWarehouse, style: const TextStyle(fontSize: 22)),
                 automaticallyImplyLeading: false,
                 actions: [
                   IconButton(
-                    icon: Icon(Icons.close),
+                    icon: const Icon(Icons.close),
                     onPressed: () {
                       selectedDryIndex = -1;
                       selectedColdIndex = -1;
@@ -551,10 +525,6 @@ class _MapScreenState extends State<MapScreen> {
                                 ? Colors.white
                                 : Colors.white)),
                     onTap: () {
-                      print(info.pricePerMeter);
-                      print(selectedDry);
-                      print(selectedCold);
-                      print(selectedFreezing);
                       if (selectedDry == false &&
                           selectedCold == false &&
                           selectedFreezing == false) {
@@ -603,7 +573,6 @@ class _MapScreenState extends State<MapScreen> {
                         );
                       }
 
-                      print('aaaaaaaaaaaa');
                     }),
               ),
               body: SingleChildScrollView(
@@ -621,7 +590,7 @@ class _MapScreenState extends State<MapScreen> {
                               ListTile(
                                 title:
                                     Text('${'capacity'.tr} : ${info.capacity}'),
-                                leading: Icon(
+                                leading: const Icon(
                                   Icons.space_dashboard,
                                   color: AppColor.buttonColor,
                                 ),
@@ -630,7 +599,7 @@ class _MapScreenState extends State<MapScreen> {
                               ListTile(
                                 title: Text(
                                     '${'space required'.tr} : ${widget.space}'),
-                                leading: Icon(
+                                leading: const Icon(
                                   Icons.splitscreen,
                                   color: AppColor.buttonColor,
                                 ),
@@ -639,7 +608,7 @@ class _MapScreenState extends State<MapScreen> {
                               ListTile(
                                 title: Text(
                                     '${'Booking days'.tr} : ${widget.days}'),
-                                leading: Icon(
+                                leading: const Icon(
                                   Icons.date_range_rounded,
                                   color: AppColor.buttonColor,
                                 ),
@@ -647,11 +616,11 @@ class _MapScreenState extends State<MapScreen> {
                               ),
                               ListTile(
                                 title: Text("${'phone'.tr} : ${info.phone}"),
-                                leading: Icon(
+                                leading: const Icon(
                                   Icons.phone,
                                   color: AppColor.buttonColor,
                                 ),
-                                trailing: Text('+966'),
+                                trailing: const Text('+966'),
                               ),
                               // ListTile(
                               //   title: Text(
@@ -674,26 +643,26 @@ class _MapScreenState extends State<MapScreen> {
                               ListTile(
                                 title: Text(
                                   "${'Total price'.tr} : ${totalPrice} ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                leading: Icon(
+                                leading: const Icon(
                                   Icons.account_balance_wallet,
                                   color: AppColor.buttonColor,
                                 ),
                                 trailing: Text(
                                   'SR'.tr,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   children: [
-                                    Text(' * ',
+                                    const Text(' * ',
                                         style: TextStyle(
                                             color: AppColor.red, fontSize: 20)),
                                     Text('select temperatures'.tr,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18)),
                                   ],
@@ -702,12 +671,12 @@ class _MapScreenState extends State<MapScreen> {
                               Container(
                                 height: 50,
                                 child: ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   scrollDirection: Axis.horizontal,
                                   itemCount: checkListItems.length,
                                   itemBuilder: (context, index) => Container(
                                     margin:
-                                        EdgeInsets.symmetric(horizontal: 25),
+                                        const EdgeInsets.symmetric(horizontal: 25),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -718,13 +687,12 @@ class _MapScreenState extends State<MapScreen> {
                                           onChanged: (int? value) {
                                             setState(() {
                                               selectedRadio = value;
-                                              print(value.toString());
                                             });
                                           },
                                         ),
                                         Text(
                                           checkListItems[index]['title'],
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -738,7 +706,7 @@ class _MapScreenState extends State<MapScreen> {
                               selectedRadio == 1
                                   ? info.dryTemperatures.isEmpty
                                       ? Container(
-                                          margin: EdgeInsets.symmetric(
+                                          margin: const EdgeInsets.symmetric(
                                               vertical: 20),
                                           child: Center(
                                             child:
@@ -748,12 +716,12 @@ class _MapScreenState extends State<MapScreen> {
                                       : ListView.builder(
                                           shrinkWrap: true,
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           itemCount:
                                               info.dryTemperatures.length,
                                           itemBuilder: (context, index) {
                                             return Container(
-                                              margin: EdgeInsets.symmetric(
+                                              margin: const EdgeInsets.symmetric(
                                                   vertical: 5, horizontal: 10),
                                               color: selectedDry == true
                                                   ? selectedDryIndex == index
@@ -786,30 +754,29 @@ class _MapScreenState extends State<MapScreen> {
                                                             costService;
                                                   });
 
-                                                  print(index);
                                                 },
                                                 title: Text(
                                                     '${info.dryTemperatures[index]['fromTemperature']} - ${info.dryTemperatures[index]['toTemperature']} ${'°C'.tr}',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: 16)),
-                                                leading: Icon(
+                                                leading: const Icon(
                                                     Icons.device_thermostat,
                                                     color:
                                                         AppColor.buttonColor),
                                                 trailing: Text(
                                                     '${info.dryTemperatures[index]['cost']}   ${'SAR/M²'.tr}',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold)),
                                               ),
                                             );
                                           },
                                         )
-                                  : SizedBox.shrink(),
+                                  : const SizedBox.shrink(),
                               selectedRadio == 2
                                   ? info.coldTemperatures.isEmpty
                                       ? Container(
-                                          margin: EdgeInsets.symmetric(
+                                          margin: const EdgeInsets.symmetric(
                                               vertical: 20),
                                           child: Center(
                                             child:
@@ -819,12 +786,12 @@ class _MapScreenState extends State<MapScreen> {
                                       : ListView.builder(
                                           shrinkWrap: true,
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           itemCount:
                                               info.coldTemperatures.length,
                                           itemBuilder: (context, index) {
                                             return Container(
-                                                margin: EdgeInsets.symmetric(
+                                                margin: const EdgeInsets.symmetric(
                                                     vertical: 5,
                                                     horizontal: 10),
                                                 color: Colors.grey[100],
@@ -845,13 +812,6 @@ class _MapScreenState extends State<MapScreen> {
                                                         tempId =
                                                             info.coldTemperatures[
                                                                 index]['id'];
-                                                        print(
-                                                            '*****************');
-                                                        print(
-                                                            info.pricePerMeter);
-                                                        print(tempId);
-                                                        print(
-                                                            '*****************');
                                                         temp =
                                                             '${info.coldTemperatures[index]['fromTemperature']} - ${info.coldTemperatures[index]['toTemperature']}';
                                                         selectedFreezingIndex =
@@ -871,21 +831,20 @@ class _MapScreenState extends State<MapScreen> {
                                                                     int.parse(widget
                                                                         .days) +
                                                                 costService;
-                                                        print(index);
                                                       });
                                                     },
                                                     title: Text(
                                                       '${info.coldTemperatures[index]['fromTemperature']} - ${info.coldTemperatures[index]['toTemperature']} ${'°C'.tr}',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 16),
                                                     ),
-                                                    leading: Icon(
+                                                    leading: const Icon(
                                                         Icons.device_thermostat,
                                                         color: AppColor
                                                             .buttonColor),
                                                     trailing: Text(
                                                       '${info.coldTemperatures[index]['cost']}  ${'SAR/M²'.tr}',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
@@ -893,11 +852,11 @@ class _MapScreenState extends State<MapScreen> {
                                                 ));
                                           },
                                         )
-                                  : SizedBox.shrink(),
+                                  : const SizedBox.shrink(),
                               selectedRadio == 3
                                   ? info.freezingTemperatures.isEmpty
                                       ? Container(
-                                          margin: EdgeInsets.symmetric(
+                                          margin: const EdgeInsets.symmetric(
                                               vertical: 20),
                                           child: Center(
                                             child: Text(
@@ -907,12 +866,12 @@ class _MapScreenState extends State<MapScreen> {
                                       : ListView.builder(
                                           shrinkWrap: true,
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           itemCount:
                                               info.freezingTemperatures.length,
                                           itemBuilder: (context, index) {
                                             return Container(
-                                                margin: EdgeInsets.symmetric(
+                                                margin: const EdgeInsets.symmetric(
                                                     vertical: 5,
                                                     horizontal: 10),
                                                 color: Colors.grey[100],
@@ -934,13 +893,6 @@ class _MapScreenState extends State<MapScreen> {
                                                         tempId =
                                                             info.freezingTemperatures[
                                                                 index]['id'];
-                                                        print(
-                                                            '*****************');
-                                                        print(
-                                                            info.pricePerMeter);
-                                                        print(tempId);
-                                                        print(
-                                                            '*****************');
                                                         temp =
                                                             '${info.freezingTemperatures[index]['fromTemperature']} - ${info.freezingTemperatures[index]['toTemperature']}';
                                                         selectedColdIndex = -1;
@@ -959,21 +911,20 @@ class _MapScreenState extends State<MapScreen> {
                                                                     int.parse(widget
                                                                         .days) +
                                                                 costService;
-                                                        print(index);
                                                       });
                                                     },
                                                     title: Text(
                                                       '${info.freezingTemperatures[index]['fromTemperature']} - ${info.freezingTemperatures[index]['toTemperature']} ${'°C'.tr}',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 16),
                                                     ),
-                                                    leading: Icon(
+                                                    leading: const Icon(
                                                         Icons.device_thermostat,
                                                         color: AppColor
                                                             .buttonColor),
                                                     trailing: Text(
                                                       '${info.freezingTemperatures[index]['cost']}   ${'SAR/M²'.tr}',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
@@ -981,8 +932,8 @@ class _MapScreenState extends State<MapScreen> {
                                                 ));
                                           },
                                         )
-                                  : SizedBox.shrink(),
-                              SizedBox(
+                                  : const SizedBox.shrink(),
+                              const SizedBox(
                                 height: 15,
                               ),
                               Padding(
@@ -994,7 +945,7 @@ class _MapScreenState extends State<MapScreen> {
                                     Row(
                                       children: [
                                         Text('show transportation services'.tr,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16)),
                                         // Text('(optional)  ',
@@ -1022,7 +973,7 @@ class _MapScreenState extends State<MapScreen> {
                                 child: Container(
                                   child: info.transportationService.isEmpty
                                       ? Container(
-                                          margin: EdgeInsets.symmetric(
+                                          margin: const EdgeInsets.symmetric(
                                               vertical: 15),
                                           child: Center(
                                               child: Text(
@@ -1031,7 +982,7 @@ class _MapScreenState extends State<MapScreen> {
                                                       .tr)))
                                       : ListView.builder(
                                           shrinkWrap: true,
-                                          physics: ScrollPhysics(
+                                          physics: const ScrollPhysics(
                                               parent:
                                                   NeverScrollableScrollPhysics()),
                                           itemCount:
@@ -1040,7 +991,7 @@ class _MapScreenState extends State<MapScreen> {
                                             var transportationService = info
                                                 .transportationService[index];
                                             return Container(
-                                              margin: EdgeInsets.symmetric(
+                                              margin: const EdgeInsets.symmetric(
                                                   horizontal: 5, vertical: 5),
                                               color:
                                                   selectedServiceIndex == index
@@ -1069,19 +1020,19 @@ class _MapScreenState extends State<MapScreen> {
                                                 title: Text(
                                                     transportationService[
                                                         'name'],
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: 16)),
                                                 subtitle: Text(
                                                   transportationService[
                                                       'description'],
                                                 ),
-                                                leading: Icon(
+                                                leading: const Icon(
                                                     Icons.airport_shuttle,
                                                     color:
                                                         AppColor.buttonColor),
                                                 trailing: Text(
                                                   '${transportationService['price'].toString()} ${'SR'.tr}',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
@@ -1091,7 +1042,7 @@ class _MapScreenState extends State<MapScreen> {
                                         ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Padding(
@@ -1101,7 +1052,7 @@ class _MapScreenState extends State<MapScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('View All Supported Categories'.tr,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16)),
                                     IconButton(
@@ -1123,13 +1074,13 @@ class _MapScreenState extends State<MapScreen> {
                                 child: Container(
                                   child: info.categories.isEmpty
                                       ? Container(
-                                          margin: EdgeInsets.symmetric(
+                                          margin: const EdgeInsets.symmetric(
                                               vertical: 15),
                                           child: Center(
                                               child: Text('No Category'.tr)))
                                       : ListView.builder(
                                           shrinkWrap: true,
-                                          physics: ScrollPhysics(
+                                          physics: const ScrollPhysics(
                                               parent:
                                                   NeverScrollableScrollPhysics()),
                                           itemCount: info.categories.length,
@@ -1139,8 +1090,8 @@ class _MapScreenState extends State<MapScreen> {
                                             return ListTile(
                                               title: Text(category['name'],
                                                   style:
-                                                      TextStyle(fontSize: 16)),
-                                              leading: Icon(
+                                                      const TextStyle(fontSize: 16)),
+                                              leading: const Icon(
                                                   Icons.category_outlined,
                                                   color: AppColor.buttonColor),
                                             );
@@ -1189,17 +1140,16 @@ class _MapScreenState extends State<MapScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColor.buttonColor,
         onPressed: () {
-          print(isLoading);
           getLocation();
         },
-        child: Icon(Icons.my_location_rounded),
+        child: const Icon(Icons.my_location_rounded),
       ),
       body: SafeArea(
         child: Stack(
           alignment: Alignment.center,
           children: [
             Container(
-              margin: EdgeInsets.all(5),
+              margin: const EdgeInsets.all(5),
               height: MediaQuery.of(context).size.height,
               child: GoogleMap(
                 myLocationButtonEnabled: false,
@@ -1214,10 +1164,10 @@ class _MapScreenState extends State<MapScreen> {
                   setState(() {
                     markers.add(
                       Marker(
-                        markerId: MarkerId("pickedLocation"),
+                        markerId: const MarkerId("pickedLocation"),
                         position: value,
                         icon: customIconPickedLocation,
-                        infoWindow: InfoWindow(
+                        infoWindow: const InfoWindow(
                           title: 'PIKED LOCATION',
                           snippet: 'الموقع المحدد',
                         ),
@@ -1231,8 +1181,8 @@ class _MapScreenState extends State<MapScreen> {
                 polylines: Set<Polyline>.of(
                   <Polyline>[
                     Polyline(
-                      polylineId: PolylineId('route'),
-                      color: Color.fromRGBO(38, 50, 56, 1),
+                      polylineId: const PolylineId('route'),
+                      color: const Color.fromRGBO(38, 50, 56, 1),
                       points: polylineCoordinates,
                       width: 5,
                     ),
@@ -1241,22 +1191,22 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
             isLoading == true
-                ? Align(
+                ? const Align(
                     alignment: Alignment.center,
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 0),
                       child: CircularProgressIndicator(),
                     ),
                   )
-                : SizedBox.shrink(),
-            SizedBox(height: 5),
+                : const SizedBox.shrink(),
+            const SizedBox(height: 5),
             DraggableScrollableSheet(
               initialChildSize: 0.25, // Initial size when sheet is closed
               minChildSize: 0.25, // Minimum size when sheet is closed
               maxChildSize: 0.25, // Maximum size when sheet is fully expanded
               builder: (context, controller) {
                 return Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     boxShadow: [
                       BoxShadow(
                           blurRadius: 40,
@@ -1273,7 +1223,7 @@ class _MapScreenState extends State<MapScreen> {
                     child: Column(
                       children: [
                         routeInfo.distance == 0
-                            ? ListTile(
+                            ? const ListTile(
                                 title: Text(
                                   '',
                                   textAlign: TextAlign.right,
@@ -1290,25 +1240,25 @@ class _MapScreenState extends State<MapScreen> {
                                 //     'الزمن المتوقع: ${routeInfo.estimatedHours} ساعة و ${routeInfo.estimatedMinutes} دقيقة'  , textAlign: TextAlign.right),
                               ),
                         ListTile(
-                          title: _pickedLocation != LatLng(0.0, 0.0)
+                          title: _pickedLocation != const LatLng(0.0, 0.0)
                               ? Text(
                                   'You have selected the inventory location'.tr,
-                                  style: TextStyle(fontSize: 14),
+                                  style: const TextStyle(fontSize: 14),
                                   textAlign: TextAlign.center,
                                 )
                               : Text(
                                   'Locate inventory'.tr,
-                                  style: TextStyle(fontSize: 14),
+                                  style: const TextStyle(fontSize: 14),
                                   textAlign: TextAlign.center,
                                 ),
-                          subtitle: Text('', textAlign: TextAlign.right),
+                          subtitle: const Text('', textAlign: TextAlign.right),
                           leading: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
-                                      _pickedLocation == LatLng(0.0, 0.0)
-                                          ? Color.fromRGBO(38, 50, 56, 0.2)
+                                      _pickedLocation == const LatLng(0.0, 0.0)
+                                          ? const Color.fromRGBO(38, 50, 56, 0.2)
                                           : AppColor.buttonColor)),
                               onPressed: () {
                                 showDialog(
@@ -1350,22 +1300,21 @@ class _MapScreenState extends State<MapScreen> {
                                         TextButton(
                                           onPressed: () {
                                             if (_pickedLocation !=
-                                                LatLng(0.0, 0.0)) {
+                                                const LatLng(0.0, 0.0)) {
                                               setState(() {
                                                 _pickedLocation =
-                                                    LatLng(0.0, 0.0);
+                                                    const LatLng(0.0, 0.0);
                                                 markers.remove(
-                                                    MarkerId('pickedLocation'));
+                                                    const MarkerId('pickedLocation'));
                                                 polylineCoordinates.clear();
                                               });
-                                              print(_pickedLocation);
                                             } else {
                                               _pickedLocation = _pickedLocation;
                                             }
                                             Navigator.pop(context);
                                           },
                                           child: _pickedLocation !=
-                                                  LatLng(0.0, 0.0)
+                                                  const LatLng(0.0, 0.0)
                                               ? Text('change Inventory location'
                                                   .tr)
                                               : Text('Locate inventory'.tr),
@@ -1375,14 +1324,14 @@ class _MapScreenState extends State<MapScreen> {
                                   },
                                 );
                               },
-                              child: _pickedLocation != LatLng(0.0, 0.0)
+                              child: _pickedLocation != const LatLng(0.0, 0.0)
                                   ? Text('change Inventory location'.tr)
                                   : Text('Locate inventory'.tr),
                             ),
                           ),
                         ),
                         selectWarehouse != null
-                            ? SizedBox()
+                            ? const SizedBox()
                             : Text('please select warehouse'.tr),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -1406,7 +1355,7 @@ class _MapScreenState extends State<MapScreen> {
                                             //     _pickedLocation !=
                                             //         LatLng(0.0, 0.0)
                                             ? AppColor.buttonColor
-                                            : Color.fromRGBO(38, 50, 56, 0.2))),
+                                            : const Color.fromRGBO(38, 50, 56, 0.2))),
                                 onPressed: () {
                                   selectWarehouse == null
                                       ? Get.snackbar('warning'.tr, '',
@@ -1476,7 +1425,6 @@ class _MapScreenState extends State<MapScreen> {
       );
 
       if (result.status == 'OK') {
-        print('========================');
         polylineCoordinates.clear();
         for (PointLatLng point in result.points) {
           polylineCoordinates.add(LatLng(point.latitude, point.longitude));
@@ -1502,9 +1450,6 @@ class _MapScreenState extends State<MapScreen> {
           routeInfo = RouteInfo(distance, estimatedHours, estimatedMinutes);
         });
       } else {
-        print('Directions API error - Status: ${result.status}');
-        print('Error Message: ${result.errorMessage}');
-        print('***************************');
       }
     }
   }

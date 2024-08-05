@@ -1,6 +1,8 @@
 import 'package:dhliz_app/models/main/transaction_model.dart';
 import 'package:dhliz_app/view/main/transaction/ststus_storck_screen.dart';
+import 'package:dhliz_app/widgets/transactions/count_transactions_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:share_plus/share_plus.dart';
@@ -33,303 +35,155 @@ class _TransactionPageState extends State<TransactionPage> {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
           elevation: 0,
-          centerTitle: true,
-          title: Text('Transactions'.tr, style: TextStyle(color: Colors.black)),
+          title: Text(
+            'Transactions'.tr,
+          ),
           backgroundColor: Colors.white,
         ),
         body: Column(
           children: [
+            SizedBox(
+              height: 10.h,
+            ),
             GetBuilder<TransactionController>(
               builder: (controller) => Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
-                    // margin: EdgeInsets.only(
-                    //   left: screenSize.width * .05,
-                    //   right: screenSize.width * .05,
-                    // ),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: screenSize.height * .005),
-                          child: Text('Enter inventory'.tr,
-                              style: TextStyle(color: Colors.black54)),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: screenSize.height * .005),
-                          child: Text(_controller.countEnter.toString(),
-                              style: TextStyle(fontSize: 27)),
-                        ),
-                        Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: screenSize.height * .005),
-                            child: Container(
-                              padding: EdgeInsets.all(screenSize.height * .005),
-                              decoration: BoxDecoration(
-                                  color: Colors.greenAccent.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Row(children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: screenSize.width * .03),
-                                  child: Text('Enters'.tr,
-                                      style:
-                                          TextStyle(color: Colors.green[300])),
-                                ),
-                                Icon(
-                                  Icons.call_made_outlined,
-                                  color: Colors.green,
-                                  size: screenSize.height * .015,
-                                )
-                              ]),
-                            )),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: screenSize.width * .005,
-                        vertical: screenSize.height * .018),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: screenSize.height * .005),
-                          child: Text('Withdrawal'.tr,
-                              style: TextStyle(color: Colors.black54)),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: screenSize.height * .005),
-                          child: Text(_controller.countWithdraw.toString(),
-                              style: TextStyle(fontSize: 27)),
-                        ),
-                        Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: screenSize.height * .005),
-                            child: Container(
-                              padding: EdgeInsets.all(screenSize.height * .005),
-                              decoration: BoxDecoration(
-                                  color: Colors.redAccent.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Row(children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: screenSize.width * .02),
-                                  child: Text('Withdrawals'.tr,
-                                      style: TextStyle(color: Colors.red[400])),
-                                ),
-                                Icon(
-                                  Icons.call_received,
-                                  color: Colors.red,
-                                  size: screenSize.height * .015,
-                                )
-                              ]),
-                            )),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: 10),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: screenSize.height * .005),
-                          child: Text('Transfer'.tr,
-                              style: TextStyle(color: Colors.black54)),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: screenSize.height * .005),
-                          child: Text(_controller.countTransfer.toString(),
-                              style: TextStyle(fontSize: 27)),
-                        ),
-                        Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: screenSize.height * .005),
-                            child: Container(
-                              padding: EdgeInsets.all(screenSize.height * .005),
-                              decoration: BoxDecoration(
-                                  color: Colors.greenAccent.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Row(children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: screenSize.width * .03),
-                                  child: Text('Transfer'.tr,
-                                      style: TextStyle(color: Colors.green)),
-                                ),
-                                Icon(
-                                  Icons.moving,
-                                  color: Colors.green,
-                                  size: screenSize.height * .015,
-                                )
-                              ]),
-                            )),
-                      ],
-                    ),
-                  ),
+                  CountTransactionWidget(
+                      title: 'Enter inventory',
+                      type: 'Enters',
+                      color: Colors.greenAccent.withOpacity(0.2),
+                      icon: Icons.call_made_outlined,
+                      iconColor: Colors.green,
+                      count: _controller.countEnter),
+                  CountTransactionWidget(
+                      title: 'Withdrawal',
+                      type: 'Withdrawals',
+                      color: Colors.redAccent.withOpacity(0.2),
+                      icon: Icons.call_received,
+                      iconColor: Colors.red,
+                      count: _controller.countWithdraw),
+                  CountTransactionWidget(
+                      title: 'Transfer',
+                      type: 'Transfer',
+                      color: Colors.greenAccent.withOpacity(0.2),
+                      icon: Icons.moving,
+                      iconColor: Colors.green,
+                      count: _controller.countTransfer),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 15.h,
             ),
             Expanded(
               child: PagedListView<int, TransactionDataModel>(
                   pagingController: _controller.pagingController,
-
-                  builderDelegate:
-                      PagedChildBuilderDelegate<TransactionDataModel>(
-                          noItemsFoundIndicatorBuilder: (context) =>
-                              PaginationException(
-                                title: 'No items found'.tr,
-                                message: 'The list is currently empty'.tr,
-                              ),
-                          itemBuilder: (context, item, index) {
-                    return Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 13, vertical: 6),
+                  builderDelegate: PagedChildBuilderDelegate<
+                          TransactionDataModel>(
+                      noItemsFoundIndicatorBuilder: (context) =>
+                          PaginationException(
+                            title: 'No items found'.tr,
+                            message: 'The list is currently empty'.tr,
+                          ),
+                      itemBuilder: (context, item, index) {
+                        return Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 7.h),
+                          margin: EdgeInsets.symmetric(
+                              vertical: 5.h, horizontal: 10.w),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                              vertical:
-                                                  screenSize.height * .012,
-                                              horizontal:
-                                                  screenSize.width * .03),
-                                          child: Text(item.stockName,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500)),
-                                        ),
-
-                                        // Container(
-                                        //   margin: EdgeInsets.symmetric(
-                                        //       vertical:
-                                        //           screenSize.height * .012,
-                                        //       horizontal:
-                                        //           screenSize.width * .18),
-                                        //   child: Text('${'Date'.tr} : 12/10 ',
-                                        //       style: TextStyle(
-                                        //           color: Colors.black38,
-                                        //           fontSize: 12,
-                                        //           fontWeight: FontWeight.w500)),
-                                        // ),
-                                        // Container(
-                                        //   margin: EdgeInsets.symmetric(
-                                        //       horizontal:
-                                        //           screenSize.width * .028,
-                                        //       vertical:
-                                        //           screenSize.height * .012),
-                                        //   child: Text('time :  11:30 ',
-                                        //       style: TextStyle(
-                                        //           color: Colors.black26,
-                                        //           fontSize: 12,
-                                        //           fontWeight: FontWeight.w500)),
-                                        // ),
-                                      ],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(item.stockName,
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500)),
+                                    SizedBox(
+                                      height: 8.h,
                                     ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: screenSize.width * .05),
-                                    child: Text(
+                                    Text(
                                         '${'Transaction ID'.tr} : ${item.transactionId}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.black54,
                                             fontSize: 13)),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: screenSize.width * .05,
-                                            vertical: screenSize.width * .03),
-                                        child: Text(
+                                    Row(
+                                      children: [
+                                        Text(
                                             '${'Quantity'.tr}  : ${item.quantity}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 color: Colors.black54,
                                                 fontSize: 13)),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: screenSize.width * .05,
-                                            vertical: screenSize.width * .03),
-                                        child: Row(
-                                          children: [
-                                            Text(
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  screenSize.width * .05,
+                                              vertical: screenSize.width * .03),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                  item.status == 0
+                                                      ? 'Under Review'.tr
+                                                      : item.status == 1
+                                                          ? 'Accepted'.tr
+                                                          : item.status == 2
+                                                              ? 'Rejected'.tr
+                                                              : item.matchingStatus ==
+                                                                      2
+                                                                  ? 'Waiting for your review'
+                                                                      .tr
+                                                                  : 'Preliminary Approval'
+                                                                      .tr,
+                                                  style: TextStyle(
+                                                      color: item.status == 0
+                                                          ? Colors.amber
+                                                          : item.status == 1
+                                                              ? Colors.green
+                                                              : item.status == 2
+                                                                  ? Colors.red
+                                                                  : Colors
+                                                                      .green,
+                                                      fontSize: 10)),
+                                              SizedBox(
+                                                width: 3.w,
+                                              ),
+                                              Icon(
                                                 item.status == 0
-                                                    ? 'Under Review'.tr
+                                                    ? Icons.pending
                                                     : item.status == 1
-                                                        ? 'Accepted'.tr
+                                                        ? Icons
+                                                            .check_circle_outline
                                                         : item.status == 2
-                                                            ? 'Rejected'.tr
-                                                            : item.matchingStatus ==
-                                                                    2
-                                                                ? 'Waiting for your review'
-                                                                    .tr
-                                                                : 'Preliminary Approval'
-                                                                    .tr,
-                                                style: TextStyle(
-                                                    color: item.status == 0
-                                                        ? Colors.amber
-                                                        : item.status == 1
-                                                            ? Colors.green
-                                                            : item.status == 2
-                                                                ? Colors.red
-                                                                : Colors.green,
-                                                    fontSize: 10)),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Icon(
-                                              item.status == 0
-                                                  ? Icons.pending
-                                                  : item.status == 1
-                                                      ? Icons
-                                                          .check_circle_outline
-                                                      : item.status == 2
-                                                          ? Icons
-                                                              .cancel_outlined
-                                                          : Icons.pending,
-                                              color: item.status == 0
-                                                  ? Colors.amber
-                                                  : item.status == 1
-                                                      ? Colors.green
-                                                      : item.status == 2
-                                                          ? Colors.red
-                                                          : Colors.green,
-                                              size: 20,
-                                            ),
-                                          ],
+                                                            ? Icons
+                                                                .cancel_outlined
+                                                            : Icons.pending,
+                                                color: item.status == 0
+                                                    ? Colors.amber
+                                                    : item.status == 1
+                                                        ? Colors.green
+                                                        : item.status == 2
+                                                            ? Colors.red
+                                                            : Colors.green,
+                                                size: 20,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: screenSize.width * .05),
-                                        child: TextButton.icon(
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        TextButton.icon(
                                             onPressed: () {
                                               Share.share(
                                                 'Transactions Details  \n\nName Item : ${item.stockName}   \n\n Transactions Id :${item.transactionId}  \n\n '
@@ -337,80 +191,79 @@ class _TransactionPageState extends State<TransactionPage> {
                                                 '  ',
                                               );
                                             },
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.share,
                                               color: Colors.black,
                                               size: 20,
                                             ),
                                             label: Text(
                                               'Share'.tr,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 14),
                                             )),
-                                      ),
-                                      item.status == 1 || item.status == 3
-                                          ? Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  horizontal:
-                                                      screenSize.width * .05),
-                                              child: TextButton.icon(
-                                                  onPressed: () {
-                                                    Get.to(() =>
-                                                        StatusStockScreen(
-                                                            data: item,
-                                                            stockId: item
-                                                                .fromStockId,
-                                                            transactionId: item
-                                                                .transactionId));
-                                                  },
-                                                  icon: Icon(
-                                                      Icons
-                                                          .view_agenda_outlined,
+                                        if (item.status == 1 ||
+                                            item.status == 3)
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    screenSize.width * .05),
+                                            child: TextButton.icon(
+                                                onPressed: () {
+                                                  Get.to(() =>
+                                                      StatusStockScreen(
+                                                          data: item,
+                                                          stockId:
+                                                              item.fromStockId,
+                                                          transactionId: item
+                                                              .transactionId));
+                                                },
+                                                icon: const Icon(
+                                                    Icons.view_agenda_outlined,
+                                                    color: Colors.black,
+                                                    size: 20),
+                                                label: Text(
+                                                  'Status Stock'.tr,
+                                                  style: const TextStyle(
                                                       color: Colors.black,
-                                                      size: 20),
-                                                  label: Text(
-                                                    'Status Stock'.tr,
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 14),
-                                                  )),
-                                            )
-                                          : SizedBox(),
-                                    ],
-                                  ),
-                                ],
+                                                      fontSize: 14),
+                                                )),
+                                          )
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                               Column(
                                 children: [
                                   Container(
                                       child: item.actionType == 0
-                                          ? Icon(Icons.call_received,
+                                          ? const Icon(Icons.call_received,
                                               color: Colors.red)
                                           : item.actionType == 1
-                                              ? Icon(Icons.call_made_outlined,
+                                              ? const Icon(
+                                                  Icons.call_made_outlined,
                                                   color: Colors.green)
-                                              : Icon(Icons.moving,
+                                              : const Icon(Icons.moving,
                                                   color: Colors.green)),
                                   Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 10),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 10),
                                       child: Text(
                                         item.actionType == 0
                                             ? 'withdrawal'.tr
                                             : item.actionType == 1
                                                 ? 'enter'.tr
                                                 : 'transfer'.tr,
-                                        style: TextStyle(color: Colors.black54),
+                                        style: const TextStyle(
+                                            color: Colors.black54),
                                       ))
                                 ],
                               )
                             ],
                           ),
-                        ),
-                      ],
-                    );
-                  })),
+                        );
+                      })),
             ),
           ],
         ));

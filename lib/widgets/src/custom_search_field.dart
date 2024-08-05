@@ -20,7 +20,7 @@ class CustomSearchFeild extends StatelessWidget {
   EdgeInsetsGeometry? margin;
   EdgeInsetsGeometry? padding;
 
-  CustomSearchFeild({
+  CustomSearchFeild({super.key,
     this.controller,
     this.keyboardType,
     this.maxLines,

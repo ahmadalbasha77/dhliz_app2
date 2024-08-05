@@ -14,12 +14,12 @@ import '../../../../network/api_url.dart';
 import 'delivery_location_screen.dart';
 
 class ViewDetailsWithdrawScreen extends StatefulWidget {
-  int id;
-  String nameWarehouse;
-  String desWarehouse;
-  String image;
+  final  int id;
+  final String nameWarehouse;
+  final String desWarehouse;
+  final String image;
 
-  ViewDetailsWithdrawScreen(
+  const ViewDetailsWithdrawScreen(
       {Key? key,
       required this.id,
       required this.nameWarehouse,
@@ -56,12 +56,8 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
     );
 
     if (response.statusCode == 200) {
-      print("POST request successful!");
-      print("Response: ${response.body}");
 
       // Parse the JSON response
-      Map<String, dynamic> jsonResponse = json.decode(response.body);
-      print(jsonResponse);
       Get.back();
       QuickAlert.show(
         context: context,
@@ -70,26 +66,25 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
         'A new withdraw transaction request has been sent. Please wait for approval',
         showConfirmBtn: true,
         confirmBtnColor: Colors.white,
-        confirmBtnTextStyle: TextStyle(color: Colors.black),
+        confirmBtnTextStyle: const TextStyle(color: Colors.black),
         title: ' Completed Successfully!',
       );
     } else {
-      print("Failed to make POST request. Status code: ${response.statusCode}");
-      print("Response: ${response.body}");
     }
   }
 
   String? x;
-  var selected;
+  // var selected;
   TextEditingController date = TextEditingController();
   TextEditingController space = TextEditingController();
 
+  @override
   void initState() {
     date.text = "";
     super.initState();
   }
   final ImagePicker _imagePicker = ImagePicker();
-  XFile? _selectedImage;
+  XFile? selectedImage;
   XFile? proofImage; // Use late for late initialization
 
 
@@ -98,7 +93,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
     await _imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       setState(() {
-        _selectedImage = pickedImage;
+        selectedImage = pickedImage;
       });
     }
   }
@@ -108,7 +103,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
     await _imagePicker.pickImage(source: ImageSource.camera);
     if (takenImage != null) {
       setState(() {
-        _selectedImage = takenImage;
+        selectedImage = takenImage;
       });
     }
   }
@@ -123,7 +118,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                trailing: Icon(Icons.photo),
+                trailing: const Icon(Icons.photo),
                 title: Text("From the gallery".tr),
                 onTap: () {
                   _pickImageFromGallery();
@@ -131,7 +126,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                 },
               ),
               ListTile(
-                trailing: Icon(Icons.camera),
+                trailing: const Icon(Icons.camera),
                 title: Text("Take photo".tr),
                 onTap: () {
                   _takePicture();
@@ -159,7 +154,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title:
-            Text(widget.nameWarehouse, style: TextStyle(color: Colors.black)),
+            Text(widget.nameWarehouse, style: const TextStyle(color: Colors.black)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -211,14 +206,14 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                             left: screenWidth * 0.008,
                             bottom: screenWidth * 0.015),
                         child: Text(widget.desWarehouse,
-                            style: TextStyle(color: Colors.black54)),
+                            style: const TextStyle(color: Colors.black54)),
                       ),
                     ],
                   )
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
@@ -227,23 +222,23 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     horizontal: screenWidth * 0.05),
                 child: Text(
                   'The space to be withdrawn'.tr,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 16,
                       color: Color.fromARGB(255, 38, 50, 56),
                       fontWeight: FontWeight.w500),
                 )),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 25),
+              margin: const EdgeInsets.symmetric(horizontal: 25),
               child: TextField(
                   controller: space,
                   decoration: InputDecoration(
                       suffixText: 'M²'.tr,
                       suffixStyle:
-                          TextStyle(fontSize: 16, color: Colors.black54),
+                          const TextStyle(fontSize: 16, color: Colors.black54),
                       filled: true,
                       fillColor: Colors.white,
                       label: Text('space'.tr,
-                          style: TextStyle(color: Colors.black54)),
+                          style: const TextStyle(color: Colors.black54)),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide.none),
@@ -251,7 +246,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide.none))),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Container(
@@ -260,13 +255,13 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     horizontal: screenWidth * 0.05),
                 child: Text(
                   'Withdrawal date'.tr,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 16,
                       color: Color.fromARGB(255, 38, 50, 56),
                       fontWeight: FontWeight.w500),
                 )),
             Container(
-              margin: EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                 horizontal: 25,
               ),
               child: TextField(
@@ -281,12 +276,10 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                         lastDate: DateTime(2101));
 
                     if (pickedDate != null) {
-                      print(
-                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                      //pickedDate output format => 2021-03-10 00:00:00.000
                       String formattedDate =
                           DateFormat('yyyy-MM-dd').format(pickedDate);
-                      print(
-                          formattedDate); //formatted date output using intl package =>  2021-03-16
+                      //formatted date output using intl package =>  2021-03-16
                       //you can implement different kind of Date Format here according to your requirement
 
                       setState(() {
@@ -294,15 +287,14 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                             formattedDate; //set output date to TextField value.
                       });
                     } else {
-                      print("Date is not selected");
                     }
                   },
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.calendar_month_sharp),
+                    prefixIcon: const Icon(Icons.calendar_month_sharp),
                     filled: true,
                     fillColor: Colors.white,
                     label: Text('date'.tr,
-                        style: TextStyle(color: Colors.black54)),
+                        style: const TextStyle(color: Colors.black54)),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide.none),
@@ -311,18 +303,18 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                         borderSide: BorderSide.none),
                   )),
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             Row(
               children: [
                 Container(
-                    margin: EdgeInsets.symmetric(horizontal: 25),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
                     child: Text(" ID of the inventory deliverer".tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                         ))),
                 ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        backgroundColor: const MaterialStatePropertyAll(Colors.white),
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     onPressed: () {
@@ -330,26 +322,26 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     },
                     child: Text(
                       'Upload image'.tr,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     ))
               ],
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
 
             Row(
               children: [
                 Container(
-                    margin: EdgeInsets.symmetric(horizontal: 25),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
                     child: Text("Attach the vehicle license".tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                         ))),
                 ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        backgroundColor: const MaterialStatePropertyAll(Colors.white),
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     onPressed: () {
@@ -357,18 +349,18 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     },
                     child: Text(
                       'Upload image'.tr,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     ))
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Container(
                 alignment: Alignment.topCenter,
                 child: Text(
                   'Default: Receive from warehouse'.tr,
-                  style: TextStyle(fontSize: 16, color: Colors.black38),
+                  style: const TextStyle(fontSize: 16, color: Colors.black38),
                 )),
             Container(
                 margin: EdgeInsets.only(
@@ -376,8 +368,8 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     left: screenWidth * 0.05,
                     right: screenWidth * 0.05),
                 child: Text(
-                  'Other services'.tr + ' :',
-                  style: TextStyle(
+                  '${'Other services'.tr} :',
+                  style: const TextStyle(
                       fontSize: 16,
                       color: Color.fromARGB(255, 38, 50, 56),
                       fontWeight: FontWeight.w500),
@@ -395,7 +387,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                   ),
                   Text(
                     'With delivery to a new location'.tr,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ])),
             if (isSelectedOne == true)
@@ -406,15 +398,15 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     style: ButtonStyle(
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
-                        backgroundColor: MaterialStatePropertyAll(
+                        backgroundColor: const MaterialStatePropertyAll(
                           Color.fromARGB(255, 38, 50, 56),
                         )),
                     onPressed: () {
-                      Get.to(() => DeliveryLocationScreen());
+                      Get.to(() => const DeliveryLocationScreen());
                     },
                     child: Text(
                       'Select a delivery location'.tr,
-                      style: TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: 12),
                     )),
               ),
             Container(
@@ -430,7 +422,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                   ),
                   Text(
                     'With packaging'.tr,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ])),
             SizedBox(
@@ -440,7 +432,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
               child: Container(
                 width: 270,
                 height: 60,
-                margin: EdgeInsets.only(top: 25),
+                margin: const EdgeInsets.only(top: 25),
                 child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: const MaterialStatePropertyAll(
@@ -453,7 +445,7 @@ class _ViewDetailsWithdrawScreenState extends State<ViewDetailsWithdrawScreen> {
                     child: Text('Withdraw Now'.tr)),
               ),
             ),
-            SizedBox(height: 20,)
+            const SizedBox(height: 20,)
           ],
         ),
       ),

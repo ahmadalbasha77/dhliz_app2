@@ -25,8 +25,6 @@ class SplashScreenState extends State<SplashScreen> {
   Future<bool> _authenticate() async {
     final bool canCheckBiometrics = await auth.canCheckBiometrics;
     final bool isDeviceSupported = await auth.isDeviceSupported();
-    print('Can check biometrics: $canCheckBiometrics');
-    print('Is device supported: $isDeviceSupported');
 
     if (isDeviceSupported) {
       try {
@@ -36,25 +34,20 @@ class SplashScreenState extends State<SplashScreen> {
             biometricOnly: true,
           ),
         );
-        print('Did authenticate: $didAuthenticate');
         if (didAuthenticate) {
-          print('Authentication succeeded');
           Utils.showLoadingDialog();
           Future.delayed(const Duration(seconds: 2), () async {
             Get.offAll(() => const MainScreen());
           });
         } else {
-          print('Authentication failed');
 
         }
         return didAuthenticate; // Return the result of the authentication
       } catch (e) {
         // Handle error
-        print('Error: $e');
 
       }
     } else {
-      print('Biometrics not available or not set up.');
 
     }
     return false; // Return false if biometrics are not available or authentication fails

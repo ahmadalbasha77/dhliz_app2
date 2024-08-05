@@ -114,13 +114,7 @@ class TransferStockController extends GetxController {
     try {
       var response = await request.send();
 
-      print('*****************************');
-      print(response.request);
-      print(response.statusCode);
-      print('88888888888888888888888888888');
-      print(request.fields);
       if (response.statusCode == 200) {
-        print('Stock status updated successfully.');
 
         Get.back();
         Get.back();
@@ -144,11 +138,8 @@ class TransferStockController extends GetxController {
             confirmBtnTextStyle: const TextStyle(color: Colors.black),
             title: 'Error!',
             textAlignment: TextAlign.center);
-        print(
-            'Failed to update stock status. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error occurred: $e');
     }
   }
 // Future<void> enterStock(BuildContext context) async {

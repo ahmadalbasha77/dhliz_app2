@@ -8,13 +8,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:local_auth/local_auth.dart';
 import 'config/shared_prefs_client.dart';
 import 'config/translation.dart';
 
 void main() async {
-
-
   await sharedPrefsClient.init();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -48,6 +45,9 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context, Widget? child) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          appBarTheme:  AppBarTheme(
+              titleTextStyle: TextStyle(color: Colors.black, fontSize: 14.sp),
+              centerTitle: true),
           colorScheme: ColorScheme.fromSeed(
               primary: AppColor.primaryColorScreen,
               seedColor: Colors.white,

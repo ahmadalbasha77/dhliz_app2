@@ -1,6 +1,3 @@
-import 'package:dhliz_app/controllers/home/stock_controller.dart';
-import 'package:dhliz_app/models/home/stock_model.dart';
-import 'package:dhliz_app/view/new%20home/enter%20inventory/enter_inventory_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -47,7 +44,7 @@ class _EntryRequestsScreenState extends State<EntryRequestsScreen> {
         ),
         body: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Expanded(
@@ -61,7 +58,7 @@ class _EntryRequestsScreenState extends State<EntryRequestsScreen> {
                             Container(
                               alignment: Alignment.topLeft,
                               margin:
-                              EdgeInsets.symmetric(horizontal: 13, vertical: 6),
+                              const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(15)),
@@ -81,7 +78,7 @@ class _EntryRequestsScreenState extends State<EntryRequestsScreen> {
                                                   horizontal:
                                                   screenSize.width * .03),
                                               child: Text(item.stockName,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 18,
                                                       fontWeight: FontWeight.w500)),
                                             ),
@@ -118,7 +115,7 @@ class _EntryRequestsScreenState extends State<EntryRequestsScreen> {
                                             horizontal: screenSize.width * .05),
                                         child: Text(
                                             '${'Transaction ID'.tr} : ${item.transactionId}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 color: Colors.black54,
                                                 fontSize: 13)),
                                       ),
@@ -130,7 +127,7 @@ class _EntryRequestsScreenState extends State<EntryRequestsScreen> {
                                                 vertical: screenSize.width * .03),
                                             child: Text(
                                                 '${'Quantity'.tr}  : ${item.quantity}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.black54,
                                                     fontSize: 13)),
                                           ),
@@ -157,7 +154,7 @@ class _EntryRequestsScreenState extends State<EntryRequestsScreen> {
                                                             ? Colors.red
                                                             : Colors.green,
                                                         fontSize: 12)),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 5,
                                                 ),
                                                 Icon(
@@ -199,14 +196,14 @@ class _EntryRequestsScreenState extends State<EntryRequestsScreen> {
                                                         '  ',
                                                   );
                                                 },
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.share,
                                                   color: Colors.black,
                                                   size: 20,
                                                 ),
                                                 label: Text(
                                                   'Share'.tr,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14),
                                                 )),
@@ -226,19 +223,19 @@ class _EntryRequestsScreenState extends State<EntryRequestsScreen> {
                                                           transactionId: item
                                                               .transactionId));
                                                 },
-                                                icon: Icon(
+                                                icon: const Icon(
                                                     Icons
                                                         .view_agenda_outlined,
                                                     color: Colors.black,
                                                     size: 20),
                                                 label: Text(
                                                   'Status Stock'.tr,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14),
                                                 )),
                                           )
-                                              : SizedBox(),
+                                              : const SizedBox(),
                                         ],
                                       ),
                                     ],
@@ -247,23 +244,23 @@ class _EntryRequestsScreenState extends State<EntryRequestsScreen> {
                                     children: [
                                       Container(
                                           child: item.actionType == 0
-                                              ? Icon(Icons.call_received,
+                                              ? const Icon(Icons.call_received,
                                               color: Colors.red)
                                               : item.actionType == 1
-                                              ? Icon(Icons.call_made_outlined,
+                                              ? const Icon(Icons.call_made_outlined,
                                               color: Colors.green)
-                                              : Icon(Icons.moving,
+                                              : const Icon(Icons.moving,
                                               color: Colors.green)),
                                       Container(
                                           margin:
-                                          EdgeInsets.symmetric(horizontal: 10),
+                                          const EdgeInsets.symmetric(horizontal: 10),
                                           child: Text(
                                             item.actionType == 0
                                                 ? 'Withdrawal'.tr
                                                 : item.actionType == 1
                                                 ? 'Enter'.tr
                                                 : 'Transfer'.tr,
-                                            style: TextStyle(color: Colors.black54),
+                                            style: const TextStyle(color: Colors.black54),
                                           ))
                                     ],
                                   )
