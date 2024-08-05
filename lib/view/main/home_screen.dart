@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   _callNumber() async {
     var number = '0559559700';
+    print(number);
     await FlutterPhoneDirectCaller.callNumber(number);
   }
 

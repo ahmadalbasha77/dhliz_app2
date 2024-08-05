@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -19,10 +21,19 @@ class _MapWarehouseScreenState extends State<MapWarehouseScreen> {
 
   Future<void> _createCustomIcon() async {
     try {
-      customIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 1.5),
-        'image/map/warehoues.png',
-      );
+      if(Platform.isIOS){
+        customIcon = await BitmapDescriptor.fromAssetImage(
+          ImageConfiguration(devicePixelRatio: 2.5),
+          'image/ios/warehoues.png',
+        );
+
+      }else{
+
+        customIcon = await BitmapDescriptor.fromAssetImage(
+          ImageConfiguration(devicePixelRatio: 1.5),
+          'image/map/warehoues.png',
+        );
+      }
     } catch (e) {
     }
   }
@@ -54,10 +65,12 @@ class _MapWarehouseScreenState extends State<MapWarehouseScreen> {
               child: CircularProgressIndicator(),
             )
           : GoogleMap(
+        myLocationButtonEnabled: false,
               initialCameraPosition: CameraPosition(
                 target: LatLng(widget.lat, widget.lon),
                 zoom: 15,
               ),
+
               markers: {
                 Marker(
                   icon: customIcon!,
