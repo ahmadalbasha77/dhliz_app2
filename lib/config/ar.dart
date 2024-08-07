@@ -289,4 +289,6 @@ const Map<String, String> ar = {
   'Accept': 'قبول',
   'Are you sure the reject entry?': 'هل أنت متأكد من رفض الإدخال؟',
   'reject': 'رفض',
+  'Please try again': 'الرجاء المحاولة مرة أخرى',
+  'User not found': 'المستخدم غير موجود',
 };

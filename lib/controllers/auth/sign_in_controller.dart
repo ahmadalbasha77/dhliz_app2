@@ -21,7 +21,6 @@ class LoginController extends GetxController {
 
   bool isNotVisible = true;
 
-
   UserResponse? userResponse;
 
   signIn() async {
@@ -40,15 +39,25 @@ class LoginController extends GetxController {
         sharedPrefsClient.email = controllerUsername.text;
         sharedPrefsClient.fullName = response.username;
         sharedPrefsClient.customerId = response.customerId;
-        if (response.isActive == true) {
+
+        if (userResponse!.response.userType == 0) {
           Utils.hideLoadingDialog();
           Get.offAll(() => const MainScreen());
           sharedPrefsClient.isLogin = true;
+
+          if (response.isActive == true) {
+            Utils.hideLoadingDialog();
+            Get.offAll(() => const MainScreen());
+            sharedPrefsClient.isLogin = true;
+          } else {
+            Utils.hideLoadingDialog();
+            Get.to(() => PolicyScreen(
+                  userId: response.userId,
+                ));
+          }
         } else {
           Utils.hideLoadingDialog();
-          Get.to(() => PolicyScreen(
-                userId: response.userId,
-              ));
+          Utils.showSnackBar('Please try again'.tr, 'User not found'.tr);
         }
       }
     }
