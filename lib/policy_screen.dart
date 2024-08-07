@@ -24,7 +24,7 @@ class _PolicyScreenState extends State<PolicyScreen> {
     String url = '${ApiUrl.API_BASE_URL2}/VerifyAccount?id=${widget.userId}';
     http.Response response = await http.post(Uri.parse(url));
     if (response.statusCode == 200) {
-      Get.offAll(() => MainScreen());
+      Get.offAll(() => const MainScreen());
       sharedPrefsClient.isLogin = true;
     } else {
       Get.snackbar(
@@ -79,7 +79,7 @@ class _PolicyScreenState extends State<PolicyScreen> {
                 title: Text(
                     "I've read and agree to the terms and conditions of the privacy policy"
                         .tr,
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
                 value: checkedValue,
                 onChanged: (newValue) {
                   setState(() {
@@ -104,7 +104,7 @@ class _PolicyScreenState extends State<PolicyScreen> {
                           activeUser();
                         },
                         child: Text('Continue'.tr,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16)),
                       ),
                     )

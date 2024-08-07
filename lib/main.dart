@@ -2,7 +2,6 @@ import 'package:dhliz_app/config/app_color.dart';
 import 'package:dhliz_app/config/binding.dart';
 import 'package:dhliz_app/config/messaging_config.dart';
 import 'package:dhliz_app/controllers/app_controller.dart';
-import 'package:dhliz_app/firebase_options.dart';
 import 'package:dhliz_app/view/auth/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +11,13 @@ import 'config/shared_prefs_client.dart';
 import 'config/translation.dart';
 
 void main() async {
-  await sharedPrefsClient.init();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await sharedPrefsClient.init();
+
+  await Firebase.initializeApp();
   MessagingConfig.init();
+  FirebaseMessagingConfig.onMessage();
+
   runApp(const MyApp());
 }
 
@@ -45,7 +47,7 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context, Widget? child) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          appBarTheme:  AppBarTheme(
+          appBarTheme: AppBarTheme(
               titleTextStyle: TextStyle(color: Colors.black, fontSize: 14.sp),
               centerTitle: true),
           colorScheme: ColorScheme.fromSeed(

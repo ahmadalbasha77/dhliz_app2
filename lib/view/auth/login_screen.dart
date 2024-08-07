@@ -2,6 +2,7 @@ import 'package:dhliz_app/config/shared_prefs_client.dart';
 import 'package:dhliz_app/view/auth/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/auth/sign_in_controller.dart';
@@ -33,50 +34,49 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Form(
         key: _controller.keyForm,
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: screenSize.height * 0.06,
-              ),
-              Image.asset(
-                alignment: Alignment.center,
-                "image/home/Artboard 15.png",
-                width: screenSize.width * 0.49,
-              ),
-              SizedBox(
-                height: screenSize.height * 0.08,
-              ),
-              Center(
-                child: Text(
-                  "Login".tr,
-                  style: TextStyle(
-                    fontSize: screenSize.width * 0.07,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 50.h,
+                ),
+                Image.asset(
+                  alignment: Alignment.center,
+                  "image/home/Artboard 15.png",
+                  width: 160.w,
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                Center(
+                  child: Text(
+                    "Login".tr,
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: screenSize.height * 0.025,
-              ),
-              SizedBox(
-                width: screenSize.width * 0.7,
-                child: Text(
-                  "Enter your email and password to access the warehouse".tr,
-                  style: TextStyle(
-                    fontSize: screenSize.width * 0.039,
-                    color: Colors.black38,
-                  ),
-                  textAlign: TextAlign.center,
+                SizedBox(
+                  height: 15.h,
                 ),
-              ),
-              SizedBox(
-                height: screenSize.height * 0.06,
-              ),
-              Container(
-                margin:
-                    EdgeInsets.symmetric(horizontal: screenSize.width * .07),
-                child: TextFormField(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Enter your email and password to access the warehouse".tr,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.black38,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter Your Username'.tr;
@@ -101,12 +101,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       labelText: "email".tr,
                       labelStyle: const TextStyle(color: Colors.black45)),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenSize.width * .07,
-                    vertical: screenSize.height * .02),
-                child: TextFormField(
+                SizedBox(
+                  height: 10.h,
+                ),
+                TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password'.tr;
@@ -149,60 +147,55 @@ class _LoginScreenState extends State<LoginScreen> {
                       labelText: "password".tr,
                       labelStyle: const TextStyle(color: Colors.black45)),
                 ),
-              ),
-              SizedBox(
-                height: screenSize.height * 0.06,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't Have Account ?  ".tr,
-                    style: TextStyle(
-                        color: Colors.black45,
-                        fontSize: screenSize.width * .038),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(() => const SignUpScreen());
+                SizedBox(
+                  height: 70.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't Have Account ?  ".tr,
+                      style: TextStyle(color: Colors.black45, fontSize: 13.sp),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => const SignUpScreen());
+                      },
+                      child: Text(
+                        'Sign Up'.tr,
+                        style: TextStyle(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  // margin: EdgeInsets.symmetric(horizontal: screenSize.width * .1),
+                  height: screenSize.height * 0.079,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(80, 46, 144, 1.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    onPressed: () async {
+                      _controller.signIn();
                     },
                     child: Text(
-                      'Sign Up'.tr,
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                          fontSize: screenSize.width * .04),
+                      "Login".tr,
+                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: double.infinity,
-                margin:
-                    EdgeInsets.symmetric(horizontal: screenSize.width * .1),
-                height: screenSize.height * 0.079,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(80, 46, 144, 1.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                  ),
-                  onPressed: () async {
-                    _controller.signIn();
-                  },
-                  child: Text(
-                    "Login".tr,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: screenSize.width * .05),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

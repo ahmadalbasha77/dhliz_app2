@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../new home/enter inventory/enter_warehouse_screen.dart';
-import '../../new home/myWarehouse/my_warehouse_screen.dart';
-import '../../new home/transfer inventory/transfer_warehouse_screen.dart';
-import '../../new home/withdrawal inventory/withdrawal_warehouse_screen.dart';
+import 'enter/enter_warehouse_screen.dart';
+import 'my warehouse/my_warehouse_screen.dart';
+import 'transfer/transfer_warehouse_screen.dart';
+import 'withdrawal/withdrawal_warehouse_screen.dart';
 
 class SelfManagementOfInventoryScreen extends StatefulWidget {
   const SelfManagementOfInventoryScreen({Key? key}) : super(key: key);
@@ -103,6 +103,7 @@ class _SelfManagementOfInventoryScreenState
                       Image.asset(
                         'image/home/warehouse ManagementManagement.png',
                         width: screenSize.width * 0.28,
+                        cacheWidth: 200,
                       )
                     ],
                   ),
@@ -185,7 +186,7 @@ class _SelfManagementOfInventoryScreenState
                         ],
                       ),
                       Image.asset('image/home/Artboard 2.png',
-                          width: screenSize.width * 0.3)
+                          cacheWidth: 200, width: screenSize.width * 0.3)
                     ],
                   ),
                 ),
@@ -258,6 +259,7 @@ class _SelfManagementOfInventoryScreenState
                           ]),
                       Image.asset(
                           'image/home/Withdrawal of inventoryWithdrawal of inventory.png',
+                          cacheWidth: 200,
                           width: screenSize.width * 0.3)
                     ],
                   ),
@@ -332,6 +334,7 @@ class _SelfManagementOfInventoryScreenState
                       ),
                       Image.asset('image/home/moving inventory.png',
                           width: screenSize.width * 0.3,
+                          cacheWidth: 200,
                           alignment: Alignment.topRight)
                     ],
                   ),

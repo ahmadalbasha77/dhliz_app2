@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'app_color.dart';
 
 final kStyleTextTitleLarge = TextStyle(fontSize: 30.sp, fontWeight: FontWeight.w400);
-final kStyleTextTitle = TextStyle(fontSize: 22, );
+const kStyleTextTitle = TextStyle(fontSize: 22, );
 final kStyleTextSubTitle = TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w400);
 final kStyleTextDefault = TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400);
 final kStyleTextSmall = TextStyle(fontSize: 11.sp);

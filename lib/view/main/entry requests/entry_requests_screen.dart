@@ -68,47 +68,45 @@ class _EntryRequestsScreenState extends State<EntryRequestsScreen> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical:
-                                                  screenSize.height * .012,
-                                                  horizontal:
-                                                  screenSize.width * .03),
-                                              child: Text(item.stockName,
-                                                  style: const TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w500)),
-                                            ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical:
+                                                screenSize.height * .012,
+                                                horizontal:
+                                                screenSize.width * .03),
+                                            child: Text(item.stockName,
+                                                style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500)),
+                                          ),
 
-                                            // Container(
-                                            //   margin: EdgeInsets.symmetric(
-                                            //       vertical:
-                                            //           screenSize.height * .012,
-                                            //       horizontal:
-                                            //           screenSize.width * .18),
-                                            //   child: Text('${'Date'.tr} : 12/10 ',
-                                            //       style: TextStyle(
-                                            //           color: Colors.black38,
-                                            //           fontSize: 12,
-                                            //           fontWeight: FontWeight.w500)),
-                                            // ),
-                                            // Container(
-                                            //   margin: EdgeInsets.symmetric(
-                                            //       horizontal:
-                                            //           screenSize.width * .028,
-                                            //       vertical:
-                                            //           screenSize.height * .012),
-                                            //   child: Text('time :  11:30 ',
-                                            //       style: TextStyle(
-                                            //           color: Colors.black26,
-                                            //           fontSize: 12,
-                                            //           fontWeight: FontWeight.w500)),
-                                            // ),
-                                          ],
-                                        ),
+                                          // Container(
+                                          //   margin: EdgeInsets.symmetric(
+                                          //       vertical:
+                                          //           screenSize.height * .012,
+                                          //       horizontal:
+                                          //           screenSize.width * .18),
+                                          //   child: Text('${'Date'.tr} : 12/10 ',
+                                          //       style: TextStyle(
+                                          //           color: Colors.black38,
+                                          //           fontSize: 12,
+                                          //           fontWeight: FontWeight.w500)),
+                                          // ),
+                                          // Container(
+                                          //   margin: EdgeInsets.symmetric(
+                                          //       horizontal:
+                                          //           screenSize.width * .028,
+                                          //       vertical:
+                                          //           screenSize.height * .012),
+                                          //   child: Text('time :  11:30 ',
+                                          //       style: TextStyle(
+                                          //           color: Colors.black26,
+                                          //           fontSize: 12,
+                                          //           fontWeight: FontWeight.w500)),
+                                          // ),
+                                        ],
                                       ),
                                       Container(
                                         margin: EdgeInsets.symmetric(

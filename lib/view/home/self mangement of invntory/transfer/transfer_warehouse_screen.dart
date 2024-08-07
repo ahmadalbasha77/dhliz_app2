@@ -1,288 +1,331 @@
-import 'dart:convert';
-
-import 'package:dhliz_app/view/home/self%20mangement%20of%20invntory/transfer/transfer_inventory_screen.dart';
+import 'package:dhliz_app/controllers/home/subscriptions_controllerl.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import '../../../../config/shared_prefs_client.dart';
-import '../../../../network/api_url.dart';
-import '../warehouse management/map_warehouse.dart';
+import '../../../../models/home/subscriptions_model.dart';
+import '../../../../widgets/src/pagination_exception.dart';
+import '../my warehouse/map_warehouse.dart';
+import '../my warehouse/pay_now.dart';
+import 'transfer_inventory_new_screen.dart';
 
-class TransferWarehouseScreen extends StatefulWidget {
-  const TransferWarehouseScreen({super.key});
+class TransferWarehouseNewScreen extends StatefulWidget {
+  const TransferWarehouseNewScreen({super.key});
 
   @override
-  State<TransferWarehouseScreen> createState() =>
-      _TransferWarehouseScreenState();
+  State<TransferWarehouseNewScreen> createState() =>
+      _TransferWarehouseNewScreenState();
 }
 
-class _TransferWarehouseScreenState extends State<TransferWarehouseScreen> {
-  List<Map<String, dynamic>> data = [];
-
-  Future<void> fetchData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? id = prefs.getInt('postId');
-
-    final response = await http.get(
-        Uri.parse(
-            '${ApiUrl.API_BASE_URL}/Customer/GetSupscriptionByCustomerId?id=${sharedPrefsClient.customerId}'),
-        headers: {'Authorization': 'Bearer ${sharedPrefsClient.accessToken}'});
-
-    if (response.statusCode == 200) {
-      setState(() {
-        data = List<Map<String, dynamic>>.from(
-            json.decode(response.body)['response'][0]);
-      });
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
+class _TransferWarehouseNewScreenState
+    extends State<TransferWarehouseNewScreen> {
+  final _controller = SubscriptionController.to;
 
   @override
   void initState() {
-    fetchData();
+    _controller.pagingController.addPageRequestListener((pageKey) {
+      _controller.getSubscription(pageKey: pageKey);
+    });
+
+    _controller.refreshPagingController();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 245, 245, 245),
+      backgroundColor: const Color.fromARGB(255, 231, 231, 231),
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        centerTitle: true,
-        title: Text('My Warehouse'.tr,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black,
-            )),
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
-        elevation: 0,
+        title: Text(
+          'Transfer Warehouse'.tr,
+          style: const TextStyle(color: Colors.black),
+        ),
+        centerTitle: true,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Expanded(
-            child: data.isEmpty
-                ? FutureBuilder(
-                    future: Future.delayed(Duration(seconds: 3)),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else {
-                        return Center(
-                          child: Text('No Data'),
-                        );
-                      }
-                    },
-                  )
-                : ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (context, index) => Container(
-                      margin:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.white,
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => TransferInventoryScreen(
-                              id: data[index]['id'],
-                              data: data,
-                            ),
-                          ));
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  data[index]['warehouse']['name'],
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                SizedBox(
-                                  height: 35,
-                                  child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStatePropertyAll(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15))),
-                                          backgroundColor:
-                                              MaterialStatePropertyAll(
-                                                Color.fromRGBO(80, 46, 144, 1.0),
-                                          )),
-                                      onPressed: () {
-                                        Get.to(() => MapWarehouseScreen(
-                                            nameWh: data[index]['warehouse']
-                                            ['name'],
-                                            lat: double.parse(data[index]
-                                            ['warehouse']['address']
-                                            ['lat']),
-                                            lon: double.parse(data[index]
-                                            ['warehouse']['address']
-                                            ['lot'])));
-                                      },
-                                      child: Text(
-                                        'View map'.tr,
-                                        style: TextStyle(fontSize: 12),
-                                      )),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                                '${'Address'.tr} : ${data[index]['warehouse']['address']['city']} , ${data[index]['warehouse']['address']['state']} , ${data[index]['warehouse']['address']['street']} ',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                )),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 5),
-                              child: Text(
-                                  '${'Price'.tr} : ${data[index]['warehouse']['price'][0]['cost'].toString()}  SAR / 1 M² per day',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                  )),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 5),
-                              child: Text(
-                                  '${'Transportation Fees'.tr} : ${data[index]['warehouse']['price'][0]['transportationFees'].toString()}  SAR',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                  )),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
-                              child: Text('Temperature'.tr,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                    child: Row(children: [
-                                  AbsorbPointer(
-                                    absorbing: true,
-                                    child: Checkbox(
-                                      fillColor: MaterialStatePropertyAll(
-                                          Colors.black),
-                                      value: data[index]['warehouse']
-                                          ['temperature']['high'],
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                  Text(
-                                    'Dry'.tr,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ])),
-                                Row(children: [
-                                  AbsorbPointer(
-                                    absorbing: true,
-                                    child: Checkbox(
-                                      fillColor: MaterialStatePropertyAll(
-                                          Colors.black),
-                                      value: data[index]['warehouse']
-                                          ['temperature']['cold'],
-                                      onChanged: (bool? value) {},
-                                    ),
-                                  ),
-                                  Text(
-                                    'Cold'.tr,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ]),
-                                Row(children: [
-                                  AbsorbPointer(
-                                    absorbing: true,
-                                    child: Checkbox(
-                                      fillColor: MaterialStatePropertyAll(
-                                          Colors.black),
-                                      value: data[index]['warehouse']
-                                          ['temperature']['freezing'],
-                                      onChanged: (bool? value) {},
-                                    ),
-                                  ),
-                                  Text(
-                                    'Freezing'.tr,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ]),
-                              ],
-                            ),
-                            // Row(
-                            //   children: [
-                            //     Text('Used'.tr,
-                            //         style: TextStyle(
-                            //             fontSize: 14, color: Colors.black54)),
-                            //     LinearPercentIndicator(
-                            //       barRadius: Radius.circular(15),
-                            //       width: 250,
-                            //       lineHeight: 14.0,
-                            //       percent: data[index]['warehouse']
-                            //               ['spaceUsed'] /
-                            //           100,
-                            //       backgroundColor: Colors.grey,
-                            //       progressColor: Colors.black54,
-                            //     ),
-                            //     Text(
-                            //       '${data[index]['warehouse']['spaceUsed']}%',
-                            //       style: TextStyle(
-                            //           fontSize: 14,
-                            //           fontWeight: FontWeight.bold),
-                            //     )
-                            //   ],
-                            // ),
-                            Divider(height: .6, color: Colors.black),
-                            Container(
-                              margin: EdgeInsets.only(top: 25),
-                              child: Text(
-                                '${'Reserved Space'.tr} : ${data[index]['reservedSpace'].toString()} M²',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 35, 37, 56),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              '${'Expired WH'.tr} : ${data[index]['endDate'].toString()}  ',
-                              style: TextStyle(
-                                  fontSize: 13, color: Colors.black54),
-                            ),
-                          ],
+      body: PagedListView<int, SubscriptionDataModel>(
+          pagingController: _controller.pagingController,
+          builderDelegate: PagedChildBuilderDelegate<SubscriptionDataModel>(
+            noItemsFoundIndicatorBuilder: (context) => PaginationException(
+              title: 'No items found'.tr,
+              message: 'The list is currently empty'.tr,
+            ),
+            itemBuilder: (context, item, index) => Container(
+              margin:
+              const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+              ),
+              padding:
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+              child: InkWell(
+                onTap: () {
+                  item.status == 1
+                      ? Get.to(() =>
+                      TransferInventoryNewScreen(id: item.id.toString()))
+                      : Fluttertoast.showToast(
+                      fontSize: 16,
+                      msg: 'subscription inactive'.tr);
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            item.warehouse.name,
+                            style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
+                        SizedBox(
+                          height: 35,
+                          child: ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              15))),
+                                  backgroundColor:
+                                  const MaterialStatePropertyAll(
+                                    Color.fromRGBO(
+                                        80, 46, 144, 1.0),
+                                  )),
+                              onPressed: () {
+                                Get.to(MapWarehouseScreen(
+                                  nameWh: item.warehouse.name,
+                                  lat: double.parse(
+                                      item.address.lat),
+                                  lon: double.parse(
+                                      item.address.lot),
+                                ));
+                              },
+                              child: Text(
+                                'View map'.tr,
+                                style:
+                                const TextStyle(fontSize: 12),
+                              )),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                        '${'Address'.tr} : ${item.address.city} , ${item.address.state} ,${item.address.street}',
+                        style: const TextStyle(
+                          fontSize: 11,
+                        )),
+
+                    Container(
+                      margin:
+                      const EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                          '${'Subscription status'.tr} : ${item.status == 0 ? 'Under Review'.tr : item.status == 1 ? 'Accepted'.tr : item.status == 2 ? 'Rejected'.tr : item.status == 3 ? 'PreliminaryApproval'.tr : 'Error'.tr} ',
+                          style: TextStyle(
+                              fontSize: 11,
+                              color: item.status == 0
+                                  ? Colors.orange
+                                  : item.status == 2
+                                  ? Colors.red
+                                  : Colors.green)),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    if (item.status == 1 || item.status == 3)
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: item.status == 1
+                                    ? Colors.green
+                                    : Colors.red)),
+                        child: Text(
+                            '${'Payment status'.tr} : ${item.status == 1 ? 'Paid'.tr : 'UnPaid'.tr} ',
+                            style: TextStyle(
+                                fontSize: 11,
+                                color: item.status == 1
+                                    ? Colors.green
+                                    : Colors.red)),
+                      ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                        '${'Temperature'.tr} : ${item.temperature.fromTemperature} - ${item.temperature.toTemperature} ${'°C'.tr}'
+                            .tr,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold)),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                        '${'Cost'.tr} : ${item.temperature.cost}  ${'SAR/M2'.tr}',
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold)),
+                    // Row(
+                    //   mainAxisAlignment:
+                    //       MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Row(children: [
+                    //       AbsorbPointer(
+                    //         absorbing: true,
+                    //         child: Checkbox(
+                    //           fillColor:
+                    //               const MaterialStatePropertyAll(
+                    //                   Colors.black),
+                    //           value: _controller.temperature!.dry,
+                    //           onChanged: (value) {},
+                    //         ),
+                    //       ),
+                    //       Text(
+                    //         'Dry'.tr,
+                    //         style: const TextStyle(
+                    //           fontSize: 12,
+                    //         ),
+                    //       ),
+                    //     ]),
+                    //     Row(children: [
+                    //       AbsorbPointer(
+                    //         absorbing: true,
+                    //         child: Checkbox(
+                    //           fillColor:
+                    //               const MaterialStatePropertyAll(
+                    //                   Colors.black),
+                    //           value: _controller.temperature!.cold,
+                    //           onChanged: (bool? value) {},
+                    //         ),
+                    //       ),
+                    //       Text(
+                    //         'Cold'.tr,
+                    //         style: const TextStyle(
+                    //           fontSize: 12,
+                    //         ),
+                    //       ),
+                    //     ]),
+                    //     Row(children: [
+                    //       AbsorbPointer(
+                    //         absorbing: true,
+                    //         child: Checkbox(
+                    //           fillColor:
+                    //               const MaterialStatePropertyAll(
+                    //                   Colors.black),
+                    //           value:
+                    //               _controller.temperature!.freezing,
+                    //           onChanged: (bool? value) {},
+                    //         ),
+                    //       ),
+                    //       Text(
+                    //         'Freezing'.tr,
+                    //         style: const TextStyle(
+                    //           fontSize: 12,
+                    //         ),
+                    //       ),
+                    //     ]),
+                    //   ],
+                    // ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text('Used'.tr,
+                            style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54)),
+                        LinearPercentIndicator(
+                          barRadius: const Radius.circular(15),
+                          width: 250,
+                          lineHeight: 14.0,
+                          trailing: Text(
+                            '${((item.spaceUsed / item.reservedSpace) *
+                                100)
+                                .toStringAsFixed(1)}%', // Adjust the number of decimal places as needed
+                          ),
+                          // percent: (item.spaceUsed /
+                          //     item.reservedSpace) *
+                          //     100,
+                          backgroundColor: Colors.grey,
+                          progressColor: Colors.black54,
+                        ),
+                        // Text(
+                        //   '${data[index]['warehouse']['spaceUsed']}%',
+                        //   style: TextStyle(
+                        //       fontSize: 14,
+                        //       fontWeight: FontWeight.bold),
+                        // )
+                      ],
+                    ),
+                    // const Divider(height: .6, color: Colors.black),
+
+                    Container(
+                      margin: const EdgeInsets.only(top: 25),
+                      child: Column(
+                        children: [
+                          Text(
+                            '${'Reserved Space'.tr}: ${item.reservedSpace} ${'M²'.tr}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color:
+                              Color.fromARGB(255, 35, 37, 56),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-          ),
-        ],
-      ),
-    );
+                    const SizedBox(
+                      height: 20,
+                    ),
+
+                    Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '${'Expired WH'.tr}: ${item.endDate}',
+                            style: const TextStyle(
+                                fontSize: 13, color: Colors.black54),
+                          ),
+                        ),
+                        item.status == 3
+                            ? Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10),
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                              MaterialStatePropertyAll(
+                                  Colors.green[600]),
+                            ),
+                            onPressed: () {
+                              Get.to(() => PayNowScreen(
+                                data: item,
+                              ));
+                            },
+                            child: Text('Pay Now'.tr),
+                          ),
+                        )
+                            : Container()
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )));
   }
 }

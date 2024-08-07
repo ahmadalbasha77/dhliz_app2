@@ -27,19 +27,19 @@ class _TermsConditionScreenState extends State<TermsConditionScreen> {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.only(top: 20, right: 10, left: 10),
+              margin: const EdgeInsets.only(top: 20, right: 10, left: 10),
               child: Text(
                 title,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
             ),
             Container(
                 margin:
-                    EdgeInsets.only(top: 15, right: 10, left: 10, bottom: 25),
+                    const EdgeInsets.only(top: 15, right: 10, left: 10, bottom: 25),
                 child: Text(
                   content,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                 )),
           ],
         ),

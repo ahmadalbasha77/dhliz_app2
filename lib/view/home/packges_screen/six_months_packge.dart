@@ -12,13 +12,13 @@ class _SixMonthsPackgeState extends State<SixMonthsPackge> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 231, 231, 231),
+      backgroundColor: const Color.fromARGB(255, 231, 231, 231),
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
 
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text('Six month Packge', style: TextStyle(color: Colors.black)),
+        title: const Text('Six month Packge', style: TextStyle(color: Colors.black)),
       ),
       body: SingleChildScrollView(
         child: Column(children: [
@@ -75,7 +75,7 @@ class _SixMonthsPackgeState extends State<SixMonthsPackge> {
                         margin: EdgeInsets.symmetric(
                             vertical: screenSize.height * .008),
                         child:
-                            Text('- A person enters the information portal')),
+                            const Text('- A person enters the information portal')),
                     SizedBox(
                       height: screenSize.height * .05,
                     ),
@@ -92,13 +92,13 @@ class _SixMonthsPackgeState extends State<SixMonthsPackge> {
                               shape: MaterialStatePropertyAll(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                           color: Color.fromARGB(
                                               255, 42, 42, 63)))),
                               backgroundColor:
-                                  MaterialStatePropertyAll(Colors.white)),
+                                  const MaterialStatePropertyAll(Colors.white)),
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             'Choose plan',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 42, 42, 63)),
@@ -161,7 +161,7 @@ class _SixMonthsPackgeState extends State<SixMonthsPackge> {
                     Container(
                         margin: EdgeInsets.symmetric(
                             vertical: screenSize.height * .008),
-                        child: Text(
+                        child: const Text(
                             '- Three people enter the information portal')),
                     SizedBox(
                       height: screenSize.height * .05,
@@ -179,13 +179,13 @@ class _SixMonthsPackgeState extends State<SixMonthsPackge> {
                               shape: MaterialStatePropertyAll(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                           color: Color.fromARGB(
                                               255, 42, 42, 63)))),
                               backgroundColor:
-                                  MaterialStatePropertyAll(Colors.white)),
+                                  const MaterialStatePropertyAll(Colors.white)),
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             'Choose plan',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 42, 42, 63)),
@@ -249,7 +249,7 @@ class _SixMonthsPackgeState extends State<SixMonthsPackge> {
                         margin: EdgeInsets.symmetric(
                             vertical: screenSize.height * .008),
                         child:
-                            Text('- Five people enter the information portal')),
+                            const Text('- Five people enter the information portal')),
                     SizedBox(
                       height: screenSize.height * .05,
                     ),
@@ -266,13 +266,13 @@ class _SixMonthsPackgeState extends State<SixMonthsPackge> {
                               shape: MaterialStatePropertyAll(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                           color: Color.fromARGB(
                                               255, 42, 42, 63)))),
                               backgroundColor:
-                                  MaterialStatePropertyAll(Colors.white)),
+                                  const MaterialStatePropertyAll(Colors.white)),
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             'Choose plan',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 42, 42, 63)),
@@ -335,7 +335,7 @@ class _SixMonthsPackgeState extends State<SixMonthsPackge> {
                     Container(
                         margin: EdgeInsets.symmetric(
                             vertical: screenSize.height * .008),
-                        child: Text(
+                        child: const Text(
                             '- Unlimited access to the information portal')),
                     SizedBox(
                       height: screenSize.height * .05,
@@ -353,13 +353,13 @@ class _SixMonthsPackgeState extends State<SixMonthsPackge> {
                               shape: MaterialStatePropertyAll(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                           color: Color.fromARGB(
                                               255, 42, 42, 63)))),
                               backgroundColor:
-                                  MaterialStatePropertyAll(Colors.white)),
+                                  const MaterialStatePropertyAll(Colors.white)),
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             'Connect with us',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 42, 42, 63)),

@@ -24,16 +24,17 @@ class RestApi {
       'Content-Type': 'application/json',
     };
     http.Response response = await http.post(uri, headers: headers, body: body);
+    log(response.body);
+    log('${response.statusCode}');
     if (response.statusCode == 200) {
-      log(response.body);
       UserResponse userResponse =
-      UserResponse.fromJson(jsonDecode(response.body));
+          UserResponse.fromJson(jsonDecode(response.body));
       return userResponse;
     } else if (response.statusCode == 400) {
-      Utils.showSnackbar('Please try again', 'Email or password is incorrect');
+      Utils.showSnackBar('Please try again', 'Email or password is incorrect');
       return null;
     } else {
-      Utils.showSnackbar('Please try again', 'Check your internet connection');
+      Utils.showSnackBar('Please try again', 'Check your internet connection');
       return null;
     }
   }
@@ -49,14 +50,14 @@ class RestApi {
     if (response.statusCode == 200) {
       log(response.body);
       RegisterModel registerModel =
-      RegisterModel.fromJson(jsonDecode(response.body));
+          RegisterModel.fromJson(jsonDecode(response.body));
       return registerModel;
     } else if (response.statusCode == 400) {
-      Utils.showSnackbar(
+      Utils.showSnackBar(
           'Please try again', 'The email already exists. Use another email');
       return null;
     } else {
-      Utils.showSnackbar('Please try again', 'Check your internet connection');
+      Utils.showSnackBar('Please try again', 'Check your internet connection');
       return null;
     }
   }
@@ -64,9 +65,7 @@ class RestApi {
   static Future<TransactionModel?> getTransaction(
       {required int skip, required int take}) async {
     String url =
-        '${ApiUrl.API_BASE_URL2}${ApiUrl
-        .GetTransaction}?CustomerName=${sharedPrefsClient
-        .fullName}&PageIndex=$skip&PageSize=$take';
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetTransaction}?CustomerName=${sharedPrefsClient.fullName}&PageIndex=$skip&PageSize=$take';
     Uri uri = Uri.parse(url);
 
     var headers = {
@@ -78,7 +77,7 @@ class RestApi {
     if (response.statusCode == 200) {
       log(response.body);
       TransactionModel transactionModel =
-      TransactionModel.fromJson(jsonDecode(response.body));
+          TransactionModel.fromJson(jsonDecode(response.body));
 
       return transactionModel;
     } else {
@@ -88,8 +87,7 @@ class RestApi {
 
   static Future<ProfileModel?> getProfile() async {
     String url =
-        '${ApiUrl.API_BASE_URL2}/api/Customer/GetById?id=${sharedPrefsClient
-        .customerId}';
+        '${ApiUrl.API_BASE_URL2}/api/Customer/GetById?id=${sharedPrefsClient.customerId}';
     Uri uri = Uri.parse(url);
 
     var headers = {
@@ -100,7 +98,7 @@ class RestApi {
     http.Response response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {
       ProfileModel profileModel =
-      ProfileModel.fromJson(jsonDecode(response.body));
+          ProfileModel.fromJson(jsonDecode(response.body));
       return profileModel;
     } else {
       throw Exception('Failed to load transaction data');
@@ -110,9 +108,7 @@ class RestApi {
   static Future<SubscriptionsModel?> getSubscriptions(
       {required int skip, required int take}) async {
     String url =
-        '${ApiUrl.API_BASE_URL2}${ApiUrl
-        .GetSubscriptions}?CustomerId=${sharedPrefsClient
-        .customerId}&PageIndex=$skip&PageSize=$take';
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetSubscriptions}?CustomerId=${sharedPrefsClient.customerId}&PageIndex=$skip&PageSize=$take';
     Uri uri = Uri.parse(url);
     var headers = {
       'accept': '*/*',
@@ -123,7 +119,7 @@ class RestApi {
     if (response.statusCode == 200) {
       log('response body : ${response.body}');
       SubscriptionsModel subscriptionsModel =
-      SubscriptionsModel.fromJson(jsonDecode(response.body));
+          SubscriptionsModel.fromJson(jsonDecode(response.body));
       return subscriptionsModel;
     } else {
       throw Exception('Failed to load subscriptions data');
@@ -133,8 +129,7 @@ class RestApi {
   static Future<StockModel?> getStock(
       {required String id, required int skip, required int take}) async {
     String url =
-        '${ApiUrl.API_BASE_URL2}${ApiUrl
-        .GetStock}?SubscriptionId=$id&PageIndex=$skip&PageSize=$take';
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetStock}?SubscriptionId=$id&PageIndex=$skip&PageSize=$take';
     Uri uri = Uri.parse(url);
 
     var headers = {
@@ -156,9 +151,7 @@ class RestApi {
   static Future<StockModel?> getStockByStatus(
       {required int skip, required int take}) async {
     String url =
-        '${ApiUrl.API_BASE_URL2}${ApiUrl
-        .GetStock}?CustomerName=${sharedPrefsClient
-        .fullName}&Status=0&PageIndex=$skip&PageSize=$take';
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetStock}?CustomerName=${sharedPrefsClient.fullName}&Status=0&PageIndex=$skip&PageSize=$take';
     Uri uri = Uri.parse(url);
     var headers = {
       'accept': '*/*',
@@ -178,9 +171,7 @@ class RestApi {
 
   static Future<StockDataModel?> getAllStock() async {
     String url =
-        '${ApiUrl.API_BASE_URL2}${ApiUrl
-        .GetStock}?CustomerName=${sharedPrefsClient
-        .fullName}&PageIndex=0&PageSize=1000';
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetStock}?CustomerName=${sharedPrefsClient.fullName}&PageIndex=0&PageSize=1000';
     Uri uri = Uri.parse(url);
 
     var headers = {
@@ -192,7 +183,7 @@ class RestApi {
     if (response.statusCode == 200) {
       log(response.body);
       StockDataModel stockDataModel =
-      StockDataModel.fromJson(jsonDecode(response.body));
+          StockDataModel.fromJson(jsonDecode(response.body));
 
       return stockDataModel;
     } else {
@@ -201,9 +192,8 @@ class RestApi {
   }
 
   static Future<List<StockDataModel>> getAllStockByCustomer() async {
-    String url = '${ApiUrl.API_BASE_URL2}${ApiUrl
-        .GetStock}?CustomerName=${sharedPrefsClient
-        .fullName}&PageIndex=0&PageSize=1000';
+    String url =
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetStock}?CustomerName=${sharedPrefsClient.fullName}&PageIndex=0&PageSize=1000';
     Uri uri = Uri.parse(url);
 
     var headers = {
@@ -227,11 +217,9 @@ class RestApi {
     }
   }
 
-
   static Future<WarehousesModel?> getWarehouse() async {
     String url =
-        '${ApiUrl.API_BASE_URL2}${ApiUrl
-        .getWarehouses}?PageIndex=0&PageSize=1000';
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.getWarehouses}?PageIndex=0&PageSize=1000';
     Uri uri = Uri.parse(url);
 
     var headers = {
@@ -243,7 +231,7 @@ class RestApi {
     if (response.statusCode == 200) {
       log(response.body);
       WarehousesModel warehousesModel =
-      WarehousesModel.fromJson(jsonDecode(response.body));
+          WarehousesModel.fromJson(jsonDecode(response.body));
 
       return warehousesModel;
     } else {
@@ -277,8 +265,7 @@ class RestApi {
     required int status,
   }) async {
     String url =
-        '${ApiUrl.API_BASE_URL2}${ApiUrl
-        .GetTransaction}?MatchingStatus=$status&PageIndex=$skip&PageSize=$take';
+        '${ApiUrl.API_BASE_URL2}${ApiUrl.GetTransaction}?MatchingStatus=$status&PageIndex=$skip&PageSize=$take';
     Uri uri = Uri.parse(url);
 
     var headers = {
@@ -289,7 +276,7 @@ class RestApi {
     http.Response response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {
       TransactionModel transactionModel =
-      TransactionModel.fromJson(jsonDecode(response.body));
+          TransactionModel.fromJson(jsonDecode(response.body));
 
       return transactionModel;
     } else {
@@ -305,7 +292,7 @@ class RestApi {
     var request = http.MultipartRequest('POST', url);
     request.headers.addAll({
       HttpHeaders.authorizationHeader:
-      'Bearer ${sharedPrefsClient.accessToken}',
+          'Bearer ${sharedPrefsClient.accessToken}',
       HttpHeaders.contentTypeHeader: 'multipart/form-data',
     });
 
@@ -323,16 +310,14 @@ class RestApi {
     if (response.statusCode == 200) {
       final responseData = await response.stream.toBytes();
 
-
       final responseString = utf8.decode(responseData);
-      Map<String, dynamic> jsonResponse = json.decode(responseString);
 
       AddStockModel addStockModel =
-      AddStockModel.fromJson(jsonDecode(responseString));
+          AddStockModel.fromJson(jsonDecode(responseString));
       return addStockModel;
     } else {
       Utils.hideLoadingDialog();
-      Utils.showSnackbar('title', 'message');
+      Utils.showSnackBar('title', 'message');
       return null;
     }
   }

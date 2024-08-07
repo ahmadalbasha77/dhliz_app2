@@ -1,8 +1,7 @@
-
 import 'package:dhliz_app/controllers/auth/sign_up_contoller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 
 class CompleteSignupScreen extends StatefulWidget {
   final String email;
@@ -20,7 +19,6 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
   final _controller = RegisterController.to;
   bool loading = false;
 
-
   @override
   void initState() {
     _controller.email.text = widget.email;
@@ -31,41 +29,36 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Form(
         key: _controller.keyForm,
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: screenSize.height * 0.06,
-              ),
-              Image.asset(
-                "image/home/Artboard 17.png",
-                width: screenSize.width * 0.5,
-              ),
-              SizedBox(
-                height: screenSize.height * 0.04,
-              ),
-              Center(
-                child: Text(
-                  "Complete your information".tr,
-                  style: TextStyle(
-                      fontSize: screenSize.width * 0.045,
-                      color: Colors.black54),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 50.h,
                 ),
-              ),
-              SizedBox(
-                height: screenSize.height * 0.04,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenSize.width * .07,
-                    vertical: screenSize.height * .01),
-                child: TextFormField(
+                Image.asset(
+                  "image/home/Artboard 17.png",
+                  width: 160.w,
+                ),
+                SizedBox(
+                  height: 25.h,
+                ),
+                Center(
+                  child: Text(
+                    "Complete your information".tr,
+                    style: TextStyle(fontSize: 14.sp, color: Colors.black54),
+                  ),
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                TextFormField(
                   controller: _controller.fullName,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -89,18 +82,16 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                       labelText: "Full Name".tr,
                       labelStyle: const TextStyle(color: Colors.black45)),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: screenSize.width * .07,
-                  vertical: screenSize.height * .01,
+                SizedBox(
+                  height: 10.h,
                 ),
-                child: TextFormField(
+                TextFormField(
                   controller: _controller.businessName,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'please enter business name'.tr;
-                    } return null;
+                    }
+                    return null;
                   },
                   style: const TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
@@ -117,17 +108,16 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                       labelText: "Business Name".tr,
                       labelStyle: const TextStyle(color: Colors.black45)),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenSize.width * .07,
-                    vertical: screenSize.height * .01),
-                child: TextFormField(
+                SizedBox(
+                  height: 10.h,
+                ),
+                TextFormField(
                   controller: _controller.businessCompetence,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'please enter business competence'.tr;
-                    } return null;
+                    }
+                    return null;
                   },
                   style: const TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
@@ -144,12 +134,10 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                       labelText: "Business Competence".tr,
                       labelStyle: const TextStyle(color: Colors.black45)),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenSize.width * .07,
-                    vertical: screenSize.height * .01),
-                child: TextFormField(
+                SizedBox(
+                  height: 10.h,
+                ),
+                TextFormField(
                   controller: _controller.phoneNumber,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -176,12 +164,10 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                       labelText: "Phone Number".tr,
                       labelStyle: const TextStyle(color: Colors.black45)),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenSize.width * .07,
-                    vertical: screenSize.height * .01),
-                child: TextFormField(
+                SizedBox(
+                  height: 10.h,
+                ),
+                TextFormField(
                   controller: _controller.phoneNumber2,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -189,7 +175,8 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                     }
                     if (value.length > 10 || value.length < 10) {
                       return 'Enter a correct number'.tr;
-                    } return null;
+                    }
+                    return null;
                   },
                   keyboardType: TextInputType.number,
                   style: const TextStyle(color: Colors.black87),
@@ -207,41 +194,36 @@ class _CompleteSignupScreenState extends State<CompleteSignupScreen> {
                       labelText: "Phone Number 2".tr,
                       labelStyle: const TextStyle(color: Colors.black45)),
                 ),
-              ),
-              SizedBox(
-                height: screenSize.height * 0.015,
-              ),
-              Container(
-                width: double.infinity,
-                margin:
-                    EdgeInsets.symmetric(horizontal: screenSize.width * .1),
-                height: screenSize.height * 0.079,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(80, 46, 144, 1.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                  ),
-                  onPressed: () async {
-                    _controller.register();
-                  },
-                  child: loading
-                      ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : Text(
-                          "Complete".tr,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: screenSize.width * .05),
-                        ),
+                SizedBox(
+                  height: 25.h,
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              )
-            ],
+                SizedBox(
+                  width: double.infinity,
+                  height: screenSize.height * 0.079,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(80, 46, 144, 1.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    onPressed: () async {
+                      _controller.register();
+                    },
+                    child: loading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : Text(
+                            "Complete".tr,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: screenSize.width * .05),
+                          ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 import '../../config/utils.dart';
 import '../../models/home/add_stock_model.dart';
-import '../../view/new home/enter inventory/add stock/add_enter_stcok_screen.dart';
+import '../../view/home/self mangement of invntory/enter/add stock/add_enter_stcok_screen.dart';
 
 class AddStockController extends GetxController {
   static AddStockController get to => Get.isRegistered<AddStockController>()

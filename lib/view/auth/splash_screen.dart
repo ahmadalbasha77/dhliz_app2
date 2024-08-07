@@ -23,7 +23,7 @@ class SplashScreenState extends State<SplashScreen> {
   final LocalAuthentication auth = LocalAuthentication();
 
   Future<bool> _authenticate() async {
-    final bool canCheckBiometrics = await auth.canCheckBiometrics;
+    // final bool canCheckBiometrics = await auth.canCheckBiometrics;
     final bool isDeviceSupported = await auth.isDeviceSupported();
 
     if (isDeviceSupported) {
@@ -39,17 +39,12 @@ class SplashScreenState extends State<SplashScreen> {
           Future.delayed(const Duration(seconds: 2), () async {
             Get.offAll(() => const MainScreen());
           });
-        } else {
-
-        }
+        } else {}
         return didAuthenticate; // Return the result of the authentication
       } catch (e) {
         // Handle error
-
       }
-    } else {
-
-    }
+    } else {}
     return false; // Return false if biometrics are not available or authentication fails
   }
 
@@ -62,10 +57,10 @@ class SplashScreenState extends State<SplashScreen> {
         Get.off(() => const FirstPageScreen());
       } else {
         if (sharedPrefsClient.isLogin) {
-          Get.offAll(() => LoginScreen());
+          Get.offAll(() => const LoginScreen());
           await _authenticate();
         } else {
-          Get.offAll(() => LoginScreen());
+          Get.offAll(() => const LoginScreen());
         }
       }
     });

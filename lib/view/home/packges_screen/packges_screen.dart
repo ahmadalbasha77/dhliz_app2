@@ -18,10 +18,10 @@ class _PackgesScreenState extends State<PackgesScreen> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 231, 231, 231),
+        backgroundColor: const Color.fromARGB(255, 231, 231, 231),
         appBar: AppBar(
-            iconTheme: IconThemeData(color: Colors.black),
-            title: Text('Packages', style: TextStyle(color: Colors.black)),
+            iconTheme: const IconThemeData(color: Colors.black),
+            title: const Text('Packages', style: TextStyle(color: Colors.black)),
             centerTitle: true,
             backgroundColor: Colors.white),
         body: SingleChildScrollView(
@@ -38,7 +38,7 @@ class _PackgesScreenState extends State<PackgesScreen> {
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MonthlyPackge(),
+                          builder: (context) => const MonthlyPackge(),
                         ));
                       },
                       child: Padding(
@@ -54,7 +54,7 @@ class _PackgesScreenState extends State<PackgesScreen> {
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => SixMonthsPackge(),
+                      builder: (context) => const SixMonthsPackge(),
                     ));
                   },
                   child: Padding(
@@ -66,7 +66,7 @@ class _PackgesScreenState extends State<PackgesScreen> {
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => YearlyPackge(),
+                      builder: (context) => const YearlyPackge(),
                     ));
                   },
                   child: Padding(

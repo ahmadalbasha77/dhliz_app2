@@ -1,25 +1,36 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:permission_handler/permission_handler.dart';
 import 'package:dhliz_app/config/shared_prefs_client.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:flutter_hms_gms_availability/flutter_hms_gms_availability.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:huawei_push/huawei_push.dart' as hms_push;
 
 class MessagingConfig {
   static String clickAction = '';
   static AndroidNotificationChannel channel = const AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
-    description: 'This channel is used for important notifications.', // description
+    description: 'This channel is used for important notifications.',
+    // description
     importance: Importance.max,
   );
-  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   static init() async {
+    await Permission.notification.isDenied.then((value) {
+      if (value) {
+        Permission.notification.request();
+      } else {}
+    });
+
     if (Platform.isAndroid) {
-      sharedPrefsClient.isGMS = true;
+      sharedPrefsClient.isGMS = await FlutterHmsGmsAvailability.isGmsAvailable;
     } else {
       sharedPrefsClient.isGMS = true;
     }
@@ -27,7 +38,7 @@ class MessagingConfig {
     if (sharedPrefsClient.isGMS) {
       await FirebaseMessagingConfig.init();
     } else {
-     // await HuaweiMessagingConfig.init();
+      await HuaweiMessagingConfig.init();
     }
     log('Device token : ${sharedPrefsClient.deviceToken}');
   }
@@ -35,27 +46,36 @@ class MessagingConfig {
 
 class FirebaseMessagingConfig {
   static init() async {
-    await FirebaseMessaging.instance.requestPermission();
-    sharedPrefsClient.deviceToken = await FirebaseMessaging.instance.getToken() ?? '';
+    sharedPrefsClient.deviceToken =
+        await FirebaseMessaging.instance.getToken() ?? '';
     if (await FlutterAppBadger.isAppBadgeSupported()) {
       FlutterAppBadger.removeBadge();
     }
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-    await MessagingConfig.flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(MessagingConfig.channel);
-    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    await MessagingConfig.flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(MessagingConfig.channel);
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
     );
-    var initialNotification = await FirebaseMessaging.instance.getInitialMessage();
+    var initialNotification =
+        await FirebaseMessaging.instance.getInitialMessage();
     if (initialNotification != null) {
-
+      MessagingConfig.clickAction =
+          initialNotification.data['click_action'] ?? '';
     }
   }
 
   static onMessage() {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-
+      MessagingConfig.clickAction = message.data['click_action'] ?? '';
+      if (sharedPrefsClient.accessToken.isNotEmpty) {
+        // CustomNavigator.clickActionNotification();
+      }
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
@@ -78,7 +98,8 @@ class FirebaseMessagingConfig {
     });
   }
 
-  static Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  static Future<void> firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
     // If you're going to use other Firebase services in the background, such as Firestore,
     // make sure you call `initializeApp` before using other Firebase services.
     // await Firebase.initializeApp(options: DefaultFirebaseConfig.platformOptions);
@@ -106,77 +127,80 @@ class FirebaseMessagingConfig {
   }
 }
 
-// class HuaweiMessagingConfig {
-//   static init() async {
-//     await hms_push.Push.setAutoInitEnabled(true);
-//     hms_push.Push.getToken('');
-//     hms_push.Push.getTokenStream.listen(
-//       (event) {
-//         sharedPrefsClient.deviceToken = event;
-//       },
-//       onError: (value) {
-//         log('Device token1 : ${value.toString()}');
-//       },
-//     );
-//     if (await FlutterAppBadger.isAppBadgeSupported()) {
-//       FlutterAppBadger.removeBadge();
-//     }
-//     await hms_push.Push.registerBackgroundMessageHandler(hmsMessagingBackgroundHandler);
-//   }
-//
-//   static onMessage() {
-//     hms_push.Push.onMessageReceivedStream.listen(onMessageReceived, onError: onMessageReceiveError);
-//     hms_push.Push.onNotificationOpenedApp.listen(_onNotificationOpenedApp);
-//   }
-//
-//   static void _onNotificationOpenedApp(dynamic initialNotification) async {
-//     // if (initialNotification != null) {
-//     //   log('_onNotificationOpenedApp : $initialNotification');
-//     //   MessagingConfig.clickAction = initialNotification['remoteMessage']?['data']?['click_action'] ?? '';
-//     //   if (sharedPrefsClient.accessToken.isNotEmpty) {
-//     //     CustomNavigator.clickActionNotification();
-//     //   }
-//     // }
-//   }
-//
-//   static void onMessageReceived(hms_push.RemoteMessage remoteMessage) {
-//     var notification = remoteMessage.notification;
-//     if (notification != null) {
-//       MessagingConfig.flutterLocalNotificationsPlugin.show(
-//         notification.hashCode,
-//         notification.title,
-//         notification.body,
-//         NotificationDetails(
-//           android: AndroidNotificationDetails(
-//             MessagingConfig.channel.id,
-//             MessagingConfig.channel.name,
-//             channelDescription: MessagingConfig.channel.description,
-//             icon: '@mipmap/ic_launcher',
-//           ),
-//         ),
-//       );
-//     }
-//   }
-//
-//   static void onMessageReceiveError(Object error) {}
-//
-//   static Future<void> hmsMessagingBackgroundHandler(hms_push.RemoteMessage message) async {
-//     var notification = message.notification;
-//     if (notification != null) {
-//       MessagingConfig.flutterLocalNotificationsPlugin.show(
-//         notification.hashCode,
-//         notification.title,
-//         notification.body,
-//         NotificationDetails(
-//           android: AndroidNotificationDetails(
-//             MessagingConfig.channel.id,
-//             MessagingConfig.channel.name,
-//             channelDescription: MessagingConfig.channel.description,
-//             //      one that already exists in example app.
-//             icon: '@mipmap/ic_launcher',
-//           ),
-//         ),
-//       );
-//     }
-//   }
-// }
+class HuaweiMessagingConfig {
+  static init() async {
+    await hms_push.Push.setAutoInitEnabled(true);
+    hms_push.Push.getToken('');
+    hms_push.Push.getTokenStream.listen(
+      (event) {
+        sharedPrefsClient.deviceToken = event;
+      },
+      onError: (value) {
+        log('Device token1 : ${value.toString()}');
+      },
+    );
+    if (await FlutterAppBadger.isAppBadgeSupported()) {
+      FlutterAppBadger.removeBadge();
+    }
+    await hms_push.Push.registerBackgroundMessageHandler(
+        hmsMessagingBackgroundHandler);
+  }
+
+  static onMessage() {
+    hms_push.Push.onMessageReceivedStream
+        .listen(onMessageReceived, onError: onMessageReceiveError);
+    hms_push.Push.onNotificationOpenedApp.listen(_onNotificationOpenedApp);
+  }
+
+  static void _onNotificationOpenedApp(dynamic initialNotification) async {
+    // if (initialNotification != null) {
+    //   log('_onNotificationOpenedApp : $initialNotification');
+    //   MessagingConfig.clickAction = initialNotification['remoteMessage']?['data']?['click_action'] ?? '';
+    //   if (sharedPrefsClient.accessToken.isNotEmpty) {
+    //     CustomNavigator.clickActionNotification();
+    //   }
+    // }
+  }
+
+  static void onMessageReceived(hms_push.RemoteMessage remoteMessage) {
+    var notification = remoteMessage.notification;
+    if (notification != null) {
+      MessagingConfig.flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            MessagingConfig.channel.id,
+            MessagingConfig.channel.name,
+            channelDescription: MessagingConfig.channel.description,
+            icon: '@mipmap/ic_launcher',
+          ),
+        ),
+      );
+    }
+  }
+
+  static void onMessageReceiveError(Object error) {}
+
+  static Future<void> hmsMessagingBackgroundHandler(
+      hms_push.RemoteMessage message) async {
+    var notification = message.notification;
+    if (notification != null) {
+      MessagingConfig.flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            MessagingConfig.channel.id,
+            MessagingConfig.channel.name,
+            channelDescription: MessagingConfig.channel.description,
+            //      one that already exists in example app.
+            icon: '@mipmap/ic_launcher',
+          ),
+        ),
+      );
+    }
+  }
+}

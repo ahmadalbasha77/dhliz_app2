@@ -52,7 +52,7 @@ class WithdrawalStockController extends GetxController {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                trailing: Icon(Icons.photo),
+                trailing: const Icon(Icons.photo),
                 title: Text("From the gallery".tr),
                 onTap: () {
                   _pickImageFromGallery();
@@ -60,7 +60,7 @@ class WithdrawalStockController extends GetxController {
                 },
               ),
               ListTile(
-                trailing: Icon(Icons.camera),
+                trailing: const Icon(Icons.camera),
                 title: Text("Take photo".tr),
                 onTap: () {
                   _takePicture();

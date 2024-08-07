@@ -32,7 +32,7 @@ class WidgetShowDialog {
                       ),
                       Text(
                         'An $typeTransaction transaction request has been sent',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
                         ),
                         textAlign: TextAlign.center,

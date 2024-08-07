@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'complete_signup_screen.dart';
@@ -26,49 +27,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Form(
         key: formKey,
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: screenSize.height * 0.06,
-              ),
-              Image.asset(
-                "image/home/Artboard 16.png",
-                width: screenSize.width * 0.49,
-              ),
-              SizedBox(
-                height: screenSize.height * 0.05,
-              ),
-              Center(
-                child: Text(
-                  "Sign Up".tr,
-                  style: TextStyle(
-                    fontSize: screenSize.width * 0.07,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 50.h,
+                ),
+                Image.asset(
+                  "image/home/Artboard 16.png",
+                  width: 160.w,
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                Center(
+                  child: Text(
+                    "Sign Up".tr,
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: screenSize.height * 0.025,
-              ),
-              SizedBox(
-                width: screenSize.width * 0.7,
-                child: Text(
-                  "Enter your data to register in our warehouse".tr,
-                  style: TextStyle(
-                    fontSize: screenSize.width * 0.042,
-                    color: Colors.black38,
-                  ),
-                  textAlign: TextAlign.center,
+                SizedBox(
+                  height: 15.h,
                 ),
-              ),
-              SizedBox(
-                height: screenSize.height * 0.075,
-              ),
-              Container(
-                margin:
-                    EdgeInsets.symmetric(horizontal: screenSize.width * .07),
-                child: TextFormField(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Enter your data to register in our warehouse".tr,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.black38,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'please enter email'.tr;
@@ -94,12 +94,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       labelText: "email".tr,
                       labelStyle: const TextStyle(color: Colors.black45)),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenSize.width * .07,
-                    vertical: screenSize.height * .02),
-                child: TextFormField(
+                SizedBox(
+                  height: 10.h,
+                ),
+                TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'please enter password'.tr;
@@ -144,65 +142,59 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       labelText: "password".tr,
                       labelStyle: const TextStyle(color: Colors.black45)),
                 ),
-              ),
-              SizedBox(
-                height: screenSize.height * 0.07,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already have any account?  ".tr,
-                    style: TextStyle(
-                        color: Colors.black45,
-                        fontSize: screenSize.width * .038),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
+                SizedBox(
+                  height: 70.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already have any account?  ".tr,
+                      style: TextStyle(color: Colors.black45, fontSize: 13.sp),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Text(
+                        'Login'.tr,
+                        style: TextStyle(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: screenSize.height * 0.013,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: screenSize.height * 0.079,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(80, 46, 144, 1.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        Get.to(() => CompleteSignupScreen(
+                              email: email.text,
+                              password: password.text,
+                            ));
+                      }
                     },
                     child: Text(
-                      'Login'.tr,
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                          fontSize: screenSize.width * .04),
+                      "Sign Up".tr,
+                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: screenSize.height * 0.013,
-              ),
-              Container(
-                width: double.infinity,
-                margin:
-                    EdgeInsets.symmetric(horizontal: screenSize.width * .1),
-                height: screenSize.height * 0.079,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(80, 46, 144, 1.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                  ),
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      Get.to(() => CompleteSignupScreen(
-                            email: email.text,
-                            password: password.text,
-                          ));
-                    }
-                  },
-                  child: Text(
-                    "Sign Up".tr,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: screenSize.width * .05),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

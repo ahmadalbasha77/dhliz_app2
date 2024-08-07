@@ -5,14 +5,14 @@ import 'package:photo_view/photo_view_gallery.dart';
 class PhotoGallery extends StatefulWidget {
   final List<String> imageUrls;
 
-  PhotoGallery({required this.imageUrls});
+  const PhotoGallery({super.key, required this.imageUrls});
 
   @override
-  _PhotoGalleryState createState() => _PhotoGalleryState();
+  PhotoGalleryState createState() => PhotoGalleryState();
 }
 
-class _PhotoGalleryState extends State<PhotoGallery> {
-  PageController _pageController = PageController();
+class PhotoGalleryState extends State<PhotoGallery> {
+  final PageController _pageController = PageController();
   int _currentIndex = 0;
 
   @override
@@ -32,8 +32,8 @@ class _PhotoGalleryState extends State<PhotoGallery> {
                 maxScale: PhotoViewComputedScale.covered * 2,
               );
             },
-            scrollPhysics: BouncingScrollPhysics(),
-            backgroundDecoration: BoxDecoration(
+            scrollPhysics: const BouncingScrollPhysics(),
+            backgroundDecoration: const BoxDecoration(
               color: Colors.white,
             ),
             onPageChanged: (index) {
@@ -46,11 +46,11 @@ class _PhotoGalleryState extends State<PhotoGallery> {
             left: 10,
             top: MediaQuery.of(context).size.height / 2 - 30,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+              icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
               onPressed: _currentIndex > 0
                   ? () {
                       _pageController.previousPage(
-                        duration: Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut,
                       );
                     }
@@ -61,11 +61,11 @@ class _PhotoGalleryState extends State<PhotoGallery> {
             right: 10,
             top: MediaQuery.of(context).size.height / 2 - 30,
             child: IconButton(
-              icon: Icon(Icons.arrow_forward_ios, color: Colors.black),
+              icon: const Icon(Icons.arrow_forward_ios, color: Colors.black),
               onPressed: _currentIndex < widget.imageUrls.length - 1
                   ? () {
                       _pageController.nextPage(
-                        duration: Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut,
                       );
                     }

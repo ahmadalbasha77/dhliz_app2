@@ -159,7 +159,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           trailing: const Icon(Icons.arrow_forward_ios,
                               color: Colors.black),
                           onTap: () {
-                            Get.to(TermsConditionScreen());
+                            Get.to(const TermsConditionScreen());
                           },
                         ),
                         ListTile(
@@ -185,7 +185,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 title: 'Sign Out'.tr)) {
                               sharedPrefsClient.clearProfile();
                               Get.deleteAll();
-                              Get.offAll(() =>  LoginScreen());
+                              Get.offAll(() =>  const LoginScreen());
                             }
                           },
                         ),

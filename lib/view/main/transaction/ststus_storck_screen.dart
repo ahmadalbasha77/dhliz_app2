@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -63,7 +64,6 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
     try {
       var response = await request.send();
       if (response.statusCode == 200) {
-
         Get.back();
         Get.back();
         QuickAlert.show(
@@ -72,12 +72,12 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
             text: 'transaction accepted done'.tr,
             showConfirmBtn: true,
             confirmBtnColor: Colors.white,
-            confirmBtnTextStyle: TextStyle(color: Colors.black),
+            confirmBtnTextStyle: const TextStyle(color: Colors.black),
             title: 'Completed Successfully !',
             textAlignment: TextAlign.center);
-      } else {
-      }
+      } else {}
     } catch (e) {
+      log('$e');
     }
   }
 
@@ -96,23 +96,23 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 231, 231, 231),
+        backgroundColor: const Color.fromARGB(255, 231, 231, 231),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Color.fromARGB(255, 231, 231, 231),
+          backgroundColor: const Color.fromARGB(255, 231, 231, 231),
           centerTitle: true,
-          title:
-              Text('Stock Details'.tr, style: TextStyle(color: Colors.black)),
+          title: Text('Stock Details'.tr,
+              style: const TextStyle(color: Colors.black)),
         ),
         body: data.isEmpty
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 30),
                         child: Center(
                           child: GestureDetector(
                             onTap: () {
@@ -137,39 +137,39 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                       ),
 
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 7),
                         child: Text(
                           '- ${"Name stock".tr}: ${data["name"]}',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 18,
                               color: Colors.black87,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 12,
                       ),
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 5),
                         child: Text(
                           '- ${'Barcode'.tr} : ${data["code"]} ',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 18,
                               color: Colors.black87,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 12,
                       ),
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 5),
                         child: Text(
                           '- ${'Upc stock'.tr}  : ${data["upc"]} ',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -181,15 +181,15 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                       //     style: TextStyle(fontSize: 18, color: Colors.black54),
                       //   ),
                       // ),
-                      SizedBox(
+                      const SizedBox(
                         height: 12,
                       ),
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 5),
                         child: Text(
                           '- ${'Stock Brand'.tr} : ${data["brand"]} ',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 18,
                               color: Colors.black87,
                               fontWeight: FontWeight.bold),
@@ -203,7 +203,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                       //     style: TextStyle(fontSize: 18, color: Colors.black54),
                       //   ),
                       // ),
-                      SizedBox(
+                      const SizedBox(
                         height: 12,
                       ),
                       // Container(
@@ -226,27 +226,27 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                       //   height: 12,
                       // ),
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 5),
                         child: Text(
                           '- ${'Stock description'.tr} : ',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
                       Container(
                         width: 300,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
                         child: Text(
                           '* ${data["description"]}',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                               fontWeight: FontWeight.w500),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       if (widget.data.matchingStatus == 5 &&
@@ -254,40 +254,40 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                         Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 5),
                               child: Text(
                                 '- ${'Reject Reason'.tr} : ',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                             Container(
                               width: 300,
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 10),
                               child: Text(
                                 '* ${data["rejectReason"]}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                           ],
                         ),
 
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 5),
                         child: Row(
                           children: [
                             Text(
                               '- ${'Status Stock'.tr} : ',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black87,
                                   fontWeight: FontWeight.bold),
@@ -295,12 +295,12 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 5),
                         child: Row(
                           children: [
                             Text(
@@ -319,24 +319,25 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Row(
                         children: [
                           Container(
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 5),
                             child: Text(
                               'Matching images'.tr,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
                           ElevatedButton(
                               style: ButtonStyle(
                                   backgroundColor:
-                                      MaterialStatePropertyAll(Colors.white),
+                                      const MaterialStatePropertyAll(
+                                          Colors.white),
                                   shape: MaterialStatePropertyAll(
                                       RoundedRectangleBorder(
                                           borderRadius:
@@ -356,11 +357,11 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                               },
                               child: Text(
                                 'view'.tr,
-                                style: TextStyle(color: Colors.black),
+                                style: const TextStyle(color: Colors.black),
                               ))
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       // Row(
@@ -420,14 +421,14 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                       //         ))
                       //   ],
                       // ),
-                      SizedBox(
+                      const SizedBox(
                         height: 60,
                       ),
                       widget.data.matchingStatus == 2
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Container(
+                                SizedBox(
                                   height: 65,
                                   width: 170,
                                   child: ElevatedButton(
@@ -488,14 +489,14 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.check_circle_outline_rounded,
                                           color: Colors.white,
                                         ),
                                         Text(
                                           textAlign: TextAlign.center,
                                           'Accept'.tr,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 10,
                                               color: Colors.white),
                                         ),
@@ -504,7 +505,8 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   height: 65,
                                   width: 170,
                                   child: ElevatedButton(
@@ -566,14 +568,14 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.cancel_outlined,
                                           color: Colors.white,
                                         ),
                                         Text(
                                           textAlign: TextAlign.center,
                                           'reject'.tr,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 10,
                                               color: Colors.white),
                                         ),
@@ -583,7 +585,7 @@ class _StatusStockScreenState extends State<StatusStockScreen> {
                                 ),
                               ],
                             )
-                          : SizedBox()
+                          : const SizedBox()
                     ]),
               ),
       ),
