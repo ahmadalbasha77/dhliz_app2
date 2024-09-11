@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,15 +22,30 @@ class PayNowScreen extends StatefulWidget {
 
 class _PayNowScreenState extends State<PayNowScreen> {
   int calculateTotalPrice() {
+    // Parse the start and end dates from strings to DateTime
+    DateTime startDate = DateTime.parse(widget.data!.startDate);
+    DateTime endDate = DateTime.parse(widget.data!.endDate);
+
+    // Calculate the number of days between the two dates
+    int days = endDate.difference(startDate).inDays;
+    log('$days');
+    // Calculate the total price and return it as an integer
     return int.parse(
-        ((widget.data!.temperature.cost * widget.data!.reservedSpace).round())
+        (((widget.data!.temperature.cost * widget.data!.reservedSpace) * days)
+                .round())
             .toString());
   }
 
   @override
   void initState() {
-    super.initState();
+    log('*******************************');
+    log(widget.data!.temperature.cost.toString());
+    log(widget.data!.reservedSpace.toString());
+    log(widget.data!.endDate.toString());
+    log(widget.data!.startDate.toString());
+    log('*******************************');
 
+    super.initState();
   }
 
   @override
@@ -63,7 +80,8 @@ class _PayNowScreenState extends State<PayNowScreen> {
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   child: Text('${'Expired WH'.tr} : ${widget.data!.endDate} ',
-                      style: const TextStyle(color: Colors.black54, fontSize: 12)),
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 12)),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,9 +125,10 @@ class _PayNowScreenState extends State<PayNowScreen> {
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),
                   child: Text(
-                      "Temperature ${widget.data!.temperature.fromTemperature} - ${widget.data!.temperature.toTemperature} C".tr,
-                      style:
-                          const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      "Temperature ${widget.data!.temperature.fromTemperature} - ${widget.data!.temperature.toTemperature} C"
+                          .tr,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
 
                 const SizedBox(
@@ -138,14 +157,15 @@ class _PayNowScreenState extends State<PayNowScreen> {
                 ),
                 Text(
                   '${'space'.tr} :${widget.data!.reservedSpace} ${'M²'.tr}',
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
                   height: 30,
                 ),
                 Text('${'Total price'.tr} : $totalPrice ${'SR'.tr}',
-                    style:
-                        const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w500)),
               ],
             ),
           ),

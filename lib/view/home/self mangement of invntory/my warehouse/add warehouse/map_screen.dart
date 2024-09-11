@@ -437,16 +437,18 @@ class _MapScreenState extends State<MapScreen> {
         const ImageConfiguration(devicePixelRatio: 2.5),
         'image/ios/inventory.png',
       );
-    }
-    customIcon1 = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(devicePixelRatio: 2.5),
-      'image/map/warehoues.png',
-    );
+    }else{
+      customIcon1 = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(devicePixelRatio: 2.5),
+        'image/map/warehoues.png',
+      );
 
-    customIconPickedLocation = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(devicePixelRatio: 2.5),
-      'image/map/inventory.png',
-    );
+      customIconPickedLocation = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(devicePixelRatio: 2.5),
+        'image/map/inventory.png',
+      );
+    }
+
 
     setState(() {});
   }

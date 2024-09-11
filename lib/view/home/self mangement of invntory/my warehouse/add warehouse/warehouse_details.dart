@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dhliz_app/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -56,15 +58,29 @@ class WarehouseDetailsState extends State<WarehouseDetails> {
   }
 
   void _loadCustomIcons() async {
-    customIcon1 = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(devicePixelRatio: 2.5),
-      'image/ios/warehoues.png',
-    );
+    if (Platform.isIOS) {
+      customIcon1 = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(devicePixelRatio: 2.5),
+        'image/ios/warehoues.png',
+      );
 
-    customIconPickedLocation = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(devicePixelRatio: 2.5),
-      'image/ios/inventory.png',
-    );
+      customIconPickedLocation = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(devicePixelRatio: 2.5),
+        'image/ios/inventory.png',
+      );
+
+    }else{
+      customIcon1 = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(devicePixelRatio: 2.5),
+        'image/map/warehoues.png',
+      );
+
+      customIconPickedLocation = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(devicePixelRatio: 2.5),
+        'image/map/inventory.png',
+      );
+    }
+
 
     setState(() {});
   }
